@@ -18,6 +18,8 @@ staging:
   script:
    - gem install dpl
    - dpl --provider=heroku --app=shopshots-dev --api-key=$HEROKU_STAGING_API_KEY
+  environment:
+    name: development
 
 production:
   stage: deploy

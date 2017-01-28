@@ -1,6 +1,12 @@
 import React, { Component, PropTypes }      from 'react';
 import { connect }                          from 'react-redux';
-import { showItems }                         from '../../actions';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {blue500, blue700, blue100} from 'material-ui/styles/colors';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+import Menu from '../Menu';
+import Frontpage from '../Frontpage';
 
 const propTypes = {
   dispatch: PropTypes.func,
@@ -8,43 +14,49 @@ const propTypes = {
   children: PropTypes.node,
 };
 
+injectTapEventPlugin();
+
 class App extends Component {
   
   constructor(props) {
     super(props);
   }
   
-  componentWillMount(){
-    this.props.showItems()
-  }
+render() {
   
-  renderItemsList(){
-    return this.props.items.map((item) => {
-      return (
-        <li key={item.id}>{item.title}</li>
-      )
-    })
-  }
-
-  render() {
+  const muiTheme = getMuiTheme({
+      palette: {
+        primary1Color: blue500,
+        primary2Color: blue700,
+        primary3Color: blue100
+      }
+    }, {
+      avatar: {
+        borderColor: null
+      },
+      userAgent: this.props.userAgent
+    });
+  
     return (
-      <div>
-        <h1>Items List</h1>
-        <ul>
-          { this.renderItemsList() }
-        </ul>
-      </div>
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <div>
+          <Menu/>
+          <div className="container">
+            <Frontpage/>
+          </div>
+        </div>
+      </MuiThemeProvider>
     );
   }
+  
 }
 
 App.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return {
-    userAgent: state.userAgent,
-    items: state.item.list
+    userAgent: state.userAgent
   };
 }
 
-export default connect(mapStateToProps, {showItems})(App);
+export default connect(mapStateToProps)(App);

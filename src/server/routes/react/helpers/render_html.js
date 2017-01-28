@@ -5,9 +5,10 @@ const renderHTML = (componentHTML, initialState) => {
       <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>APP_NAME</title>
+          <title>Shopshot</title>
           <link rel="icon" href="/favicon.png">
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+          <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
           <link rel="stylesheet" href="/styles.css">
           <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />

@@ -7,6 +7,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Menu from '../Menu';
 import Frontpage from '../Frontpage';
+import Footer from '../Footer';
 
 const propTypes = {
   dispatch: PropTypes.func,
@@ -44,6 +45,7 @@ render() {
           <div className="container">
             <Frontpage/>
           </div>
+          <Footer/>
         </div>
       </MuiThemeProvider>
     );

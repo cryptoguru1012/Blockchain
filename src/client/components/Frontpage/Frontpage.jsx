@@ -8,14 +8,14 @@ class Frontpage extends React.Component {
     super(props);
   }
   
-  componentDidMount(){
+  componentWillMount(){
     this.props.showItems()
   }
   
   renderItemsList(){
     return this.props.items.map((item) => {
       return (
-        <li key={item.id}> {item.title} </li>
+        <li key={item.id}>{item.title} - {item.category} - {item.price} - {item.quantity} - {item.currency} - {item.paymentOption} -  {item.certificate} - {item.description}</li>
       )
     })
   }

@@ -1,45 +1,41 @@
 import React from 'react';
-import { connect }                          from 'react-redux';
-import { showItems }                         from '../../actions';
+import {connect} from 'react-redux';
+
+//import ItemsList from './ItemsList';
+import CarouselSection from './Sections/CarouselSection';
+import WelcomeSection from './Sections/WelcomeSection';
+import SubcategoriesSection from './Sections/SubcategoriesSection';
+import FeaturedSection from './Sections/FeaturedSection';
+import BestSellerSection from './Sections/BestSellerSection';
+
+const mainStyle = {
+  width: '100%'
+};
 
 class Frontpage extends React.Component {
-    
+
   constructor(props) {
     super(props);
   }
-  
-  componentWillMount(){
-    this.props.showItems()
-  }
-  
-  renderItemsList(){
-    return this.props.items.map((item) => {
-      return (
-        <li key={item.id}>{item.title} - {item.category} - {item.price} - {item.quantity} - {item.currency} - {item.paymentOption} -  {item.certificate} - {item.description}</li>
-      )
-    })
-  }
-  
+
+
+
   render() {
-    return (
-        <div className="row">
-          <div className="col-lg-12">
-            <h1>Items List</h1>
-            <ul>
-              { this.renderItemsList() }
-            </ul>
-          </div>
+    return ( 
+      <div className="container" style={mainStyle}>
+        <div>
+          <CarouselSection/>
         </div>
+        <div className="col-lg-12">
+          <WelcomeSection/>
+          <SubcategoriesSection/>
+          <FeaturedSection/>
+          <BestSellerSection/>
+        </div>
+      </div>
     );
   }
-    
+
 }
 
-
-function mapStateToProps(state) {
-  return {
-    items: state.items.list
-  };
-}
-
-export default connect(mapStateToProps, {showItems})(Frontpage);
+export default connect()(Frontpage);

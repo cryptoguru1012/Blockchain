@@ -42,7 +42,7 @@ render() {
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
           <Menu/>
-          <div className="container">
+          <div>
             <Frontpage/>
           </div>
           <Footer/>

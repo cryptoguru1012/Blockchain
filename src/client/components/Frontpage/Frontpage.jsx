@@ -18,8 +18,6 @@ class Frontpage extends React.Component {
     super(props);
   }
 
-
-
   render() {
     return ( 
       <div className="container" style={mainStyle}>

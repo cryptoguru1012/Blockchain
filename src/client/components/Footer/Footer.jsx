@@ -1,30 +1,21 @@
 import React from 'react';
 
-var style = {
-    backgroundColor: "#F8F8F8",
-    borderTop: "1px solid #E7E7E7",
-    textAlign: "center",
-    padding: "20px",
-    position: "fixed",
-    left: "0",
-    bottom: "0",
-    height: "60px",
-    width: "100%",
+var footer = {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    left: 0,
+    padding: '1rem',
+    backgroundColor: '#efefef',
+    textAlign: 'center',
+    height: '100px',
 };
-
-var phantom = {
-  display: 'block',
-  padding: '20px',
-  height: '60px',
-  width: '100%',
-}
 
 const Footer = React.createClass({
     render: function() {
         return (
-            <div>
-                <div style={phantom} />
-                <div style={style}>
+        <div style={footer}>
+                <div className="container">
                     Hello
                 </div>
             </div>

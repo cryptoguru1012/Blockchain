@@ -37,12 +37,18 @@ render() {
       },
       userAgent: this.props.userAgent
     });
-  
+
+    const Main= {
+      paddingBottom: '160px' // footer height size + 60px
+    }
+ 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
-          <Menu/>
           <div>
+            <Menu/>
+          </div>
+          <div style={Main}>
             <Frontpage/>
           </div>
           <Footer/>

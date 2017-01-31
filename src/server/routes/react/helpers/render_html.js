@@ -1,7 +1,7 @@
 const renderHTML = (componentHTML, initialState) => {
-  return `
+    return `
     <!DOCTYPE html>
-      <html lang="ru-RU">
+      <html lang="en-US" style="height: 100%;">
       <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@ const renderHTML = (componentHTML, initialState) => {
           <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
 					<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
       </head>
-      <body>
+      <body style="position: relative; min-height: 100%;">
         <div id="react-view">${componentHTML}</div>
         <script type="application/javascript">
             window.REDUX_INITIAL_STATE = ${JSON.stringify(initialState)}

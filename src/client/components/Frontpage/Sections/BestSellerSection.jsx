@@ -32,17 +32,10 @@ class BestSellerSection extends Component {
             .props
             .items
             .map((item) => {
-                var cat = item.category;
 
-                if(cat != lastCat ){
-                    return (
-                        <div key={item.category}>
-                            <h2> {item.category} </h2>
-                        </div>
-                    )
-                    
-                    lastCat = cat;
-                }
+                <div key={item.id}>
+                    <h2> {item.title} </h2>
+                </div>
 
             })
     }

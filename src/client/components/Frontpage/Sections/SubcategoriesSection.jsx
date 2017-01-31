@@ -14,8 +14,6 @@ const defaultProps = {
     title: 'SubcategoriesSection'
 };
 
-var lastCat = '';
-
 class SubcategoriesSection extends Component {
     constructor(props) {
         super(props);
@@ -27,32 +25,31 @@ class SubcategoriesSection extends Component {
             .showItems()
     }
 
-    renderItemsSub() {
-        return this
-            .props
-            .items
-            .map((item) => {
-                var cat = item.category;
-
-                if(cat != lastCat ){
-                    return (
-                        <div key={item.category}>
-                            <h2> {item.category} </h2>
-                        </div>
-                    )
-                    
-                    lastCat = cat;
-                }
-
-            })
-    }
-
     render() {
+        let rows = [];
+        let lastCat = 'null';
+
+        if(this.props.items != null){
+            this.props.items.forEach((item) => {
+                if(item.category != lastCat ){
+                    rows.push(
+                        <div key={item.category}> 
+                            <h2> {item.category} </h2> 
+                        </div>
+                        )
+                }
+            
+                lastCat = item.category;
+            })
+        }
+        
+
+
         return (
             <section >
                 <div>
                     <h2>{this.props.title}</h2>
-                    {this.renderItemsSub()}
+                    {rows}
                 </div>
             </section>
         );

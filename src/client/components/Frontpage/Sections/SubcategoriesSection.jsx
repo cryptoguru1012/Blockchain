@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import {Thumbnail, Button, Row, Col} from 'react-bootstrap';
 import {Link} from 'react-router';
 import Slider from 'react-slick';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
 import {showItems} from '../../../actions';
 //import './Styles/CarouselSection.css';
 
@@ -14,18 +16,21 @@ const defaultProps = {
     title: 'SubcategoriesSection'
 };
 
+const button = {
+  margin: 12,
+};
+
 class SubcategoriesSection extends Component {
     constructor(props) {
         super(props);
     }
 
     componentWillMount() {
-        this
-            .props
-            .showItems()
+        this.props.showItems();
     }
 
     render() {
+
         let rows = [];
         let lastCat = 'null';
 
@@ -33,8 +38,14 @@ class SubcategoriesSection extends Component {
             this.props.items.forEach((item) => {
                 if(item.category != lastCat ){
                     rows.push(
-                        <div key={item.category}> 
-                            <h2> {item.category} </h2> 
+                        <div className="col-sm-3" >
+                            <Card>
+                                <CardMedia
+                                overlay={<CardTitle title={item.category} />}
+                                >
+                                <img src={item.url2} />
+                                </CardMedia>
+                            </Card>
                         </div>
                         )
                 }
@@ -46,10 +57,15 @@ class SubcategoriesSection extends Component {
 
 
         return (
-            <section >
-                <div>
+            <section className="col-lg-12">
+                <div className="row">
                     <h2>{this.props.title}</h2>
                     {rows}
+                </div>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <RaisedButton label="More categories" primary={true} style={button} />
+                    </div>
                 </div>
             </section>
         );

@@ -42,8 +42,8 @@ class BestSellerSection extends Component {
 
     render() {
         return (
-            <section >
-                <div>
+            <section className="row">
+                <div className="col-lg-12">
                     <h2>{this.props.title}</h2>
                 </div>
             </section>

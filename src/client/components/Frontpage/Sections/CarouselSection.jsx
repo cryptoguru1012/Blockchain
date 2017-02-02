@@ -32,7 +32,7 @@ class CarouselSections extends Component {
             .map((item) => {
                 return (
                     //<div key={item.id}>
-                        <img key={item.id} className="img-responsive" src={item.url2}/>
+                        <img key={item.id} className="img-responsive" src={item.url}/>
                     //</div>
                 )
             })

@@ -9,7 +9,8 @@ import FeaturedSection from './Sections/FeaturedSection';
 import BestSellerSection from './Sections/BestSellerSection';
 
 const mainStyle = {
-  width: '100%'
+  width: '100%',
+  padding: 0,
 };
 
 class Frontpage extends React.Component {
@@ -24,7 +25,7 @@ class Frontpage extends React.Component {
         <div>
           <CarouselSection/>
         </div>
-        <div className="col-lg-12">
+        <div>
           <WelcomeSection/>
           <SubcategoriesSection/>
           <FeaturedSection/>

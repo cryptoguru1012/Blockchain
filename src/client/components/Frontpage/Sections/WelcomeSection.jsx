@@ -11,8 +11,14 @@ const propTypes = {
 };
 
 const defaultProps = {
-    title: 'WelcomeSection'
+    title: 'WelcomeSection',
+    message: 'Message'
 };
+
+const section = {
+    height: '150px',
+    textAlign: 'center',
+}
 
 class WelcomeSection extends Component {
     constructor(props) {
@@ -21,9 +27,10 @@ class WelcomeSection extends Component {
 
     render() {
         return (
-                <div>
-                    <h2>{this.props.title}</h2>
-                </div>
+            <div className="col-lg-12" style={section}>
+                <h2>{this.props.title}</h2>
+                <p>{this.props.message}</p>
+            </div>
         );
     }
 }

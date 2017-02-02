@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Thumbnail, Button, Row, Col} from 'react-bootstrap';
 import {Link} from 'react-router';
 import Slider from 'react-slick';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {showItems} from '../../../actions';
 //import './Styles/CarouselSection.css';
 
@@ -32,8 +33,13 @@ class FeaturedSection extends Component {
             .props
             .items
             .map((item) => {
-                <div key={item.id}>
-                    <h2> {item.title} </h2>
+                <div className="col-sm-3" key={item.id}>
+                    <Card>
+                        <CardMedia>
+                            <img src={item.url3} />
+                        </CardMedia>
+                        <CardTitle title={item.title} subtitle="{item.price}" />
+                    </Card>
                 </div>
             })
     }
@@ -41,8 +47,7 @@ class FeaturedSection extends Component {
     render() {
         return (
             <section >
-                <div>
-                    <h2>{this.props.title}</h2>
+                <div className="row">
                 </div>
             </section>
         );

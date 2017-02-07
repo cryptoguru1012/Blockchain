@@ -17,21 +17,24 @@
  * See the Express application routing documentation for more information:
  * http://expressjs.com/api.html#app.VERB
  */
- 
-import reactModule from './react';
+
 import keystone from 'keystone';
 import middleware from './middleware';
 import apiRoutes from '../API/routes';
+import renderHTML from './helpers/render_html';
 
-// Common Middleware
-keystone.pre('routes', reactModule);
+const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8050' : '';
 
 // Setup Route Bindings
 exports = module.exports = function (app) {
 	// You can use "app" here like you would in Express
-	
+
 	apiRoutes(app);
-	
+
+	app.use((req, res, next) => {
+    res.send(renderHTML(assetUrl));
+  });
+
 	// Error middleware
 	app.use((error, req, res, next) => {
 		res.status(error.status).send({

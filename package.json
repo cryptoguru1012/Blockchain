@@ -5,9 +5,10 @@
   "main": "server.js",
   "scripts": {
     "build": "NODE_ENV='production' webpack -p",
+    "start": "NODE_ENV='production' node server",
+    "dev": "NODE_ENV='development' nodemon --ignore 'src/client' ./server.js",
     "front:dev": "webpack -w --color --progress",
-    "start": "npm run build;NODE_ENV='production' node server",
-    "dev": "NODE_ENV='development' nodemon ./server.js",
+    "wds": "webpack-dev-server --debug --hot --devtool eval-source-map --output-pathinfo --watch --colors --inline --port 8050 --host 0.0.0.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -45,7 +46,8 @@
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
     "nodemon": "^1.11.0",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
   },
   "repository": {
     "type": "git",

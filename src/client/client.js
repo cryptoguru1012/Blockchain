@@ -5,9 +5,7 @@ import routes                        from './routes';
 import { Provider }                 from 'react-redux';
 import configureStore               from './redux/configureStore';
 
-const initialState = window.REDUX_INITIAL_STATE || {};
-
-const store = configureStore(initialState);
+const store = configureStore();
 
 const component = (
   <Provider store={store}>

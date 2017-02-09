@@ -6,7 +6,7 @@ Don't forget to change names for the ones in your project!.
 
 ### How to use:
 1. `npm install`.
-2. `npm run dev` and `npm run front:dev`.
+2. `npm run dev` and `npm run wds`.
 
 ### Configuration
 1. Set `MONGO_URI` in `config/vars.js` before running the package.

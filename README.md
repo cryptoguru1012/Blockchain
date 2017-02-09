@@ -14,6 +14,6 @@ Don't forget to change names for the ones in your project!.
 ### Scripts
 
 * `npm run build` Build client JS into build folder.
-* `npm run front:dev` Webpack watchs for changes in your React files.
+* `npm run wds` Webpack watchs for changes in your React files.
 * `npm start` Production mode.
 * `npm run dev` Run server. Dev mode.

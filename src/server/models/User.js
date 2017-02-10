@@ -13,6 +13,7 @@ User.add({
 	password: { type: Types.Password, initial: true, required: true },
 }, 'Permissions', {
 	isAdmin: { type: Boolean, label: 'Can access Keystone', index: true },
+	userType: {type: Boolean, index: true}//1 to buyer, 0 to seller
 });
 
 // Provide access to Keystone

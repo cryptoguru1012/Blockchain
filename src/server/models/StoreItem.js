@@ -9,12 +9,51 @@ var Types = keystone.Field.Types;
 var StoreItem = new keystone.List('StoreItem');
 
 StoreItem.add({
-    name:{ type: String, required: true },
-    type:{ type: Number, initial:false, required: true },
-    description: { type:String },
-    price: { type: Types.Money, currency: "USD", required:true, initial:false },
-    createBy: {type: Types.Relationship, ref: 'User'}
+    Title:{ 
+        type: String, 
+        required: true, 
+        initial:false,
+        index:true
+
+    },
+    Category:{ 
+        type: Number, 
+        initial:false, 
+        required: true,
+        index:true
+    },
+    Price: { 
+        type: Types.Money, 
+        currency: "USD", 
+        required:true, 
+        initial:false,
+        index:true 
+    },
+    Quantity:{ 
+        type: Number, 
+        require:true, 
+        initial:false 
+    },
+    Currency:{ 
+        type: Types.Money, 
+        currency: "USD", 
+        require:true, 
+        initial:false 
+    },
+    PaymentOptions: { 
+        type: Types.Select, 
+        numeric: true, 
+        options: 
+            [{value: 1, label: "Paypal"}, 
+            [{ value:2, label:"Credit Card" }], 
+            [{ value: 3, label: "Bitcoin"}]] 
+    },
+    Certificate: {
+        type: Boolean    
+    },
+    ItemDescription: { type:String }
+
 })
 
-StoreItem.defaultColumns = "name, type, description, price, createBy";
+StoreItem.defaultColumns = "Title, Category, Price, ItemDescription";
 StoreItem.register();

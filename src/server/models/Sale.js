@@ -9,12 +9,12 @@ var Types = keystone.Field.Types;
 var Sales = new keystone.List('Sales');
 
 Sales.add({
-    saleDate: {type: Types.Date, require: true, index:true, yearRange:[1990, 2099], default: Date.now},
-    items: {type: Types.Relationship, ref: 'StoreItem', many: true, required: true, initial:false},
-    seller: {type: Types.Relationship, ref: 'User', required: true, initial:false},
-    total: {type: Types.Money, currency:"USD"},
-    buyer: {type: Types.Relationship, ref: "User", required: true, initial:false}
+    SaleDate: {type: Types.Date, require: true, index:true, yearRange:[1990, 2099], default: Date.now},
+    Items: {type: Types.Relationship, ref: 'StoreItem', many: true, required: true, initial:false},
+    Seller: {type: Types.Relationship, ref: 'User', required: true, initial:false, index:true},
+    Total: {type: Types.Money, currency:"USD"},
+    Buyer: {type: Types.Relationship, ref: "User", required: true, initial:false, index:true}
 })
 
-Sales.defaultColumns = "saleDate, seller, total, buyer";
+Sales.defaultColumns = "SaleDate, Seller, Total, Buyer";
 Sales.register();

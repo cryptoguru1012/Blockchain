@@ -9,7 +9,7 @@ var Types = keystone.Field.Types;
 var StoreItem = new keystone.List('StoreItem');
 
 StoreItem.add({
-    Title:{ 
+    Name:{ 
         type: String, 
         required: true, 
         initial:true,
@@ -63,5 +63,5 @@ StoreItem.add({
 
 })
 
-StoreItem.defaultColumns = "Title, Category, Price, ItemDescription";
+StoreItem.defaultColumns = "Name, Category, Price, ItemDescription";
 StoreItem.register();

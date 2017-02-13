@@ -31,7 +31,12 @@ StoreItem.add({
     },
 
     Currency:{ 
-        type: String,  
+        type: Types.Select,
+        options: 
+            [
+                {value: "USD", label: "USD"}, 
+                {value: "EUR", label:"EUR" }
+            ],  
         require:true, 
         initial:true 
     },

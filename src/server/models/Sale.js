@@ -6,7 +6,7 @@ var Types = keystone.Field.Types;
  * ==========
  */
 
-var Sales = new keystone.List('Sales');
+var Sale = new keystone.List('Sale');
 
 Sales.add({
     SaleDate: {
@@ -56,5 +56,5 @@ Sales.add({
     }
 })
 
-Sales.defaultColumns = "SaleDate, Seller, Total, Buyer";
-Sales.register();
+Sale.defaultColumns = "SaleDate, Seller, Total, Buyer";
+Sale.register();

@@ -34,10 +34,7 @@ Sale.add({
         ref: 'User', 
         required: true, 
         initial:true, 
-        index:true,
-        filters: {
-            userType:'Seller'
-        }
+        index:true
 
     },
     Total: {
@@ -49,10 +46,7 @@ Sale.add({
         ref: "User", 
         required: true, 
         initial:true, 
-        index:true,
-        filters: {
-            userType:'Buyer'
-        }
+        index:true
     }
 })
 

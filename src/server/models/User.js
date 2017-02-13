@@ -29,17 +29,7 @@ User.add({
 		type: Boolean, 
 		label: 'Can access Keystone', 
 		index: true 
-	},
-	userType: {
-		type: Types.Select, 
-		index: true, 
-		options: [
-			{ value:"Seller", label: "Seller" }, 
-			{ value: "Buyer", label: "Buyer" }
-		],
-		required:true, 
-		initial:true
-	}//Seller or Buyer
+	}
 });
 
 // Provide access to Keystone

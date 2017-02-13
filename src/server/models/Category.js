@@ -6,13 +6,22 @@ var Types = keystone.Field.Types;
  * ==========
  */
 
-var Category = new keystone.List('Category');
+var Category = new keystone.List('Category', {
+    map: { 
+        name: 'Name' 
+    },
+	autokey: { 
+	    from: 'Name', 
+	    path: 'key', 
+	    unique: true
+	},
+});
 
 Category.add({
-    Title:{ 
+    Name:{ 
         type: String, 
         required: true, 
-        initial: true 
+        initial: true
     },
     CategoryDescription: { 
         type: Types.Html, 
@@ -21,5 +30,5 @@ Category.add({
     }
 })
 
-Category.defaultColumns = "Title, CategoryDescription";
+Category.defaultColumns = "Name, CategoryDescription";
 Category.register();

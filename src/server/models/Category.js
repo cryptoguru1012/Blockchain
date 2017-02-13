@@ -2,13 +2,13 @@ var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
 /**
- * Categories Model
+ * Category Model
  * ==========
  */
 
-var Categories = new keystone.List('Categories');
+var Category = new keystone.List('Category');
 
-Categories.add({
+Category.add({
     Title:{ 
         type: String, 
         required: true, 
@@ -21,5 +21,5 @@ Categories.add({
     }
 })
 
-Categories.defaultColumns = "Title, CategoryDescription";
-Categories.register();
+Category.defaultColumns = "Title, CategoryDescription";
+Category.register();

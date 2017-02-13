@@ -48,7 +48,7 @@ keystone.set('nav', {
 	users: 'users',
 	storeItem: "StoreItem",
 	sales: "Sales",
-	Categories: "Categories"
+	category: "Category"
 });
 
 // Start Keystone to connect to your database and initialise the web server

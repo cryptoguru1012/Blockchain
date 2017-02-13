@@ -9,28 +9,28 @@ var Types = keystone.Field.Types;
 var StoreItem = new keystone.List('StoreItem');
 
 StoreItem.add({
-    Name:{ 
+    name:{ 
         type: String, 
         required: true, 
         initial:true,
         index:true
 
     },
-    Category:{ 
+    category:{ 
         type: Types.Relationship,
         ref: "Category",  
         initial:true, 
         required: true,
         index:true
     },
-    Price: { 
+    price: { 
         type: Number, 
         required:true, 
         initial:true,
         index:true 
     },
 
-    Currency:{ 
+    currency:{ 
         type: Types.Select,
         options: 
             [
@@ -40,7 +40,7 @@ StoreItem.add({
         require:true, 
         initial:true 
     },
-    PaymentOptions: { 
+    paymentOptions: { 
         type: Types.Select, 
         numeric: true, 
         options: 
@@ -52,10 +52,10 @@ StoreItem.add({
         required: true,
         initial:true 
     },
-    Certificate: {
+    certificate: {
         type: Boolean    
     },
-    ItemDescription: { 
+    itemDescription: { 
         type: Types.Html, 
         wysiwyg: true,
         initial: true 
@@ -63,5 +63,5 @@ StoreItem.add({
 
 })
 
-StoreItem.defaultColumns = "Name, Category, Price, ItemDescription";
+StoreItem.defaultColumns = "name, category, price, itemDescription";
 StoreItem.register();

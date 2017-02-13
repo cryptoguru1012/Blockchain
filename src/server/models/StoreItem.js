@@ -18,7 +18,7 @@ StoreItem.add({
     },
     Category:{ 
         type: Types.Relationship,
-        ref: "Categories",  
+        ref: "Category",  
         initial:true, 
         required: true,
         index:true
@@ -29,7 +29,7 @@ StoreItem.add({
         initial:true,
         index:true 
     },
-        
+
     Currency:{ 
         type: String,  
         require:true, 

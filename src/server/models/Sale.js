@@ -24,6 +24,11 @@ Sales.add({
         required: true, 
         initial:true
     },
+    Quantity:{ 
+        type: Number, 
+        require:true, 
+        initial:true 
+    },
     Seller: {
         type: Types.Relationship, 
         ref: 'User', 

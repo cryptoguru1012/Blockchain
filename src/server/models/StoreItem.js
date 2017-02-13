@@ -17,7 +17,8 @@ StoreItem.add({
 
     },
     Category:{ 
-        type: String, 
+        type: Types.Relationship,
+        ref: "Categories",  
         initial:true, 
         required: true,
         index:true
@@ -28,11 +29,7 @@ StoreItem.add({
         initial:true,
         index:true 
     },
-    Quantity:{ 
-        type: Number, 
-        require:true, 
-        initial:true 
-    },
+        
     Currency:{ 
         type: String,  
         require:true, 
@@ -53,7 +50,11 @@ StoreItem.add({
     Certificate: {
         type: Boolean    
     },
-    ItemDescription: { type:String }
+    ItemDescription: { 
+        type: Types.Html, 
+        wysiwyg: true,
+        initial: true 
+    }
 
 })
 

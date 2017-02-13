@@ -8,7 +8,7 @@ var Types = keystone.Field.Types;
 
 var Sale = new keystone.List('Sale');
 
-Sales.add({
+Sale.add({
     SaleDate: {
         type: Types.Date, 
         require: true,

@@ -12,41 +12,43 @@ StoreItem.add({
     Title:{ 
         type: String, 
         required: true, 
-        initial:false,
+        initial:true,
         index:true
 
     },
     Category:{ 
-        type: Number, 
-        initial:false, 
+        type: String, 
+        initial:true, 
         required: true,
         index:true
     },
     Price: { 
-        type: Types.Money, 
-        currency: "USD", 
+        type: Number, 
         required:true, 
-        initial:false,
+        initial:true,
         index:true 
     },
     Quantity:{ 
         type: Number, 
         require:true, 
-        initial:false 
+        initial:true 
     },
     Currency:{ 
-        type: Types.Money, 
-        currency: "USD", 
+        type: String,  
         require:true, 
-        initial:false 
+        initial:true 
     },
     PaymentOptions: { 
         type: Types.Select, 
         numeric: true, 
         options: 
-            [{value: 1, label: "Paypal"}, 
-            [{ value:2, label:"Credit Card" }], 
-            [{ value: 3, label: "Bitcoin"}]] 
+            [
+                {value: 1, label: "Paypal"}, 
+                {value: 2, label:"Credit Card" }, 
+                {value: 3, label: "Bitcoin"}
+            ],
+        required: true,
+        initial:true 
     },
     Certificate: {
         type: Boolean    

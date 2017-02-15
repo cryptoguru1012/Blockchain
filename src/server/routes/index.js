@@ -32,14 +32,11 @@ exports = module.exports = function (app) {
 	apiRoutes(app);
 
 	app.use((req, res, next) => {
-    res.send(renderHTML(assetUrl));
-  });
+		res.send(renderHTML(assetUrl));
+	});
 
 	// Error middleware
 	app.use((error, req, res, next) => {
-		res.status(error.status).send({
-			message: error.message,
-			success: false,
-		});
+		res.status(error.status).send(error);
 	});
 };

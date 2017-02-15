@@ -1,4 +1,4 @@
-import { SHOW_ITEMS } from '../../actions';
+import { SHOW_ITEMS } from '../actions';
 
 const initialState = {
     list: []

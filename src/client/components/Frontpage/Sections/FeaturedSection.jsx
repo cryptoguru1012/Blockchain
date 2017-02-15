@@ -4,7 +4,7 @@ import {Thumbnail, Button, Row, Col} from 'react-bootstrap';
 import {Link} from 'react-router';
 import Slider from 'react-slick';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import {showItems} from '../../../actions';
+import {showItems} from '../../../redux/actions';
 //import './Styles/CarouselSection.css';
 
 const propTypes = {

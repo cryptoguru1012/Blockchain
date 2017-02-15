@@ -33,7 +33,7 @@ const createUser = (params, cb) => {
 				message: 'Internal server error',
 				success: false
 			})
-		} else if (user) {
+		} else if (user.length) {
 			return cb({
 				status: 400,
 				message: 'Email already registered',

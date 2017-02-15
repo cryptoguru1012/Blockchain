@@ -49,7 +49,7 @@ render() {
             <Menu/>
           </div>
           <div style={Main}>
-            <Frontpage/>
+            {this.props.children}
           </div>
           <Footer/>
         </div>

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Thumbnail, Button, Row, Col} from 'react-bootstrap';
 import {Link} from 'react-router';
 import Slider from 'react-slick';
-import {showItems} from '../../../actions';
+import {showItems} from '../../../redux/actions';
 //import './Styles/CarouselSection.css';
 
 const propTypes = {

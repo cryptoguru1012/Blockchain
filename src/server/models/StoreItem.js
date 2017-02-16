@@ -29,7 +29,6 @@ StoreItem.add({
 		initial:true,
 		index:true 
 	},
-
 	currency:{ 
 		type: Types.Select,
 		options: 
@@ -42,13 +41,7 @@ StoreItem.add({
 	},
 	paymentOptions: { 
 		type: Types.Select, 
-		numeric: true, 
-		options: 
-			[
-				{value: 1, label: "Paypal"}, 
-				{value: 2, label:"Credit Card" }, 
-				{value: 3, label: "Bitcoin"}
-			],
+		options: 'Paypal, Credit Card, Bitcoin',
 		required: true,
 		initial:true 
 	},

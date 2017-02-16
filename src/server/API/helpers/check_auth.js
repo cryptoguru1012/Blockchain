@@ -9,3 +9,5 @@ const checkAuth = (req, res, next) => {
 		error: true
 	});
 };
+
+export default checkAuth;

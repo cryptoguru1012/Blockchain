@@ -9,6 +9,7 @@ import {
 } from 'material-ui';
 import { doCategoryReq } from '../../redux/actions/store/category';
 import { doItemCreate } from '../../redux/actions/store/new_item';
+import VideoPanel from './VideoPanel';
 
 
 const mainStyle = {
@@ -25,9 +26,11 @@ class NewItem extends React.Component {
       name: '',
       category: '',
       price: 0,
+      currency: '',
       paymentOptions: '',
       certificate: false,
-      itemDescription: ''
+      itemDescription: '',
+      videoBlobUrl: ''
     };
   }
 
@@ -143,6 +146,7 @@ class NewItem extends React.Component {
           }}
           fullWidth={true}
         />
+        <VideoPanel />
         <p>{this.props.newItem.succes ? 'Success!' : ''}</p>
         <p>{this.props.newItem.error ? 'An error has occurred' : ''}</p>
         <RaisedButton
@@ -150,7 +154,18 @@ class NewItem extends React.Component {
           primary={false}
           fullWidth={true}
           onClick={() => {
-            this.props.dispatch(doItemCreate(this.state));
+            const fd = new FormData();
+            
+            fd.append('name', this.state.name);
+            fd.append('category', this.state.category);
+            fd.append('price', this.state.price);
+            fd.append('currency', this.state.currency);
+            fd.append('paymentOptions', this.state.paymentOptions);
+            fd.append('certificate', this.state.certificate);
+            fd.append('itemDescription', this.state.itemDescription);
+            fd.append('productVideo', window.Video.getBlob());
+
+            this.props.dispatch(doItemCreate(fd));
           }}
         />
       </div>

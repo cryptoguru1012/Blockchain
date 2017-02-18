@@ -8,7 +8,7 @@ const createItem = (params, cb) => {
     const price = parseInt(params.price);
     const currency = params.currency;
     const paymentOptions = params.paymentOptions;
-    const certificate = params.certificate || false;
+    const certificate = !!params.certificate;
     const itemDescription = params.itemDescription;
 
     if (!(name && category && price && currency && paymentOptions && itemDescription)) {
@@ -29,6 +29,7 @@ const createItem = (params, cb) => {
         itemDescription
     }, (err, item) => {
         if (err) {
+            console.log(err);
             return cb({
                 status: 500,
                 message: 'Internal server error',

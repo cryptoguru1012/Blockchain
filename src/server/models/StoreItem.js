@@ -31,11 +31,7 @@ StoreItem.add({
 	},
 	currency:{ 
 		type: Types.Select,
-		options: 
-			[
-				{value: "USD", label: "USD"}, 
-				{value: "EUR", label:"EUR" }
-			],  
+		options: 'BTC, USD, EUR',
 		require:true, 
 		initial:true 
 	},

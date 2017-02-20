@@ -20,7 +20,7 @@ keystone.init({
 	'views': 'templates/views',
 	'view engine': 'jade',
 	's3 config': {
-		bucket: 'hvu',
+		bucket: 'shopshots',
 		key: 'AKIAJ5CQKS2HHNRM24HQ',
 		secret: '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'
 	},

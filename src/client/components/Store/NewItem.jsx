@@ -1,7 +1,7 @@
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import { connect } from 'react-redux';
-import { RaisedButton, MenuItem } from 'material-ui';
+import { RaisedButton, MenuItem, Snackbar } from 'material-ui';
 import Formsy from 'formsy-react';
 import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
 import { doCategoryReq } from '../../redux/actions/store/category';
@@ -9,7 +9,7 @@ import { doItemCreate } from '../../redux/actions/store/new_item';
 
 const mainStyle = { width: '100%', padding: 0 };
 
-const spinnerStyle = { margin: 'auto', display: 'block' };
+const spinnerStyle = { margin: 'auto', display: 'block', padding: 5 };
 
 class NewItem extends React.Component {
   constructor(props) {
@@ -26,6 +26,8 @@ class NewItem extends React.Component {
     };
     this.enableButton = this.enableButton.bind(this);
     this.disableButton = this.disableButton.bind(this);
+    this.handleSnackbarRequestClose = this.handleSnackbarRequestClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -40,19 +42,28 @@ class NewItem extends React.Component {
     this.setState({ canSubmit: false });
   }
 
+  handleSnackbarRequestClose(reason) {
+    if (reason !== 'clickaway' && !this.props.newItem.error) {
+      window.location.reload();
+    }
+  }
+
+  handleSubmit() {
+    this.props.dispatch(doItemCreate(this.state));
+  }
+
   renderNewItemForm() {
     return (
       <div style={{ width: '300px', margin: '200px auto' }}>
         <Formsy.Form
           onValid={this.enableButton}
           onInvalid={this.disableButton}
-          onValidSubmit={() => {
-            this.props.dispatch(doItemCreate(this.state));
-          }}
+          onValidSubmit={this.handleSubmit}
         >
           <FormsyText
             hintText="Item name"
             name="name"
+            requiredError="This field is required"
             required
             onChange={(e, val) => {
               this.setState({ name: val });
@@ -115,7 +126,7 @@ class NewItem extends React.Component {
           <FormsyToggle
             name="certificate"
             label="Certificate"
-            onToggle={(e, val) => {
+            onChange={(e, val) => {
               this.setState({ certificate: val });
             }}
           />
@@ -129,17 +140,29 @@ class NewItem extends React.Component {
             fullWidth
             required
           />
-          {this.props.newItem.loading && <CircularProgress size={50} style={spinnerStyle} />}
-          <p>{this.props.newItem.success && 'Success! Item created'}</p>
-          <p>{this.props.newItem.error && 'An error has occurred'}</p>
-          <RaisedButton
-            label="Send"
-            type="submit"
-            primary={false}
-            fullWidth
-            disabled={!this.state.canSubmit}
-          />
+          {!this.props.newItem.loading &&
+            <RaisedButton
+              label="Send"
+              type="submit"
+              primary={false}
+              fullWidth
+              disabled={!this.state.canSubmit}
+            />}
         </Formsy.Form>
+        {this.props.newItem.loading &&
+          !this.props.newItem.success &&
+          <CircularProgress size={50} style={spinnerStyle} />}
+        <Snackbar
+          open={this.props.newItem.success}
+          message="Success! Item created."
+          autoHideDuration={2000}
+          onRequestClose={this.handleSnackbarRequestClose}
+        />
+        <Snackbar
+          open={this.props.newItem.error || false}
+          message={this.props.newItem.message}
+          autoHideDuration={2000}
+        />
       </div>
     );
   }

@@ -32,7 +32,7 @@ const createItem = (params, cb) => {
             return cb({
                 status: 500,
                 message: 'Internal server error',
-                success: false
+                success: false,
             });
         }
 

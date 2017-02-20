@@ -51,7 +51,6 @@ render() {
           <div style={Main}>
             {this.props.children}
           </div>
-          <Footer/>
         </div>
       </MuiThemeProvider>
     );

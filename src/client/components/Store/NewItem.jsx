@@ -16,12 +16,6 @@ class NewItem extends React.Component {
     super(props);
 
     this.state = {
-      name: '',
-      category: '',
-      price: 0,
-      paymentOptions: '',
-      certificate: false,
-      itemDescription: '',
       canSubmit: false,
     };
     this.enableButton = this.enableButton.bind(this);
@@ -48,8 +42,8 @@ class NewItem extends React.Component {
     }
   }
 
-  handleSubmit() {
-    this.props.dispatch(doItemCreate(this.state));
+  handleSubmit(data) {
+    this.props.dispatch(doItemCreate(data));
   }
 
   renderNewItemForm() {
@@ -65,18 +59,11 @@ class NewItem extends React.Component {
             name="name"
             requiredError="This field is required"
             required
-            onChange={(e, val) => {
-              this.setState({ name: val });
-            }}
             fullWidth
           />
           <FormsySelect
             name="category"
             floatingLabelText="Category"
-            value={this.state.category}
-            onChange={(e, val) => {
-              this.setState({ category: val });
-            }}
             fullWidth
             required
           >
@@ -90,19 +77,12 @@ class NewItem extends React.Component {
             hintText="Price"
             validations="isNumeric"
             validationError="Please provide a number"
-            onChange={(e, val) => {
-              this.setState({ price: val });
-            }}
             fullWidth
             required
           />
           <FormsySelect
             name="currency"
             floatingLabelText="Currency"
-            value={this.state.currency}
-            onChange={(e, val) => {
-              this.setState({ currency: val });
-            }}
             required
             fullWidth
           >
@@ -113,10 +93,6 @@ class NewItem extends React.Component {
             name="paymentOptions"
             floatingLabelText="Payment"
             required
-            value={this.state.paymentOptions}
-            onChange={(e, val) => {
-              this.setState({ paymentOptions: val });
-            }}
             fullWidth
           >
             <MenuItem value="Paypal" primaryText="Paypal" />
@@ -126,17 +102,11 @@ class NewItem extends React.Component {
           <FormsyToggle
             name="certificate"
             label="Certificate"
-            onChange={(e, val) => {
-              this.setState({ certificate: val });
-            }}
           />
           <FormsyText
             name="itemDescription"
             hintText="Description"
             multiLine
-            onChange={(e, val) => {
-              this.setState({ itemDescription: val });
-            }}
             fullWidth
             required
           />

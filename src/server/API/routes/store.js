@@ -5,10 +5,8 @@ import getLastStoreItems from '../controllers/store/get_last_items';
 
 const storeRoutes = (app) => {
     app.post('/API/store/item', checkAuth, (req, res, next) => {
-        req.body = {
-            ...req.body,
-            productVideo: req.files.productVideo
-        };
+        req.body.productVideo = req.files.productVideo;
+        req.body.userId = req.user._id;
         createItem(req.body, (err, data) => {
             if (err) {
                 return next(err);

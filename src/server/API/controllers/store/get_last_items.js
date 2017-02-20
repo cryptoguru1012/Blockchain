@@ -7,7 +7,7 @@ const getLastStoreItems = (cb) => {
         page: 1,
         perPage: 15,
         maxPages: 10
-    }).populate('category').sort('-publishedDate').exec((err, results) => {
+    }).populate('category').sort('publishedDate').exec((err, results) => {
         if (err) {
             return cb({
                 message: 'Internal server error',

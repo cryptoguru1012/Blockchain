@@ -20,6 +20,13 @@ StoreItem.add({
 		type: Types.Date,
 		default: Date.now()
 	},
+	publisher: {
+		type: Types.Relationship,
+		ref: 'User',
+		initial: true,
+		required: true,
+		index: true
+	},
 	category:{ 
 		type: Types.Relationship,
 		ref: "Category",  

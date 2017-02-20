@@ -163,7 +163,10 @@ class NewItem extends React.Component {
             fd.append('paymentOptions', this.state.paymentOptions);
             fd.append('certificate', this.state.certificate);
             fd.append('itemDescription', this.state.itemDescription);
-            fd.append('productVideo', window.Video.getBlob());
+
+            if (window.Video) {
+              fd.append('productVideo', window.Video.getBlob());
+            }
 
             this.props.dispatch(doItemCreate(fd));
           }}

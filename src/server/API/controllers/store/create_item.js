@@ -11,6 +11,7 @@ const createItem = (params, cb) => {
     const certificate = params.certificate === 'true';
     const itemDescription = params.itemDescription;
     const productVideo = params.productVideo;
+    const publisher = params.userId;
 
     if (!(name && category && price && currency && paymentOptions && itemDescription)) {
         return cb({
@@ -28,7 +29,8 @@ const createItem = (params, cb) => {
         paymentOptions,
         certificate,
         itemDescription,
-        productVideo
+        productVideo,
+        publisher
     }, (err, item) => {
         if (err) {
             return cb({

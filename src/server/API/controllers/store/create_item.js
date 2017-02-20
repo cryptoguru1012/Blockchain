@@ -8,8 +8,9 @@ const createItem = (params, cb) => {
     const price = parseInt(params.price);
     const currency = params.currency;
     const paymentOptions = params.paymentOptions;
-    const certificate = !!params.certificate;
+    const certificate = params.certificate === 'true';
     const itemDescription = params.itemDescription;
+    const productVideo = params.productVideo;
 
     if (!(name && category && price && currency && paymentOptions && itemDescription)) {
         return cb({
@@ -26,14 +27,26 @@ const createItem = (params, cb) => {
         currency,
         paymentOptions,
         certificate,
-        itemDescription
+        itemDescription,
+        productVideo
     }, (err, item) => {
         if (err) {
-            console.log(err);
             return cb({
                 status: 500,
                 message: 'Internal server error',
                 success: false
+            });
+        }
+
+        if (productVideo) {
+            item._.productVideo.uploadFile(productVideo, true, (err, file) => {
+                if (err) {
+                    return console.log(err);
+                }
+                
+                item.productVideo = file;
+                
+                item.save();
             });
         }
 

@@ -19,6 +19,11 @@ keystone.init({
 	'favicon': 'public/favicon.ico',
 	'views': 'templates/views',
 	'view engine': 'jade',
+	's3 config': {
+		bucket: 'hvu',
+		key: 'AKIAJ5CQKS2HHNRM24HQ',
+		secret: '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'
+	},
 
 	'auto update': true,
 	'session': true,

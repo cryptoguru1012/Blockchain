@@ -16,6 +16,10 @@ StoreItem.add({
 		index:true
 
 	},
+	publishedDate: {
+		type: Types.Date,
+		default: Date.now()
+	},
 	category:{ 
 		type: Types.Relationship,
 		ref: "Category",  
@@ -48,6 +52,9 @@ StoreItem.add({
 		type: Types.Html, 
 		wysiwyg: true,
 		initial: true 
+	},
+	productVideo: {
+		type: Types.S3File
 	}
 
 })

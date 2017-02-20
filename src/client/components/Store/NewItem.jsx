@@ -1,180 +1,164 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {
-  TextField,
-  RaisedButton,
-  SelectField,
-  MenuItem,
-  Toggle
-} from 'material-ui';
+import CircularProgress from 'material-ui/CircularProgress';
+import { connect } from 'react-redux';
+import { RaisedButton, MenuItem } from 'material-ui';
+import Formsy from 'formsy-react';
+import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
 import { doCategoryReq } from '../../redux/actions/store/category';
 import { doItemCreate } from '../../redux/actions/store/new_item';
 
+const mainStyle = { width: '100%', padding: 0 };
 
-const mainStyle = {
-  width: '100%',
-  padding: 0,
-};
+const spinnerStyle = { margin: 'auto', display: 'block' };
 
 class NewItem extends React.Component {
-
   constructor(props) {
     super(props);
-    
+
     this.state = {
       name: '',
       category: '',
       price: 0,
       paymentOptions: '',
       certificate: false,
-      itemDescription: ''
+      itemDescription: '',
+      canSubmit: false,
     };
+    this.enableButton = this.enableButton.bind(this);
+    this.disableButton = this.disableButton.bind(this);
   }
 
   componentWillMount() {
-      this.props.dispatch(doCategoryReq());
+    this.props.dispatch(doCategoryReq());
+  }
+
+  enableButton() {
+    this.setState({ canSubmit: true });
+  }
+
+  disableButton() {
+    this.setState({ canSubmit: false });
   }
 
   renderNewItemForm() {
     return (
       <div style={{ width: '300px', margin: '200px auto' }}>
-        <TextField
-          hintText='Item name'
-          onChange={(e, val) => {
-            const toState = {
-                name: val
-            };
-
-            this.setState(toState);
-          }}
-          fullWidth={true}
-        />
-        <SelectField
-          floatingLabelText="Category"
-          value={this.state.category}
-          onChange={(e, ind, val) => {
-            const toState = {
-                category: val
-            };
-
-            this.setState(toState);
-          }}
-          fullWidth={true}
-        >
-            {this.props.categories.categories.map(item => {
-                return (
-                    <MenuItem
-                        value={item._id}
-                        primaryText={item.name}
-                    />
-                );
-            })}
-        </SelectField>
-        <br/>
-        <TextField
-          hintText='Price'
-          type='number'
-          onChange={(e, val) => {
-            this.setState({ price: val });
-          }}
-          fullWidth={true}
-        />
-        <SelectField
-          floatingLabelText="Currency"
-          value={this.state.currency}
-          onChange={(e, ind, val) => {
-            const toState = {
-              currency: val
-            };
-
-            this.setState(toState);
-          }}
-          fullWidth={true}
-        >
-            <MenuItem
-                value='USD'
-                primaryText='USD'
-            />
-            <MenuItem
-                value='BTC'
-                primaryText='BTC'
-            />
-        </SelectField>
-        <SelectField
-          floatingLabelText="Payment"
-          value={this.state.paymentOptions}
-          onChange={(e, ind, val) => {
-            const toState = {
-              paymentOptions: val
-            };
-
-            this.setState(toState);
-          }}
-          fullWidth={true}
-        >
-            <MenuItem
-                value='Paypal'
-                primaryText='Paypal'
-            />
-            <MenuItem
-                value='Credit Card'
-                primaryText='Credit Card'
-            />
-            <MenuItem
-                value='Bitcoin'
-                primaryText='Bitcoin'
-            />
-        </SelectField>
-        <Toggle
-            label='Certificate'
-            onToggle={(e, isChecked) => {
-                const toState = {
-                    certificate: isChecked
-                };
-
-                this.setState(toState);
-            }}
-        />
-        <TextField
-          hintText='Description'
-          multiLine={true}
-          onChange={(e, val) => {
-            this.setState({ itemDescription: val });
-          }}
-          fullWidth={true}
-        />
-        <p>{this.props.newItem.succes ? 'Success!' : ''}</p>
-        <p>{this.props.newItem.error ? 'An error has occurred' : ''}</p>
-        <RaisedButton
-          label="Send"
-          primary={false}
-          fullWidth={true}
-          onClick={() => {
+        <Formsy.Form
+          onValid={this.enableButton}
+          onInvalid={this.disableButton}
+          onValidSubmit={() => {
             this.props.dispatch(doItemCreate(this.state));
           }}
-        />
+        >
+          <FormsyText
+            hintText="Item name"
+            name="name"
+            required
+            onChange={(e, val) => {
+              this.setState({ name: val });
+            }}
+            fullWidth
+          />
+          <FormsySelect
+            name="category"
+            floatingLabelText="Category"
+            value={this.state.category}
+            onChange={(e, val) => {
+              this.setState({ category: val });
+            }}
+            fullWidth
+            required
+          >
+            {this.props.categories.categories.map(item => (
+              <MenuItem key={item._id} value={item._id} primaryText={item.name} />
+            ))}
+          </FormsySelect>
+          <br />
+          <FormsyText
+            name="price"
+            hintText="Price"
+            validations="isNumeric"
+            validationError="Please provide a number"
+            onChange={(e, val) => {
+              this.setState({ price: val });
+            }}
+            fullWidth
+            required
+          />
+          <FormsySelect
+            name="currency"
+            floatingLabelText="Currency"
+            value={this.state.currency}
+            onChange={(e, val) => {
+              this.setState({ currency: val });
+            }}
+            required
+            fullWidth
+          >
+            <MenuItem value="USD" primaryText="USD" />
+            <MenuItem value="BTC" primaryText="BTC" />
+          </FormsySelect>
+          <FormsySelect
+            name="paymentOptions"
+            floatingLabelText="Payment"
+            required
+            value={this.state.paymentOptions}
+            onChange={(e, val) => {
+              this.setState({ paymentOptions: val });
+            }}
+            fullWidth
+          >
+            <MenuItem value="Paypal" primaryText="Paypal" />
+            <MenuItem value="Credit Card" primaryText="Credit Card" />
+            <MenuItem value="Bitcoin" primaryText="Bitcoin" />
+          </FormsySelect>
+          <FormsyToggle
+            name="certificate"
+            label="Certificate"
+            onToggle={(e, val) => {
+              this.setState({ certificate: val });
+            }}
+          />
+          <FormsyText
+            name="itemDescription"
+            hintText="Description"
+            multiLine
+            onChange={(e, val) => {
+              this.setState({ itemDescription: val });
+            }}
+            fullWidth
+            required
+          />
+          {this.props.newItem.loading && <CircularProgress size={50} style={spinnerStyle} />}
+          <p>{this.props.newItem.success && 'Success! Item created'}</p>
+          <p>{this.props.newItem.error && 'An error has occurred'}</p>
+          <RaisedButton
+            label="Send"
+            type="submit"
+            primary={false}
+            fullWidth
+            disabled={!this.state.canSubmit}
+          />
+        </Formsy.Form>
       </div>
     );
   }
 
   render() {
-    return ( 
+    return (
       <div className="container" style={mainStyle}>
         {this.renderNewItemForm()}
       </div>
     );
   }
-
 }
 
 function mapStateToProps(state) {
-    const categories = state.categories;
-    const newItem = state.newItem;
+  const categories = state.categories;
+  const newItem = state.newItem;
 
-    return {
-        categories,
-        newItem
-    };
+  return { categories, newItem };
 }
 
 export default connect(mapStateToProps)(NewItem);
+

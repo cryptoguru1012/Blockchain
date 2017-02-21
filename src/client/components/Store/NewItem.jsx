@@ -42,7 +42,7 @@ class NewItem extends React.Component {
   }
 
   handleSnackbarErrorRequestClose() {
-    this.props.dispatch(showSnackbar())
+    this.props.dispatch(showSnackbar());
   }
 
   handleSubmit(data) {
@@ -60,6 +60,8 @@ class NewItem extends React.Component {
           <FormsyText
             hintText="Item name"
             name="name"
+            validations="isSpecialWords"
+            validationError="Please only use letters"
             requiredError="This field is required"
             required
             fullWidth
@@ -89,7 +91,15 @@ class NewItem extends React.Component {
             <MenuItem value="Bitcoin" primaryText="Bitcoin" />
           </FormsySelect>
           <FormsyToggle name="certificate" label="Certificate" />
-          <FormsyText name="itemDescription" hintText="Description" multiLine fullWidth required />
+          <FormsyText
+            name="itemDescription"
+            hintText="Description"
+            validations="isSpecialWords"
+            validationError="Please only use letters"
+            multiLine
+            fullWidth
+            required
+          />
           {!this.props.newItem.loading &&
             <RaisedButton
               label="Send"
@@ -135,3 +145,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(NewItem);
+

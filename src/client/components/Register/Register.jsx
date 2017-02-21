@@ -55,6 +55,8 @@ class Register extends React.Component {
             name="firstName"
             required
             requiredError="This field is required"
+            validations="isSpecialWords"
+            validationError="Please only use letters"
             onChange={(e, val) => {
               this.setState({ name: { ...this.state.name, first: val } });
             }}
@@ -65,6 +67,8 @@ class Register extends React.Component {
             name="lastName"
             required
             requiredError="This field is required"
+            validations="isSpecialWords"
+            validationError="Please only use letters"
             onChange={(e, val) => {
               this.setState({ name: { ...this.state.name, last: val } });
             }}
@@ -74,6 +78,8 @@ class Register extends React.Component {
             hintText="Email"
             required
             name="email"
+            validations="isEmail"
+            validationError="This is not a valid email"
             requiredError="This field is required"
             onChange={(e, val) => {
               this.setState({ email: val });
@@ -89,6 +95,13 @@ class Register extends React.Component {
             onChange={(e, val) => {
               this.setState({ password: val });
             }}
+          />
+          <FormsyText
+            hintText="Confirm password"
+            type="password"
+            name="repeated_password"
+            validations="equalsField:password"
+            validationError="Passwords must match"
           />
           <br />
           {!this.props.register.loading &&

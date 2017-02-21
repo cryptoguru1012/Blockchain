@@ -31,7 +31,7 @@ class Register extends React.Component {
 
   handleSnackbarSuccessRequestClose(reason) {
     if (reason !== 'clickaway' && !this.props.register.error) {
-      window.location.reload();
+      window.location.href = '/keystone/signin/'
     }
   }
   handleSnackbarErrorRequestClose() {

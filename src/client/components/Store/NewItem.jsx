@@ -83,7 +83,7 @@ class NewItem extends React.Component {
           />
           <FormsySelect name="currency" floatingLabelText="Currency" required fullWidth>
             <MenuItem value="USD" primaryText="USD" />
-            <MenuItem value="BTC" primaryText="BTC" />
+            <MenuItem value="EUR" primaryText="EUR" />
           </FormsySelect>
           <FormsySelect name="paymentOptions" floatingLabelText="Payment" required fullWidth>
             <MenuItem value="Paypal" primaryText="Paypal" />
@@ -94,8 +94,8 @@ class NewItem extends React.Component {
           <FormsyText
             name="itemDescription"
             hintText="Description"
-            validations="isSpecialWords"
-            validationError="Please only use letters"
+            validations="isAlphanumeric"
+            validationError="Please only use letters and/or numbers"
             multiLine
             fullWidth
             required

@@ -49,17 +49,6 @@ class NewItem extends React.Component {
 
   handleSubmit(data) {
     const formData = { ...data, productVideo: window.Video ? window.Video.getBlob() : null }
-    // const formData = new FormData();
-    // formData.append('name', data.name);
-    // formData.append('category', data.category);
-    // formData.append('price', data.price);
-    // formData.append('currency', data.currency);
-    // formData.append('paymentOptions', data.paymentOptions);
-    // formData.append('certificate', data.certificate);
-    // formData.append('itemDescription', data.itemDescription);
-    // if (window.Video) {
-    //   formData.append('productVideo', window.Video.getBlob());
-    // }
     this.props.dispatch(doItemCreate(formData));
   }
 

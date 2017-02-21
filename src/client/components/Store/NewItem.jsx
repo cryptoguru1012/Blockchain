@@ -21,18 +21,8 @@ class NewItem extends React.Component {
     this.handleSnackbarSuccessRequestClose = this.handleSnackbarSuccessRequestClose.bind(this);
     this.handleSnackbarErrorRequestClose = this.handleSnackbarErrorRequestClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    
-    this.state = {
-      name: '',
-      category: '',
-      price: 0,
-      currency: '',
-      paymentOptions: '',
-      certificate: false,
-      itemDescription: '',
-      videoBlobUrl: '',
-      canSubmit: false
-    };
+
+    this.state = { canSubmit: false };
   }
 
   componentWillMount() {
@@ -58,7 +48,19 @@ class NewItem extends React.Component {
   }
 
   handleSubmit(data) {
-    this.props.dispatch(doItemCreate(data));
+    const formData = { ...data, productVideo: window.Video ? window.Video.getBlob() : null }
+    // const formData = new FormData();
+    // formData.append('name', data.name);
+    // formData.append('category', data.category);
+    // formData.append('price', data.price);
+    // formData.append('currency', data.currency);
+    // formData.append('paymentOptions', data.paymentOptions);
+    // formData.append('certificate', data.certificate);
+    // formData.append('itemDescription', data.itemDescription);
+    // if (window.Video) {
+    //   formData.append('productVideo', window.Video.getBlob());
+    // }
+    this.props.dispatch(doItemCreate(formData));
   }
 
   renderNewItemForm() {
@@ -112,6 +114,8 @@ class NewItem extends React.Component {
             fullWidth
             required
           />
+          <VideoPanel />
+          <br />
           {!this.props.newItem.loading &&
             <RaisedButton
               label="Send"
@@ -135,31 +139,6 @@ class NewItem extends React.Component {
           message={this.props.newItem.message}
           autoHideDuration={2000}
           onRequestClose={this.handleSnackbarErrorRequestClose}
-        />
-        <VideoPanel />
-        <p>{this.props.newItem.succes ? 'Success!' : ''}</p>
-        <p>{this.props.newItem.error ? 'An error has occurred' : ''}</p>
-        <RaisedButton
-          label="Send"
-          primary={false}
-          fullWidth={true}
-          onClick={() => {
-            const fd = new FormData();
-            
-            fd.append('name', this.state.name);
-            fd.append('category', this.state.category);
-            fd.append('price', this.state.price);
-            fd.append('currency', this.state.currency);
-            fd.append('paymentOptions', this.state.paymentOptions);
-            fd.append('certificate', this.state.certificate);
-            fd.append('itemDescription', this.state.itemDescription);
-
-            if (window.Video) {
-              fd.append('productVideo', window.Video.getBlob());
-            }
-
-            this.props.dispatch(doItemCreate(fd));
-          }}
         />
       </div>
     );

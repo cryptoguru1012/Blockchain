@@ -1,6 +1,7 @@
 export const REGISTER_START = 'REGISTER_START';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const SHOW_SNACKBAR = 'SHOW_SNACKBAR';
 
 function registerStart() {
   return { type: REGISTER_START };
@@ -12,6 +13,10 @@ function registerError(payload) {
 
 function registerSuccess(payload) {
   return { type: REGISTER_SUCCESS, message: payload.message };
+}
+
+export function showSnackbar() {
+  return { type: SHOW_SNACKBAR };
 }
 
 export function doRegister(params) {

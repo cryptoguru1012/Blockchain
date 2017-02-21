@@ -4,10 +4,10 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { RaisedButton, Snackbar } from 'material-ui';
 import Formsy from 'formsy-react';
 import { FormsyText } from 'formsy-material-ui/lib';
-import { doRegister } from '../../redux/actions/auth';
+import { doRegister, showSnackbar } from '../../redux/actions/auth';
 
 const mainStyle = { width: '100%', padding: 0 };
-const spinnerStyle = { margin: 'auto', display: 'block', padding: 5 };
+const spinnerStyle = { margin: 'auto', display: 'block' };
 
 class Register extends React.Component {
   constructor(props) {
@@ -16,7 +16,8 @@ class Register extends React.Component {
     this.state = { name: { first: '', last: '' }, email: '', password: '', canSubmit: false };
     this.enableButton = this.enableButton.bind(this);
     this.disableButton = this.disableButton.bind(this);
-    this.handleSnackbarRequestClose = this.handleSnackbarRequestClose.bind(this);
+    this.handleSnackbarSuccessRequestClose = this.handleSnackbarSuccessRequestClose.bind(this);
+    this.handleSnackbarErrorRequestClose = this.handleSnackbarErrorRequestClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -28,10 +29,13 @@ class Register extends React.Component {
     this.setState({ canSubmit: false });
   }
 
-  handleSnackbarRequestClose(reason) {
+  handleSnackbarSuccessRequestClose(reason) {
     if (reason !== 'clickaway' && !this.props.register.error) {
       window.location.reload();
     }
+  }
+  handleSnackbarErrorRequestClose() {
+    this.props.dispatch(showSnackbar());
   }
 
   handleSubmit() {
@@ -50,6 +54,7 @@ class Register extends React.Component {
             hintText="First name"
             name="firstName"
             required
+            requiredError="This field is required"
             onChange={(e, val) => {
               this.setState({ name: { ...this.state.name, first: val } });
             }}
@@ -59,6 +64,7 @@ class Register extends React.Component {
             hintText="Last name"
             name="lastName"
             required
+            requiredError="This field is required"
             onChange={(e, val) => {
               this.setState({ name: { ...this.state.name, last: val } });
             }}
@@ -68,6 +74,7 @@ class Register extends React.Component {
             hintText="Email"
             required
             name="email"
+            requiredError="This field is required"
             onChange={(e, val) => {
               this.setState({ email: val });
             }}
@@ -78,33 +85,36 @@ class Register extends React.Component {
             type="password"
             name="password"
             required
+            requiredError="This field is required"
             onChange={(e, val) => {
               this.setState({ password: val });
             }}
           />
           <br />
-          {this.props.register.loading &&
-            !this.props.register.success &&
-            <CircularProgress size={50} style={spinnerStyle} />}
-          <Snackbar
-            open={this.props.register.success}
-            message={this.props.register.message}
-            autoHideDuration={2000}
-            onRequestClose={this.handleSnackbarRequestClose}
-          />
-          <Snackbar
-            open={(this.props.register.error) || false }
-            message={this.props.register.message}
-            autoHideDuration={2000}
-          />
-          <RaisedButton
-            label="Send"
-            type="submit"
-            primary={false}
-            fullWidth
-            disabled={!this.state.canSubmit}
-          />
+          {!this.props.register.loading &&
+            <RaisedButton
+              label="Send"
+              type="submit"
+              primary={false}
+              fullWidth
+              disabled={!this.state.canSubmit}
+            />}
         </Formsy.Form>
+        {this.props.register.loading &&
+          !this.props.register.success &&
+          <CircularProgress size={50} style={spinnerStyle} />}
+        <Snackbar
+          open={this.props.register.success}
+          message={this.props.register.message}
+          autoHideDuration={2000}
+          onRequestClose={this.handleSnackbarSuccessRequestClose}
+        />
+        <Snackbar
+          open={this.props.register.showSnackbar}
+          message={this.props.register.message}
+          autoHideDuration={2000}
+          onRequestClose={this.handleSnackbarErrorRequestClose}
+        />
       </div>
     );
   }

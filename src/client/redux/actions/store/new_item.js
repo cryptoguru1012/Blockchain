@@ -1,6 +1,7 @@
 export const ITEM_CREATE_START = 'ITEM_CREATE_START';
 export const ITEM_CREATE_ERR = 'ITEM_CREATE_ERR';
 export const ITEM_CREATE_SUCCESS = 'ITEM_CREATE_SUCCESS';
+export const SHOW_SNACKBAR = 'SHOW_SNACKBAR';
 
 function itemCreateStart() {
   return { type: ITEM_CREATE_START };
@@ -12,6 +13,10 @@ function itemCreateErr(payload) {
 
 function itemCreateSuccess(res) {
   return { type: ITEM_CREATE_SUCCESS, payload: res.data };
+}
+
+export function showSnackbar() {
+  return { type: SHOW_SNACKBAR };
 }
 
 export function doItemCreate(params) {

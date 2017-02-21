@@ -13,13 +13,9 @@ const createItem = (params, cb) => {
     const productVideo = params.productVideo;
     const publisher = params.userId;
 
-    if (!(name && category && price && currency && paymentOptions && itemDescription)) {
-        return cb({
-            status: 400,
-            message: 'Missing required parameters',
-            success: false
-        });
-    }
+  if (!(name && category && price && currency && paymentOptions && itemDescription)) {
+    return cb({ status: 400, message: 'Missing required parameters', success: false });
+  }
 
     StoreItem.model.create({
         name,
@@ -61,3 +57,4 @@ const createItem = (params, cb) => {
 };
 
 export default createItem;
+

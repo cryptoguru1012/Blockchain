@@ -17,6 +17,8 @@
     "babel-polyfill": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
     "dotenv": "^2.0.0",
+    "formsy-material-ui": "^0.5.5",
+    "formsy-react": "^0.19.2",
     "isomorphic-fetch": "^2.2.1",
     "keystone": "^0.3.19",
     "lodash": "^4.13.1",

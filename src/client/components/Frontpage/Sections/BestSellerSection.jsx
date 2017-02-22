@@ -1,10 +1,14 @@
 import React, {PropTypes, Component} from 'react';
 import {connect} from 'react-redux';
 import {Thumbnail, Button, Row, Col} from 'react-bootstrap';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import {Link} from 'react-router';
 import Slider from 'react-slick';
 import {showItems} from '../../../redux/actions';
-//import './Styles/CarouselSection.css';
+import fonts from "../../fonts/style.css";
+import style from './Styles/BestSellerSection.css';
 
 const propTypes = {
     title: PropTypes.string
@@ -22,31 +26,49 @@ class BestSellerSection extends Component {
     }
 
     componentWillMount() {
-        this
-            .props
-            .showItems()
+      this.props.showItems();
     }
 
-    renderItemsBestSeller() {
-        return this
-            .props
-            .items
-            .map((item) => {
-
-                <div key={item.id}>
-                    <h2> {item.title} </h2>
-                </div>
-
-            })
-    }
+    // renderItemsBestSeller() {
+        // return this
+        //     .props
+        //     .items
+        //     .map((item) => {
+        //
+        //         <div key={item.id}>
+        //             <h2> {item.title} </h2>
+        //         </div>
+        //
+        //     })
+    // }
 
     render() {
+        let rows = [];
+        if(this.props.items != null){
+          this.props.items.forEach(item => {
+            rows.push(
+            <Col md={3} xs={6} key={item.id}>
+                <Card >
+                    <CardMedia overlay={<CardTitle title={item.title} />}>
+                      <img src={item.url3} width={320} height={320}/>
+                    </CardMedia>
+                </Card>
+            </Col>);
+          });
+       }
         return (
-            <section className="row">
-                <div className="col-lg-12">
-                    <h2>{this.props.title}</h2>
-                </div>
-            </section>
+          <Row>
+              <Col>
+                  <Row>
+                      <Col>
+                          <div className={style.center}>
+                              <h2 className={fonts.alfaSlabOne}>{this.props.title}</h2>
+                          </div>
+                          <Row> {rows} </Row>
+                      </Col>
+                  </Row>
+              </Col>
+          </Row>
         );
     }
 }

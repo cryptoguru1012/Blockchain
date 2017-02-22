@@ -13,10 +13,11 @@ class Video extends React.Component {
 
   onVideo(){
     this.setState({play:true});
-    this.player.seekTo(parseFloat(0));
+    
   }
   offVideo(){
     this.setState({play:false});
+    this.player.seekTo(parseFloat(0));
   }
 
   render() {

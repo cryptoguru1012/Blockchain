@@ -47,7 +47,7 @@ const createItem = (params, cb) => {
       }
 
       return cb(null, { data: item, status: 201, success: true });
-    },
+    }
   );
 };
 

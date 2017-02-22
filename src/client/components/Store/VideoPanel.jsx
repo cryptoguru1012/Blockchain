@@ -43,12 +43,9 @@ class VideoPanel extends React.Component {
           fullWidth
           style={{ marginTop: '20px' }}
           onClick={() => {
-            const comp = this;
             this.refs.video.pause();
 
-            window.Video.stopRecording((url) => {
-              comp.setState({ downloadVideoLink: url });
-            });
+            window.Video.stopRecording();
           }}
         />
       </div>

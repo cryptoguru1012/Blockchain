@@ -24,10 +24,9 @@ export function doItemCreate(params) {
     dispatch(itemCreateStart());
 
     fetch('/API/store/item', {
-      headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       credentials: 'include',
-      body: JSON.stringify(params),
+      body: params,
     })
       .then(res => res.json())
       .then((res) => {

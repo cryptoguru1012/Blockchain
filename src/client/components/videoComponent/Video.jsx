@@ -21,7 +21,7 @@ class Video extends React.Component {
   render() {
     return (
       <div onMouseOver={this.onVideo.bind(this)} onMouseLeave={this.offVideo.bind(this)}>
-        <ReactPlayer url={this.props.url} width={this.props.ancho} height={this.props.alto} playing={this.state.play} />
+        <ReactPlayer url={this.props.url} width={this.props.ancho} height={this.props.alto} playing={this.state.play} volume={0} controls={false}/>
       </div>
     );
   }

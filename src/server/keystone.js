@@ -30,6 +30,7 @@ keystone.init({
 	'auth': true,
 	'user model': 'User',
 	'cookie secret': config.COOKIE_SECRET,
+	'port': 8050
 });
 
 // Load your project's Models

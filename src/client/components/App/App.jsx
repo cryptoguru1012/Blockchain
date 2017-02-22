@@ -39,7 +39,8 @@ render() {
     });
 
     const Main= {
-      paddingBottom: '160px' // footer height size + 60px
+      //paddingBottom: '160px' // footer height size + 60px
+      height:"calc(100vh - 64px)"
     }
  
     return (

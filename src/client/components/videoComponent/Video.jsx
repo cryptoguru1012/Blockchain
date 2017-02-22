@@ -13,6 +13,7 @@ class Video extends React.Component {
 
   onVideo(){
     this.setState({play:true});
+    this.player.seekTo(parseFloat(0));
   }
   offVideo(){
     this.setState({play:false});
@@ -21,7 +22,7 @@ class Video extends React.Component {
   render() {
     return (
       <div onMouseOver={this.onVideo.bind(this)} onMouseLeave={this.offVideo.bind(this)}>
-        <ReactPlayer url={this.props.url} width={this.props.ancho} height={this.props.alto} playing={this.state.play} volume={0} controls={false}/>
+        <ReactPlayer ref={player => { this.player = player }} url={this.props.url} width={this.props.ancho} height={this.props.alto} playing={this.state.play} volume={0} controls={false}/>
       </div>
     );
   }

@@ -1,6 +1,2 @@
 /node_modules
-<<<<<<< HEAD
-/.vscode
-=======
-.tern-port
->>>>>>> 14-behavior-and-validation-of-the-forms
+/.vscode/*

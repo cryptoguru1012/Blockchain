@@ -1,0 +1,21 @@
+@font-face {
+    font-family: aso;
+    src: url('./AlfaSlabOne-Regular.ttf');
+}
+@font-face {
+    font-family: iw;
+    src: url('./IstokWeb-Regular.ttf');
+}
+@font-face {
+  font-family: abel;
+  src: url('./Abel-Regular.ttf');
+}
+.alfaSlabOne{
+  font-family: aso !important;
+}
+.IstokWeb{
+  font-family: iw !important;
+}
+.abel{
+  font-family: abel !important;
+}

@@ -1,6 +1,6 @@
 import React, {PropTypes, Component} from 'react';
 import {connect} from 'react-redux';
-import {Thumbnail, Button, Row, Col} from 'react-bootstrap';
+import {Thumbnail, Button, Row, Col, Grid, Carousel} from 'react-bootstrap';
 import {Link} from 'react-router';
 import Slider from 'react-slick';
 import {showItems} from '../../../redux/actions';
@@ -25,18 +25,18 @@ class CarouselSections extends Component {
             .showItems()
     }
 
-    renderItemsCarousel() {
-        return this
-            .props
-            .items
-            .map((item) => {
-                return (
-                    //<div key={item.id}>
-                        <img key={item.id} className="img-responsive" src={item.url}/>
-                    //</div>
-                )
-            })
-    }
+    // renderItemsCarousel() {
+    //     return this
+    //         .props
+    //         .items
+    //         .map((item) => {
+    //             return (
+    //                 //<div key={item.id}>
+    //                     <img key={item.id} className="img-responsive" src={item.url}/>
+    //                 //</div>
+    //             )
+    //         })
+    // }
 
     render() {
 
@@ -56,13 +56,42 @@ class CarouselSections extends Component {
         };
 
         return (
-            <section >
-                <div className='slider-container'>
-                    <Slider {...settings}>
-                        {this.renderItemsCarousel()}
-                    </Slider>
-                </div>
-            </section>
+            <Row>
+                <Col md={12} >
+                  <Carousel >
+                      <Carousel.Item>
+                          <img src="http://loremflickr.com/1200/500/bitcoin,computer?ramdom=1" />
+                      {/*<Carousel.Caption>
+                        <h3>First slide label</h3>
+                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                      </Carousel.Caption>*/}
+                      </Carousel.Item>
+                      <Carousel.Item>
+                      <img src="http://loremflickr.com/1200/500/bitcoin,computer?ramdom=2" />
+                      {/*}<Carousel.Caption>
+                        <h3>Second slide label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      </Carousel.Caption>*/}
+                      </Carousel.Item>
+                      <Carousel.Item>
+                      <img src="http://loremflickr.com/1200/500/bitcoin,computer?ramdom=3" />
+                      {/*<Carousel.Caption>
+                        <h3>Third slide label</h3>
+                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                      </Carousel.Caption>*/}
+                      </Carousel.Item>
+                    </Carousel>
+                </Col>
+            </Row>
+
+
+            // <section >
+            //     <div className='slider-container'>
+            //         <Slider {...settings}>
+            //             {this.renderItemsCarousel()}
+            //         </Slider>
+            //     </div>
+            // </section>
         );
     }
 }

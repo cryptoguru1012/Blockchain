@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Thumbnail, Button, Row, Col, Grid} from 'react-bootstrap';
 
 //import ItemsList from './ItemsList';
 import CarouselSection from './Sections/CarouselSection';
@@ -11,6 +12,7 @@ import BestSellerSection from './Sections/BestSellerSection';
 const mainStyle = {
   width: '100%',
   padding: 0,
+  marginTop:'70px'
 };
 
 class Frontpage extends React.Component {
@@ -20,18 +22,27 @@ class Frontpage extends React.Component {
   }
 
   render() {
-    return ( 
-      <div className="container" style={mainStyle}>
-        <div>
-          <CarouselSection/>
-        </div>
-        <div>
-          <WelcomeSection/>
-          <SubcategoriesSection/>
-          <FeaturedSection/>
-          <BestSellerSection/>
-        </div>
+    return (
+      <div style={mainStyle} >
+          <Grid>
+             <CarouselSection/>
+             {/*<WelcomeSection/>*/}
+             <SubcategoriesSection/>
+             <FeaturedSection/>
+             <BestSellerSection/>
+          </Grid>
       </div>
+      // <div className="container" style={mainStyle}>
+      //   <div>
+      //     <CarouselSection/>
+      //   </div>
+      //   <div>
+      //     <WelcomeSection/>
+      //     <SubcategoriesSection/>
+      //     <FeaturedSection/>
+      //     <BestSellerSection/>
+      //   </div>
+      // </div>
     );
   }
 

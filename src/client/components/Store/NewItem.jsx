@@ -12,6 +12,53 @@ const mainStyle = { width: '100%', padding: 0 };
 
 const spinnerStyle = { margin: 'auto', display: 'block', padding: 5 };
 
+const container_form = {
+  /*margin: "0 auto",
+  maxWidth: "385px",
+  border: "12px solid rgba(0, 0, 0, 0.45)",
+  borderRadius: 5,*/
+  display:"flex",
+  alignItems: "center",
+  flexDirection: "column", 
+  justifyContent: "center",
+  width: "100%",
+  minHeight: "100%",
+  padding: 20,
+  background:"#E0E0E0"
+}
+
+const style_form = {
+  width: "90%",
+  maxWidth: 500,
+  background: "#ffffff",
+  position: "relative",
+  boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.3)"
+}
+
+const form_title = {
+  margin:0,
+  fontSize:25,
+	lineHeight: "64px",
+	width: "100%",
+	height: 64,
+	padding: "0 16px",
+	color: "#fff",
+	background: "rgb(255, 109, 0)",
+  textAlign:"center"
+}
+
+const form_body = {
+  padding: "10px 20px 20px 20px",
+}
+
+const register_input = {
+  marginBottom: 10,
+  width:"100%"
+}
+
+
+
+
 class NewItem extends React.Component {
   constructor(props) {
     super(props);
@@ -69,13 +116,15 @@ class NewItem extends React.Component {
 
   renderNewItemForm() {
     return (
-      <div style={{ width: '300px', margin: '200px auto' }}>
+      <div style={style_form}>
+        <h4 style={ form_title }>{"New Item"}</h4>
+        <div style={ form_body }>
         <Formsy.Form
           onValid={this.enableButton}
           onInvalid={this.disableButton}
           onValidSubmit={this.handleSubmit}
         >
-          <FormsyText
+        <FormsyText
             hintText="Item name"
             name="name"
             validations="isSpecialWords"
@@ -129,6 +178,7 @@ class NewItem extends React.Component {
               disabled={!this.state.canSubmit}
             />}
         </Formsy.Form>
+        
         {this.props.newItem.loading &&
           !this.props.newItem.success &&
           <CircularProgress size={50} style={spinnerStyle} />}
@@ -144,13 +194,14 @@ class NewItem extends React.Component {
           autoHideDuration={2000}
           onRequestClose={this.handleSnackbarErrorRequestClose}
         />
+        </div>
       </div>
     );
   }
 
   render() {
-    return (
-      <div className="container" style={mainStyle}>
+    return ( 
+      <div className="container" style={container_form}>
         {this.renderNewItemForm()}
       </div>
     );

@@ -21,14 +21,22 @@ class Menu extends Component {
     cerrar () {
       this.setState({open: false});
     }
-
+    
     render() {
+        const style_bar = {
+          backgroundColor: {
+            backgroundColor: "rgb(255, 109, 0)"
+          }
+        }
+      
         return (
+          
           <div>
             <Navbar fixedTop fluid staticTop className={style.navegador}>
               <AppBar
                 title="Shopshot"
                 iconClassNameRight="muidocs-icon-navigation-expand-more"
+                style={style_bar.backgroundColor}
                 onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
                 onTouchTap={this.handleToggle.bind(this)}
               />

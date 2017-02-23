@@ -1,9 +1,37 @@
 import RecordRTC from 'recordrtc';
 import React from 'react';
 import {
-  RaisedButton
+  RaisedButton,
+  IconButton,
+  FontIcon
 } from 'material-ui';
 
+
+const container_media_buttons = {
+    width:"100%",
+    textAlign: "center"
+}
+
+const styles = {
+  recIcon:{
+    color:"red",
+    width: 48,
+    height: 48,
+    fontSize:48
+  },
+  stopIcon:{
+    color:"black",
+    width: 48,
+    height: 48,
+    fontSize:48
+  },
+  medium: {
+    width: 96,
+    height: 96,
+    padding: 24,
+  },
+  
+};
 class VideoPanel extends React.Component {
 
     constructor() {
@@ -21,6 +49,24 @@ class VideoPanel extends React.Component {
         return (
             <div>
                 <video ref='video'></video>
+                 <div style={ container_media_buttons }>
+                    <IconButton
+                        iconStyle={styles.recIcon}
+                        style={styles.medium}
+                        iconClassName="material-icons"
+                        tooltip="Start Recording"
+                    >
+                        fiber_manual_record
+                    </IconButton>
+                    <IconButton
+                        iconStyle={styles.stopIcon}
+                        style={styles.medium}
+                        iconClassName="material-icons"
+                        tooltip="Stop Recording"
+                    >
+                        stop
+                    </IconButton>      
+                </div>
                 <RaisedButton
                     ref='startVideo'
                     label='Start recording'
@@ -50,6 +96,7 @@ class VideoPanel extends React.Component {
                     label='Stop recording'
                     fullWidth={true}
                     style={{ marginTop: '20px' }}
+                    
                     onClick={() => {
                         const comp = this;
                         this.refs.video.pause();

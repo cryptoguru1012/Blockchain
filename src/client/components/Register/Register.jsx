@@ -24,52 +24,43 @@ const container_register = {
   width: "100%",
   minHeight: "100%",
   padding: 20,
-  background:"#757575"
+  background:"#E0E0E0"
 }
 
 const register_form = {
-  borderRadius: "2px 2px 5px 5px",
-  padding: "10px 20px 20px 20px",
   width: "90%",
   maxWidth: 380,
   background: "#ffffff",
   position: "relative",
-  paddingBottom: 80,
   boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.3)"
 }
 
 const register_title = {
-  color: "#444",
-  fontSize: "1.2em",
-  fontWeight: "bold",
-  margin: "10px 0 30px 0",
-  borderBottom: "1px solid #eee",
-  paddingBottom: 20
+  margin:0,
+  fontSize:25,
+	lineHeight: "64px",
+	width: "100%",
+	height: 64,
+	padding: "0 16px",
+	color: "#fff",
+	background: "#2196F3",
+  textAlign:"center"
 }
 
-const register_btn = {
-  width: "100%",
-  height: "100%",
-  padding: "10px 10px",
-  background: "#2196F3",
-  color: "#fff",
-  display: "block",
-  border: "none",
-  marginTop:20,
-  position: "absolute",
-  left: 0,
-  bottom: 0,
-  maxHeight: 60,
-  border: "0px solid rgba(0, 0, 0, 0.1)",
-  borderRadius: "0 0 2px 2px",
-  transform: "rotateZ(0deg)",
-  transition: "all 0.1s ease-out",
-  borderBottomWidth: 7,
+const register_body = {
+  padding: "10px 20px 20px 20px",
 }
+
 
 const register_input = {
   marginBottom: 10,
   width:"100%"
+}
+
+const btn_boder_radius = {
+  borderRadius:{
+    borderRadius:"0px"
+  }
 }
 
 class Register extends React.Component {
@@ -90,67 +81,74 @@ class Register extends React.Component {
   renderRegisterForm() {
     return (
       <div style={ register_form }>
-        <p style={ register_title }>{"Register"}</p>
-        <TextField
-          hintText='First name'
-          style ={ register_input }
-          onChange={(e, val) => {
-            const toState = {
-              name: {
-                ...this.state.name,
-                first: val	
-              }
-            };
+        <h4 style={ register_title }>{"Register"}</h4>
+        <div style={ register_body }>
+          <TextField
+            floatingLabelText="First name"
+            hintText='First name'
+            style ={ register_input }
+            onChange={(e, val) => {
+              const toState = {
+                name: {
+                  ...this.state.name,
+                  first: val	
+                }
+              };
 
-            this.setState(toState);
-          }}
-        />
-        <br/>
-        <TextField
-          hintText='Last name'
-          style ={ register_input }
-          onChange={(e, val) => {
-            const toState = {
-              name: {
-                ...this.state.name,
-                last: val	
-              }
-            };
+              this.setState(toState);
+            }}
+          />
+          <br/>
+          <TextField
+            floatingLabelText="Last name"
+            hintText='Last name'
+            style ={ register_input }
+            onChange={(e, val) => {
+              const toState = {
+                name: {
+                  ...this.state.name,
+                  last: val	
+                }
+              };
 
-            this.setState(toState);
-          }}
-        />
-        <br/>
-        <TextField
-          hintText='Email'
-          style ={ register_input }
-          onChange={(e, val) => {
-            this.setState({ email: val });
-          }}
-        />
-        <br/>
-        <TextField
-          hintText='Password'
-          style ={ register_input }
-          type='password'
-          onChange={(e, val) => {
-            this.setState({ password: val });
-          }}
-        />
-        <br/>
-        <p>{this.props.register && this.props.register.success ? 'Success!' : ''}</p>
-        <p>{this.props.register && this.props.register.error ? 'An error has occurred' : ''}</p>
-        <button
-          label="Send"
-          //primary={false}
-          //fullWidth={true}
-          style= { register_btn }
-          onClick={() => {
-            this.props.dispatch(doRegister(this.state));
-          }}
-        >
-          {"Register"}
-        </button>
+              this.setState(toState);
+            }}
+          />
+          <br/>
+          <TextField
+            floatingLabelText="Email"
+            hintText='Email'
+            style ={ register_input }
+            onChange={(e, val) => {
+              this.setState({ email: val });
+            }}
+          />
+          <br/>
+          <TextField
+            floatingLabelText="Password"
+            hintText='Password'
+            style ={ register_input }
+            type='password'
+            onChange={(e, val) => {
+              this.setState({ password: val });
+            }}
+          />
+          <br/>
+          <p>{this.props.register && this.props.register.success ? 'Success!' : ''}</p>
+          <p>{this.props.register && this.props.register.error ? 'An error has occurred' : ''}</p>
+          <RaisedButton
+            label="Send"
+            primary={false}
+            fullWidth={false}
+            buttonStyle={btn_boder_radius.borderRadius}
+            backgroundColor="#2196F3"
+            labelColor="#fff"
+            onClick={() => {
+              this.props.dispatch(doRegister(this.state));
+            }}
+          />
+        </div>       
+        
       </div>
     );
   }

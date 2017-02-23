@@ -66814,8 +66814,6 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _register_btn;
-
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -66834,8 +66832,6 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	var mainStyle = {
 	  width: '100%',
 	  padding: 0
@@ -66853,47 +66849,42 @@
 	  width: "100%",
 	  minHeight: "100%",
 	  padding: 20,
-	  background: "#757575"
+	  background: "#E0E0E0"
 	};
 
 	var register_form = {
-	  borderRadius: "2px 2px 5px 5px",
-	  padding: "10px 20px 20px 20px",
 	  width: "90%",
 	  maxWidth: 380,
 	  background: "#ffffff",
 	  position: "relative",
-	  paddingBottom: 80,
 	  boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.3)"
 	};
 
 	var register_title = {
-	  color: "#444",
-	  fontSize: "1.2em",
-	  fontWeight: "bold",
-	  margin: "10px 0 30px 0",
-	  borderBottom: "1px solid #eee",
-	  paddingBottom: 20
+	  margin: 0,
+	  fontSize: 25,
+	  lineHeight: "64px",
+	  width: "100%",
+	  height: 64,
+	  padding: "0 16px",
+	  color: "#fff",
+	  background: "#2196F3",
+	  textAlign: "center"
 	};
 
-	var register_btn = (_register_btn = {
-	  width: "100%",
-	  height: "100%",
-	  padding: "10px 10px",
-	  background: "#2196F3",
-	  color: "#fff",
-	  display: "block",
-	  border: "none",
-	  marginTop: 20,
-	  position: "absolute",
-	  left: 0,
-	  bottom: 0,
-	  maxHeight: 60
-	}, _defineProperty(_register_btn, 'border', "0px solid rgba(0, 0, 0, 0.1)"), _defineProperty(_register_btn, 'borderRadius', "0 0 2px 2px"), _defineProperty(_register_btn, 'transform', "rotateZ(0deg)"), _defineProperty(_register_btn, 'transition', "all 0.1s ease-out"), _defineProperty(_register_btn, 'borderBottomWidth', 7), _register_btn);
+	var register_body = {
+	  padding: "10px 20px 20px 20px"
+	};
 
 	var register_input = {
 	  marginBottom: 10,
 	  width: "100%"
+	};
+
+	var btn_boder_radius = {
+	  borderRadius: {
+	    borderRadius: "0px"
+	  }
 	};
 
 	var Register = function (_React$Component) {
@@ -66924,77 +66915,83 @@
 	        'div',
 	        { style: register_form },
 	        _react2.default.createElement(
-	          'p',
+	          'h4',
 	          { style: register_title },
 	          "Register"
 	        ),
-	        _react2.default.createElement(_materialUi.TextField, {
-	          hintText: 'First name',
-	          style: register_input,
-	          onChange: function onChange(e, val) {
-	            var toState = {
-	              name: _extends({}, _this2.state.name, {
-	                first: val
-	              })
-	            };
+	        _react2.default.createElement(
+	          'div',
+	          { style: register_body },
+	          _react2.default.createElement(_materialUi.TextField, {
+	            floatingLabelText: 'First name',
+	            hintText: 'First name',
+	            style: register_input,
+	            onChange: function onChange(e, val) {
+	              var toState = {
+	                name: _extends({}, _this2.state.name, {
+	                  first: val
+	                })
+	              };
 
-	            _this2.setState(toState);
-	          }
-	        }),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement(_materialUi.TextField, {
-	          hintText: 'Last name',
-	          style: register_input,
-	          onChange: function onChange(e, val) {
-	            var toState = {
-	              name: _extends({}, _this2.state.name, {
-	                last: val
-	              })
-	            };
+	              _this2.setState(toState);
+	            }
+	          }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(_materialUi.TextField, {
+	            floatingLabelText: 'Last name',
+	            hintText: 'Last name',
+	            style: register_input,
+	            onChange: function onChange(e, val) {
+	              var toState = {
+	                name: _extends({}, _this2.state.name, {
+	                  last: val
+	                })
+	              };
 
-	            _this2.setState(toState);
-	          }
-	        }),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement(_materialUi.TextField, {
-	          hintText: 'Email',
-	          style: register_input,
-	          onChange: function onChange(e, val) {
-	            _this2.setState({ email: val });
-	          }
-	        }),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement(_materialUi.TextField, {
-	          hintText: 'Password',
-	          style: register_input,
-	          type: 'password',
-	          onChange: function onChange(e, val) {
-	            _this2.setState({ password: val });
-	          }
-	        }),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          this.props.register && this.props.register.success ? 'Success!' : ''
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          this.props.register && this.props.register.error ? 'An error has occurred' : ''
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          {
-	            label: 'Send'
-	            //primary={false}
-	            //fullWidth={true}
-	            , style: register_btn,
+	              _this2.setState(toState);
+	            }
+	          }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(_materialUi.TextField, {
+	            floatingLabelText: 'Email',
+	            hintText: 'Email',
+	            style: register_input,
+	            onChange: function onChange(e, val) {
+	              _this2.setState({ email: val });
+	            }
+	          }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(_materialUi.TextField, {
+	            floatingLabelText: 'Password',
+	            hintText: 'Password',
+	            style: register_input,
+	            type: 'password',
+	            onChange: function onChange(e, val) {
+	              _this2.setState({ password: val });
+	            }
+	          }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.props.register && this.props.register.success ? 'Success!' : ''
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.props.register && this.props.register.error ? 'An error has occurred' : ''
+	          ),
+	          _react2.default.createElement(_materialUi.RaisedButton, {
+	            label: 'Send',
+	            primary: false,
+	            fullWidth: false,
+	            buttonStyle: btn_boder_radius.borderRadius,
+	            backgroundColor: '#2196F3',
+	            labelColor: '#fff',
 	            onClick: function onClick() {
 	              _this2.props.dispatch((0, _auth.doRegister)(_this2.state));
 	            }
-	          },
-	          "Register"
+	          })
 	        )
 	      );
 	    }
@@ -92880,6 +92877,50 @@
 	  padding: 0
 	};
 
+	var container_form = {
+	  /*margin: "0 auto",
+	  maxWidth: "385px",
+	  border: "12px solid rgba(0, 0, 0, 0.45)",
+	  borderRadius: 5,*/
+	  display: "flex",
+	  alignItems: "center",
+	  flexDirection: "column",
+	  justifyContent: "center",
+	  width: "100%",
+	  minHeight: "100%",
+	  padding: 20,
+	  background: "#E0E0E0"
+	};
+
+	var style_form = {
+	  width: "90%",
+	  maxWidth: 500,
+	  background: "#ffffff",
+	  position: "relative",
+	  boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.3)"
+	};
+
+	var form_title = {
+	  margin: 0,
+	  fontSize: 25,
+	  lineHeight: "64px",
+	  width: "100%",
+	  height: 64,
+	  padding: "0 16px",
+	  color: "#fff",
+	  background: "#2196F3",
+	  textAlign: "center"
+	};
+
+	var form_body = {
+	  padding: "10px 20px 20px 20px"
+	};
+
+	var register_input = {
+	  marginBottom: 10,
+	  width: "100%"
+	};
+
 	var NewItem = function (_React$Component) {
 	  _inherits(NewItem, _React$Component);
 
@@ -92913,149 +92954,163 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { style: { width: '300px', margin: '200px auto' } },
-	        _react2.default.createElement(_materialUi.TextField, {
-	          hintText: 'Item name',
-	          onChange: function onChange(e, val) {
-	            var toState = {
-	              name: val
-	            };
-
-	            _this2.setState(toState);
-	          },
-	          fullWidth: true
-	        }),
+	        { style: style_form },
 	        _react2.default.createElement(
-	          _materialUi.SelectField,
-	          {
-	            floatingLabelText: 'Category',
-	            value: this.state.category,
-	            onChange: function onChange(e, ind, val) {
+	          'h4',
+	          { style: form_title },
+	          "New Item"
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: form_body },
+	          _react2.default.createElement(_materialUi.TextField, {
+	            floatingLabelText: 'Item name',
+	            hintText: 'Item name',
+	            onChange: function onChange(e, val) {
 	              var toState = {
-	                category: val
+	                name: val
 	              };
 
 	              _this2.setState(toState);
 	            },
 	            fullWidth: true
-	          },
-	          this.props.categories.categories.map(function (item) {
-	            return _react2.default.createElement(_materialUi.MenuItem, {
-	              value: item._id,
-	              primaryText: item.name
-	            });
-	          })
-	        ),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement(_materialUi.TextField, {
-	          hintText: 'Price',
-	          type: 'number',
-	          onChange: function onChange(e, val) {
-	            _this2.setState({ price: val });
-	          },
-	          fullWidth: true
-	        }),
-	        _react2.default.createElement(
-	          _materialUi.SelectField,
-	          {
-	            floatingLabelText: 'Currency',
-	            value: this.state.currency,
-	            onChange: function onChange(e, ind, val) {
+	          }),
+	          _react2.default.createElement(
+	            _materialUi.SelectField,
+	            {
+	              floatingLabelText: 'Category',
+	              value: this.state.category,
+	              onChange: function onChange(e, ind, val) {
+	                var toState = {
+	                  category: val
+	                };
+
+	                _this2.setState(toState);
+	              },
+	              fullWidth: true
+	            },
+	            this.props.categories.categories.map(function (item) {
+	              return _react2.default.createElement(_materialUi.MenuItem, {
+	                value: item._id,
+	                primaryText: item.name
+	              });
+	            })
+	          ),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(_materialUi.TextField, {
+	            floatingLabelText: 'Price',
+	            hintText: 'Price',
+	            type: 'number',
+	            onChange: function onChange(e, val) {
+	              _this2.setState({ price: val });
+	            },
+	            fullWidth: true
+	          }),
+	          _react2.default.createElement(
+	            _materialUi.SelectField,
+	            {
+	              floatingLabelText: 'Currency',
+	              value: this.state.currency,
+	              onChange: function onChange(e, ind, val) {
+	                var toState = {
+	                  currency: val
+	                };
+
+	                _this2.setState(toState);
+	              },
+	              fullWidth: true
+	            },
+	            _react2.default.createElement(_materialUi.MenuItem, {
+	              value: 'USD',
+	              primaryText: 'USD'
+	            }),
+	            _react2.default.createElement(_materialUi.MenuItem, {
+	              value: 'BTC',
+	              primaryText: 'BTC'
+	            })
+	          ),
+	          _react2.default.createElement(
+	            _materialUi.SelectField,
+	            {
+	              floatingLabelText: 'Payment',
+	              value: this.state.paymentOptions,
+	              onChange: function onChange(e, ind, val) {
+	                var toState = {
+	                  paymentOptions: val
+	                };
+
+	                _this2.setState(toState);
+	              },
+	              fullWidth: true
+	            },
+	            _react2.default.createElement(_materialUi.MenuItem, {
+	              value: 'Paypal',
+	              primaryText: 'Paypal'
+	            }),
+	            _react2.default.createElement(_materialUi.MenuItem, {
+	              value: 'Credit Card',
+	              primaryText: 'Credit Card'
+	            }),
+	            _react2.default.createElement(_materialUi.MenuItem, {
+	              value: 'Bitcoin',
+	              primaryText: 'Bitcoin'
+	            })
+	          ),
+	          _react2.default.createElement(_materialUi.Toggle, {
+	            label: 'Certificate',
+	            onToggle: function onToggle(e, isChecked) {
 	              var toState = {
-	                currency: val
+	                certificate: isChecked
 	              };
 
 	              _this2.setState(toState);
-	            },
-	            fullWidth: true
-	          },
-	          _react2.default.createElement(_materialUi.MenuItem, {
-	            value: 'USD',
-	            primaryText: 'USD'
-	          }),
-	          _react2.default.createElement(_materialUi.MenuItem, {
-	            value: 'BTC',
-	            primaryText: 'BTC'
-	          })
-	        ),
-	        _react2.default.createElement(
-	          _materialUi.SelectField,
-	          {
-	            floatingLabelText: 'Payment',
-	            value: this.state.paymentOptions,
-	            onChange: function onChange(e, ind, val) {
-	              var toState = {
-	                paymentOptions: val
-	              };
-
-	              _this2.setState(toState);
-	            },
-	            fullWidth: true
-	          },
-	          _react2.default.createElement(_materialUi.MenuItem, {
-	            value: 'Paypal',
-	            primaryText: 'Paypal'
-	          }),
-	          _react2.default.createElement(_materialUi.MenuItem, {
-	            value: 'Credit Card',
-	            primaryText: 'Credit Card'
-	          }),
-	          _react2.default.createElement(_materialUi.MenuItem, {
-	            value: 'Bitcoin',
-	            primaryText: 'Bitcoin'
-	          })
-	        ),
-	        _react2.default.createElement(_materialUi.Toggle, {
-	          label: 'Certificate',
-	          onToggle: function onToggle(e, isChecked) {
-	            var toState = {
-	              certificate: isChecked
-	            };
-
-	            _this2.setState(toState);
-	          }
-	        }),
-	        _react2.default.createElement(_materialUi.TextField, {
-	          hintText: 'Description',
-	          multiLine: true,
-	          onChange: function onChange(e, val) {
-	            _this2.setState({ itemDescription: val });
-	          },
-	          fullWidth: true
-	        }),
-	        _react2.default.createElement(_VideoPanel2.default, null),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          this.props.newItem.succes ? 'Success!' : ''
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          this.props.newItem.error ? 'An error has occurred' : ''
-	        ),
-	        _react2.default.createElement(_materialUi.RaisedButton, {
-	          label: 'Send',
-	          primary: false,
-	          fullWidth: true,
-	          onClick: function onClick() {
-	            var fd = new FormData();
-
-	            fd.append('name', _this2.state.name);
-	            fd.append('category', _this2.state.category);
-	            fd.append('price', _this2.state.price);
-	            fd.append('currency', _this2.state.currency);
-	            fd.append('paymentOptions', _this2.state.paymentOptions);
-	            fd.append('certificate', _this2.state.certificate);
-	            fd.append('itemDescription', _this2.state.itemDescription);
-
-	            if (window.Video) {
-	              fd.append('productVideo', window.Video.getBlob());
 	            }
+	          }),
+	          _react2.default.createElement(_materialUi.TextField, {
+	            floatingLabelText: 'Description',
+	            hintText: 'Description',
+	            multiLine: true,
+	            onChange: function onChange(e, val) {
+	              _this2.setState({ itemDescription: val });
+	            },
+	            fullWidth: true
+	          }),
+	          _react2.default.createElement(_VideoPanel2.default, null),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.props.newItem.succes ? 'Success!' : ''
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.props.newItem.error ? 'An error has occurred' : ''
+	          ),
+	          _react2.default.createElement(_materialUi.RaisedButton, {
+	            label: 'Send',
+	            primary: false,
+	            fullWidth: true,
+	            backgroundColor: '#2196F3',
+	            labelColor: '#fff',
+	            onClick: function onClick() {
+	              var fd = new FormData();
 
-	            _this2.props.dispatch((0, _new_item.doItemCreate)(fd));
-	          }
-	        })
+	              fd.append('name', _this2.state.name);
+	              fd.append('category', _this2.state.category);
+	              fd.append('price', _this2.state.price);
+	              fd.append('currency', _this2.state.currency);
+	              fd.append('paymentOptions', _this2.state.paymentOptions);
+	              fd.append('certificate', _this2.state.certificate);
+	              fd.append('itemDescription', _this2.state.itemDescription);
+
+	              if (window.Video) {
+	                fd.append('productVideo', window.Video.getBlob());
+	              }
+
+	              _this2.props.dispatch((0, _new_item.doItemCreate)(fd));
+	            }
+	          })
+	        )
 	      );
 	    }
 	  }, {
@@ -93063,7 +93118,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container', style: mainStyle },
+	        { className: 'container', style: container_form },
 	        this.renderNewItemForm()
 	      );
 	    }
@@ -93215,6 +93270,32 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var container_media_buttons = {
+	    width: "100%",
+	    textAlign: "center"
+	};
+
+	var styles = {
+	    recIcon: {
+	        color: "red",
+	        width: 48,
+	        height: 48,
+	        fontSize: 48
+	    },
+	    stopIcon: {
+	        color: "black",
+	        width: 48,
+	        height: 48,
+	        fontSize: 48
+	    },
+	    medium: {
+	        width: 96,
+	        height: 96,
+	        padding: 24
+	    }
+
+	};
+
 	var VideoPanel = function (_React$Component) {
 	    _inherits(VideoPanel, _React$Component);
 
@@ -93241,6 +93322,30 @@
 	                'div',
 	                null,
 	                _react2.default.createElement('video', { ref: 'video' }),
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: container_media_buttons },
+	                    _react2.default.createElement(
+	                        _materialUi.IconButton,
+	                        {
+	                            iconStyle: styles.recIcon,
+	                            style: styles.medium,
+	                            iconClassName: 'material-icons',
+	                            tooltip: 'Start Recording'
+	                        },
+	                        'fiber_manual_record'
+	                    ),
+	                    _react2.default.createElement(
+	                        _materialUi.IconButton,
+	                        {
+	                            iconStyle: styles.stopIcon,
+	                            style: styles.medium,
+	                            iconClassName: 'material-icons',
+	                            tooltip: 'Stop Recording'
+	                        },
+	                        'stop'
+	                    )
+	                ),
 	                _react2.default.createElement(_materialUi.RaisedButton, {
 	                    ref: 'startVideo',
 	                    label: 'Start recording',
@@ -93270,6 +93375,7 @@
 	                    label: 'Stop recording',
 	                    fullWidth: true,
 	                    style: { marginTop: '20px' },
+
 	                    onClick: function onClick() {
 	                        var comp = _this2;
 	                        _this2.refs.video.pause();

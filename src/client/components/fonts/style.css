@@ -6,9 +6,9 @@
     font-family: iw;
     src: url('./IstokWeb-Regular.ttf');
 }
-@@font-face {
+@font-face {
   font-family: abel;
-  src:url('./Abel-Regular.ttf');
+  src: url('./Abel-Regular.ttf');
 }
 .alfaSlabOne{
   font-family: aso !important;

@@ -48,7 +48,7 @@ const form_title = {
 	height: 64,
 	padding: "0 16px",
 	color: "#fff",
-	background: "#2196F3",
+	background: "rgb(255, 109, 0)",
   textAlign:"center"
 }
 
@@ -205,7 +205,7 @@ class NewItem extends React.Component {
             label="Send"
             primary={false}
             fullWidth={true}
-            backgroundColor="#2196F3"
+            backgroundColor="rgb(255, 109, 0)"
             labelColor="#fff"
             onClick={() => {
               const fd = new FormData();

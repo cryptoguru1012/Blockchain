@@ -43,7 +43,7 @@ const register_title = {
 	height: 64,
 	padding: "0 16px",
 	color: "#fff",
-	background: "#2196F3",
+	background: "rgb(255, 109, 0)",
   textAlign:"center"
 }
 
@@ -141,7 +141,7 @@ class Register extends React.Component {
             primary={false}
             fullWidth={false}
             buttonStyle={btn_boder_radius.borderRadius}
-            backgroundColor="#2196F3"
+            backgroundColor="rgb(255, 109, 0)"
             labelColor="#fff"
             onClick={() => {
               this.props.dispatch(doRegister(this.state));

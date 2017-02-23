@@ -40203,10 +40203,17 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var style_bar = {
+	  backgroundColor: {
+	    backgroundColor: "rgb(255, 109, 0)"
+	  }
+	};
+
 	var Menu = function Menu() {
 	  return _react2.default.createElement(_AppBar2.default, {
 	    title: 'Shopshot',
-	    iconClassNameRight: 'muidocs-icon-navigation-expand-more'
+	    iconClassNameRight: 'muidocs-icon-navigation-expand-more',
+	    style: style_bar.backgroundColor
 	  });
 	};
 
@@ -66868,7 +66875,7 @@
 	  height: 64,
 	  padding: "0 16px",
 	  color: "#fff",
-	  background: "#2196F3",
+	  background: "rgb(255, 109, 0)",
 	  textAlign: "center"
 	};
 
@@ -66986,7 +66993,7 @@
 	            primary: false,
 	            fullWidth: false,
 	            buttonStyle: btn_boder_radius.borderRadius,
-	            backgroundColor: '#2196F3',
+	            backgroundColor: 'rgb(255, 109, 0)',
 	            labelColor: '#fff',
 	            onClick: function onClick() {
 	              _this2.props.dispatch((0, _auth.doRegister)(_this2.state));
@@ -92908,7 +92915,7 @@
 	  height: 64,
 	  padding: "0 16px",
 	  color: "#fff",
-	  background: "#2196F3",
+	  background: "rgb(255, 109, 0)",
 	  textAlign: "center"
 	};
 
@@ -93090,7 +93097,7 @@
 	            label: 'Send',
 	            primary: false,
 	            fullWidth: true,
-	            backgroundColor: '#2196F3',
+	            backgroundColor: 'rgb(255, 109, 0)',
 	            labelColor: '#fff',
 	            onClick: function onClick() {
 	              var fd = new FormData();

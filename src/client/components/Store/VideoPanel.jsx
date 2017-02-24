@@ -1,7 +1,6 @@
 import RecordRTC from 'recordrtc';
 import React from 'react';
 import {
-  RaisedButton,
   IconButton,
   FontIcon
 } from 'material-ui';
@@ -49,24 +48,7 @@ class VideoPanel extends React.Component {
                         style={styles.medium}
                         iconClassName="material-icons"
                         tooltip="Start Recording"
-                    >
-                        fiber_manual_record
-                    </IconButton>
-                    <IconButton
-                        iconStyle={styles.stopIcon}
-                        style={styles.medium}
-                        iconClassName="material-icons"
-                        tooltip="Stop Recording"
-                    >
-                        stop
-                    </IconButton>      
-                </div>
-                <RaisedButton
-                    ref='startVideo'
-                    label='Start recording'
-                    fullWidth={true}
-                    style={{ marginTop: '20px' }}
-                    onClick={() => {
+                        onClick={() => {
                         const video = this.refs.video;
                         const options = {
                             mimeType: 'video/webm',
@@ -83,15 +65,18 @@ class VideoPanel extends React.Component {
                             video.muted = false;
                             video.controls = false;
                             video.play();
+                            console.log(video.src);
                         });
                     }}
-                />
-                <RaisedButton
-                    label='Stop recording'
-                    fullWidth={true}
-                    style={{ marginTop: '20px' }}
-                    
-                    onClick={() => {
+                    >
+                        fiber_manual_record
+                    </IconButton>
+                    <IconButton
+                        iconStyle={styles.stopIcon}
+                        style={styles.medium}
+                        iconClassName="material-icons"
+                        tooltip="Stop Recording"
+                        onClick={() => {
                         const comp = this;
                         this.refs.video.pause();
                         
@@ -101,7 +86,10 @@ class VideoPanel extends React.Component {
                             });
                         });
                     }}
-                />
+                    >
+                        stop
+                    </IconButton>      
+                </div>
             </div>
         );
     }

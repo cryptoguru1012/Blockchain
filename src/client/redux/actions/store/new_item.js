@@ -26,7 +26,7 @@ export function doItemCreate(params) {
     fetch('/API/store/item', {
       method: 'POST',
       credentials: 'include',
-      body: JSON.stringify(params),
+      body: params,
     })
       .then(res => res.json())
       .then((res) => {

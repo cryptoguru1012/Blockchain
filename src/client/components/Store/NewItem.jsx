@@ -161,8 +161,8 @@ class NewItem extends React.Component {
           <FormsyText
             name="itemDescription"
             hintText="Description"
-            validations="isAlphanumeric"
-            validationError="Please only use letters and/or numbers"
+            validations="isWords"
+            validationError="This field cannot be empty."
             multiLine
             fullWidth
             required

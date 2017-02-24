@@ -41,7 +41,7 @@ class VideoPanel extends React.Component {
     render() {
         return (
             <div>
-                <video ref='video'></video>
+                <video ref='video' style={{ maxWidth:"100%" }}></video>
                  <div style={ container_media_buttons }>
                     <IconButton
                         iconStyle={styles.recIcon}

@@ -17,7 +17,7 @@ import fonts from '../fonts/style.css';
 const Footer = React.createClass({
     render: function() {
         return (
-        <div className={fonts.alfaSlabOne}>
+        <div className={fonts.alfaSlabOne} style={{position:"absolute", left:0, right:0, bottom:0 }}>
         {/*  <Row>
             <Col md={12}>*/}
                 <div className={footerStyle.footerContent}> © 2002 - 2017 Shopshot. All rights reserved. </div>

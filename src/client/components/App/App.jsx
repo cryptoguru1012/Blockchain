@@ -54,16 +54,16 @@ render() {
 
     const Main= {
       //paddingBottom: '160px' // footer height size + 60px
-      height:"calc(100vh - 64px)"
+      height:"calc(100vh + 200px)"
     }
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div>
+        <div style={{ position:"relative" }}>
           <div>
             <Menu/>
           </div>
-          <div style={{background:muiTheme.palette.primary3Color,paddingBottom:'160px'}}>
+          <div style={{background:muiTheme.palette.primary3Color,paddingBottom:'160px', marginTop:71, minHeight:'100vh'}}>
             {this.props.children}
           </div>
           <Footer/>

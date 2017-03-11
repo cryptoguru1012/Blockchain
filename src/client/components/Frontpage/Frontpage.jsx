@@ -1,50 +1,39 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Thumbnail, Button, Row, Col, Grid} from 'react-bootstrap';
+import {Link} from 'react-router';
+import {Row, Col, Grid, Button} from 'react-bootstrap';
 
-//import ItemsList from './ItemsList';
-import CarouselSection from './Sections/CarouselSection';
-import WelcomeSection from './Sections/WelcomeSection';
-import SubcategoriesSection from './Sections/SubcategoriesSection';
-import FeaturedSection from './Sections/FeaturedSection';
-import BestSellerSection from './Sections/BestSellerSection';
-
-const mainStyle = {
-  width: '100%',
-  padding: 0,
-  marginTop:'70px'
-};
+const homeStyle = {
+	wellStyles: {
+		width: '330px',
+		margin: '0 auto 10px'
+	},
+	centerStyle: {
+		minHeight: '76vh',
+		display: 'flex',
+		alignItems: 'center'
+	}
+}
 
 class Frontpage extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
+	constructor(props) {
+		super(props);
+	}
 
-  render() {
-    return (
-      <div style={mainStyle} >
-          <Grid>
-             <CarouselSection/>
-             {/*<WelcomeSection/>*/}
-             <SubcategoriesSection/>
-             <FeaturedSection/>
-             <BestSellerSection/>
-          </Grid>
-      </div>
-      // <div className="container" style={mainStyle}>
-      //   <div>
-      //     <CarouselSection/>
-      //   </div>
-      //   <div>
-      //     <WelcomeSection/>
-      //     <SubcategoriesSection/>
-      //     <FeaturedSection/>
-      //     <BestSellerSection/>
-      //   </div>
-      // </div>
-    );
-  }
+	render() {
+		return (
+			<Grid>
+				<div style={homeStyle.centerStyle}>
+					<div style={homeStyle.wellStyles}>
+						<Link className="btn btn-lg btn-primary btn-block" to={'/browser'}>Browser</Link>
+						<Link className="btn btn-lg btn-primary btn-block" to={'/store/newItem'}>Sell</Link>
+						<Link className="btn btn-lg btn-primary btn-block" to={'/about'}>About</Link>
+					</div>
+				</div>
+			</Grid>
+		);
+	}
 
 }
 

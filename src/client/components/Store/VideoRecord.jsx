@@ -33,7 +33,10 @@ class VideoRecord extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.intervalTrigger;
 		this.state = {
+			counter: 0,
+			isRecording: false,
 			permissions: { 
 				audio: true, 
 				video: true 
@@ -47,24 +50,47 @@ class VideoRecord extends React.Component {
 		};
 	}
 
-	startRecord() {
-		const video = this.refs.video;
-		navigator.mediaDevices.getUserMedia(this.state.permissions).then((stream) => {
-			window.Video = RecordRTC(stream, this.state.options);
-			window.Video.startRecording();
+	componentDidMount() {
+		navigator.mediaDevices.getUserMedia(this.state.permissions)
+			.then(this.successCallback.bind(this))
+			.catch(this.errorCallback.bind(this));
+	}
 
-			video.src = URL.createObjectURL(stream);
-			video.muted = false;
-			video.controls = false;
-			video.play();
-		});
+	successCallback(stream) {
+		const video = this.refs.video;
+
+		window.Video = RecordRTC(stream, this.state.videoOptions);
+		video.src = window.URL.createObjectURL(stream);
+		video.muted = false;
+		video.controls = false;
+		video.play();
+	}
+
+	errorCallback(e) {
+		console.log('Error : ' + e.message);
+	}
+
+	startRecord() {
+		const self = this;
+
+		if (!self.isRecording) {
+			let counter = 0;
+			self.isRecording = true;
+			window.Video.startRecording();
+			self.intervalTrigger = window.setInterval(() => {
+				counter++;
+				self.setState({counter: counter});
+			}, 1000);
+		}
 	}
 
 	stopRecord() {
 		const self = this;
-		this.refs.video.pause();
 		
-		if (window.Video !== undefined) {
+		if (window.Video !== undefined && self.isRecording) {
+			self.refs.video.pause();
+			window.clearInterval(self.intervalTrigger);
+			self.setState({isRecording: false});
 			window.Video.stopRecording(url => {
 				self.props.dispatch(setRecord(url));
 			});
@@ -76,6 +102,7 @@ class VideoRecord extends React.Component {
 			<div>
 				<Row>
 					<Col xs={12}>
+						<div>{this.state.counter}</div>
 						<video ref='video' style={{ width:"100%" }}></video>
 					</Col>
 				</Row>

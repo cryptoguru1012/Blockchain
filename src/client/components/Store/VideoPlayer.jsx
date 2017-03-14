@@ -12,6 +12,7 @@ class VideoPlayer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {play:false};
+		this.player;
 	}
 	onVideo(){
 		this.setState({play:true});
@@ -21,7 +22,6 @@ class VideoPlayer extends React.Component {
 		this.setState({play:false});
 		this.player.seekTo(parseFloat(0));
 	}
-	player() {}
 	rerecord() {
 		this.props.dispatch(deleteRecord());
 	}
@@ -40,10 +40,10 @@ class VideoPlayer extends React.Component {
 					</Col>
 				</Row>
 				<Row>
-					<Col xs={8}>
+					<Col xs={4}>
 						{this.renderControls()}
 					</Col>
-					<Col xs={4}>
+					<Col xs={8}>
 						<Button bsSize="large" onClick={this.rerecord.bind(this)}>{'RE-RECORD'}</Button>
 					</Col>
 				</Row>

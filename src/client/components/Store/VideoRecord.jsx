@@ -34,6 +34,7 @@ class VideoRecord extends React.Component {
 		super(props);
 
 		this.intervalTrigger;
+		this.localStream = null;
 		this.state = {
 			counter: 0,
 			isRecording: false,
@@ -48,6 +49,9 @@ class VideoRecord extends React.Component {
 				bitsPerSecond: 128000
 			}
 		};
+
+		this.startRecord = this.startRecord.bind(this);
+		this.saveRecord = this.saveRecord.bind(this);
 	}
 
 	componentDidMount() {
@@ -56,11 +60,17 @@ class VideoRecord extends React.Component {
 			.catch(this.errorCallback.bind(this));
 	}
 
+	componentWillUnmount() {
+		if (this.localStream !== null)
+			this.localStream.stop();
+	}
+
 	successCallback(stream) {
 		const video = this.refs.video;
+		this.localStream = stream;
 
-		window.Video = RecordRTC(stream, this.state.videoOptions);
-		video.src = window.URL.createObjectURL(stream);
+		window.Video = RecordRTC(this.localStream, this.state.videoOptions);
+		video.src = window.URL.createObjectURL(this.localStream);
 		video.muted = false;
 		video.controls = false;
 		video.play();
@@ -84,7 +94,7 @@ class VideoRecord extends React.Component {
 		}
 	}
 
-	stopRecord() {
+	saveRecord() {
 		const self = this;
 		
 		if (window.Video !== undefined && self.isRecording) {
@@ -94,6 +104,8 @@ class VideoRecord extends React.Component {
 			window.Video.stopRecording(url => {
 				self.props.dispatch(setRecord(url));
 			});
+
+			this.localStream.stop();
 		}
 	}
 
@@ -102,16 +114,15 @@ class VideoRecord extends React.Component {
 			<div>
 				<Row>
 					<Col xs={12}>
-						<div>{this.state.counter}</div>
 						<video ref='video' style={{ width:"100%" }}></video>
 					</Col>
 				</Row>
 				<Row>
 					<Col xs={8}>
-						<Button bsSize="large" onClick={this.startRecord.bind(this)}>RECORD</Button>
+						<Button bsSize="large" onClick={this.startRecord}>RECORD {this.state.counter}</Button>
 					</Col>
 					<Col xs={4}>
-						<Button bsSize="large" onClick={this.stopRecord.bind(this)}><Glyphicon glyph="stop" /></Button>
+						<Button bsSize="large" onClick={this.saveRecord}><Glyphicon glyph="stop" /></Button>
 					</Col>
 				</Row>
 			</div>

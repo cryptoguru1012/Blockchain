@@ -13,24 +13,31 @@ class VideoPlayer extends React.Component {
 		super(props);
 		this.state = {play:false};
 		this.player;
+
+		this.onVideo = this.onVideo.bind(this);
+		this.offVideo = this.offVideo.bind(this);
 	}
+
 	onVideo(){
 		this.setState({play:true});
-		
 	}
+
 	offVideo(){
 		this.setState({play:false});
 		this.player.seekTo(parseFloat(0));
 	}
+
 	rerecord() {
 		this.props.dispatch(deleteRecord());
 	}
+
 	renderControls() {
 		if (!this.state.play)
-			return <Button bsSize="large" onClick={this.onVideo.bind(this)}><Glyphicon glyph="play" /></Button>
+			return <Button bsSize="large" onClick={this.onVideo}><Glyphicon glyph="play" /></Button>
 		else 
-			return <Button bsSize="large" onClick={this.offVideo.bind(this)}><Glyphicon glyph="stop" /></Button>
+			return <Button bsSize="large" onClick={this.offVideo}><Glyphicon glyph="stop" /></Button>
 	}
+
 	render() {
 		return (
 			<div>

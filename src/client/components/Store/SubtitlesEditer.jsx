@@ -30,7 +30,7 @@ class SubtitlesEditer extends React.Component {
 
 	componentWillMount() {
 		const self = this;
-		readSrtFile('http://127.0.0.1:8000/src/client/components/Store/my.srt', function(text) {
+		readSrtFile('https://raw.githubusercontent.com/smelc/srtcheck/master/tests/test4.shouldpass.srt', function(text) {
 			const subtitles = Parser.fromSrt(text, true);
 			// self.props.dispatch(setSubtitles(subtitles));
 			self.setState({ subtitles: subtitles });
@@ -45,12 +45,12 @@ class SubtitlesEditer extends React.Component {
 		const subtitles = this.state.subtitles;
 		const items = subtitles.map(subtitle =>  
 			<table key={subtitle.id}>
-				<tr>
-					<th>{subtitle.startTime} - {subtitle.endTime}</th>
-				</tr>
-				<tr>
-					<td><textarea>{subtitle.text}</textarea></td>
-				</tr>
+				<tbody>
+					<tr>
+						<th>{subtitle.startTime} - {subtitle.endTime}</th>
+						<th><textarea defaultValue={subtitle.text}/></th>
+					</tr>
+				</tbody>
 			</table>
 		);
 		return (

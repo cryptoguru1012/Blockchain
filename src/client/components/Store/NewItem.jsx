@@ -7,6 +7,7 @@ import { doItemCreate, showSnackbar } from '../../redux/actions/store/new_item';
 import {Row, Col, Grid, Button} from 'react-bootstrap';
 import VideoRecord from './VideoRecord';
 import VideoPlayer from './VideoPlayer';
+import SubtitlesEditer from './SubtitlesEditer';
 
 class NewItem extends React.Component {
 	constructor(props) {
@@ -25,6 +26,7 @@ class NewItem extends React.Component {
 			return (
 				<div>
 					<VideoPlayer url={this.props.video.url}></VideoPlayer>
+					<SubtitlesEditer></SubtitlesEditer>
 				</div>
 			)
 		}

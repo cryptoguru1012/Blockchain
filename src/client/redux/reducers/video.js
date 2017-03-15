@@ -1,8 +1,9 @@
-import { SET_RECORD, DELETE_RECORD } from '../actions/video';
+import { SET_RECORD, DELETE_RECORD, SET_SUBTITLES } from '../actions/video';
 
 const initialState = {
 	url: null,
-	isRecorded: false
+	isRecorded: false,
+	subtitle: []
 };
 
 const videoReducers = (state = initialState, action) => {
@@ -11,6 +12,8 @@ const videoReducers = (state = initialState, action) => {
 			return { ...state, url: action.url, isRecorded: true };
 		case DELETE_RECORD:
 			return { ...state, url: null, isRecorded: false };
+		case SET_SUBTITLES:
+			return { ...state, subtitle: action.subtitles };
 		default:
 			return state;
 	}

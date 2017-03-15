@@ -19,6 +19,12 @@ var readSrtFile = function(path, callback) {
     rawFile.send();
 }
 
+var parseTime = function(millis) {
+  var minutes = Math.floor(millis / 60000);
+  var seconds = ((millis % 60000) / 1000).toFixed(0);
+  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
 class SubtitlesEditer extends React.Component {
 
 	constructor(props) {
@@ -47,7 +53,7 @@ class SubtitlesEditer extends React.Component {
 			<table key={subtitle.id}>
 				<tbody>
 					<tr>
-						<th>{subtitle.startTime} - {subtitle.endTime}</th>
+						<th>{parseTime(subtitle.startTime)} - {parseTime(subtitle.endTime)}</th>
 						<th><textarea defaultValue={subtitle.text}/></th>
 					</tr>
 				</tbody>

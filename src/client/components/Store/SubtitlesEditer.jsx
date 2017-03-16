@@ -7,6 +7,21 @@ import { setSubtitles } from '../../redux/actions/video';
 
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 
+const styles = {
+	subtitlesContainer: {
+		position: 'relative',
+		height: '300px',
+		overflow: 'scroll',
+		margin: '20px 0'
+	},
+	table: {
+		width: '100%'
+	},
+	inputText: {
+		width: '100%'
+	}
+};
+
 var readSrtFile = function(path, callback) {
     var rawFile = new XMLHttpRequest();
     rawFile.open("GET", path, false);
@@ -32,6 +47,8 @@ class SubtitlesEditer extends React.Component {
 		this.state = {
 			subtitles: []
 		}
+
+		this.handleEdit = this.handleEdit.bind(this);
 	}
 
 	componentWillMount() {
@@ -47,14 +64,25 @@ class SubtitlesEditer extends React.Component {
 		console.log(this.state.subtitles);
 	}
 
+	handleEdit(event, subtitle) {
+		let newSubtitles = this.state.subtitles;
+		for (var i = 0; i < newSubtitles.length; i++) {
+			if (newSubtitles[i].id === subtitle.id)
+				newSubtitles[i].text = event.target.value;
+		}
+		newSubtitles = Object.assign([], this.state.subtitles, newSubtitles)
+		this.setState({ subtitles: newSubtitles});
+	}
+
 	render() {
 		const subtitles = this.state.subtitles;
 		const items = subtitles.map(subtitle =>  
-			<table key={subtitle.id}>
+			<table key={subtitle.id} style={styles.table}>
 				<tbody>
 					<tr>
-						<th>{parseTime(subtitle.startTime)} - {parseTime(subtitle.endTime)}</th>
-						<th><textarea defaultValue={subtitle.text}/></th>
+						<th>start: min {parseTime(subtitle.startTime)}<br/>
+						ends: min {parseTime(subtitle.endTime)}</th>
+						<th><textarea value={subtitle.text} style={styles.inputText} onChange={(e) => this.handleEdit(e, subtitle)}/></th>
 					</tr>
 				</tbody>
 			</table>
@@ -62,7 +90,7 @@ class SubtitlesEditer extends React.Component {
 		return (
 			<Row>
 				<Col xs={12}>
-					<div className="subtitles">{items}</div>
+					<div className="subtitles" style={styles.subtitlesContainer}>{items}</div>
 				</Col>
 			</Row>
 		);

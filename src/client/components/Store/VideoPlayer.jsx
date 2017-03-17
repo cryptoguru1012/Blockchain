@@ -2,10 +2,14 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import ReactPlayer from 'react-player';
-import { deleteRecord } from '../../redux/actions/video';
 
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 
+const styles = {
+	btn: {
+		width: '100%'
+	}
+};
 
 class VideoPlayer extends React.Component {
 
@@ -14,50 +18,54 @@ class VideoPlayer extends React.Component {
 		this.state = {play:false};
 		this.player;
 
-		this.onVideo = this.onVideo.bind(this);
-		this.offVideo = this.offVideo.bind(this);
+		this.handleVideoPlay = this.handleVideoPlay.bind(this);
+		this.handleVideoPause = this.handleVideoPause.bind(this);
 	}
 
-	onVideo(){
+	componentDidMount() {
+		const self = this;
+		this.player = this.refs.player;
+		this.player.src = this.props.url;
+		this.player.muted = false;
+		this.player.controls = false;
+		this.player.addEventListener('ended', e => {
+			this.setState({play:false});
+		});
+	}
+
+	handleVideoPlay(){
 		this.setState({play:true});
+		this.player.play();
 	}
 
-	offVideo(){
+	handleVideoPause(){
 		this.setState({play:false});
-		this.player.seekTo(parseFloat(0));
-	}
-
-	rerecord() {
-		this.props.dispatch(deleteRecord());
+		this.player.pause();
 	}
 
 	renderControls() {
 		if (!this.state.play)
-			return <Button bsSize="large" onClick={this.onVideo}><Glyphicon glyph="play" /></Button>
+			return <Button style={styles.btn} bsSize="large" onClick={this.handleVideoPlay}><Glyphicon glyph="play" /></Button>
 		else 
-			return <Button bsSize="large" onClick={this.offVideo}><Glyphicon glyph="stop" /></Button>
+			return <Button style={styles.btn} bsSize="large" onClick={this.handleVideoPause}><Glyphicon glyph="stop" /></Button>
 	}
 
 	render() {
 		return (
-			<div>
-				<Row>
-					<Col xs={12}>
-						<ReactPlayer ref={player => { this.player = player }} url={this.props.url} playing={this.state.play} controls={false}/>
-					</Col>
-				</Row>
-				<Row>
-					<Col xs={4}>
-						{this.renderControls()}
-					</Col>
-					<Col xs={8}>
-						<Button bsSize="large" onClick={this.rerecord.bind(this)}>{'RE-RECORD'}</Button>
-					</Col>
-				</Row>
-			</div>
+			<Row>
+				<Col xs={12}>
+					<video ref='player' style={{ width:"100%" }}></video>
+				</Col>
+				<Col xs={4}>
+					{this.renderControls()}
+				</Col>
+				<Col xs={8}>
+					<Button style={styles.btn} bsSize="large" onClick={this.props.onDelete}>RE-RECORD</Button>
+				</Col>
+			</Row>
 		);
 	}
 
 }
 
-export default connect()(VideoPlayer);
+export default VideoPlayer;

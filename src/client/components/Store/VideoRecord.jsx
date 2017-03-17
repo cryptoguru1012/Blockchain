@@ -1,7 +1,6 @@
 import RecordRTC from 'recordrtc';
 import React from 'react';
 import { connect } from 'react-redux';
-import { setRecord } from '../../redux/actions/video';
 
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 
@@ -27,6 +26,9 @@ const styles = {
 		height: 96,
 		padding: 24,
 	},
+	btn: {
+		width: '100%'
+	}
 };
 
 class VideoRecord extends React.Component {
@@ -35,6 +37,7 @@ class VideoRecord extends React.Component {
 
 		this.intervalTrigger;
 		this.localStream = null;
+		this.video;
 		this.state = {
 			counter: 0,
 			isRecording: false,
@@ -55,6 +58,7 @@ class VideoRecord extends React.Component {
 	}
 
 	componentDidMount() {
+		this.video = this.refs.video;
 		navigator.mediaDevices.getUserMedia(this.state.permissions)
 			.then(this.successCallback.bind(this))
 			.catch(this.errorCallback.bind(this));
@@ -66,7 +70,7 @@ class VideoRecord extends React.Component {
 	}
 
 	successCallback(stream) {
-		const video = this.refs.video;
+		const video = this.video;
 		this.localStream = stream;
 
 		window.Video = RecordRTC(this.localStream, this.state.videoOptions);
@@ -98,11 +102,11 @@ class VideoRecord extends React.Component {
 		const self = this;
 		
 		if (window.Video !== undefined && self.isRecording) {
-			self.refs.video.pause();
+			self.video.pause();
 			window.clearInterval(self.intervalTrigger);
 			self.setState({isRecording: false});
 			window.Video.stopRecording(url => {
-				self.props.dispatch(setRecord(url));
+				self.props.onRecorded(window.Video.blob);
 			});
 
 			this.localStream.stop();
@@ -111,24 +115,20 @@ class VideoRecord extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<Row>
-					<Col xs={12}>
-						<video ref='video' style={{ width:"100%" }}></video>
-					</Col>
-				</Row>
-				<Row>
-					<Col xs={8}>
-						<Button bsSize="large" onClick={this.startRecord}>RECORD {this.state.counter}</Button>
-					</Col>
-					<Col xs={4}>
-						<Button bsSize="large" onClick={this.saveRecord}><Glyphicon glyph="stop" /></Button>
-					</Col>
-				</Row>
-			</div>
+			<Row>
+				<Col xs={12}>
+					<video ref='video' style={{ width:"100%" }}></video>
+				</Col>
+				<Col xs={8}>
+					<Button style={styles.btn} bsSize="large" onClick={this.startRecord}>RECORD {this.state.counter}</Button>
+				</Col>
+				<Col xs={4}>
+					<Button style={styles.btn} bsSize="large" onClick={this.saveRecord}><Glyphicon glyph="stop" /></Button>
+				</Col>
+			</Row>
 		);
 	}
 }
 
-export default connect()(VideoRecord);
+export default VideoRecord;
 

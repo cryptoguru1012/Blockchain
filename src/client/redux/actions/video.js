@@ -2,6 +2,7 @@ export const DELETE_RECORD = 'DELETE_RECORD';
 export const UPLOAD_START = 'UPLOAD_START';
 export const UPLOAD_ERROR = 'UPLOAD_ERROR';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
+export const SET_OFFER = 'SET_OFFER';
 
 function uploadStart(payload) {
 	return {
@@ -28,6 +29,14 @@ export function deleteRecord() {
 	return (dispatch, getState) => {
 		dispatch({
 			type: DELETE_RECORD
+		});
+	}
+}
+
+export function setOfferForm() {
+	return (dispatch, getState) => {
+		dispatch({
+			type: SET_OFFER
 		});
 	}
 }

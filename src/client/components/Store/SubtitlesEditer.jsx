@@ -62,7 +62,7 @@ class SubtitlesEditer extends React.Component {
 						<div className="subtitles" style={styles.subtitlesContainer}>
 							{items}
 						</div>
-						<Button>Save</Button>
+						<Button onClick={this.props.onSave}>Save</Button>
 					</div>
 				</Col>
 			</Row>

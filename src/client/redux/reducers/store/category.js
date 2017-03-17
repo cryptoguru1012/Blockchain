@@ -16,7 +16,8 @@ export default function categoryReducer(state = initialState, action) {
         case CATEGORY_REQ_ERR:
             return {
                 ...state,
-                error: true
+                error: true,
+                categories: []
             };
             
         case CATEGORY_REQ_START:

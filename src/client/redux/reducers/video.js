@@ -1,19 +1,21 @@
-import { SET_RECORD, DELETE_RECORD, SET_SUBTITLES } from '../actions/video';
+import { DELETE_RECORD, UPLOAD_START, UPLOAD_ERROR, UPLOAD_SUCCESS } from '../actions/video';
 
 const initialState = {
 	url: null,
 	isRecorded: false,
-	subtitle: []
+	isLoading: false,
+	subtitles: []
 };
 
 const videoReducers = (state = initialState, action) => {
 	switch (action.type) {
-		case SET_RECORD:
-			return { ...state, url: action.url, isRecorded: true };
 		case DELETE_RECORD:
 			return { ...state, url: null, isRecorded: false };
-		case SET_SUBTITLES:
-			return { ...state, subtitle: action.subtitles };
+		case UPLOAD_SUCCESS:
+		case UPLOAD_ERROR:
+			return { ...state, subtitles: action.subtitles, isRecorded: true, isLoading: false };
+		case UPLOAD_START:
+			return { ...state, url: action.url, isLoading: true };
 		default:
 			return state;
 	}

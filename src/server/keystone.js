@@ -4,6 +4,7 @@ const config = require('./config/vars');
 
 // Require keystone
 var keystone = require('keystone');
+const port = process.env.PORT || 3000;
 
 // Initialise Keystone with your project's configuration.
 // See http://keystonejs.com/guide/config for available options
@@ -30,7 +31,7 @@ keystone.init({
 	'auth': true,
 	'user model': 'User',
 	'cookie secret': config.COOKIE_SECRET,
-	'port': 8050
+	'port': port,
 });
 
 // Load your project's Models

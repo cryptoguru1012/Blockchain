@@ -23,7 +23,7 @@ import middleware from './middleware';
 import apiRoutes from '../API/routes';
 import renderHTML from './helpers/render_html';
 
-const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8050' : '';
+const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : '';
 
 // Setup Route Bindings
 exports = module.exports = function (app) {

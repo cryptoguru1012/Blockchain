@@ -96916,27 +96916,27 @@
 
 	var _reactRedux = __webpack_require__(281);
 
-	var _subtitlesParser = __webpack_require__(1139);
+	var _subtitlesParser = __webpack_require__(1116);
 
 	var _subtitlesParser2 = _interopRequireDefault(_subtitlesParser);
 
-	var _category = __webpack_require__(1116);
+	var _category = __webpack_require__(1117);
 
-	var _new_item = __webpack_require__(1117);
+	var _new_item = __webpack_require__(1118);
 
-	var _video = __webpack_require__(1120);
+	var _video = __webpack_require__(1119);
 
 	var _reactBootstrap = __webpack_require__(611);
 
-	var _VideoRecord = __webpack_require__(1118);
+	var _VideoRecord = __webpack_require__(1120);
 
 	var _VideoRecord2 = _interopRequireDefault(_VideoRecord);
 
-	var _VideoPlayer = __webpack_require__(1121);
+	var _VideoPlayer = __webpack_require__(1122);
 
 	var _VideoPlayer2 = _interopRequireDefault(_VideoPlayer);
 
-	var _SubtitlesEditer = __webpack_require__(1138);
+	var _SubtitlesEditer = __webpack_require__(1139);
 
 	var _SubtitlesEditer2 = _interopRequireDefault(_SubtitlesEditer);
 
@@ -96954,63 +96954,31 @@
 		function NewItem(props) {
 			_classCallCheck(this, NewItem);
 
-			var _this = _possibleConstructorReturn(this, (NewItem.__proto__ || Object.getPrototypeOf(NewItem)).call(this, props));
-
-			_this.state = {
-				subtitles: []
-			};
-
-			_this.onRecorded = _this.onRecorded.bind(_this);
-			return _this;
+			return _possibleConstructorReturn(this, (NewItem.__proto__ || Object.getPrototypeOf(NewItem)).call(this, props));
 		}
 
 		_createClass(NewItem, [{
-			key: 'componentWillMount',
-			value: function componentWillMount() {
-				var self = this;
-				fetch('https://raw.githubusercontent.com/smelc/srtcheck/master/tests/test4.shouldpass.srt', {
-					headers: {
-						'Content-Type': 'text/plain'
-					},
-					method: 'GET'
-				}).then(function (res) {
-					return res.text();
-				}).then(function (res) {
-					var subtitles = _subtitlesParser2.default.fromSrt(res, true);
-					self.setState({ subtitles: subtitles });
-				});
-			}
-		}, {
-			key: 'onRecorded',
-			value: function onRecorded(blob) {
-				var data = new FormData();
-				data.append('video', blob, 'videoRecorded.webm');
-				fetch('https://shopshot-quangogster.c9users.io/API/parse', {
-					method: "POST",
-					mode: 'cors',
-					body: data
-				}).then(function (response) {
-					return console.log(response);
-				}).catch(function (errors) {
-					return console.log(errors);
-				});
-			}
-		}, {
 			key: 'render',
 			value: function render() {
+				if (this.props.video.isLoading) {
+					return _react2.default.createElement(
+						'h1',
+						null,
+						'LOADING...'
+					);
+				}
 				if (!this.props.video.isRecorded) {
 					return _react2.default.createElement(
 						_reactBootstrap.Grid,
 						null,
-						_react2.default.createElement(_VideoRecord2.default, { onRecorded: this.onRecorded })
+						_react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded })
 					);
-				}
-				if (this.props.video.isRecorded) {
+				} else {
 					return _react2.default.createElement(
 						_reactBootstrap.Grid,
 						null,
 						_react2.default.createElement(_VideoPlayer2.default, { url: this.props.video.url, onDelete: this.props.onDelete }),
-						_react2.default.createElement(_SubtitlesEditer2.default, { data: this.state.subtitles })
+						_react2.default.createElement(_SubtitlesEditer2.default, { data: this.props.video.subtitles })
 					);
 				}
 			}
@@ -97027,9 +96995,9 @@
 
 	function mapDispatchToProps(dispatch) {
 		return {
-			// onRecorded: (url) => {
-			// 	dispatch(setRecord(url))
-			// },
+			onRecorded: function onRecorded(data, url) {
+				dispatch((0, _video.setRecord)(data, url));
+			},
 			onDelete: function onDelete() {
 				dispatch((0, _video.deleteRecord)());
 			}
@@ -97040,6 +97008,118 @@
 
 /***/ },
 /* 1116 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var parser = (function() {
+	    var pItems = {};
+
+	    /**
+	     * Converts SubRip subtitles into array of objects
+	     * [{
+	     *     id:        `Number of subtitle`
+	     *     startTime: `Start time of subtitle`
+	     *     endTime:   `End time of subtitle
+	     *     text: `Text of subtitle`
+	     * }]
+	     *
+	     * @param  {String}  data SubRip suntitles string
+	     * @param  {Boolean} ms   Optional: use milliseconds for startTime and endTime
+	     * @return {Array}  
+	     */
+	    pItems.fromSrt = function(data, ms) {
+	        var useMs = ms ? true : false;
+
+	        data = data.replace(/\r/g, '');
+	        var regex = /(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})/g;
+	        data = data.split(regex);
+	        data.shift();
+
+	        var items = [];
+	        for (var i = 0; i < data.length; i += 4) {
+	            items.push({
+	                id: data[i].trim(),
+	                startTime: useMs ? timeMs(data[i + 1].trim()) : data[i + 1].trim(),
+	                endTime: useMs ? timeMs(data[i + 2].trim()) : data[i + 2].trim(),
+	                text: data[i + 3].trim()
+	            });
+	        }
+
+	        return items;
+	    };
+
+	    /**
+	     * Converts Array of objects created by this module to SubRip subtitles
+	     * @param  {Array}  data
+	     * @return {String}      SubRip subtitles string
+	     */
+	    pItems.toSrt = function(data) {
+	        if (!data instanceof Array) return '';
+	        var res = '';
+
+	        for (var i = 0; i < data.length; i++) {
+	            var s = data[i];
+
+	            if (!isNaN(s.startTime) && !isNaN(s.endTime)) {
+	                s.startTime = msTime(parseInt(s.startTime, 10));
+	                s.endTime = msTime(parseInt(s.endTime, 10));
+	            }
+
+	            res += s.id + '\r\n';
+	            res += s.startTime + ' --> ' + s.endTime + '\r\n';
+	            res += s.text.replace('\n', '\r\n') + '\r\n\r\n';
+	        }
+
+	        return res;
+	    };
+
+	    var timeMs = function(val) {
+	        var regex = /(\d+):(\d{2}):(\d{2}),(\d{3})/;
+	        var parts = regex.exec(val);
+
+	        if (parts === null) {
+	            return 0;
+	        }
+
+	        for (var i = 1; i < 5; i++) {
+	            parts[i] = parseInt(parts[i], 10);
+	            if (isNaN(parts[i])) parts[i] = 0;
+	        }
+
+	        // hours + minutes + seconds + ms
+	        return parts[1] * 3600000 + parts[2] * 60000 + parts[3] * 1000 + parts[4];
+	    };
+
+	    var msTime = function(val) {
+	        var measures = [ 3600000, 60000, 1000 ]; 
+	        var time = [];
+
+	        for (var i in measures) {
+	            var res = (val / measures[i] >> 0).toString();
+	            
+	            if (res.length < 2) res = '0' + res;
+	            val %= measures[i];
+	            time.push(res);
+	        }
+
+	        var ms = val.toString();
+	        if (ms.length < 3) {
+	            for (i = 0; i <= 3 - ms.length; i++) ms = '0' + ms;
+	        }
+
+	        return time.join(':') + ',' + ms;
+	    };
+
+	    return pItems;
+	})();
+
+	// ignore exports for browser
+	if (true) {
+	    module.exports = parser;
+	}
+
+
+/***/ },
+/* 1117 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -97091,7 +97171,7 @@
 	};
 
 /***/ },
-/* 1117 */
+/* 1118 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -97143,7 +97223,71 @@
 	};
 
 /***/ },
-/* 1118 */
+/* 1119 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.deleteRecord = deleteRecord;
+	exports.setRecord = setRecord;
+	var DELETE_RECORD = exports.DELETE_RECORD = 'DELETE_RECORD';
+	var UPLOAD_START = exports.UPLOAD_START = 'UPLOAD_START';
+	var UPLOAD_ERROR = exports.UPLOAD_ERROR = 'UPLOAD_ERROR';
+	var UPLOAD_SUCCESS = exports.UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
+
+	function uploadStart(payload) {
+		return {
+			type: UPLOAD_START,
+			url: payload
+		};
+	}
+
+	function uploadError(payload) {
+		return {
+			type: UPLOAD_ERROR,
+			subtitles: []
+		};
+	}
+
+	function uploadSuccess(payload) {
+		return {
+			type: UPLOAD_SUCCESS,
+			subtitles: payload.data
+		};
+	}
+
+	function deleteRecord() {
+		return function (dispatch, getState) {
+			dispatch({
+				type: DELETE_RECORD
+			});
+		};
+	}
+
+	function setRecord(data, url) {
+		return function (dispatch, getState) {
+			dispatch(uploadStart(url));
+			fetch('https://shopshot-quangogster.c9users.io/API/parse', {
+				method: "POST",
+				mode: 'cors',
+				body: data
+			}).then(function (res) {
+				return res.json();
+			}).then(function (res) {
+				if (!res.success) {
+					dispatch(uploadError(res));
+				} else {
+					dispatch(uploadSuccess(res));
+				}
+			});
+		};
+	}
+
+/***/ },
+/* 1120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -97154,7 +97298,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _recordrtc = __webpack_require__(1119);
+	var _recordrtc = __webpack_require__(1121);
 
 	var _recordrtc2 = _interopRequireDefault(_recordrtc);
 
@@ -97265,7 +97409,7 @@
 			value: function startRecord() {
 				var self = this;
 
-				if (!self.isRecording) {
+				if (window.Video !== undefined && !self.isRecording) {
 					var counter = 0;
 					self.isRecording = true;
 					window.Video.startRecording();
@@ -97285,7 +97429,10 @@
 					window.clearInterval(self.intervalTrigger);
 					self.setState({ isRecording: false });
 					window.Video.stopRecording(function (url) {
-						self.props.onRecorded(window.Video.blob);
+						var data = new FormData(),
+						    blob = window.Video.blob;
+						data.append('video', blob, 'videoRecorded.webm');
+						self.props.onRecorded(data, url);
 					});
 
 					this.localStream.stop();
@@ -97331,7 +97478,7 @@
 	exports.default = VideoRecord;
 
 /***/ },
-/* 1119 */
+/* 1121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {// Last time updated: 2017-02-13 9:58:18 AM UTC
@@ -101664,49 +101811,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 1120 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.setRecord = setRecord;
-	exports.deleteRecord = deleteRecord;
-	exports.setSubtitles = setSubtitles;
-	var SET_RECORD = exports.SET_RECORD = 'SET_RECORD';
-	var DELETE_RECORD = exports.DELETE_RECORD = 'DELETE_RECORD';
-	var SET_SUBTITLES = exports.SET_SUBTITLES = 'SET_SUBTITLES';
-
-	function setRecord(url, recorded) {
-	    return function (dispatch, getState) {
-	        dispatch({
-	            type: SET_RECORD,
-	            url: url
-	        });
-	    };
-	}
-
-	function deleteRecord() {
-	    return function (dispatch, getState) {
-	        dispatch({
-	            type: DELETE_RECORD
-	        });
-	    };
-	}
-
-	function setSubtitles(subtitles) {
-	    return function (dispatch, getState) {
-	        dispatch({
-	            type: DELETE_RECORD,
-	            subtitles: subtitles
-	        });
-	    };
-	}
-
-/***/ },
-/* 1121 */
+/* 1122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -101723,7 +101828,7 @@
 
 	var _reactRedux = __webpack_require__(281);
 
-	var _reactPlayer = __webpack_require__(1122);
+	var _reactPlayer = __webpack_require__(1123);
 
 	var _reactPlayer2 = _interopRequireDefault(_reactPlayer);
 
@@ -101833,7 +101938,7 @@
 	exports.default = VideoPlayer;
 
 /***/ },
-/* 1122 */
+/* 1123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -101850,33 +101955,33 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _props3 = __webpack_require__(1123);
+	var _props3 = __webpack_require__(1124);
 
-	var _YouTube = __webpack_require__(1124);
+	var _YouTube = __webpack_require__(1125);
 
 	var _YouTube2 = _interopRequireDefault(_YouTube);
 
-	var _SoundCloud = __webpack_require__(1128);
+	var _SoundCloud = __webpack_require__(1129);
 
 	var _SoundCloud2 = _interopRequireDefault(_SoundCloud);
 
-	var _Vimeo = __webpack_require__(1131);
+	var _Vimeo = __webpack_require__(1132);
 
 	var _Vimeo2 = _interopRequireDefault(_Vimeo);
 
-	var _FilePlayer = __webpack_require__(1130);
+	var _FilePlayer = __webpack_require__(1131);
 
 	var _FilePlayer2 = _interopRequireDefault(_FilePlayer);
 
-	var _Streamable = __webpack_require__(1135);
+	var _Streamable = __webpack_require__(1136);
 
 	var _Streamable2 = _interopRequireDefault(_Streamable);
 
-	var _Vidme = __webpack_require__(1136);
+	var _Vidme = __webpack_require__(1137);
 
 	var _Vidme2 = _interopRequireDefault(_Vidme);
 
-	var _Wistia = __webpack_require__(1137);
+	var _Wistia = __webpack_require__(1138);
 
 	var _Wistia2 = _interopRequireDefault(_Wistia);
 
@@ -102028,7 +102133,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1123 */
+/* 1124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102123,7 +102228,7 @@
 	};
 
 /***/ },
-/* 1124 */
+/* 1125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102142,15 +102247,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _loadScript = __webpack_require__(1125);
+	var _loadScript = __webpack_require__(1126);
 
 	var _loadScript2 = _interopRequireDefault(_loadScript);
 
-	var _Base2 = __webpack_require__(1126);
+	var _Base2 = __webpack_require__(1127);
 
 	var _Base3 = _interopRequireDefault(_Base2);
 
-	var _utils = __webpack_require__(1127);
+	var _utils = __webpack_require__(1128);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -102378,7 +102483,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1125 */
+/* 1126 */
 /***/ function(module, exports) {
 
 	
@@ -102449,7 +102554,7 @@
 
 
 /***/ },
-/* 1126 */
+/* 1127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102462,7 +102567,7 @@
 
 	var _react = __webpack_require__(2);
 
-	var _props2 = __webpack_require__(1123);
+	var _props2 = __webpack_require__(1124);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -102607,7 +102712,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1127 */
+/* 1128 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -102657,7 +102762,7 @@
 	}
 
 /***/ },
-/* 1128 */
+/* 1129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102674,15 +102779,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _fetchJsonp = __webpack_require__(1129);
+	var _fetchJsonp = __webpack_require__(1130);
 
 	var _fetchJsonp2 = _interopRequireDefault(_fetchJsonp);
 
-	var _FilePlayer2 = __webpack_require__(1130);
+	var _FilePlayer2 = __webpack_require__(1131);
 
 	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
 
-	var _props3 = __webpack_require__(1123);
+	var _props3 = __webpack_require__(1124);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -102809,7 +102914,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1129 */
+/* 1130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -102922,7 +103027,7 @@
 	});
 
 /***/ },
-/* 1130 */
+/* 1131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102941,7 +103046,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Base2 = __webpack_require__(1126);
+	var _Base2 = __webpack_require__(1127);
 
 	var _Base3 = _interopRequireDefault(_Base2);
 
@@ -103103,7 +103208,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1131 */
+/* 1132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103122,9 +103227,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _queryString = __webpack_require__(1132);
+	var _queryString = __webpack_require__(1133);
 
-	var _Base2 = __webpack_require__(1126);
+	var _Base2 = __webpack_require__(1127);
 
 	var _Base3 = _interopRequireDefault(_Base2);
 
@@ -103315,12 +103420,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1132 */
+/* 1133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var strictUriEncode = __webpack_require__(1133);
-	var objectAssign = __webpack_require__(1134);
+	var strictUriEncode = __webpack_require__(1134);
+	var objectAssign = __webpack_require__(1135);
 
 	function encoderForArrayFormat(opts) {
 		switch (opts.arrayFormat) {
@@ -103524,7 +103629,7 @@
 
 
 /***/ },
-/* 1133 */
+/* 1134 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -103536,7 +103641,7 @@
 
 
 /***/ },
-/* 1134 */
+/* 1135 */
 /***/ function(module, exports) {
 
 	/*
@@ -103632,7 +103737,7 @@
 
 
 /***/ },
-/* 1135 */
+/* 1136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103643,7 +103748,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _FilePlayer2 = __webpack_require__(1130);
+	var _FilePlayer2 = __webpack_require__(1131);
 
 	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
 
@@ -103715,7 +103820,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1136 */
+/* 1137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103726,7 +103831,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _FilePlayer2 = __webpack_require__(1130);
+	var _FilePlayer2 = __webpack_require__(1131);
 
 	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
 
@@ -103798,7 +103903,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1137 */
+/* 1138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103815,11 +103920,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _loadScript = __webpack_require__(1125);
+	var _loadScript = __webpack_require__(1126);
 
 	var _loadScript2 = _interopRequireDefault(_loadScript);
 
-	var _Base2 = __webpack_require__(1126);
+	var _Base2 = __webpack_require__(1127);
 
 	var _Base3 = _interopRequireDefault(_Base2);
 
@@ -103981,7 +104086,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1138 */
+/* 1139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103998,11 +104103,11 @@
 
 	var _reactRedux = __webpack_require__(281);
 
-	var _reactPlayer = __webpack_require__(1122);
+	var _reactPlayer = __webpack_require__(1123);
 
 	var _reactPlayer2 = _interopRequireDefault(_reactPlayer);
 
-	var _video = __webpack_require__(1120);
+	var _video = __webpack_require__(1119);
 
 	var _reactBootstrap = __webpack_require__(611);
 
@@ -104030,12 +104135,6 @@
 		inputText: {
 			width: '100%'
 		}
-	};
-
-	var parseTime = function parseTime(millis) {
-		var minutes = Math.floor(millis / 60000);
-		var seconds = (millis % 60000 / 1000).toFixed(0);
-		return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 	};
 
 	var SubtitlesEditer = function (_React$Component) {
@@ -104080,10 +104179,10 @@
 									'td',
 									null,
 									'start: min ',
-									parseTime(subtitle.startTime),
+									subtitle.startTime,
 									_react2.default.createElement('br', null),
 									'ends: min ',
-									parseTime(subtitle.endTime)
+									subtitle.endTime
 								),
 								_react2.default.createElement(
 									'td',
@@ -104125,118 +104224,6 @@
 	}(_react2.default.Component);
 
 	exports.default = SubtitlesEditer;
-
-/***/ },
-/* 1139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var parser = (function() {
-	    var pItems = {};
-
-	    /**
-	     * Converts SubRip subtitles into array of objects
-	     * [{
-	     *     id:        `Number of subtitle`
-	     *     startTime: `Start time of subtitle`
-	     *     endTime:   `End time of subtitle
-	     *     text: `Text of subtitle`
-	     * }]
-	     *
-	     * @param  {String}  data SubRip suntitles string
-	     * @param  {Boolean} ms   Optional: use milliseconds for startTime and endTime
-	     * @return {Array}  
-	     */
-	    pItems.fromSrt = function(data, ms) {
-	        var useMs = ms ? true : false;
-
-	        data = data.replace(/\r/g, '');
-	        var regex = /(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})/g;
-	        data = data.split(regex);
-	        data.shift();
-
-	        var items = [];
-	        for (var i = 0; i < data.length; i += 4) {
-	            items.push({
-	                id: data[i].trim(),
-	                startTime: useMs ? timeMs(data[i + 1].trim()) : data[i + 1].trim(),
-	                endTime: useMs ? timeMs(data[i + 2].trim()) : data[i + 2].trim(),
-	                text: data[i + 3].trim()
-	            });
-	        }
-
-	        return items;
-	    };
-
-	    /**
-	     * Converts Array of objects created by this module to SubRip subtitles
-	     * @param  {Array}  data
-	     * @return {String}      SubRip subtitles string
-	     */
-	    pItems.toSrt = function(data) {
-	        if (!data instanceof Array) return '';
-	        var res = '';
-
-	        for (var i = 0; i < data.length; i++) {
-	            var s = data[i];
-
-	            if (!isNaN(s.startTime) && !isNaN(s.endTime)) {
-	                s.startTime = msTime(parseInt(s.startTime, 10));
-	                s.endTime = msTime(parseInt(s.endTime, 10));
-	            }
-
-	            res += s.id + '\r\n';
-	            res += s.startTime + ' --> ' + s.endTime + '\r\n';
-	            res += s.text.replace('\n', '\r\n') + '\r\n\r\n';
-	        }
-
-	        return res;
-	    };
-
-	    var timeMs = function(val) {
-	        var regex = /(\d+):(\d{2}):(\d{2}),(\d{3})/;
-	        var parts = regex.exec(val);
-
-	        if (parts === null) {
-	            return 0;
-	        }
-
-	        for (var i = 1; i < 5; i++) {
-	            parts[i] = parseInt(parts[i], 10);
-	            if (isNaN(parts[i])) parts[i] = 0;
-	        }
-
-	        // hours + minutes + seconds + ms
-	        return parts[1] * 3600000 + parts[2] * 60000 + parts[3] * 1000 + parts[4];
-	    };
-
-	    var msTime = function(val) {
-	        var measures = [ 3600000, 60000, 1000 ]; 
-	        var time = [];
-
-	        for (var i in measures) {
-	            var res = (val / measures[i] >> 0).toString();
-	            
-	            if (res.length < 2) res = '0' + res;
-	            val %= measures[i];
-	            time.push(res);
-	        }
-
-	        var ms = val.toString();
-	        if (ms.length < 3) {
-	            for (i = 0; i <= 3 - ms.length; i++) ms = '0' + ms;
-	        }
-
-	        return time.join(':') + ',' + ms;
-	    };
-
-	    return pItems;
-	})();
-
-	// ignore exports for browser
-	if (true) {
-	    module.exports = parser;
-	}
-
 
 /***/ },
 /* 1140 */
@@ -121483,7 +121470,7 @@
 
 	exports.default = categoryReducer;
 
-	var _category = __webpack_require__(1116);
+	var _category = __webpack_require__(1117);
 
 	var initialState = {
 	    loading: false,
@@ -121532,7 +121519,7 @@
 
 	exports.default = categoryReducer;
 
-	var _new_item = __webpack_require__(1117);
+	var _new_item = __webpack_require__(1118);
 
 	var initialState = { loading: false, error: null, success: false, message: '', showSnackbar: false };
 
@@ -121570,12 +121557,13 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _video = __webpack_require__(1120);
+	var _video = __webpack_require__(1119);
 
 	var initialState = {
 		url: null,
 		isRecorded: false,
-		subtitle: []
+		isLoading: false,
+		subtitles: []
 	};
 
 	var videoReducers = function videoReducers() {
@@ -121583,12 +121571,13 @@
 		var action = arguments[1];
 
 		switch (action.type) {
-			case _video.SET_RECORD:
-				return _extends({}, state, { url: action.url, isRecorded: true });
 			case _video.DELETE_RECORD:
 				return _extends({}, state, { url: null, isRecorded: false });
-			case _video.SET_SUBTITLES:
-				return _extends({}, state, { subtitle: action.subtitles });
+			case _video.UPLOAD_SUCCESS:
+			case _video.UPLOAD_ERROR:
+				return _extends({}, state, { subtitles: action.subtitles, isRecorded: true, isLoading: false });
+			case _video.UPLOAD_START:
+				return _extends({}, state, { url: action.url, isLoading: true });
 			default:
 				return state;
 		}

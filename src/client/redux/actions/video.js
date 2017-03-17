@@ -20,7 +20,7 @@ function uploadError(payload) {
 function uploadSuccess(payload) {
 	return { 
 		type: UPLOAD_SUCCESS,
-		subtitles: payload.data
+		subtitles: payload.data.videoSubs
 	};
 }
 
@@ -47,6 +47,10 @@ export function setRecord(data, url) {
 			} else {
 				dispatch(uploadSuccess(res));
 			}
+		})
+		.catch(error => {
+			console.log(error);
+			dispatch(uploadError(null));
 		});
 	};
 }

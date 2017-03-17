@@ -24,12 +24,6 @@ const styles = {
 	}
 };
 
-var parseTime = function(millis) {
-  var minutes = Math.floor(millis / 60000);
-  var seconds = ((millis % 60000) / 1000).toFixed(0);
-  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-}
-
 class SubtitlesEditer extends React.Component {
 
 	constructor(props) {
@@ -54,8 +48,8 @@ class SubtitlesEditer extends React.Component {
 			<table key={subtitle.id} style={styles.table}>
 				<tbody>
 					<tr>
-						<td>start: min {parseTime(subtitle.startTime)}<br/>
-						ends: min {parseTime(subtitle.endTime)}</td>
+						<td>start: min {subtitle.startTime}<br/>
+						ends: min {subtitle.endTime}</td>
 						<td><textarea value={subtitle.text} style={styles.inputText} onChange={(e) => this.handleEdit(e, subtitle)}/></td>
 					</tr>
 				</tbody>

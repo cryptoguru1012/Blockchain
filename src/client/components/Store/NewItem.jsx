@@ -16,54 +16,26 @@ import SubtitlesEditer from './SubtitlesEditer';
 class NewItem extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			subtitles: []
-		}
-
-		this.onRecorded = this.onRecorded.bind(this);
-	}
-
-	componentWillMount() {
-		const self = this;
-		fetch('https://raw.githubusercontent.com/smelc/srtcheck/master/tests/test4.shouldpass.srt', {
-			headers: {
-                'Content-Type': 'text/plain'
-            },
-			method: 'GET'
-		})
-		.then(res => res.text())
-		.then(res => {
-			const subtitles = Parser.fromSrt(res, true);
-			self.setState({ subtitles: subtitles });
-		});
-	}
-
-	onRecorded(blob) {
-		const data = new FormData();
-		data.append('video', blob, 'videoRecorded.webm');
-		fetch('https://shopshot-quangogster.c9users.io/API/parse', {
-			method: "POST",
-			mode: 'cors',
-			body: data
-		})
-		.then(response => console.log(response))
-		.catch(errors => console.log(errors));
 	}
 
 	render() {
+		if (this.props.video.isLoading) {
+			return (
+				<h1>LOADING...</h1>
+			)
+		}
 		if (!this.props.video.isRecorded) {
 			return (
 				<Grid>
-					<VideoRecord onRecorded={this.onRecorded}/>
+					<VideoRecord onRecorded={this.props.onRecorded}/>
 				</Grid>
 			)
 		}
-		if (this.props.video.isRecorded) {
+		else {
 			return (
 				<Grid>
 					<VideoPlayer url={this.props.video.url} onDelete={this.props.onDelete}></VideoPlayer>
-					<SubtitlesEditer data={this.state.subtitles}></SubtitlesEditer>
+					<SubtitlesEditer data={this.props.video.subtitles}></SubtitlesEditer>
 				</Grid>
 			)
 		}
@@ -78,9 +50,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		// onRecorded: (url) => {
-		// 	dispatch(setRecord(url))
-		// },
+		onRecorded: (data, url) => {
+			dispatch(setRecord(data, url))
+		},
 		onDelete: () => {
 			dispatch(deleteRecord())
 		}

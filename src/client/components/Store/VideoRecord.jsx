@@ -87,7 +87,7 @@ class VideoRecord extends React.Component {
 	startRecord() {
 		const self = this;
 
-		if (!self.isRecording) {
+		if (window.Video !== undefined && !self.isRecording) {
 			let counter = 0;
 			self.isRecording = true;
 			window.Video.startRecording();
@@ -106,7 +106,10 @@ class VideoRecord extends React.Component {
 			window.clearInterval(self.intervalTrigger);
 			self.setState({isRecording: false});
 			window.Video.stopRecording(url => {
-				self.props.onRecorded(window.Video.blob);
+				let data = new FormData()
+					, blob = window.Video.blob;
+				data.append('video', blob, 'videoRecorded.webm');
+				self.props.onRecorded(data, url);
 			});
 
 			this.localStream.stop();

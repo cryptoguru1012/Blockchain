@@ -42,6 +42,7 @@
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.2.0",
     "redux-thunk": "^2.2.0",
+    "subtitles-parser": "0.0.2",
     "url-loader": "^0.5.7"
   },
   "devDependencies": {

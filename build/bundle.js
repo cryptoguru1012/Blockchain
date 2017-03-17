@@ -96916,9 +96916,15 @@
 
 	var _reactRedux = __webpack_require__(281);
 
+	var _subtitlesParser = __webpack_require__(1139);
+
+	var _subtitlesParser2 = _interopRequireDefault(_subtitlesParser);
+
 	var _category = __webpack_require__(1116);
 
 	var _new_item = __webpack_require__(1117);
+
+	var _video = __webpack_require__(1120);
 
 	var _reactBootstrap = __webpack_require__(611);
 
@@ -96948,36 +96954,65 @@
 		function NewItem(props) {
 			_classCallCheck(this, NewItem);
 
-			return _possibleConstructorReturn(this, (NewItem.__proto__ || Object.getPrototypeOf(NewItem)).call(this, props));
+			var _this = _possibleConstructorReturn(this, (NewItem.__proto__ || Object.getPrototypeOf(NewItem)).call(this, props));
+
+			_this.state = {
+				subtitles: []
+			};
+
+			_this.onRecorded = _this.onRecorded.bind(_this);
+			return _this;
 		}
 
 		_createClass(NewItem, [{
-			key: 'view',
-			value: function view() {
-				if (!this.props.video.isRecorded) {
-					return _react2.default.createElement(
-						'div',
-						null,
-						_react2.default.createElement(_VideoRecord2.default, null)
-					);
-				}
-				if (this.props.video.isRecorded) {
-					return _react2.default.createElement(
-						'div',
-						null,
-						_react2.default.createElement(_VideoPlayer2.default, { url: this.props.video.url }),
-						_react2.default.createElement(_SubtitlesEditer2.default, null)
-					);
-				}
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				var self = this;
+				fetch('https://raw.githubusercontent.com/smelc/srtcheck/master/tests/test4.shouldpass.srt', {
+					headers: {
+						'Content-Type': 'text/plain'
+					},
+					method: 'GET'
+				}).then(function (res) {
+					return res.text();
+				}).then(function (res) {
+					var subtitles = _subtitlesParser2.default.fromSrt(res, true);
+					self.setState({ subtitles: subtitles });
+				});
+			}
+		}, {
+			key: 'onRecorded',
+			value: function onRecorded(blob) {
+				var data = new FormData();
+				data.append('video', blob, 'videoRecorded.webm');
+				fetch('https://shopshot-quangogster.c9users.io/API/parse', {
+					method: "POST",
+					mode: 'cors',
+					body: data
+				}).then(function (response) {
+					return console.log(response);
+				}).catch(function (errors) {
+					return console.log(errors);
+				});
 			}
 		}, {
 			key: 'render',
 			value: function render() {
-				return _react2.default.createElement(
-					_reactBootstrap.Grid,
-					null,
-					this.view()
-				);
+				if (!this.props.video.isRecorded) {
+					return _react2.default.createElement(
+						_reactBootstrap.Grid,
+						null,
+						_react2.default.createElement(_VideoRecord2.default, { onRecorded: this.onRecorded })
+					);
+				}
+				if (this.props.video.isRecorded) {
+					return _react2.default.createElement(
+						_reactBootstrap.Grid,
+						null,
+						_react2.default.createElement(_VideoPlayer2.default, { url: this.props.video.url, onDelete: this.props.onDelete }),
+						_react2.default.createElement(_SubtitlesEditer2.default, { data: this.state.subtitles })
+					);
+				}
 			}
 		}]);
 
@@ -96990,7 +97025,18 @@
 		return { video: video };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(NewItem);
+	function mapDispatchToProps(dispatch) {
+		return {
+			// onRecorded: (url) => {
+			// 	dispatch(setRecord(url))
+			// },
+			onDelete: function onDelete() {
+				dispatch((0, _video.deleteRecord)());
+			}
+		};
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewItem);
 
 /***/ },
 /* 1116 */
@@ -97118,8 +97164,6 @@
 
 	var _reactRedux = __webpack_require__(281);
 
-	var _video = __webpack_require__(1120);
-
 	var _reactBootstrap = __webpack_require__(611);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -97151,6 +97195,9 @@
 			width: 96,
 			height: 96,
 			padding: 24
+		},
+		btn: {
+			width: '100%'
 		}
 	};
 
@@ -97164,6 +97211,7 @@
 
 			_this.intervalTrigger;
 			_this.localStream = null;
+			_this.video;
 			_this.state = {
 				counter: 0,
 				isRecording: false,
@@ -97187,6 +97235,7 @@
 		_createClass(VideoRecord, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				this.video = this.refs.video;
 				navigator.mediaDevices.getUserMedia(this.state.permissions).then(this.successCallback.bind(this)).catch(this.errorCallback.bind(this));
 			}
 		}, {
@@ -97197,7 +97246,7 @@
 		}, {
 			key: 'successCallback',
 			value: function successCallback(stream) {
-				var video = this.refs.video;
+				var video = this.video;
 				this.localStream = stream;
 
 				window.Video = (0, _recordrtc2.default)(this.localStream, this.state.videoOptions);
@@ -97232,11 +97281,11 @@
 				var self = this;
 
 				if (window.Video !== undefined && self.isRecording) {
-					self.refs.video.pause();
+					self.video.pause();
 					window.clearInterval(self.intervalTrigger);
 					self.setState({ isRecording: false });
 					window.Video.stopRecording(function (url) {
-						self.props.dispatch((0, _video.setRecord)(url));
+						self.props.onRecorded(window.Video.blob);
 					});
 
 					this.localStream.stop();
@@ -97246,38 +97295,30 @@
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
-					'div',
+					_reactBootstrap.Row,
 					null,
 					_react2.default.createElement(
-						_reactBootstrap.Row,
-						null,
+						_reactBootstrap.Col,
+						{ xs: 12 },
+						_react2.default.createElement('video', { ref: 'video', style: { width: "100%" } })
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 8 },
 						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 12 },
-							_react2.default.createElement('video', { ref: 'video', style: { width: "100%" } })
+							_reactBootstrap.Button,
+							{ style: styles.btn, bsSize: 'large', onClick: this.startRecord },
+							'RECORD ',
+							this.state.counter
 						)
 					),
 					_react2.default.createElement(
-						_reactBootstrap.Row,
-						null,
+						_reactBootstrap.Col,
+						{ xs: 4 },
 						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 8 },
-							_react2.default.createElement(
-								_reactBootstrap.Button,
-								{ bsSize: 'large', onClick: this.startRecord },
-								'RECORD ',
-								this.state.counter
-							)
-						),
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 4 },
-							_react2.default.createElement(
-								_reactBootstrap.Button,
-								{ bsSize: 'large', onClick: this.saveRecord },
-								_react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'stop' })
-							)
+							_reactBootstrap.Button,
+							{ style: styles.btn, bsSize: 'large', onClick: this.saveRecord },
+							_react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'stop' })
 						)
 					)
 				);
@@ -97287,7 +97328,7 @@
 		return VideoRecord;
 	}(_react2.default.Component);
 
-	exports.default = (0, _reactRedux.connect)()(VideoRecord);
+	exports.default = VideoRecord;
 
 /***/ },
 /* 1119 */
@@ -101686,8 +101727,6 @@
 
 	var _reactPlayer2 = _interopRequireDefault(_reactPlayer);
 
-	var _video = __webpack_require__(1120);
-
 	var _reactBootstrap = __webpack_require__(611);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -101697,6 +101736,12 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var styles = {
+		btn: {
+			width: '100%'
+		}
+	};
 
 	var VideoPlayer = function (_React$Component) {
 		_inherits(VideoPlayer, _React$Component);
@@ -101709,75 +101754,73 @@
 			_this.state = { play: false };
 			_this.player;
 
-			_this.onVideo = _this.onVideo.bind(_this);
-			_this.offVideo = _this.offVideo.bind(_this);
+			_this.handleVideoPlay = _this.handleVideoPlay.bind(_this);
+			_this.handleVideoPause = _this.handleVideoPause.bind(_this);
 			return _this;
 		}
 
 		_createClass(VideoPlayer, [{
-			key: 'onVideo',
-			value: function onVideo() {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _this2 = this;
+
+				var self = this;
+				this.player = this.refs.player;
+				this.player.src = this.props.url;
+				this.player.muted = false;
+				this.player.controls = false;
+				this.player.addEventListener('ended', function (e) {
+					_this2.setState({ play: false });
+				});
+			}
+		}, {
+			key: 'handleVideoPlay',
+			value: function handleVideoPlay() {
 				this.setState({ play: true });
+				this.player.play();
 			}
 		}, {
-			key: 'offVideo',
-			value: function offVideo() {
+			key: 'handleVideoPause',
+			value: function handleVideoPause() {
 				this.setState({ play: false });
-				this.player.seekTo(parseFloat(0));
-			}
-		}, {
-			key: 'rerecord',
-			value: function rerecord() {
-				this.props.dispatch((0, _video.deleteRecord)());
+				this.player.pause();
 			}
 		}, {
 			key: 'renderControls',
 			value: function renderControls() {
 				if (!this.state.play) return _react2.default.createElement(
 					_reactBootstrap.Button,
-					{ bsSize: 'large', onClick: this.onVideo },
+					{ style: styles.btn, bsSize: 'large', onClick: this.handleVideoPlay },
 					_react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'play' })
 				);else return _react2.default.createElement(
 					_reactBootstrap.Button,
-					{ bsSize: 'large', onClick: this.offVideo },
+					{ style: styles.btn, bsSize: 'large', onClick: this.handleVideoPause },
 					_react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'stop' })
 				);
 			}
 		}, {
 			key: 'render',
 			value: function render() {
-				var _this2 = this;
-
 				return _react2.default.createElement(
-					'div',
+					_reactBootstrap.Row,
 					null,
 					_react2.default.createElement(
-						_reactBootstrap.Row,
-						null,
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 12 },
-							_react2.default.createElement(_reactPlayer2.default, { ref: function ref(player) {
-									_this2.player = player;
-								}, url: this.props.url, playing: this.state.play, controls: false })
-						)
+						_reactBootstrap.Col,
+						{ xs: 12 },
+						_react2.default.createElement('video', { ref: 'player', style: { width: "100%" } })
 					),
 					_react2.default.createElement(
-						_reactBootstrap.Row,
-						null,
+						_reactBootstrap.Col,
+						{ xs: 4 },
+						this.renderControls()
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 8 },
 						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 4 },
-							this.renderControls()
-						),
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 8 },
-							_react2.default.createElement(
-								_reactBootstrap.Button,
-								{ bsSize: 'large', onClick: this.rerecord.bind(this) },
-								'RE-RECORD'
-							)
+							_reactBootstrap.Button,
+							{ style: styles.btn, bsSize: 'large', onClick: this.props.onDelete },
+							'RE-RECORD'
 						)
 					)
 				);
@@ -101787,7 +101830,7 @@
 		return VideoPlayer;
 	}(_react2.default.Component);
 
-	exports.default = (0, _reactRedux.connect)()(VideoPlayer);
+	exports.default = VideoPlayer;
 
 /***/ },
 /* 1122 */
@@ -103959,10 +104002,6 @@
 
 	var _reactPlayer2 = _interopRequireDefault(_reactPlayer);
 
-	var _subtitlesParser = __webpack_require__(1139);
-
-	var _subtitlesParser2 = _interopRequireDefault(_subtitlesParser);
-
 	var _video = __webpack_require__(1120);
 
 	var _reactBootstrap = __webpack_require__(611);
@@ -103976,9 +104015,12 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var styles = {
+		subtitlesContent: {
+			padding: '0 0 20px 0'
+		},
 		subtitlesContainer: {
 			position: 'relative',
-			height: '300px',
+			height: '250px',
 			overflow: 'scroll',
 			margin: '20px 0'
 		},
@@ -103988,18 +104030,6 @@
 		inputText: {
 			width: '100%'
 		}
-	};
-
-	var readSrtFile = function readSrtFile(path, callback) {
-		var rawFile = new XMLHttpRequest();
-		rawFile.open("GET", path, false);
-		rawFile.onreadystatechange = function () {
-			if (this.readyState === 4 && (this.status === 200 || this.status == 0)) {
-				var data = this.responseText;
-				callback(data);
-			}
-		};
-		rawFile.send();
 	};
 
 	var parseTime = function parseTime(millis) {
@@ -104016,30 +104046,11 @@
 
 			var _this = _possibleConstructorReturn(this, (SubtitlesEditer.__proto__ || Object.getPrototypeOf(SubtitlesEditer)).call(this, props));
 
-			_this.state = {
-				subtitles: []
-			};
-
 			_this.handleEdit = _this.handleEdit.bind(_this);
 			return _this;
 		}
 
 		_createClass(SubtitlesEditer, [{
-			key: 'componentWillMount',
-			value: function componentWillMount() {
-				var self = this;
-				readSrtFile('https://raw.githubusercontent.com/smelc/srtcheck/master/tests/test4.shouldpass.srt', function (text) {
-					var subtitles = _subtitlesParser2.default.fromSrt(text, true);
-					// self.props.dispatch(setSubtitles(subtitles));
-					self.setState({ subtitles: subtitles });
-				});
-			}
-		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				console.log(this.state.subtitles);
-			}
-		}, {
 			key: 'handleEdit',
 			value: function handleEdit(event, subtitle) {
 				var newSubtitles = this.state.subtitles;
@@ -104054,7 +104065,7 @@
 			value: function render() {
 				var _this2 = this;
 
-				var subtitles = this.state.subtitles;
+				var subtitles = this.props.data;
 				var items = subtitles.map(function (subtitle) {
 					return _react2.default.createElement(
 						'table',
@@ -104066,7 +104077,7 @@
 								'tr',
 								null,
 								_react2.default.createElement(
-									'th',
+									'td',
 									null,
 									'start: min ',
 									parseTime(subtitle.startTime),
@@ -104075,7 +104086,7 @@
 									parseTime(subtitle.endTime)
 								),
 								_react2.default.createElement(
-									'th',
+									'td',
 									null,
 									_react2.default.createElement('textarea', { value: subtitle.text, style: styles.inputText, onChange: function onChange(e) {
 											return _this2.handleEdit(e, subtitle);
@@ -104093,8 +104104,17 @@
 						{ xs: 12 },
 						_react2.default.createElement(
 							'div',
-							{ className: 'subtitles', style: styles.subtitlesContainer },
-							items
+							{ className: 'subtitles', style: styles.subtitlesContent },
+							_react2.default.createElement(
+								'div',
+								{ className: 'subtitles', style: styles.subtitlesContainer },
+								items
+							),
+							_react2.default.createElement(
+								_reactBootstrap.Button,
+								null,
+								'Save'
+							)
 						)
 					)
 				);
@@ -104104,7 +104124,7 @@
 		return SubtitlesEditer;
 	}(_react2.default.Component);
 
-	exports.default = (0, _reactRedux.connect)()(SubtitlesEditer);
+	exports.default = SubtitlesEditer;
 
 /***/ },
 /* 1139 */

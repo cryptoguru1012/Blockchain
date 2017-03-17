@@ -97251,7 +97251,7 @@
 
 				window.Video = (0, _recordrtc2.default)(this.localStream, this.state.videoOptions);
 				video.src = window.URL.createObjectURL(this.localStream);
-				video.muted = false;
+				video.muted = true;
 				video.controls = false;
 				video.play();
 			}

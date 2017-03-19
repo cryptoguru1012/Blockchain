@@ -13,8 +13,7 @@ function uploadStart(payload) {
 
 function uploadError(payload) {
 	return {
-		type: UPLOAD_ERROR,
-		subtitles: []
+		type: UPLOAD_ERROR
 	};
 }
 
@@ -52,13 +51,12 @@ export function setRecord(data, url) {
 		.then(res => res.json())
 		.then(res => {
 			if (!res.success) {
-				dispatch(uploadError(res));
+				dispatch(uploadError(null));
 			} else {
 				dispatch(uploadSuccess(res));
 			}
 		})
 		.catch(error => {
-			console.log(error);
 			dispatch(uploadError(null));
 		});
 	};

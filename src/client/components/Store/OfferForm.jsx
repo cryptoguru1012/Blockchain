@@ -94,9 +94,6 @@ class OfferForm extends React.Component {
 							required
 							fullWidth
 						/>
-						<FormsySelect name="category" floatingLabelText="Category" fullWidth required>
-							{this.renderCategories()}
-						</FormsySelect>
 						<br />
 						<FormsyText
 							name="price"

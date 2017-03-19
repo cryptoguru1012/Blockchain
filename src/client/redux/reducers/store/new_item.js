@@ -37,7 +37,7 @@ export default function categoryReducer(state = initialState, action) {
 			return { ...state, showSnackbar: false };
 
 		default:
-			return { ...state };
+			return state;
 	}
 }
 

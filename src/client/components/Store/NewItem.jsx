@@ -23,21 +23,21 @@ class NewItem extends React.Component {
 	}
 
 	render() {
-		if (this.props.video.isLoading) {
+		if (this.props.video.loading) {
 			return (
 				<Grid>
 					<h1>LOADING...</h1>
 				</Grid>
 			)
 		}
-		if (this.props.video.isRecorded && this.props.video.videoUploaded) {
+		if (this.props.video.videoUploaded) {
 			return (
 				<Grid>
 					<OfferForm categories={this.props.categories} newItem={this.props.newItem} onCreate={this.props.onCreate} showSnackbar={this.props.showSnackbar}/>
 				</Grid>
 			)
 		}
-		if (!this.props.video.isRecorded) {
+		if (!this.props.video.recorded || this.props.video.error) {
 			return (
 				<Grid>
 					<VideoRecord onRecorded={this.props.onRecorded}/>

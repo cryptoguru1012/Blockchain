@@ -35,7 +35,10 @@ export function doCategoryReq() {
 		})
 		.then(res => res.json())
 		.then(res => {
-			dispatch(categoryReqSuccess(res));
+			if (res.error)
+				dispatch(categoryReqErr());
+			else
+				dispatch(categoryReqSuccess(res));
 		})
 		.catch(error => {
 			dispatch(categoryReqErr());

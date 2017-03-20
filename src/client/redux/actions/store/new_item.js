@@ -35,6 +35,9 @@ export function doItemCreate(params) {
 			} else {
 				dispatch(itemCreateSuccess(res));
 			}
+		})
+		.catch(error => {
+			dispatch(itemCreateErr({message: error}));
 		});
 	};
 };

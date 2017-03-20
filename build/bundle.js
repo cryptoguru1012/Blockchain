@@ -96916,10 +96916,6 @@
 
 	var _reactRedux = __webpack_require__(281);
 
-	var _subtitlesParser = __webpack_require__(1116);
-
-	var _subtitlesParser2 = _interopRequireDefault(_subtitlesParser);
-
 	var _category = __webpack_require__(1117);
 
 	var _new_item = __webpack_require__(1118);
@@ -97003,8 +96999,8 @@
 					return _react2.default.createElement(
 						_reactBootstrap.Grid,
 						null,
-						_react2.default.createElement(_VideoPlayer2.default, { url: this.props.video.url, onDelete: this.props.onDelete }),
-						_react2.default.createElement(_SubtitlesEditer2.default, { data: this.props.video.subtitles, onSave: this.props.onSave })
+						_react2.default.createElement(_VideoPlayer2.default, { url: this.props.video.url, onDelete: this.props.onDelete, subtitles: this.props.video.subtitles }),
+						_react2.default.createElement(_SubtitlesEditer2.default, { subtitles: this.props.video.subtitles, onSave: this.props.onSave, onCancel: this.props.onDelete })
 					);
 				}
 			}
@@ -97260,6 +97256,8 @@
 				} else {
 					dispatch(itemCreateSuccess(res));
 				}
+			}).catch(function (error) {
+				dispatch(itemCreateErr({ message: error }));
 			});
 		};
 	};
@@ -97351,17 +97349,21 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _recordrtc = __webpack_require__(1121);
-
-	var _recordrtc2 = _interopRequireDefault(_recordrtc);
-
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(281);
+	var _recordrtc = __webpack_require__(1121);
+
+	var _recordrtc2 = _interopRequireDefault(_recordrtc);
+
+	var _Time = __webpack_require__(1600);
+
+	var _Time2 = _interopRequireDefault(_Time);
 
 	var _reactBootstrap = __webpack_require__(611);
+
+	var _materialUi = __webpack_require__(952);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -97372,29 +97374,8 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var styles = {
-		container_media_buttons: {
-			width: "100%",
-			textAlign: "center"
-		},
-		recIcon: {
-			color: "red",
-			width: 48,
-			height: 48,
-			fontSize: 48
-		},
-		stopIcon: {
-			color: "black",
-			width: 48,
-			height: 48,
-			fontSize: 48
-		},
-		medium: {
-			width: 96,
-			height: 96,
-			padding: 24
-		},
-		btn: {
-			width: '100%'
+		white: {
+			color: '#fff'
 		}
 	};
 
@@ -97462,9 +97443,9 @@
 			value: function startRecord() {
 				var self = this;
 
-				if (window.Video !== undefined && !self.isRecording) {
+				if (window.Video !== undefined && !self.state.isRecording) {
 					var counter = 0;
-					self.isRecording = true;
+					self.setState({ isRecording: true });
 					window.Video.startRecording();
 					self.intervalTrigger = window.setInterval(function () {
 						counter++;
@@ -97477,7 +97458,7 @@
 			value: function saveRecord() {
 				var self = this;
 
-				if (window.Video !== undefined && self.isRecording) {
+				if (window.Video !== undefined && self.state.isRecording) {
 					self.video.pause();
 					window.clearInterval(self.intervalTrigger);
 					self.setState({ isRecording: false });
@@ -97492,6 +97473,11 @@
 				}
 			}
 		}, {
+			key: 'stopIcon',
+			value: function stopIcon() {
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'stop', style: styles.white });
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
@@ -97504,22 +97490,36 @@
 					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 8 },
+						{ xs: 6 },
+						_react2.default.createElement(_materialUi.RaisedButton, {
+							label: 'RECORD',
+							backgroundColor: '#2ab27b',
+							labelColor: '#fff',
+							disabled: this.state.isRecording,
+							onClick: this.startRecord,
+							fullWidth: true
+						})
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 3 },
 						_react2.default.createElement(
-							_reactBootstrap.Button,
-							{ style: styles.btn, bsSize: 'large', onClick: this.startRecord },
-							'RECORD ',
-							this.state.counter
+							_reactBootstrap.Row,
+							null,
+							_react2.default.createElement(_Time2.default, { value: this.state.counter })
 						)
 					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 4 },
-						_react2.default.createElement(
-							_reactBootstrap.Button,
-							{ style: styles.btn, bsSize: 'large', onClick: this.saveRecord },
-							_react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'stop' })
-						)
+						{ xs: 3 },
+						_react2.default.createElement(_materialUi.RaisedButton, {
+							icon: this.stopIcon(),
+							backgroundColor: '#eb4d5c',
+							labelColor: '#fff',
+							disabled: !this.state.isRecording,
+							onClick: this.saveRecord,
+							fullWidth: true
+						})
 					)
 				);
 			}
@@ -101879,13 +101879,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(281);
+	var _subtitlesParser = __webpack_require__(1116);
 
-	var _reactPlayer = __webpack_require__(1123);
+	var _subtitlesParser2 = _interopRequireDefault(_subtitlesParser);
 
-	var _reactPlayer2 = _interopRequireDefault(_reactPlayer);
+	var _Time = __webpack_require__(1600);
+
+	var _Time2 = _interopRequireDefault(_Time);
 
 	var _reactBootstrap = __webpack_require__(611);
+
+	var _materialUi = __webpack_require__(952);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -101896,8 +101900,8 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var styles = {
-		btn: {
-			width: '100%'
+		white: {
+			color: '#fff'
 		}
 	};
 
@@ -101909,11 +101913,17 @@
 
 			var _this = _possibleConstructorReturn(this, (VideoPlayer.__proto__ || Object.getPrototypeOf(VideoPlayer)).call(this, props));
 
-			_this.state = { play: false };
-			_this.player;
+			_this.state = {
+				play: false,
+				duration: 0,
+				counter: 0
+			};
 
+			_this.player;
+			_this.srtFile;
 			_this.handleVideoPlay = _this.handleVideoPlay.bind(_this);
 			_this.handleVideoPause = _this.handleVideoPause.bind(_this);
+			_this.handleVideoStop = _this.handleVideoStop.bind(_this);
 			return _this;
 		}
 
@@ -101930,6 +101940,21 @@
 				this.player.addEventListener('ended', function (e) {
 					_this2.setState({ play: false });
 				});
+				this.player.addEventListener('loadedmetadata', function (e) {
+					_this2.setState({ duration: _this2.player.duration });
+				});
+				this.player.addEventListener('timeupdate', function (e) {
+					_this2.setState({ duration: _this2.player.duration });
+					_this2.setState({ counter: _this2.player.currentTime });
+				});
+				this.srtFile = this.generateSrtFile(_subtitlesParser2.default.toSrt(this.props.subtitles));
+			}
+		}, {
+			key: 'generateSrtFile',
+			value: function generateSrtFile(text) {
+				var data = new Blob([text], { type: 'text/vtt' }),
+				    file = window.URL.createObjectURL(data);
+				return file;
 			}
 		}, {
 			key: 'handleVideoPlay',
@@ -101944,17 +101969,43 @@
 				this.player.pause();
 			}
 		}, {
+			key: 'handleVideoStop',
+			value: function handleVideoStop(e) {
+				this.setState({ counter: 0 });
+				this.player.currentTime = 0;
+				e.preventDefault();
+			}
+		}, {
+			key: 'playIcon',
+			value: function playIcon() {
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'play', style: styles.white });
+			}
+		}, {
+			key: 'stopIcon',
+			value: function stopIcon() {
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'stop', style: styles.white });
+			}
+		}, {
 			key: 'renderControls',
 			value: function renderControls() {
-				if (!this.state.play) return _react2.default.createElement(
-					_reactBootstrap.Button,
-					{ style: styles.btn, bsSize: 'large', onClick: this.handleVideoPlay },
-					_react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'play' })
-				);else return _react2.default.createElement(
-					_reactBootstrap.Button,
-					{ style: styles.btn, bsSize: 'large', onClick: this.handleVideoPause },
-					_react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'stop' })
-				);
+				var _this3 = this;
+
+				if (!this.state.play) return _react2.default.createElement(_materialUi.RaisedButton, {
+					icon: this.playIcon(),
+					backgroundColor: '#000',
+					labelColor: '#fff',
+					onClick: this.handleVideoPlay,
+					fullWidth: true
+				});else return _react2.default.createElement(_materialUi.RaisedButton, {
+					icon: this.stopIcon(),
+					backgroundColor: '#000',
+					labelColor: '#fff',
+					onClick: this.handleVideoPause,
+					onContextMenu: function onContextMenu(e) {
+						return _this3.handleVideoStop(e);
+					},
+					fullWidth: true
+				});
 			}
 		}, {
 			key: 'render',
@@ -101965,21 +102016,38 @@
 					_react2.default.createElement(
 						_reactBootstrap.Col,
 						{ xs: 12 },
-						_react2.default.createElement('video', { ref: 'player', style: { width: "100%" } })
+						_react2.default.createElement(
+							'video',
+							{ ref: 'player', style: { width: "100%" } },
+							_react2.default.createElement('track', { label: 'English', kind: 'subtitles', srcLang: 'en', src: this.srtFile, 'default': true })
+						)
 					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 4 },
+						{ xs: 3 },
 						this.renderControls()
 					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 8 },
+						{ xs: 3 },
 						_react2.default.createElement(
-							_reactBootstrap.Button,
-							{ style: styles.btn, bsSize: 'large', onClick: this.props.onDelete },
-							'RE-RECORD'
+							_reactBootstrap.Row,
+							null,
+							_react2.default.createElement(_Time2.default, { value: this.state.counter }),
+							'/',
+							_react2.default.createElement(_Time2.default, { value: this.state.duration })
 						)
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 6 },
+						_react2.default.createElement(_materialUi.RaisedButton, {
+							label: 'RE-RECORD',
+							backgroundColor: '#eb4d5c',
+							labelColor: '#fff',
+							onClick: this.props.onDelete,
+							fullWidth: true
+						})
 					)
 				);
 			}
@@ -104164,6 +104232,10 @@
 
 	var _reactBootstrap = __webpack_require__(611);
 
+	var _lib = __webpack_require__(1100);
+
+	var _materialUi = __webpack_require__(952);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -104174,11 +104246,11 @@
 
 	var styles = {
 		subtitlesContent: {
-			padding: '0 0 20px 0'
+			padding: '20px 0'
 		},
 		subtitlesContainer: {
 			position: 'relative',
-			height: '250px',
+			height: '150px',
 			overflow: 'scroll',
 			margin: '20px 0'
 		},
@@ -104197,6 +104269,10 @@
 			_classCallCheck(this, SubtitlesEditer);
 
 			var _this = _possibleConstructorReturn(this, (SubtitlesEditer.__proto__ || Object.getPrototypeOf(SubtitlesEditer)).call(this, props));
+
+			_this.state = {
+				subtitles: []
+			};
 
 			_this.handleEdit = _this.handleEdit.bind(_this);
 			return _this;
@@ -104217,7 +104293,7 @@
 			value: function render() {
 				var _this2 = this;
 
-				var subtitles = this.props.data;
+				var subtitles = this.props.subtitles;
 				var items = subtitles.map(function (subtitle) {
 					return _react2.default.createElement(
 						'table',
@@ -104231,18 +104307,28 @@
 								_react2.default.createElement(
 									'td',
 									null,
-									'start: min ',
 									subtitle.startTime,
+									' -> ',
 									_react2.default.createElement('br', null),
-									'ends: min ',
 									subtitle.endTime
 								),
 								_react2.default.createElement(
 									'td',
 									null,
-									_react2.default.createElement('textarea', { value: subtitle.text, style: styles.inputText, onChange: function onChange(e) {
-											return _this2.handleEdit(e, subtitle);
-										} })
+									_react2.default.createElement(
+										Formsy.Form,
+										null,
+										_react2.default.createElement(_lib.FormsyText, {
+											name: 'subtitle[]',
+											value: subtitle.text,
+											validations: 'isWords',
+											onChange: function onChange(e) {
+												return _this2.handleEdit(e, subtitle);
+											},
+											fullWidth: true,
+											multiLine: true
+										})
+									)
 								)
 							)
 						)
@@ -104250,24 +104336,53 @@
 				});
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
-					null,
+					{ className: 'subtitles', style: styles.subtitlesContent },
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 4 },
+						_react2.default.createElement(
+							'strong',
+							null,
+							'Time'
+						)
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 8 },
+						_react2.default.createElement(
+							'strong',
+							null,
+							'Auto-generated subtitles'
+						)
+					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
 						{ xs: 12 },
 						_react2.default.createElement(
 							'div',
-							{ className: 'subtitles', style: styles.subtitlesContent },
-							_react2.default.createElement(
-								'div',
-								{ className: 'subtitles', style: styles.subtitlesContainer },
-								items
-							),
-							_react2.default.createElement(
-								_reactBootstrap.Button,
-								{ onClick: this.props.onSave },
-								'Save'
-							)
+							{ className: 'subtitles', style: styles.subtitlesContainer },
+							items
 						)
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 4 },
+						_react2.default.createElement(_materialUi.RaisedButton, {
+							label: 'CANCEL',
+							backgroundColor: '#eb4d5c',
+							labelColor: '#fff',
+							onClick: this.props.onCancel
+						})
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 4, xsOffset: 4 },
+						_react2.default.createElement(_materialUi.RaisedButton, {
+							label: 'SAVE',
+							backgroundColor: '#2ab27b',
+							labelColor: '#fff',
+							onClick: this.props.onSave
+						})
 					)
 				);
 			}
@@ -121835,6 +121950,20 @@
 		recorded: false,
 		loading: false,
 		subtitles: [],
+		// subtitles: [
+		// 	{
+		// 		id: 1,
+		// 		startTime: '00:00:01,244',
+		// 		endTime: '00:00:05,345',
+		// 		text: 'Hello my name is Lorem\nand ...'
+		// 	},
+		// 	{
+		// 		id: 2,
+		// 		startTime: '00:00:06,754',
+		// 		endTime: '00:00:07,323',
+		// 		text: 'Lorem ipsum\ndolor sit amet.'
+		// 	}
+		// ],
 		videoUploaded: false
 	};
 
@@ -121844,7 +121973,7 @@
 
 		switch (action.type) {
 			case _video.DELETE_RECORD:
-				return _extends({}, state, { url: null });
+				return _extends({}, state, { url: null, recorded: false });
 
 			case _video.UPLOAD_START:
 				return _extends({}, state, { url: action.url, loading: true });
@@ -121864,6 +121993,69 @@
 	};
 
 	exports.default = videoReducers;
+
+/***/ },
+/* 1600 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Time = function (_React$Component) {
+		_inherits(Time, _React$Component);
+
+		function Time(props) {
+			_classCallCheck(this, Time);
+
+			return _possibleConstructorReturn(this, (Time.__proto__ || Object.getPrototypeOf(Time)).call(this, props));
+		}
+
+		_createClass(Time, [{
+			key: 'setFormat',
+			value: function setFormat(value) {
+				var sec_num = parseInt(value, 10),
+				    hours = Math.floor(sec_num / 3600),
+				    minutes = Math.floor((sec_num - hours * 3600) / 60),
+				    seconds = sec_num - hours * 3600 - minutes * 60;
+
+				hours = hours < 10 && hours > 0 ? '0' + hours : hours;
+				minutes = minutes < 10 ? '0' + minutes : minutes;
+				seconds = seconds < 10 ? '0' + seconds : seconds;
+
+				if (hours) return hours + ':' + minutes + ':' + seconds;else return minutes + ':' + seconds;
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'spam',
+					null,
+					this.setFormat(this.props.value)
+				);
+			}
+		}]);
+
+		return Time;
+	}(_react2.default.Component);
+
+	exports.default = Time;
 
 /***/ }
 /******/ ]);

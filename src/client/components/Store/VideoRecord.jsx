@@ -1,33 +1,13 @@
-import RecordRTC from 'recordrtc';
 import React from 'react';
-import { connect } from 'react-redux';
+import RecordRTC from 'recordrtc';
+import Time from './Time';
 
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
+import { RaisedButton } from 'material-ui';
 
 const styles = {
-	container_media_buttons: {
-		width:"100%",
-		textAlign: "center"
-	},
-	recIcon:{
-		color:"red",
-		width: 48,
-		height: 48,
-		fontSize:48
-	},
-	stopIcon:{
-		color:"black",
-		width: 48,
-		height: 48,
-		fontSize:48
-	},
-	medium: {
-		width: 96,
-		height: 96,
-		padding: 24,
-	},
-	btn: {
-		width: '100%'
+	white: {
+		color: '#fff'
 	}
 };
 
@@ -87,9 +67,9 @@ class VideoRecord extends React.Component {
 	startRecord() {
 		const self = this;
 
-		if (window.Video !== undefined && !self.isRecording) {
+		if (window.Video !== undefined && !self.state.isRecording) {
 			let counter = 0;
-			self.isRecording = true;
+			self.setState({isRecording: true});
 			window.Video.startRecording();
 			self.intervalTrigger = window.setInterval(() => {
 				counter++;
@@ -101,7 +81,7 @@ class VideoRecord extends React.Component {
 	saveRecord() {
 		const self = this;
 		
-		if (window.Video !== undefined && self.isRecording) {
+		if (window.Video !== undefined && self.state.isRecording) {
 			self.video.pause();
 			window.clearInterval(self.intervalTrigger);
 			self.setState({isRecording: false});
@@ -116,17 +96,40 @@ class VideoRecord extends React.Component {
 		}
 	}
 
+	stopIcon() {
+		return <Glyphicon glyph="stop" style={styles.white} />
+	}
+
 	render() {
 		return (
 			<Row>
 				<Col xs={12}>
 					<video ref='video' style={{ width:"100%" }}></video>
 				</Col>
-				<Col xs={8}>
-					<Button style={styles.btn} bsSize="large" onClick={this.startRecord}>RECORD {this.state.counter}</Button>
+				<Col xs={6}>
+					<RaisedButton
+						label="RECORD"
+						backgroundColor="#2ab27b"
+						labelColor="#fff"
+						disabled={this.state.isRecording}
+						onClick={this.startRecord}
+						fullWidth
+					/>
 				</Col>
-				<Col xs={4}>
-					<Button style={styles.btn} bsSize="large" onClick={this.saveRecord}><Glyphicon glyph="stop" /></Button>
+				<Col xs={3}>
+					<Row>
+						<Time value={this.state.counter} />
+					</Row>
+				</Col>
+				<Col xs={3}>
+					<RaisedButton
+						icon={this.stopIcon()}
+						backgroundColor="#eb4d5c"
+						labelColor="#fff"
+						disabled={!this.state.isRecording}
+						onClick={this.saveRecord}
+						fullWidth
+					/>
 				</Col>
 			</Row>
 		);

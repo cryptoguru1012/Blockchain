@@ -6,13 +6,27 @@ const initialState = {
 	recorded: false,
 	loading: false,
 	subtitles: [],
+	// subtitles: [
+	// 	{
+	// 		id: 1,
+	// 		startTime: '00:00:01,244',
+	// 		endTime: '00:00:05,345',
+	// 		text: 'Hello my name is Lorem\nand ...'
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		startTime: '00:00:06,754',
+	// 		endTime: '00:00:07,323',
+	// 		text: 'Lorem ipsum\ndolor sit amet.'
+	// 	}
+	// ],
 	videoUploaded: false
 };
 
 const videoReducers = (state = initialState, action) => {
 	switch (action.type) {
 		case DELETE_RECORD:
-			return { ...state, url: null };
+			return { ...state, url: null, recorded: false };
 
 		case UPLOAD_START:
 			return { ...state, url: action.url, loading: true };

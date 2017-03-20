@@ -1,13 +1,13 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import Parser from 'subtitles-parser';
+import Time from './Time';
 
-import ReactPlayer from 'react-player';
-
-import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
+import { Row, Col, Grid, Glyphicon } from 'react-bootstrap';
+import { RaisedButton } from 'material-ui';
 
 const styles = {
-	btn: {
-		width: '100%'
+	white: {
+		color: '#fff'
 	}
 };
 
@@ -15,11 +15,17 @@ class VideoPlayer extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {play:false};
-		this.player;
+		this.state = {
+			play: false,
+			duration: 0,
+			counter: 0
+		};
 
+		this.player;
+		this.srtFile;
 		this.handleVideoPlay = this.handleVideoPlay.bind(this);
 		this.handleVideoPause = this.handleVideoPause.bind(this);
+		this.handleVideoStop = this.handleVideoStop.bind(this);
 	}
 
 	componentDidMount() {
@@ -31,6 +37,20 @@ class VideoPlayer extends React.Component {
 		this.player.addEventListener('ended', e => {
 			this.setState({play:false});
 		});
+		this.player.addEventListener('loadedmetadata', e => {
+			this.setState({duration:this.player.duration});
+		});
+		this.player.addEventListener('timeupdate', e => {
+			this.setState({duration:this.player.duration});
+			this.setState({counter:this.player.currentTime})
+		});
+		this.srtFile = this.generateSrtFile(Parser.toSrt(this.props.subtitles));
+	}
+
+	generateSrtFile(text) {
+		let data = new Blob([text], {type: 'text/vtt'}),
+			file = window.URL.createObjectURL(data);
+		return file;
 	}
 
 	handleVideoPlay(){
@@ -43,24 +63,64 @@ class VideoPlayer extends React.Component {
 		this.player.pause();
 	}
 
+	handleVideoStop(e) {
+		this.setState({counter:0});
+		this.player.currentTime = 0;
+		e.preventDefault();
+	}
+
+	playIcon() {
+		return <Glyphicon glyph="play" style={styles.white} />
+	}
+
+	stopIcon() {
+		return <Glyphicon glyph="stop" style={styles.white} />
+	}
+
 	renderControls() {
 		if (!this.state.play)
-			return <Button style={styles.btn} bsSize="large" onClick={this.handleVideoPlay}><Glyphicon glyph="play" /></Button>
+			return <RaisedButton
+						icon={this.playIcon()}
+						backgroundColor="#000"
+						labelColor="#fff"
+						onClick={this.handleVideoPlay}
+						fullWidth
+					/>
 		else 
-			return <Button style={styles.btn} bsSize="large" onClick={this.handleVideoPause}><Glyphicon glyph="stop" /></Button>
+			return <RaisedButton
+						icon={this.stopIcon()}
+						backgroundColor="#000"
+						labelColor="#fff"
+						onClick={this.handleVideoPause}
+						onContextMenu={e => this.handleVideoStop(e)}
+						fullWidth
+					/>
 	}
 
 	render() {
 		return (
 			<Row>
 				<Col xs={12}>
-					<video ref='player' style={{ width:"100%" }}></video>
+					<video ref='player' style={{ width:"100%" }}>
+						<track label="English" kind="subtitles" srcLang="en" src={this.srtFile} default></track>
+					</video>
 				</Col>
-				<Col xs={4}>
+				<Col xs={3}>
 					{this.renderControls()}
 				</Col>
-				<Col xs={8}>
-					<Button style={styles.btn} bsSize="large" onClick={this.props.onDelete}>RE-RECORD</Button>
+				<Col xs={3}>
+					<Row>
+						<Time value={this.state.counter} />/<Time value={this.state.duration} />
+					</Row>
+				</Col>
+				<Col xs={6}>
+					<RaisedButton
+						label="RE-RECORD"
+						backgroundColor="#eb4d5c"
+						labelColor="#fff"
+						onClick={this.props.onDelete}
+						fullWidth
+					/>
 				</Col>
 			</Row>
 		);

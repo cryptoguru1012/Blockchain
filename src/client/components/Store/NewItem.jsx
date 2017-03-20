@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Parser from 'subtitles-parser';
 
 // redux
 import { doCategoryReq } from '../../redux/actions/store/category';
@@ -47,8 +46,8 @@ class NewItem extends React.Component {
 		else {
 			return (
 				<Grid>
-					<VideoPlayer url={this.props.video.url} onDelete={this.props.onDelete}></VideoPlayer>
-					<SubtitlesEditer data={this.props.video.subtitles} onSave={this.props.onSave}></SubtitlesEditer>
+					<VideoPlayer url={this.props.video.url} onDelete={this.props.onDelete} subtitles={this.props.video.subtitles}></VideoPlayer>
+					<SubtitlesEditer subtitles={this.props.video.subtitles} onSave={this.props.onSave} onCancel={this.props.onDelete}></SubtitlesEditer>
 				</Grid>
 			)
 		}

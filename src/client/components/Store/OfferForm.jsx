@@ -94,7 +94,9 @@ class OfferForm extends React.Component {
 							required
 							fullWidth
 						/>
-						<br />
+						<FormsySelect name="category" floatingLabelText="Category" required fullWidth>
+							{this.renderCategories()}
+						</FormsySelect>
 						<FormsyText
 							name="price"
 							floatingLabelText="Price"
@@ -123,7 +125,6 @@ class OfferForm extends React.Component {
 							multiLine
 						/>
 						<FormsyToggle name="certificate" label="Certificate" />
-						<br />
 						{!this.props.newItem.loading &&
 							<RaisedButton
 								label="Send"

@@ -18,8 +18,10 @@ const styles = {
 		overflow: 'scroll',
 		margin: '20px 0'
 	},
-	table: {
-		width: '100%'
+	v_center: {
+		display: 'inline-block',
+	    verticalAlign: 'middle',
+	    float: 'none'
 	},
 	inputText: {
 		width: '100%'
@@ -34,70 +36,124 @@ class SubtitlesEditer extends React.Component {
 			subtitles: []
 		};
 
+		this.renderSubtitles = this.renderSubtitles.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
+		this.handleEditSubtitle = this.handleEditSubtitle.bind(this);
+		this.handleAddSubtitle = this.handleAddSubtitle.bind(this);
 	}
 
-	handleEdit(event, subtitle) {
+	componentWillMount() {
+		this.setState({subtitles: this.props.subtitles});
+	}
+
+	handleEditSubtitle(event, subtitle) {
 		let newSubtitles = this.state.subtitles;
 		for (var i = 0; i < newSubtitles.length; i++) {
 			if (newSubtitles[i].id === subtitle.id)
-				newSubtitles[i].text = event.target.value;
+				newSubtitles[i][event.target.name] = event.target.value;
 		}
-		newSubtitles = Object.assign([], this.state.subtitles, newSubtitles)
 		this.setState({ subtitles: newSubtitles});
 	}
 
+	handleEdit(event, id) {
+		let newSubtitles = this.state.subtitles;
+		for (var i = 0; i < newSubtitles.length; i++) {
+			if (newSubtitles[i].id === id) {
+				if (event.target.type !== 'textarea')
+					newSubtitles[i].edit = !newSubtitles[i].edit;
+			}
+		}
+		this.setState({ subtitles: newSubtitles});
+	}
+
+	handleAddSubtitle() {
+		let subtitles = this.state.subtitles
+			, newSubtitles = {
+				id: this.state.subtitles.length + 1,
+				startTime: '',
+				endTime: '',
+				text: '',
+				edit: true
+			};
+
+		newSubtitles = subtitles.concat(newSubtitles);
+		this.setState({ subtitles: newSubtitles});
+	}
+
+	subtitleEditOn(subtitle) {
+		return (
+			<Row>
+				<Formsy.Form>
+					<Col xs={5} style={styles.v_center}>
+						<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEditSubtitle(e, subtitle)} fullWidth multiLine />
+						<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEditSubtitle(e, subtitle)} fullWidth multiLine />
+					</Col>
+					<Col xs={7} style={styles.v_center}>
+						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEditSubtitle(e, subtitle)} fullWidth multiLine />
+					</Col>
+				</Formsy.Form>
+			</Row>
+		)
+	}
+
+	subtitleEditOff(subtitle) {
+		return (
+			<Row>
+				<Col xs={5} style={styles.v_center}>
+					<p>{subtitle.startTime} ->
+					<br/>{subtitle.endTime}</p>
+				</Col>
+				<Col xs={7} style={styles.v_center}>
+					<p>{subtitle.text}</p>
+				</Col>
+			</Row>
+		)
+	}
+
+	save() {
+		console.log(this.state.subtitles);
+	}
+
+	renderSubtitles() {
+		return this.state.subtitles.map(subtitle => {
+			return (
+				<div key={subtitle.id} style={styles.table} onClick={e => this.handleEdit(e, subtitle.id)}>
+					{(subtitle.edit) ? this.subtitleEditOn(subtitle) : this.subtitleEditOff(subtitle)}
+					<hr/>
+				</div>
+			)
+		});
+	}
+
 	render() {
-		const subtitles = this.props.subtitles;
-		const items = subtitles.map(subtitle =>  
-			<table key={subtitle.id} style={styles.table}>
-				<tbody>
-					<tr>
-						<td>{subtitle.startTime} -> <br/>
-						{subtitle.endTime}</td>
-						<td>
-							<Formsy.Form>
-								<FormsyText
-									name="subtitle[]"
-									value={subtitle.text}
-									validations="isWords"
-									onChange={(e) => this.handleEdit(e, subtitle)}
-									fullWidth
-									multiLine
-								/>
-							</Formsy.Form>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		);
 		return (
 			<Row className="subtitles" style={styles.subtitlesContent}>
-				<Col xs={4}>
+				<Col xs={5}>
 					<strong>Time</strong>
 				</Col>
-				<Col xs={8}>
+				<Col xs={7}>
 					<strong>Auto-generated subtitles</strong>
 				</Col>
-				<Col xs={12}>
-					<div className="subtitles" style={styles.subtitlesContainer}>
-						{items}
-					</div>
+				<Col xs={12} className="subtitles" style={styles.subtitlesContainer}>
+					<hr/>
+					{this.renderSubtitles()}
 				</Col>
-				<Col xs={4}>
+				<Col xs={5}>
 					<RaisedButton
-						label="CANCEL"
-						backgroundColor="#eb4d5c"
+						label="NEW"
+						backgroundColor="#2ab27b"
 						labelColor="#fff"
-						onClick={this.props.onCancel}
+						onClick={this.handleAddSubtitle}
+						fullWidth={true}
 					/>
 				</Col>
-				<Col xs={4} xsOffset={4}>
+				<Col xs={5} xsOffset={2}>
 					<RaisedButton
 						label="SAVE"
 						backgroundColor="#2ab27b"
 						labelColor="#fff"
-						onClick={this.props.onSave}
+						onClick={this.save.bind(this)}
+						fullWidth={true}
 					/>
 				</Col>
 			</Row>

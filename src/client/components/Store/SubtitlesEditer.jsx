@@ -110,10 +110,6 @@ class SubtitlesEditer extends React.Component {
 		)
 	}
 
-	save() {
-		console.log(this.state.subtitles);
-	}
-
 	renderSubtitles() {
 		return this.state.subtitles.map(subtitle => {
 			return (
@@ -152,7 +148,7 @@ class SubtitlesEditer extends React.Component {
 						label="SAVE"
 						backgroundColor="#2ab27b"
 						labelColor="#fff"
-						onClick={this.save.bind(this)}
+						onClick={this.props.onSave}
 						fullWidth={true}
 					/>
 				</Col>

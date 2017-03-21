@@ -72,7 +72,7 @@ class VideoPlayer extends React.Component {
     return <Glyphicon glyph="play" style={styles.white} />;
   }
 
-  stopIcon() {
+  pauseIcon() {
     return <Glyphicon glyph="pause" style={styles.white} />;
   }
 
@@ -90,7 +90,7 @@ class VideoPlayer extends React.Component {
     }
     return (
       <RaisedButton
-        icon={this.stopIcon()}
+        icon={this.pauseIcon()}
         backgroundColor="#000"
         labelColor="#fff"
         onClick={this.handleVideoPause}

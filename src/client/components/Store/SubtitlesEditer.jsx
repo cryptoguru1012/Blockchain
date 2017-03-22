@@ -14,7 +14,7 @@ const styles = {
 	},
 	subtitlesContainer: {
 		position: 'relative',
-		height: '150px',
+		height: '250px',
 		overflow: 'scroll',
 		margin: '20px 0'
 	},
@@ -33,17 +33,22 @@ class SubtitlesEditer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			subtitles: []
+			subtitles: [],
+			index: 0,
 		};
 
 		this.renderSubtitles = this.renderSubtitles.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
 		this.handleEditSubtitle = this.handleEditSubtitle.bind(this);
-		this.handleAddSubtitle = this.handleAddSubtitle.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
+		this.handleDelete = this.handleDelete.bind(this);
 	}
 
-	componentWillMount() {
-		this.setState({subtitles: this.props.subtitles});
+	componentDidMount() {
+		this.setState({
+			subtitles: this.props.subtitles,
+			index: this.props.subtitles.length,
+		});
 	}
 
 	handleEditSubtitle(event, subtitle) {
@@ -58,26 +63,45 @@ class SubtitlesEditer extends React.Component {
 	handleEdit(event, id) {
 		let newSubtitles = this.state.subtitles;
 		for (var i = 0; i < newSubtitles.length; i++) {
-			if (newSubtitles[i].id === id) {
-				if (event.target.type !== 'textarea')
+			if (newSubtitles[i].id === id)
+				if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'A' )
+					return false;
+				else
 					newSubtitles[i].edit = !newSubtitles[i].edit;
-			}
+			else
+				newSubtitles[i].edit = false;
 		}
 		this.setState({ subtitles: newSubtitles});
 	}
 
-	handleAddSubtitle() {
-		let subtitles = this.state.subtitles
-			, newSubtitles = {
-				id: this.state.subtitles.length + 1,
+	handleAdd() {
+		let newSubtitles = this.state.subtitles
+			, id = this.state.index + 1
+			, subtitle = {
+				id: id,
 				startTime: '',
 				endTime: '',
-				text: '',
+				text: 'id: ' + id,
 				edit: true
 			};
 
-		newSubtitles = subtitles.concat(newSubtitles);
-		this.setState({ subtitles: newSubtitles});
+		for (var i = 0; i < newSubtitles.length; i++)
+			newSubtitles[i].edit = false;
+		
+		newSubtitles = newSubtitles.concat([subtitle]);
+		this.setState({
+			subtitles: newSubtitles,
+			index: id
+		});
+	}
+
+	handleDelete(id) {
+		let newSubtitles = this.state.subtitles;
+		for (var i = 0; i < newSubtitles.length; i++) {
+			if (newSubtitles[i].id === id)
+				newSubtitles = newSubtitles.splice(i, 1);
+		}
+		this.setState({subtitles: newSubtitles});
 	}
 
 	subtitleEditOn(subtitle) {
@@ -90,6 +114,9 @@ class SubtitlesEditer extends React.Component {
 					</Col>
 					<Col xs={7} style={styles.v_center}>
 						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEditSubtitle(e, subtitle)} fullWidth multiLine />
+					</Col>
+					<Col xs={12}>
+						<a onClick={e => this.handleDelete(subtitle.id)} style={{color: '#eb4d5c'}}>Eliminar</a>
 					</Col>
 				</Formsy.Form>
 			</Row>
@@ -110,7 +137,7 @@ class SubtitlesEditer extends React.Component {
 		)
 	}
 
-	renderSubtitles() {
+	renderSubtitles() {;
 		return this.state.subtitles.map(subtitle => {
 			return (
 				<div key={subtitle.id} style={styles.table} onClick={e => this.handleEdit(e, subtitle.id)}>
@@ -139,7 +166,7 @@ class SubtitlesEditer extends React.Component {
 						label="NEW"
 						backgroundColor="#2ab27b"
 						labelColor="#fff"
-						onClick={this.handleAddSubtitle}
+						onClick={this.handleAdd}
 						fullWidth={true}
 					/>
 				</Col>

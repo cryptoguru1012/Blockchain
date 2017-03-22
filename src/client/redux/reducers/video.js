@@ -32,8 +32,7 @@ const videoReducers = (state = initialState, action) => {
 			return { ...state, url: action.url, loading: true };
 
 		case UPLOAD_ERROR:
-			// return { ...state, error: true, loading: false };
-			return { ...state, recorded: true, error: false, loading: false };
+			return { ...state, error: true, loading: false };
 
 		case UPLOAD_SUCCESS:
 			return { ...state, recorded: true, error: false, loading: false, subtitles: action.subtitles };

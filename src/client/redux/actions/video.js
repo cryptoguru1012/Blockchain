@@ -3,6 +3,7 @@ export const UPLOAD_START = 'UPLOAD_START';
 export const UPLOAD_ERROR = 'UPLOAD_ERROR';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const SET_OFFER = 'SET_OFFER';
+export const UPDATE_SUBTITLES = 'UPDATE_SUBTITLES';
 
 function uploadStart(payload) {
 	return {
@@ -36,6 +37,15 @@ export function setOfferForm() {
 	return (dispatch, getState) => {
 		dispatch({
 			type: SET_OFFER
+		});
+	}
+}
+
+export function updateSubtitles(subtitles) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: UPDATE_SUBTITLES,
+			subtitles: subtitles
 		});
 	}
 }

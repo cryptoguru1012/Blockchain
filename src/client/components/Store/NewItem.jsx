@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // redux
 import { doCategoryReq } from '../../redux/actions/store/category';
 import { doItemCreate, showSnackbar } from '../../redux/actions/store/new_item';
-import { setRecord, deleteRecord, setOfferForm } from '../../redux/actions/video';
+import { setRecord, deleteRecord, setOfferForm, updateSubtitles } from '../../redux/actions/video';
 
 // components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
@@ -72,6 +72,7 @@ class NewItem extends React.Component {
           subtitles={this.props.video.subtitles}
           onSave={this.props.onSave}
           onCancel={this.props.onDelete}
+          updateSubtitles={this.props.updateSubtitles}
         />
       </Grid>
     );
@@ -106,6 +107,9 @@ function mapDispatchToProps(dispatch) {
     getCategories: () => {
       dispatch(doCategoryReq());
     },
+    updateSubtitles: (subtitle) => {
+      dispatch(updateSubtitles(subtitle));
+    }
   };
 }
 

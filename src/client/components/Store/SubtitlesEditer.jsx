@@ -32,14 +32,10 @@ class SubtitlesEditer extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			subtitles: [],
-			index: 0,
-		};
 
 		this.renderSubtitles = this.renderSubtitles.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
-		this.handleEditSubtitle = this.handleEditSubtitle.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 	}
@@ -51,32 +47,53 @@ class SubtitlesEditer extends React.Component {
 		});
 	}
 
-	handleEditSubtitle(event, subtitle) {
-		let newSubtitles = this.state.subtitles;
-		for (var i = 0; i < newSubtitles.length; i++) {
-			if (newSubtitles[i].id === subtitle.id)
-				newSubtitles[i][event.target.name] = event.target.value;
-		}
-		this.setState({ subtitles: newSubtitles});
-	}
-
-	handleEdit(event, id) {
-		let newSubtitles = this.state.subtitles;
+	handleClick(event, id) {
+		let newSubtitles = this.props.subtitles;
 		for (var i = 0; i < newSubtitles.length; i++) {
 			if (newSubtitles[i].id === id)
-				if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'A' )
+				if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'A')
 					return false;
 				else
 					newSubtitles[i].edit = !newSubtitles[i].edit;
 			else
 				newSubtitles[i].edit = false;
 		}
-		this.setState({ subtitles: newSubtitles});
+		this.props.updateSubtitles(newSubtitles);
+	}
+
+	setTimeFormat(value) {
+		let chars = value.split('');
+		for (let i = 0; i < chars.length; i++) {
+			if (i == 2 || 5)
+				chars[i] = ':';
+			else if (i == 8)
+				chars[i] = ',';
+		}
+		return chars.join('');
+	}
+
+	handleEdit(event, id) {
+		let newSubtitles = this.props.subtitles;
+
+		for (var i = 0; i < newSubtitles.length; i++) {
+			if (newSubtitles[i].id === id) {
+				if (event.target.name == 'startTime' || event.target.name == 'endTime')
+					newSubtitles[i][event.target.name] = this.setTimeFormat(event.target.value);
+				else
+					newSubtitles[i][event.target.name] = event.target.value;
+			}
+		}
+		this.props.updateSubtitles(newSubtitles);
 	}
 
 	handleAdd() {
-		let newSubtitles = this.state.subtitles
-			, id = this.state.index + 1
+		let newSubtitles = this.props.subtitles,
+			currentId = 0;
+		for (var i = 0; i < newSubtitles.length; i++) {
+			newSubtitles[i].edit = false;
+			currentId = (newSubtitles[i].id > currentId) ? newSubtitles[i].id : currentId;
+		}
+		let id = currentId + 1
 			, subtitle = {
 				id: id,
 				startTime: '',
@@ -85,23 +102,18 @@ class SubtitlesEditer extends React.Component {
 				edit: true
 			};
 
-		for (var i = 0; i < newSubtitles.length; i++)
-			newSubtitles[i].edit = false;
-		
 		newSubtitles = newSubtitles.concat([subtitle]);
-		this.setState({
-			subtitles: newSubtitles,
-			index: id
-		});
+		this.props.updateSubtitles(newSubtitles);
 	}
 
 	handleDelete(id) {
-		let newSubtitles = this.state.subtitles;
+		let newSubtitles = this.props.subtitles;
 		for (var i = 0; i < newSubtitles.length; i++) {
-			if (newSubtitles[i].id === id)
+			if (newSubtitles[i].id === id) {
 				newSubtitles = newSubtitles.splice(i, 1);
+			}
 		}
-		this.setState({subtitles: newSubtitles});
+		this.props.updateSubtitles(newSubtitles);
 	}
 
 	subtitleEditOn(subtitle) {
@@ -109,11 +121,11 @@ class SubtitlesEditer extends React.Component {
 			<Row>
 				<Formsy.Form>
 					<Col xs={5} style={styles.v_center}>
-						<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEditSubtitle(e, subtitle)} fullWidth multiLine />
-						<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEditSubtitle(e, subtitle)} fullWidth multiLine />
+						<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
+						<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 					</Col>
 					<Col xs={7} style={styles.v_center}>
-						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEditSubtitle(e, subtitle)} fullWidth multiLine />
+						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 					</Col>
 					<Col xs={12}>
 						<a onClick={e => this.handleDelete(subtitle.id)} style={{color: '#eb4d5c'}}>Eliminar</a>
@@ -138,9 +150,9 @@ class SubtitlesEditer extends React.Component {
 	}
 
 	renderSubtitles() {;
-		return this.state.subtitles.map(subtitle => {
+		return this.props.subtitles.map(subtitle => {
 			return (
-				<div key={subtitle.id} style={styles.table} onClick={e => this.handleEdit(e, subtitle.id)}>
+				<div key={subtitle.id} onClick={e => this.handleClick(e, subtitle.id)}>
 					{(subtitle.edit) ? this.subtitleEditOn(subtitle) : this.subtitleEditOff(subtitle)}
 					<hr/>
 				</div>

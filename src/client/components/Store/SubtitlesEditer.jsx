@@ -64,7 +64,7 @@ class SubtitlesEditer extends React.Component {
 	setTimeFormat(value) {
 		let chars = value.split('');
 		for (let i = 0; i < chars.length; i++) {
-			if (i == 2 || 5)
+			if (i == 2 || i == 5)
 				chars[i] = ':';
 			else if (i == 8)
 				chars[i] = ',';

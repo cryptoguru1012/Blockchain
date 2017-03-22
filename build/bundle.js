@@ -102267,7 +102267,7 @@
 			value: function setTimeFormat(value) {
 				var chars = value.split('');
 				for (var i = 0; i < chars.length; i++) {
-					if (i == 2 || 5) chars[i] = ':';else if (i == 8) chars[i] = ',';
+					if (i == 2 || i == 5) chars[i] = ':';else if (i == 8) chars[i] = ',';
 				}
 				return chars.join('');
 			}

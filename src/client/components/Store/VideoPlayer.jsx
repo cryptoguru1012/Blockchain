@@ -9,6 +9,17 @@ const styles = {
   white: {
     color: '#fff',
   },
+  centerRow: {
+    margin: 'auto',
+    display: 'table',
+  },
+  colTime: {
+    margin: 0,
+    padding: 0,
+  },
+  marginTopVideo: {
+    marginTop: '5px',
+  },
 };
 
 class VideoPlayer extends React.Component {
@@ -40,7 +51,6 @@ class VideoPlayer extends React.Component {
       this.setState({ duration: this.player.duration });
     });
     this.player.addEventListener('timeupdate', (e) => {
-      this.setState({ duration: this.player.duration });
       this.setState({ counter: this.player.currentTime });
     });
     this.srtFile = this.generateVttFile(this.jsonToVtt(this.props.subtitles));
@@ -48,7 +58,12 @@ class VideoPlayer extends React.Component {
 
   jsonToVtt(arr) {
     return arr
-      .map(item => `${item.id}\n${(item.startTime).split(',').join('.')} --> ${(item.endTime).split(',').join('.')}\n${item.text}\n`)
+      .map(
+        item =>
+          `${item.id}\n${item.startTime
+            .split(',')
+            .join('.')} --> ${item.endTime.split(',').join('.')}\n${item.text}\n`,
+      )
       .join('\n');
   }
 
@@ -82,6 +97,10 @@ class VideoPlayer extends React.Component {
     return <Glyphicon glyph="pause" style={styles.white} />;
   }
 
+  deleteIcon() {
+    return <Glyphicon glyph="trash" style={styles.white} />;
+  }
+
   renderControls() {
     if (!this.state.play) {
       return (
@@ -108,35 +127,39 @@ class VideoPlayer extends React.Component {
 
   render() {
     return (
-      <Row>
-        <Col xs={12}>
-          <video
-            crossOrigin="anonymous"
-            preload="metadata"
-            ref="player"
-            style={{ width: '100%' }}
-          >
-            <track label="English" kind="captions" srcLang="en" src={this.srtFile} default />
-          </video>
-        </Col>
-        <Col xs={3}>
-          {this.renderControls()}
-        </Col>
-        <Col xs={3}>
-          <Row>
-            <Time value={this.state.counter} />/<Time value={this.state.duration} />
-          </Row>
-        </Col>
-        <Col xs={6}>
-          <RaisedButton
-            label="RE-RECORD"
-            backgroundColor="#eb4d5c"
-            labelColor="#fff"
-            onClick={this.props.onDelete}
-            fullWidth
-          />
-        </Col>
-      </Row>
+      <div style={styles.marginTopVideo}>
+        <Row>
+          <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
+            <video
+              crossOrigin="anonymous"
+              preload="metadata"
+              ref="player"
+              style={{ width: '100%' }}
+            >
+              <track label="English" kind="captions" srcLang="en" src={this.srtFile} default />
+            </video>
+          </Col>
+        </Row>
+        <Row id="controls">
+          <Col xs={3} md={2} mdOffset={3} lg={2} lgOffset={3}>
+            {this.renderControls()}
+          </Col>
+          <Col xs={6} md={2} lg={2} style={styles.colTime}>
+            <Row style={styles.centerRow}>
+              <Time value={this.state.counter} />/<Time value={this.state.duration} />
+            </Row>
+          </Col>
+          <Col xs={3} md={2} lg={2}>
+            <RaisedButton
+              icon={this.deleteIcon()}
+              backgroundColor="#eb4d5c"
+              labelColor="#fff"
+              onClick={this.props.onDelete}
+              fullWidth
+            />
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

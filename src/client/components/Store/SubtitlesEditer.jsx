@@ -14,18 +14,25 @@ const styles = {
 	},
 	subtitlesContainer: {
 		position: 'relative',
-		height: '250px',
-		overflow: 'scroll',
-		margin: '20px 0'
+		height: '200px',
+		overflowY: 'auto',
+		maxHeight: '200px',
+		margin: '10px 0',
 	},
 	v_center: {
 		display: 'inline-block',
 	    verticalAlign: 'middle',
-	    float: 'none'
+	    float: 'none',
 	},
 	inputText: {
-		width: '100%'
-	}
+		width: '100%',
+	},
+	white: {
+    	color: '#fff',
+  },
+  centerText: {
+    textAlign: 'center',
+  },
 };
 
 class SubtitlesEditer extends React.Component {
@@ -128,7 +135,7 @@ class SubtitlesEditer extends React.Component {
 						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 					</Col>
 					<Col xs={12}>
-						<a onClick={e => this.handleDelete(subtitle.id)} style={{color: '#eb4d5c'}}>Eliminar</a>
+						<a onClick={e => this.handleDelete(subtitle.id)} style={{color: '#eb4d5c'}}>Delete</a>
 					</Col>
 				</Formsy.Form>
 			</Row>
@@ -160,13 +167,21 @@ class SubtitlesEditer extends React.Component {
 		});
 	}
 
+	plusIcon() {
+    	return <Glyphicon glyph="plus" style={styles.white} />;
+  }
+
+  	saveIcon() {
+    	return <Glyphicon glyph="floppy-disk" style={styles.white} />;
+  }
+
 	render() {
 		return (
 			<Row className="subtitles" style={styles.subtitlesContent}>
-				<Col xs={5}>
+				<Col xs={5} style={styles.centerText}>
 					<strong>Time</strong>
 				</Col>
-				<Col xs={7}>
+				<Col xs={7} style={styles.centerText}>
 					<strong>Auto-generated subtitles</strong>
 				</Col>
 				<Col xs={12} className="subtitles" style={styles.subtitlesContainer}>
@@ -175,7 +190,8 @@ class SubtitlesEditer extends React.Component {
 				</Col>
 				<Col xs={5}>
 					<RaisedButton
-						label="NEW"
+						icon={this.plusIcon()}
+						label=" NEW SUBTITLE"
 						backgroundColor="#2ab27b"
 						labelColor="#fff"
 						onClick={this.handleAdd}
@@ -184,7 +200,8 @@ class SubtitlesEditer extends React.Component {
 				</Col>
 				<Col xs={5} xsOffset={2}>
 					<RaisedButton
-						label="SAVE"
+						icon={this.saveIcon()}
+						label=" SAVE"
 						backgroundColor="#2ab27b"
 						labelColor="#fff"
 						onClick={this.props.onSave}

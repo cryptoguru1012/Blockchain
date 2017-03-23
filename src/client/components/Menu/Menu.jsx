@@ -45,39 +45,37 @@ class Menu extends Component {
           onRequestChange={open => this.setState({ open })}
         >
           <AppBar showMenuIconButton={false} title="Menu" />
-          <MenuItem
-            onTouchTap={this.cerrar.bind(this)}
-            primaryText="Home"
-            containerElement={<Link to="/" />}
-          />
+          <Link to="/">
+            <MenuItem
+              onTouchTap={this.cerrar.bind(this)}
+              primaryText="Home"
+            />
+          </Link>
           <MenuItem
             disabled
             onTouchTap={this.cerrar.bind(this)}
             primaryText="Browse"
-            containerElement={<Link to="/" />}
           />
+          <Link to="/store/newItem">
           <MenuItem
             onTouchTap={this.cerrar.bind(this)}
             primaryText="Sell"
-            containerElement={<Link to="/store/newItem" />}
           />
+          </Link>
           <MenuItem
             disabled
             onTouchTap={this.cerrar.bind(this)}
             primaryText="About"
-            containerElement={<Link to="/" />}
           />
           <MenuItem
             disabled
             onTouchTap={this.cerrar.bind(this)}
             primaryText="Register"
-            containerElement={<Link to="/register" />}
           />
           <MenuItem
             disabled
             onTouchTap={this.cerrar.bind(this)}
             primaryText="Profile"
-            containerElement={<Link to="/keystone/signin" />}
           />
         </Drawer>
       </div>

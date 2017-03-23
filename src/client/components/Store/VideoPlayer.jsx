@@ -6,7 +6,7 @@ import { RaisedButton } from 'material-ui';
 
 const styles = {
   white: {
-    color: '#fff'
+    color: '#fff',
   },
   videoContainer: {
     display: 'relative',
@@ -14,14 +14,14 @@ const styles = {
   },
   video: {
     width: '100%',
-    display: 'block'
+    display: 'block',
   },
   videoBar: {
     position: 'relative',
     display: 'inline-block',
     width: '100%',
     height: '30px',
-    backgroundColor: '#e0e0e0'
+    backgroundColor: '#e0e0e0',
   },
   statusBar: {
     position: 'absolute',
@@ -29,7 +29,7 @@ const styles = {
     left: '0px',
     backgroundColor: '#ff6d00',
     width: '0%',
-    height: '100%'
+    height: '100%',
   },
   centerRow: {
     margin: 'auto',
@@ -38,7 +38,7 @@ const styles = {
   colTime: {
     margin: 0,
     padding: 0,
-  }
+  },
 };
 
 class VideoPlayer extends React.Component {
@@ -69,26 +69,28 @@ class VideoPlayer extends React.Component {
     });
     this.player.addEventListener('loadedmetadata', (e) => {
       if (this.player.readyState >= 2) {
-      console.log('carga');
-      console.log(this.player.duration);
+        console.log('carga');
+        console.log(this.player.duration);
         this.setState({ duration: this.player.duration });
       }
     });
     this.player.addEventListener('timeupdate', (e) => {
       this.setState({ counter: this.player.currentTime });
-      let percent = this.player.currentTime / this.player.duration
-        , barPercent = this.refs.statusBar.offsetParent.offsetWidth * percent;
+      this.setState({ duration: this.player.duration });
+      let percent = this.player.currentTime / this.player.duration,
+        barPercent = this.refs.statusBar.offsetParent.offsetWidth * percent;
 
-      this.refs.statusBar.style.width = barPercent + "px";
+      this.refs.statusBar.style.width = `${barPercent}px`;
     });
     this.subtitleFile = this.generateVttFile(this.jsonToVtt(this.props.subtitles));
   }
 
   updateStatusBar(event) {
-    let offsetLeft = event.target.offsetLeft
-      , clientX = event.clientX;
+    let offsetLeft = event.target.offsetLeft,
+      clientX = event.clientX;
 
-    this.player.currentTime = this.player.duration * ((clientX - offsetLeft) / this.refs.statusBar.offsetParent.offsetWidth);
+    this.player.currentTime = this.player.duration *
+      ((clientX - offsetLeft) / this.refs.statusBar.offsetParent.offsetWidth);
   }
 
   jsonToVtt(arr) {
@@ -164,16 +166,11 @@ class VideoPlayer extends React.Component {
     return (
       <Row style={styles.videoContainer}>
         <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-          <video
-            crossOrigin="anonymous"
-            preload="metadata"
-            ref="player"
-            style={styles.video}
-          >
+          <video crossOrigin="anonymous" preload="metadata" ref="player" style={styles.video}>
             <track label="English" kind="captions" srcLang="en" src={this.subtitleFile} default />
           </video>
           <div style={styles.videoBar} onClick={e => this.updateStatusBar(e)}>
-            <div style={styles.statusBar} ref="statusBar"></div>
+            <div style={styles.statusBar} ref="statusBar" />
           </div>
         </Col>
         <Col xs={3} md={2} mdOffset={3} lg={2} lgOffset={3}>

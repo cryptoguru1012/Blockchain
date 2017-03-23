@@ -51,10 +51,13 @@ class VideoRecord extends React.Component {
 
   componentDidMount() {
     this.video = this.refs.video;
-    navigator.mediaDevices
-      .getUserMedia(this.state.permissions)
-      .then(this.successCallback.bind(this))
-      .catch(this.errorCallback.bind(this));
+    if (navigator.mediaDevices !== undefined)
+      navigator.mediaDevices
+        .getUserMedia(this.state.permissions)
+        .then(this.successCallback.bind(this))
+        .catch(this.errorCallback.bind(this));
+    else
+      alert('MediaRecorder is not supported by this browser.');
   }
 
   componentWillUnmount() {

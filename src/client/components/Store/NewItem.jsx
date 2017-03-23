@@ -33,10 +33,10 @@ class NewItem extends React.Component {
       return (
         <Grid>
           <Row>
-            <Col xs={4} xsOffset={4}>
-              <div style={newItemStyle.loadingDiv}>
+            <Col xs={12} style={newItemStyle.loadingDiv}>
+              <center>
                 <CircularProgress size={100} thickness={6} />
-              </div>
+              </center>
             </Col>
           </Row>
         </Grid>

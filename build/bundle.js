@@ -96990,10 +96990,10 @@
 	            null,
 	            _react2.default.createElement(
 	              _reactBootstrap.Col,
-	              { xs: 4, xsOffset: 4 },
+	              { xs: 12, style: newItemStyle.loadingDiv },
 	              _react2.default.createElement(
-	                'div',
-	                { style: newItemStyle.loadingDiv },
+	                'center',
+	                null,
 	                _react2.default.createElement(_CircularProgress2.default, { size: 100, thickness: 6 })
 	              )
 	            )

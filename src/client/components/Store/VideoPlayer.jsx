@@ -1,5 +1,4 @@
 import React from 'react';
-import Parser from 'subtitles-parser';
 import Time from './Time';
 
 import { Row, Col, Grid, Glyphicon } from 'react-bootstrap';
@@ -21,7 +20,7 @@ class VideoPlayer extends React.Component {
     };
 
     this.player;
-    this.srtFile;
+    this.subtitleFile;
     this.handleVideoPlay = this.handleVideoPlay.bind(this);
     this.handleVideoPause = this.handleVideoPause.bind(this);
     this.handleVideoStop = this.handleVideoStop.bind(this);
@@ -43,7 +42,7 @@ class VideoPlayer extends React.Component {
       this.setState({ duration: this.player.duration });
       this.setState({ counter: this.player.currentTime });
     });
-    this.srtFile = this.generateVttFile(this.jsonToVtt(this.props.subtitles));
+    this.subtitleFile = this.generateVttFile(this.jsonToVtt(this.props.subtitles));
   }
 
   jsonToVtt(arr) {
@@ -116,7 +115,7 @@ class VideoPlayer extends React.Component {
             ref="player"
             style={{ width: '100%' }}
           >
-            <track label="English" kind="captions" srcLang="en" src={this.srtFile} default />
+            <track label="English" kind="captions" srcLang="en" src={this.subtitleFile} default />
           </video>
         </Col>
         <Col xs={3}>

@@ -9,7 +9,8 @@ const styles = {
     color: '#fff'
   },
   videoContainer: {
-    display: 'relative'
+    display: 'relative',
+    marginTop: '5px',
   },
   video: {
     width: '100%',
@@ -29,6 +30,14 @@ const styles = {
     backgroundColor: '#ff6d00',
     width: '0%',
     height: '100%'
+  },
+  centerRow: {
+    margin: 'auto',
+    display: 'table',
+  },
+  colTime: {
+    margin: 0,
+    padding: 0,
   }
 };
 
@@ -84,7 +93,12 @@ class VideoPlayer extends React.Component {
 
   jsonToVtt(arr) {
     return arr
-      .map(item => `${item.id}\n${(item.startTime).split(',').join('.')} --> ${(item.endTime).split(',').join('.')}\n${item.text}\n`)
+      .map(
+        item =>
+          `${item.id}\n${item.startTime
+            .split(',')
+            .join('.')} --> ${item.endTime.split(',').join('.')}\n${item.text}\n`,
+      )
       .join('\n');
   }
 
@@ -118,6 +132,10 @@ class VideoPlayer extends React.Component {
     return <Glyphicon glyph="pause" style={styles.white} />;
   }
 
+  deleteIcon() {
+    return <Glyphicon glyph="trash" style={styles.white} />;
+  }
+
   renderControls() {
     if (!this.state.play) {
       return (
@@ -144,8 +162,8 @@ class VideoPlayer extends React.Component {
 
   render() {
     return (
-      <Row>
-        <Col xs={12} style={styles.videoContainer}>
+      <Row style={styles.videoContainer}>
+        <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
           <video
             crossOrigin="anonymous"
             preload="metadata"
@@ -158,17 +176,17 @@ class VideoPlayer extends React.Component {
             <div style={styles.statusBar} ref="statusBar"></div>
           </div>
         </Col>
-        <Col xs={3}>
+        <Col xs={3} md={2} mdOffset={3} lg={2} lgOffset={3}>
           {this.renderControls()}
         </Col>
-        <Col xs={3}>
-          <Row>
+        <Col xs={6} md={2} lg={2} style={styles.colTime}>
+          <Row style={styles.centerRow}>
             <Time value={this.state.counter} />/<Time value={this.state.duration} />
           </Row>
         </Col>
-        <Col xs={6}>
+        <Col xs={3} md={2} lg={2}>
           <RaisedButton
-            label="RE-RECORD"
+            icon={this.deleteIcon()}
             backgroundColor="#eb4d5c"
             labelColor="#fff"
             onClick={this.props.onDelete}

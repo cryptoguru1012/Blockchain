@@ -17,6 +17,7 @@ import OfferForm from './OfferForm';
 const newItemStyle = {
   loadingDiv: {
     marginTop: '30vh',
+    textAlign: 'center',
   },
 };
 

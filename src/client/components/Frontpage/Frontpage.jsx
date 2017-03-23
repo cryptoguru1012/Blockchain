@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Row, Col, Grid, Button } from 'react-bootstrap';
+import { RaisedButton } from 'material-ui';
 
 const homeStyle = {
   wellStyles: {
@@ -13,6 +14,9 @@ const homeStyle = {
     display: 'flex',
     alignItems: 'center',
   },
+  buttonsStyle:{
+    marginTop: '10px',
+  }
 };
 
 class Frontpage extends React.Component {
@@ -25,9 +29,31 @@ class Frontpage extends React.Component {
       <Grid>
         <div style={homeStyle.centerStyle}>
           <div style={homeStyle.wellStyles}>
-            <Link className="btn btn-lg btn-primary btn-block" to={'/browser'}>Browser</Link>
-            <Link className="btn btn-lg btn-primary btn-block" to={'/store/newItem'}>Sell</Link>
-            <Link className="btn btn-lg btn-primary btn-block" to={'/about'}>About</Link>
+            <RaisedButton
+              label="Browser"
+              labelColor="#fff"
+              // containerElement={<Link to="/browser" />}
+              fullWidth
+              primary={true}
+              disabled={true}
+            />
+            <RaisedButton
+              label="Sell"
+              labelColor="#fff"
+              containerElement={<Link to="/store/newItem" />}
+              fullWidth
+              primary={true}
+              style={homeStyle.buttonsStyle}
+            />
+            <RaisedButton
+              label="About"
+              labelColor="#fff"
+              // containerElement={<Link to="/about" />}
+              fullWidth
+              primary={true}
+              style={homeStyle.buttonsStyle}
+              disabled={true}
+            />
           </div>
         </div>
       </Grid>

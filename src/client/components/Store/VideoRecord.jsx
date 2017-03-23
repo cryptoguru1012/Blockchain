@@ -6,135 +6,153 @@ import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import { RaisedButton } from 'material-ui';
 
 const styles = {
-	white: {
-		color: '#fff'
-	}
+  white: {
+    color: '#fff',
+  },
+  colCentered: {
+    float: 'none',
+    margin: '0 auto',
+    width: '100%',
+  },
+  marginTopVideo: {
+    marginTop: '5px',
+  },
+  centerText: {
+    margin: 'auto',
+    display: 'table',
+  },
 };
 
 class VideoRecord extends React.Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.intervalTrigger;
-		this.localStream = null;
-		this.video;
-		this.state = {
-			counter: 0,
-			isRecording: false,
-			permissions: { 
-				audio: true, 
-				video: true 
-			},
-			videoOptions: {
-				mimeType: 'video/webm',
-				audioBitsPerSecond: 128000,
-				videoBitsPerSecond: 128000,
-				bitsPerSecond: 128000
-			}
-		};
+    this.intervalTrigger;
+    this.localStream = null;
+    this.video;
+    this.state = {
+      counter: 0,
+      isRecording: false,
+      permissions: {
+        audio: true,
+        video: true,
+      },
+      videoOptions: {
+        mimeType: 'video/webm',
+        audioBitsPerSecond: 128000,
+        videoBitsPerSecond: 128000,
+        bitsPerSecond: 128000,
+      },
+    };
 
-		this.startRecord = this.startRecord.bind(this);
-		this.saveRecord = this.saveRecord.bind(this);
-	}
+    this.startRecord = this.startRecord.bind(this);
+    this.saveRecord = this.saveRecord.bind(this);
+  }
 
-	componentDidMount() {
-		this.video = this.refs.video;
-		navigator.mediaDevices.getUserMedia(this.state.permissions)
-			.then(this.successCallback.bind(this))
-			.catch(this.errorCallback.bind(this));
-	}
+  componentDidMount() {
+    this.video = this.refs.video;
+    navigator.mediaDevices
+      .getUserMedia(this.state.permissions)
+      .then(this.successCallback.bind(this))
+      .catch(this.errorCallback.bind(this));
+  }
 
-	componentWillUnmount() {
-		if (this.localStream !== null)
-			this.localStream.stop();
-	}
+  componentWillUnmount() {
+    if (this.localStream !== null) this.localStream.stop();
+  }
 
-	successCallback(stream) {
-		const video = this.video;
-		this.localStream = stream;
+  successCallback(stream) {
+    const video = this.video;
+    this.localStream = stream;
 
-		window.Video = RecordRTC(this.localStream, this.state.videoOptions);
-		video.src = window.URL.createObjectURL(this.localStream);
-		video.muted = true;
-		video.controls = false;
-		video.play();
-	}
+    window.Video = RecordRTC(this.localStream, this.state.videoOptions);
+    video.src = window.URL.createObjectURL(this.localStream);
+    video.muted = true;
+    video.controls = false;
+    video.play();
+  }
 
-	errorCallback(e) {
-		console.log('Error : ' + e.message);
-	}
+  errorCallback(e) {
+    console.log(`Error : ${e.message}`);
+  }
 
-	startRecord() {
-		const self = this;
+  startRecord() {
+    const self = this;
 
-		if (window.Video !== undefined && !self.state.isRecording) {
-			let counter = 0;
-			self.setState({isRecording: true});
-			window.Video.startRecording();
-			self.intervalTrigger = window.setInterval(() => {
-				counter++;
-				self.setState({counter: counter});
-			}, 1000);
-		}
-	}
+    if (window.Video !== undefined && !self.state.isRecording) {
+      let counter = 0;
+      self.setState({ isRecording: true });
+      window.Video.startRecording();
+      self.intervalTrigger = window.setInterval(
+        () => {
+          counter++;
+          self.setState({ counter });
+        },
+        1000,
+      );
+    }
+  }
 
-	saveRecord() {
-		const self = this;
-		
-		if (window.Video !== undefined && self.state.isRecording) {
-			self.video.pause();
-			window.clearInterval(self.intervalTrigger);
-			self.setState({isRecording: false});
-			window.Video.stopRecording(url => {
-				let data = new FormData()
-					, blob = window.Video.blob;
-				data.append('video', blob, 'videoRecorded.webm');
-				self.props.onRecorded(data, url);
-			});
+  saveRecord() {
+    const self = this;
 
-			this.localStream.stop();
-		}
-	}
+    if (window.Video !== undefined && self.state.isRecording) {
+      self.video.pause();
+      window.clearInterval(self.intervalTrigger);
+      self.setState({ isRecording: false });
+      window.Video.stopRecording((url) => {
+        let data = new FormData(),
+          blob = window.Video.blob;
+        data.append('video', blob, 'videoRecorded.webm');
+        self.props.onRecorded(data, url);
+      });
 
-	stopIcon() {
-		return <Glyphicon glyph="stop" style={styles.white} />
-	}
+      this.localStream.stop();
+    }
+  }
 
-	render() {
-		return (
-			<Row>
-				<Col xs={12}>
-					<video ref='video' style={{ width:"100%" }}></video>
-				</Col>
-				<Col xs={6}>
-					<RaisedButton
-						label="RECORD"
-						backgroundColor="#2ab27b"
-						labelColor="#fff"
-						disabled={this.state.isRecording}
-						onClick={this.startRecord}
-						fullWidth
-					/>
-				</Col>
-				<Col xs={3}>
-					<Row>
-						<Time value={this.state.counter} />
-					</Row>
-				</Col>
-				<Col xs={3}>
-					<RaisedButton
-						icon={this.stopIcon()}
-						backgroundColor="#eb4d5c"
-						labelColor="#fff"
-						disabled={!this.state.isRecording}
-						onClick={this.saveRecord}
-						fullWidth
-					/>
-				</Col>
-			</Row>
-		);
-	}
+  stopIcon() {
+    return <Glyphicon glyph="stop" style={styles.white} />;
+  }
+
+  render() {
+    return (
+      <div style={styles.marginTopVideo}>
+        <Row>
+          <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
+            <video ref="video" style={styles.colCentered} />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={6} md={3} mdOffset={3} lg={3} lgOffset={3}>
+            <RaisedButton
+              label="RECORD"
+              backgroundColor="#2ab27b"
+              labelColor="#fff"
+              disabled={this.state.isRecording}
+              onClick={this.startRecord}
+              fullWidth
+            />
+          </Col>
+          <Col xs={3} md={1} lg={1}>
+            <Row style={styles.centerText}>
+              <Time value={this.state.counter} />
+            </Row>
+          </Col>
+          <Col xs={3} md={2} lg={2}>
+            <RaisedButton
+              icon={this.stopIcon()}
+              backgroundColor="#eb4d5c"
+              labelColor="#fff"
+              disabled={!this.state.isRecording}
+              onClick={this.saveRecord}
+              fullWidth
+            />
+          </Col>
+        </Row>
+      </div>
+    );
+  }
 }
 
 export default VideoRecord;
-

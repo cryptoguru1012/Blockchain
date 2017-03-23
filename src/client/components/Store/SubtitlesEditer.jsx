@@ -25,6 +25,20 @@ const styles = {
 	},
 	inputText: {
 		width: '100%'
+	},
+	form: {
+		position: 'relative'
+	},
+	btnDelete: {
+		position: 'absolute',
+		top: '-38px',
+		right: '15px',
+		backgroundColor: '#eb4d5c',
+		color: '#fff',
+		borderRadius: '50%',
+		width: '35px',
+		height: '35px',
+		padding: '8px 13px'
 	}
 };
 
@@ -119,16 +133,14 @@ class SubtitlesEditer extends React.Component {
 	subtitleEditOn(subtitle) {
 		return (
 			<Row>
-				<Formsy.Form>
+				<Formsy.Form style={styles.form}>
+					<a onClick={e => this.handleDelete(subtitle.id)} style={styles.btnDelete}>X</a>
 					<Col xs={5} style={styles.v_center}>
 						<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 						<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 					</Col>
 					<Col xs={7} style={styles.v_center}>
 						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
-					</Col>
-					<Col xs={12}>
-						<a onClick={e => this.handleDelete(subtitle.id)} style={{color: '#eb4d5c'}}>Eliminar</a>
 					</Col>
 				</Formsy.Form>
 			</Row>
@@ -162,7 +174,7 @@ class SubtitlesEditer extends React.Component {
 		});
 		return subtitles.map(subtitle => {
 			return (
-				<div key={subtitle.id} onClick={e => this.handleClick(e, subtitle.id)}>
+				<div key={subtitle.id} onClick={e => this.handleClick(e, subtitle.id)} className={"subtitle-" + subtitle.id}>
 					{(subtitle.edit) ? this.subtitleEditOn(subtitle) : this.subtitleEditOff(subtitle)}
 					<hr/>
 				</div>
@@ -172,7 +184,7 @@ class SubtitlesEditer extends React.Component {
 
 	render() {
 		return (
-			<Row className="subtitles" style={styles.subtitlesContent}>
+			<Row className="content-subtitles" style={styles.subtitlesContent}>
 				<Col xs={5}>
 					<strong>Time</strong>
 				</Col>

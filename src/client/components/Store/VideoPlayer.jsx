@@ -43,11 +43,17 @@ class VideoPlayer extends React.Component {
       this.setState({ duration: this.player.duration });
       this.setState({ counter: this.player.currentTime });
     });
-    this.srtFile = this.generateSrtFile(Parser.toSrt(this.props.subtitles));
+    this.srtFile = this.generateVttFile(this.jsonToVtt(this.props.subtitles));
   }
 
-  generateSrtFile(text) {
-    let data = new Blob([text], { type: 'text/vtt' }),
+  jsonToVtt(arr) {
+    return arr
+      .map(item => `${item.id}\n${(item.startTime).split(',').join('.')} --> ${(item.endTime).split(',').join('.')}\n${item.text}\n`)
+      .join('\n');
+  }
+
+  generateVttFile(text) {
+    let data = new Blob([`WEBVTT FILE \n\n${text}`], { type: 'text/vtt' }),
       file = window.URL.createObjectURL(data);
     return file;
   }
@@ -104,8 +110,13 @@ class VideoPlayer extends React.Component {
     return (
       <Row>
         <Col xs={12}>
-          <video ref="player" style={{ width: '100%' }}>
-            <track label="English" kind="subtitles" srcLang="en" src={this.srtFile} default />
+          <video
+            crossOrigin="anonymous"
+            preload="metadata"
+            ref="player"
+            style={{ width: '100%' }}
+          >
+            <track label="English" kind="captions" srcLang="en" src={this.srtFile} default />
           </video>
         </Col>
         <Col xs={3}>

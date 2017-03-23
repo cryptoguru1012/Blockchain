@@ -97016,7 +97016,13 @@
 	        return _react2.default.createElement(
 	          _reactBootstrap.Grid,
 	          null,
-	          _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded })
+	          _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded }),
+	          _react2.default.createElement(_SubtitlesEditer2.default, {
+	            subtitles: this.props.video.subtitles,
+	            onSave: this.props.onSave,
+	            onCancel: this.props.onDelete,
+	            updateSubtitles: this.props.updateSubtitles
+	          })
 	        );
 	      }
 	      return _react2.default.createElement(
@@ -101943,12 +101949,19 @@
 	        _this2.setState({ duration: _this2.player.duration });
 	        _this2.setState({ counter: _this2.player.currentTime });
 	      });
-	      this.srtFile = this.generateSrtFile(_subtitlesParser2.default.toSrt(this.props.subtitles));
+	      this.srtFile = this.generateVttFile(this.jsonToVtt(this.props.subtitles));
 	    }
 	  }, {
-	    key: 'generateSrtFile',
-	    value: function generateSrtFile(text) {
-	      var data = new Blob([text], { type: 'text/vtt' }),
+	    key: 'jsonToVtt',
+	    value: function jsonToVtt(arr) {
+	      return arr.map(function (item) {
+	        return item.id + '\n' + item.startTime.split(',').join('.') + ' --> ' + item.endTime.split(',').join('.') + '\n' + item.text + '\n';
+	      }).join('\n');
+	    }
+	  }, {
+	    key: 'generateVttFile',
+	    value: function generateVttFile(text) {
+	      var data = new Blob(['WEBVTT FILE \n\n' + text], { type: 'text/vtt' }),
 	          file = window.URL.createObjectURL(data);
 	      return file;
 	    }
@@ -102017,8 +102030,13 @@
 	          { xs: 12 },
 	          _react2.default.createElement(
 	            'video',
-	            { ref: 'player', style: { width: '100%' } },
-	            _react2.default.createElement('track', { label: 'English', kind: 'subtitles', srcLang: 'en', src: this.srtFile, 'default': true })
+	            {
+	              crossOrigin: 'anonymous',
+	              preload: 'metadata',
+	              ref: 'player',
+	              style: { width: '100%' }
+	            },
+	            _react2.default.createElement('track', { label: 'English', kind: 'captions', srcLang: 'en', src: this.srtFile, 'default': true })
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -102292,7 +102310,7 @@
 					newSubtitles[i].edit = false;
 					currentId = newSubtitles[i].id > currentId ? newSubtitles[i].id : currentId;
 				}
-				var id = currentId + 1,
+				var id = parseInt(currentId) + 1,
 				    subtitle = {
 					id: id,
 					startTime: '',
@@ -102392,7 +102410,13 @@
 				var _this3 = this;
 
 				;
-				return this.props.subtitles.map(function (subtitle) {
+				var subtitles = this.props.subtitles;
+				subtitles.sort(function (a, b) {
+					if (a.startTime < b.startTime) return -1;
+					if (a.startTime > b.startTime) return 1;
+					return 0;
+				});
+				return subtitles.map(function (subtitle) {
 					return _react2.default.createElement(
 						'div',
 						{ key: subtitle.id, onClick: function onClick(e) {

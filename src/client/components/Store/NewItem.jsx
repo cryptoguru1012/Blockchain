@@ -17,6 +17,7 @@ import OfferForm from './OfferForm';
 const newItemStyle = {
   loadingDiv: {
     marginTop: '30vh',
+    textAlign: 'center',
   },
 };
 
@@ -33,7 +34,7 @@ class NewItem extends React.Component {
       return (
         <Grid>
           <Row>
-            <Col xs={4} xsOffset={4}>
+            <Col xs={4} xsOffset={4} md={4} mdOffset={4} lg={4} lgOffset={4}>
               <div style={newItemStyle.loadingDiv}>
                 <CircularProgress size={100} thickness={6} />
               </div>

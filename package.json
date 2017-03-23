@@ -43,7 +43,8 @@
     "redux-devtools-log-monitor": "^1.2.0",
     "redux-thunk": "^2.2.0",
     "subtitles-parser": "0.0.2",
-    "url-loader": "^0.5.7"
+    "url-loader": "^0.5.7",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",

@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 export const CATEGORY_REQ_START = 'CATEGORY_REQ_START';
 export const CATEGORY_REQ_ERR = 'CATEGORY_REQ_ERR';
 export const CATEGORY_REQ_SUCCESS = 'CATEGORY_REQ_SUCCESS';

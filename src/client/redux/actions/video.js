@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 export const DELETE_RECORD = 'DELETE_RECORD';
 export const UPLOAD_START = 'UPLOAD_START';
 export const UPLOAD_ERROR = 'UPLOAD_ERROR';

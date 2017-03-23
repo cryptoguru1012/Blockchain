@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 export const ITEM_CREATE_START = 'ITEM_CREATE_START';
 export const ITEM_CREATE_ERR = 'ITEM_CREATE_ERR';
 export const ITEM_CREATE_SUCCESS = 'ITEM_CREATE_SUCCESS';

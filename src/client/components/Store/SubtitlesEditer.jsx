@@ -93,7 +93,7 @@ class SubtitlesEditer extends React.Component {
 			newSubtitles[i].edit = false;
 			currentId = (newSubtitles[i].id > currentId) ? newSubtitles[i].id : currentId;
 		}
-		let id = currentId + 1
+		let id = parseInt(currentId) + 1
 			, subtitle = {
 				id: id,
 				startTime: '',
@@ -149,8 +149,18 @@ class SubtitlesEditer extends React.Component {
 		)
 	}
 
+
+
 	renderSubtitles() {;
-		return this.props.subtitles.map(subtitle => {
+		let subtitles = this.props.subtitles;
+		subtitles.sort((a,b) => {
+			if ( a.startTime < b.startTime )
+				return -1;
+			if ( a.startTime > b.startTime )
+				return 1;
+			return 0;
+		});
+		return subtitles.map(subtitle => {
 			return (
 				<div key={subtitle.id} onClick={e => this.handleClick(e, subtitle.id)}>
 					{(subtitle.edit) ? this.subtitleEditOn(subtitle) : this.subtitleEditOff(subtitle)}

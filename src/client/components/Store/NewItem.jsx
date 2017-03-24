@@ -10,6 +10,7 @@ import { setRecord, deleteRecord, setOfferForm, updateSubtitles } from '../../re
 import { Row, Col, Grid, Button } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import VideoRecord from './VideoRecord';
+import VideoRecord2 from './VideoRecord2';
 import VideoPlayer from './VideoPlayer';
 import SubtitlesEditer from './SubtitlesEditer';
 import OfferForm from './OfferForm';
@@ -24,9 +25,20 @@ const newItemStyle = {
 class NewItem extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      RecordRTC: false
+    }
   }
+
   componentWillMount() {
     this.props.getCategories();
+
+    if (navigator.mediaDevices) {
+      this.setState({
+        RecordRTC: true
+      });
+    }
   }
 
   render() {
@@ -58,7 +70,8 @@ class NewItem extends React.Component {
     if (!this.props.video.recorded || this.props.video.error) {
       return (
         <Grid>
-          <VideoRecord onRecorded={this.props.onRecorded} />
+          {this.state.RecordRTC && <VideoRecord onRecorded={this.props.onRecorded} />}
+          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded} />}
         </Grid>
       );
     }

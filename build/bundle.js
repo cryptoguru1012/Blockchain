@@ -97871,7 +97871,7 @@
 	        video: true
 	      },
 	      videoOptions: {
-	        mimeType: 'video/webm',
+	        mimeType: 'video/mp4',
 	        audioBitsPerSecond: 128000,
 	        videoBitsPerSecond: 128000,
 	        bitsPerSecond: 128000
@@ -97938,7 +97938,7 @@
 	        window.Video.stopRecording(function (url) {
 	          var data = new FormData(),
 	              blob = window.Video.blob;
-	          data.append('video', blob, 'videoRecorded.webm');
+	          data.append('video', blob, 'videoRecorded.mp4');
 	          self.props.onRecorded(data, url);
 	        });
 
@@ -102483,7 +102483,7 @@
 				    url = URL.createObjectURL(blob),
 				    data = new FormData();
 
-				data.append('video', blob);
+				data.append('video', blob, 'videoRecorded.mp4');
 				this.props.onRecorded(data, url);
 			}
 		}, {

@@ -48,10 +48,10 @@ class VideoPlayer extends React.Component {
       play: false,
       duration: 0,
       counter: 0,
+      subtitleFile: null
     };
 
     this.player;
-    this.subtitleFile;
     this.handleVideoPlay = this.handleVideoPlay.bind(this);
     this.handleVideoPause = this.handleVideoPause.bind(this);
     this.handleVideoStop = this.handleVideoStop.bind(this);
@@ -82,7 +82,8 @@ class VideoPlayer extends React.Component {
 
       this.refs.statusBar.style.width = `${barPercent}px`;
     });
-    this.subtitleFile = this.generateVttFile(this.jsonToVtt(this.props.subtitles));
+
+    this.setState({ subtitleFile: this.generateVttFile(this.jsonToVtt(this.props.subtitles)) });
   }
 
   updateStatusBar(event) {
@@ -102,6 +103,12 @@ class VideoPlayer extends React.Component {
             .join('.')} --> ${item.endTime.split(',').join('.')}\n${item.text}\n`,
       )
       .join('\n');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ subtitleFile: null });
+    this.setState({ subtitleFile: this.generateVttFile(this.jsonToVtt(nextProps.subtitles)) });
+
   }
 
   generateVttFile(text) {
@@ -167,7 +174,7 @@ class VideoPlayer extends React.Component {
       <Row style={styles.videoContainer}>
         <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
           <video crossOrigin="anonymous" preload="metadata" ref="player" style={styles.video}>
-            <track label="English" kind="captions" srcLang="en" src={this.subtitleFile} default />
+            <track label="English" kind="captions" srcLang="en" src={this.state.subtitleFile} default />
           </video>
           <div style={styles.videoBar} onClick={e => this.updateStatusBar(e)}>
             <div style={styles.statusBar} ref="statusBar" />

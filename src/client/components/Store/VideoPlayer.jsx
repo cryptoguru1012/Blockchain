@@ -47,19 +47,21 @@ class VideoPlayer extends React.Component {
     this.state = {
       play: false,
       duration: 0,
-      counter: 0,
-      subtitleFile: null
+      counter: 0
     };
 
     this.player;
+    this.track;
     this.handleVideoPlay = this.handleVideoPlay.bind(this);
     this.handleVideoPause = this.handleVideoPause.bind(this);
     this.handleVideoStop = this.handleVideoStop.bind(this);
     this.updateStatusBar = this.updateStatusBar.bind(this);
+    this.setSubtitles = this.setSubtitles.bind(this);
+    this.removeSubtitles = this.removeSubtitles.bind(this);
   }
 
   componentDidMount() {
-    const self = this;
+    let self = this;
     this.player = this.refs.player;
     this.player.src = this.props.url;
     this.player.muted = false;
@@ -68,22 +70,61 @@ class VideoPlayer extends React.Component {
       this.setState({ play: false });
     });
     this.player.addEventListener('loadedmetadata', (e) => {
-      if (this.player.readyState >= 2) {
-        console.log('carga');
-        console.log(this.player.duration);
-        this.setState({ duration: this.player.duration });
-      }
+      // add subtitles
+      self.setSubtitles();
+      console.log('first added', self.player.track.cues);
+
+      // showing real video duration
+      self.setState({ duration: self.player.duration });
     });
     this.player.addEventListener('timeupdate', (e) => {
       this.setState({ counter: this.player.currentTime });
-      this.setState({ duration: this.player.duration });
       let percent = this.player.currentTime / this.player.duration,
         barPercent = this.refs.statusBar.offsetParent.offsetWidth * percent;
 
       this.refs.statusBar.style.width = `${barPercent}px`;
     });
+  }
 
-    this.setState({ subtitleFile: this.generateVttFile(this.jsonToVtt(this.props.subtitles)) });
+  setSubtitles() {
+    let self = this;
+    // settings subtitles
+    self.player.track = self.player.addTextTrack("captions", "English", "en");
+    self.player.track.mode = "showing";
+
+    // load subtitles
+    self.props.subtitles.map(subtitle => {
+      let start = self.setTimetoSeconds(subtitle.startTime)
+        , end = self.setTimetoSeconds(subtitle.endTime);
+
+      self.player.track.addCue(new VTTCue(start, end, subtitle.text, subtitle.id)); 
+    });
+  }
+
+  removeSubtitles() {
+    let self = this
+      , cues = self.player.track.cues
+      , dataCues = [];
+
+    for (var i = 0; i < cues.length; i++)
+      dataCues.push(cues[i]);
+    for (var i = 0; i < dataCues.length; i++)
+      self.player.track.removeCue(dataCues[i]);
+  }
+
+  setTimetoSeconds(value) {
+    let output = 0
+      , match = value.match(/([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/);
+
+    if (match) {
+      value = value.split(':');
+      let h = parseInt(value[0]) * 3600
+      , m = parseInt(value[1]) * 60
+      , s = parseFloat(value[2].replace(',', '.'));
+
+      output = h + m + s;
+    }
+    return output;
   }
 
   updateStatusBar(event) {
@@ -94,37 +135,32 @@ class VideoPlayer extends React.Component {
       ((clientX - offsetLeft) / this.refs.statusBar.offsetParent.offsetWidth);
   }
 
-  jsonToVtt(arr) {
-    return arr
-      .map(
-        item =>
-          `${item.id}\n${item.startTime
-            .split(',')
-            .join('.')} --> ${item.endTime.split(',').join('.')}\n${item.text}\n`,
-      )
-      .join('\n');
-  }
-
   componentWillReceiveProps(nextProps) {
-    this.setState({ subtitleFile: null });
-    this.setState({ subtitleFile: this.generateVttFile(this.jsonToVtt(nextProps.subtitles)) });
+    let self = this;
 
-  }
+    if (!self.player.track)
+      return false;
 
-  generateVttFile(text) {
-    let data = new Blob([`WEBVTT FILE \n\n${text}`], { type: 'text/vtt' }),
-      file = window.URL.createObjectURL(data);
-    return file;
+    console.log('will remove', self.player.track.cues);
+    self.removeSubtitles();
+    console.log('revoved cues');
+
+    self.setSubtitles();
+    console.log('added', self.player.track.cues);
   }
 
   handleVideoPlay() {
-    this.setState({ play: true });
-    this.player.play();
+    if (this.player) {
+      this.setState({ play: true });
+      this.player.play();
+    }
   }
 
   handleVideoPause() {
-    this.setState({ play: false });
-    this.player.pause();
+    if (this.player) {
+      this.setState({ play: false });
+      this.player.pause();
+    }
   }
 
   handleVideoStop(e) {
@@ -173,8 +209,7 @@ class VideoPlayer extends React.Component {
     return (
       <Row style={styles.videoContainer}>
         <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-          <video crossOrigin="anonymous" preload="metadata" ref="player" style={styles.video}>
-            <track label="English" kind="captions" srcLang="en" src={this.state.subtitleFile} default />
+          <video preload="metadata" ref="player" style={styles.video}>
           </video>
           <div style={styles.videoBar} onClick={e => this.updateStatusBar(e)}>
             <div style={styles.statusBar} ref="statusBar" />

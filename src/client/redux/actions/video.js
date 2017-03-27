@@ -54,7 +54,7 @@ export function updateSubtitles(subtitles) {
 export function setRecord(data, url) {
 	return (dispatch, getState) => {
 		dispatch(uploadStart(url));
-		fetch('http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:3001/API/parse', {
+		fetch('https://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:3001/API/parse', {
 			method: "POST",
 			mode: 'cors',
 			body: data

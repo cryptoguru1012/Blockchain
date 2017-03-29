@@ -46,23 +46,28 @@ class OfferForm extends React.Component {
 	}
 
 	handleSubmit(data) {
-		const fd = new FormData();
+		const fd = {
+			alias: 'argvil19',
+			category: data.category,
+			title: data.name,
+			quantity: 1,
+			price: data.price,
+			description: data.itemDescription,
+			currency: data.currency,
+			certguid: '',
+			paymentoptions: data.paymentOptions,
+			geolocation: '',
+			safesearch: '',
+			private: data.certificate
+		}
 		
-		fd.append('name', data.name);
-		fd.append('category', data.category);
-		fd.append('price', data.price);
-		fd.append('currency', data.currency);
-		fd.append('payment', data.paymentOptions);
-		fd.append('description', data.itemDescription);
-		fd.append('certificate', data.certificate);
-		
-		this.props.onCreate(fd);
+		this.props.onCreate(JSON.stringify(fd));
 	}
 
 	renderCategories() {
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map(category => {
-				return <MenuItem key={category._id} value={category._id} primaryText={category.name} />
+				return <MenuItem key={category._id} value={category.name} primaryText={category.name} />
 			})
 		}
 	}

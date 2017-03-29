@@ -9,7 +9,7 @@ function itemCreateStart() {
 }
 
 function itemCreateErr(payload) {
-	return { type: ITEM_CREATE_ERR, message: payload.message };
+	return { type: ITEM_CREATE_ERR, message: payload.statusText };
 }
 
 function itemCreateSuccess(res) {
@@ -22,20 +22,22 @@ export function showSnackbar() {
 
 export function doItemCreate(params) {
 	return (dispatch, state) => {
+		console.log(params);
 		dispatch(itemCreateStart());
 
-		fetch('/API/store/item', {
-			method: 'POST',
-			credentials: 'include',
-			body: params,
+		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offernew", {
+			"headers": {
+				"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiZTQwMzFkZTM2ZjQ1YWYyMTcyZmE4ZDBmMDU0ZWZjZGQ4ZDRkZmQ2MiIsImlhdCI6MTQ5MDgxMzIxOSwiZXhwIjoxNDkwODE0NjU5fQ.OTTk3AphMXRYFY6suvt57o5gxdCnLqejZHWTedpC3eo",
+				"content-type": "application/json",
+			},
+			"method": "POST",
+			"body": params,
 		})
-		.then(res => res.json())
-		.then((res) => {
-			if (!res.success) {
-				dispatch(itemCreateErr(res));
-			} else {
+		.then(res => {
+			if (res.status === 200)
 				dispatch(itemCreateSuccess(res));
-			}
+			else
+				dispatch(itemCreateErr(res));
 		})
 		.catch(error => {
 			dispatch(itemCreateErr({message: error}));

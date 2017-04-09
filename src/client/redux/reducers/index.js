@@ -4,6 +4,7 @@ import { showItems }                        from './items';
 import registerReducer                      from './register';
 import storeReducers                        from './store';
 import videoReducers						from './video';
+import browserReducers						from './browser';
 
 export default combineReducers({
     reduxAsyncConnect,
@@ -11,5 +12,6 @@ export default combineReducers({
     register: registerReducer,
     categories: storeReducers.categoryReducer,
     newItem: storeReducers.newItemReducer,
-    video: videoReducers
+    video: videoReducers,
+    browser: browserReducers
 });

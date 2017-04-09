@@ -32,10 +32,9 @@ class Frontpage extends React.Component {
             <RaisedButton
               label="Browser"
               labelColor="#fff"
-              // containerElement={<Link to="/browser" />}
+              containerElement={<Link to="/browser" />}
               fullWidth
               primary={true}
-              disabled={true}
             />
             <RaisedButton
               label="Sell"
@@ -52,7 +51,7 @@ class Frontpage extends React.Component {
               fullWidth
               primary={true}
               style={homeStyle.buttonsStyle}
-              disabled={true}
+              disabled
             />
           </div>
         </div>

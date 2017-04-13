@@ -3,6 +3,7 @@ import { SEARCH_START, SEARCH_ERROR, SEARCH_SUCCESS } from '../actions/browser';
 const initialState = {
 	error: null,
 	loading: false,
+	message: '',
 	items: []
 };
 
@@ -12,7 +13,7 @@ const browserReducers = (state = initialState, action) => {
 			return { ...state, loading: true };
 
 		case SEARCH_ERROR:
-			return { ...state, error: true, loading: false };
+			return { ...state, error: true, loading: false, message: action.message };
 
 		case SEARCH_SUCCESS:
 			return { ...state, error: false, loading: false, items: action.items };

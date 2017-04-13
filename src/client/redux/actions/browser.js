@@ -11,13 +11,15 @@ function searchStart(payload) {
 
 function searchError(payload) {
 	return {
-		type: SEARCH_ERROR
+		type: SEARCH_ERROR,
+		message: payload
 	};
 }
 
 function searchSuccess(payload) {
 	return { 
-		type: SEARCH_SUCCESS
+		type: SEARCH_SUCCESS,
+		items: payload
 	};
 }
 
@@ -25,21 +27,25 @@ export function search(data) {
 	return (dispatch, getState) => {
 		dispatch(searchStart());
 
-		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offernew", {
-			"headers": {
-				"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiZTQwMzFkZTM2ZjQ1YWYyMTcyZmE4ZDBmMDU0ZWZjZGQ4ZDRkZmQ2MiIsImlhdCI6MTQ5MDgxMzIxOSwiZXhwIjoxNDkwODE0NjU5fQ.OTTk3AphMXRYFY6suvt57o5gxdCnLqejZHWTedpC3eo",
-			},
-			"method": "GET",
-			"body": '',
-		})
-		.then(res => {
-			if (res.status === 200)
-				dispatch(searchSuccess(res));
-			else
-				dispatch(searchError());
-		})
-		.catch(error => {
-			dispatch(searchError());
-		});
+		var esc = encodeURIComponent;
+		var query = Object.keys(data)
+			.map(k => esc(k) + '=' + esc(data[k]))
+			.join('&');
+
+		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+			.then(res => res.json())
+			.then((res) => {
+				var token = res.token;
+				return fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offerfilter?" + query, {
+					"headers": {
+						"Token": token,
+					},
+					mode: 'cors',
+					"method": "GET",
+				})
+			})
+			.then(res => res.json())
+			.then(res => dispatch(searchSuccess(res)))
+			.catch(error => dispatch(searchError(error)));
 	};
 }

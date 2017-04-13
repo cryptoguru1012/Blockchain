@@ -5,19 +5,29 @@ export const ITEM_CREATE_SUCCESS = 'ITEM_CREATE_SUCCESS';
 export const SHOW_SNACKBAR = 'SHOW_SNACKBAR';
 
 function itemCreateStart() {
-	return { type: ITEM_CREATE_START };
+	return { 
+		type: ITEM_CREATE_START
+	};
 }
 
 function itemCreateErr(payload) {
-	return { type: ITEM_CREATE_ERR, message: payload.statusText };
+	return { 
+		type: ITEM_CREATE_ERR, 
+		message: payload
+	};
 }
 
-function itemCreateSuccess(res) {
-	return { type: ITEM_CREATE_SUCCESS, payload: res.data };
+function itemCreateSuccess(payload) {
+	return { 
+		type: ITEM_CREATE_SUCCESS, 
+		payload: payload
+	};
 }
 
 export function showSnackbar() {
-	return { type: SHOW_SNACKBAR };
+	return {
+		type: SHOW_SNACKBAR
+	};
 }
 
 export function doItemCreate(params) {
@@ -25,22 +35,27 @@ export function doItemCreate(params) {
 		console.log(params);
 		dispatch(itemCreateStart());
 
-		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offernew", {
-			"headers": {
-				"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiZTQwMzFkZTM2ZjQ1YWYyMTcyZmE4ZDBmMDU0ZWZjZGQ4ZDRkZmQ2MiIsImlhdCI6MTQ5MDgxMzIxOSwiZXhwIjoxNDkwODE0NjU5fQ.OTTk3AphMXRYFY6suvt57o5gxdCnLqejZHWTedpC3eo",
-				"content-type": "application/json",
-			},
-			"method": "POST",
-			"body": params,
-		})
-		.then(res => {
-			if (res.status === 200)
-				dispatch(itemCreateSuccess(res));
-			else
-				dispatch(itemCreateErr(res));
-		})
-		.catch(error => {
-			dispatch(itemCreateErr({message: error}));
-		});
+		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+			.then(res => res.json())
+			.then(res => {
+				let token = res.token;
+				return fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offernew", {
+					headers: {
+						'Token': token,
+						'Content-Type': 'application/json'
+					},
+					method: "POST",
+					body: params,
+				})
+			})
+			.then(res => res.json())
+			.then(res => {
+				if (typeof res !== 'string')
+					console.log(res);
+				else
+					dispatch(itemCreateSuccess(res))
+					// dispatch(itemCreateErr(res))
+			})
+			.catch(error => dispatch(itemCreateErr(error)));
 	};
 };

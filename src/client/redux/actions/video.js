@@ -22,7 +22,7 @@ function uploadError(payload) {
 function uploadSuccess(payload) {
 	return { 
 		type: UPLOAD_SUCCESS,
-		subtitles: payload.data.videoSubs
+		payload: payload.data
 	};
 }
 

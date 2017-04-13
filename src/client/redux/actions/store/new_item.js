@@ -20,7 +20,7 @@ function itemCreateErr(payload) {
 function itemCreateSuccess(payload) {
 	return { 
 		type: ITEM_CREATE_SUCCESS, 
-		payload: payload
+		guid: payload[1]
 	};
 }
 
@@ -51,10 +51,9 @@ export function doItemCreate(params) {
 			.then(res => res.json())
 			.then(res => {
 				if (typeof res !== 'string')
-					console.log(res);
+					dispatch(itemCreateErr(res))
 				else
 					dispatch(itemCreateSuccess(res))
-					// dispatch(itemCreateErr(res))
 			})
 			.catch(error => dispatch(itemCreateErr(error)));
 	};

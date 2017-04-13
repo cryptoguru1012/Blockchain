@@ -6,6 +6,7 @@ import {
 } from '../../actions/store/new_item';
 
 const initialState = {
+	guid: null,
 	loading: false,
 	error: null,
 	success: false,
@@ -31,7 +32,7 @@ export default function categoryReducer(state = initialState, action) {
 			return { ...state, loading: true };
 
 		case ITEM_CREATE_SUCCESS:
-			return { ...state, success: true, loading: false };
+			return { ...state, guid: action.guid, success: true, loading: false };
 
 		case SHOW_SNACKBAR:
 			return { ...state, showSnackbar: false };

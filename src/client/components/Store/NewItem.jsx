@@ -63,6 +63,8 @@ class NewItem extends React.Component {
             newItem={this.props.newItem}
             onCreate={this.props.onCreate}
             showSnackbar={this.props.showSnackbar}
+            urlVideo={this.props.video.url}
+            subtitlesVideo={this.props.video.subtitles}
           />
         </Grid>
       );
@@ -78,7 +80,7 @@ class NewItem extends React.Component {
     return (
       <Grid>
         <VideoPlayer
-          url={this.props.video.url}
+          url={this.props.video.localUrl}
           onDelete={this.props.onDelete}
           subtitles={this.props.video.subtitles}
         />

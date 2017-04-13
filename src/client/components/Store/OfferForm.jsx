@@ -37,7 +37,7 @@ class OfferForm extends React.Component {
 
 	handleSnackbarSuccessRequestClose(reason) {
 		if (reason !== 'clickaway' && !this.props.newItem.error) {
-			window.location.reload();
+			// window.location.reload();
 		}
 	}
 
@@ -46,22 +46,24 @@ class OfferForm extends React.Component {
 	}
 
 	handleSubmit(data) {
-		const fd = {
-			alias: 'argvil19',
-			category: data.category,
-			title: data.name,
-			quantity: 1,
-			price: data.price,
-			description: data.itemDescription,
-			currency: data.currency,
-			certguid: '',
-			paymentoptions: data.paymentOptions,
-			geolocation: '',
-			safesearch: '',
-			private: data.certificate
-		}
+		let description = {
+			text: data.description,
+			urlVideo: this.props.urlVideo,
+			subtitlesVideo: this.props.subtitlesVideo
+		};
+		let payload = {
+				alias: 'argvil19',
+				category: data.category,
+				title: data.name,
+				quantity: 1,
+				price: parseInt(data.price),
+				description: JSON.stringify(description),
+				currency: data.currency,
+				paymentoptions: data.paymentOptions,
+				private: data.certificate
+			};
 		
-		this.props.onCreate(JSON.stringify(fd));
+		this.props.onCreate(JSON.stringify(payload));
 	}
 
 	renderCategories() {
@@ -88,7 +90,7 @@ class OfferForm extends React.Component {
 		return ( 
 			<Row>
 				<Col xs={12}>
-					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={this.handleSubmit} >
+					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
 						<FormsyText
 							name="name"
 							floatingLabelText="Name"

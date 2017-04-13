@@ -97697,7 +97697,7 @@
 	function itemCreateSuccess(payload) {
 		return {
 			type: ITEM_CREATE_SUCCESS,
-			payload: payload
+			guid: payload[1]
 		};
 	}
 
@@ -97727,8 +97727,7 @@
 			}).then(function (res) {
 				return res.json();
 			}).then(function (res) {
-				if (typeof res !== 'string') console.log(res);else dispatch(itemCreateSuccess(res));
-				// dispatch(itemCreateErr(res))
+				if (typeof res !== 'string') dispatch(itemCreateErr(res));else dispatch(itemCreateSuccess(res));
 			}).catch(function (error) {
 				return dispatch(itemCreateErr(error));
 			});
@@ -105351,6 +105350,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRouter = __webpack_require__(184);
+
 	var _CircularProgress = __webpack_require__(985);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
@@ -105413,7 +105414,8 @@
 			key: 'handleSnackbarSuccessRequestClose',
 			value: function handleSnackbarSuccessRequestClose(reason) {
 				if (reason !== 'clickaway' && !this.props.newItem.error) {
-					// window.location.reload();
+					var guid = this.props.newItem.guid;
+					_reactRouter.browserHistory.push('/offer/' + guid);
 				}
 			}
 		}, {
@@ -123004,6 +123006,7 @@
 	var _new_item = __webpack_require__(1118);
 
 	var initialState = {
+		guid: null,
 		loading: false,
 		error: null,
 		success: false,
@@ -123025,7 +123028,7 @@
 				return _extends({}, state, { loading: true });
 
 			case _new_item.ITEM_CREATE_SUCCESS:
-				return _extends({}, state, { success: true, loading: false });
+				return _extends({}, state, { guid: action.guid, success: true, loading: false });
 
 			case _new_item.SHOW_SNACKBAR:
 				return _extends({}, state, { showSnackbar: false });

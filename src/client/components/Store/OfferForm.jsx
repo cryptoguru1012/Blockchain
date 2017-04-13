@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 
 import CircularProgress from 'material-ui/CircularProgress';
 import Formsy from 'formsy-react';
@@ -37,7 +38,8 @@ class OfferForm extends React.Component {
 
 	handleSnackbarSuccessRequestClose(reason) {
 		if (reason !== 'clickaway' && !this.props.newItem.error) {
-			// window.location.reload();
+			let guid = this.props.newItem.guid;
+			browserHistory.push('/offer/' + guid);
 		}
 	}
 

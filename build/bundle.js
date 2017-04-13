@@ -105655,13 +105655,15 @@
 
 	function searchError(payload) {
 		return {
-			type: SEARCH_ERROR
+			type: SEARCH_ERROR,
+			message: payload
 		};
 	}
 
 	function searchSuccess(payload) {
 		return {
-			type: SEARCH_SUCCESS
+			type: SEARCH_SUCCESS,
+			items: payload
 		};
 	}
 
@@ -105669,16 +105671,28 @@
 		return function (dispatch, getState) {
 			dispatch(searchStart());
 
-			fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offernew", {
-				"headers": {
-					"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjoiZTQwMzFkZTM2ZjQ1YWYyMTcyZmE4ZDBmMDU0ZWZjZGQ4ZDRkZmQ2MiIsImlhdCI6MTQ5MDgxMzIxOSwiZXhwIjoxNDkwODE0NjU5fQ.OTTk3AphMXRYFY6suvt57o5gxdCnLqejZHWTedpC3eo"
-				},
-				"method": "GET",
-				"body": ''
+			var esc = encodeURIComponent;
+			var query = Object.keys(data).map(function (k) {
+				return esc(k) + '=' + esc(data[k]);
+			}).join('&');
+
+			fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62").then(function (res) {
+				return res.json();
 			}).then(function (res) {
-				if (res.status === 200) dispatch(searchSuccess(res));else dispatch(searchError());
+				var token = res.token;
+				return fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offerfilter?" + query, {
+					"headers": {
+						"Token": token
+					},
+					mode: 'cors',
+					"method": "GET"
+				});
+			}).then(function (res) {
+				return res.json();
+			}).then(function (res) {
+				return dispatch(searchSuccess(res));
 			}).catch(function (error) {
-				dispatch(searchError());
+				return dispatch(searchError(error));
 			});
 		};
 	}
@@ -105976,7 +105990,7 @@
 			key: 'render',
 			value: function render() {
 				var items = this.props.items.map(function (item) {
-					return _react2.default.createElement(_ItemBrowser2.default, { key: item.guid, data: item });
+					return _react2.default.createElement(_ItemBrowser2.default, { key: item.txid, data: item });
 				});
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
@@ -123459,6 +123473,7 @@
 	var initialState = {
 		error: null,
 		loading: false,
+		message: '',
 		items: []
 	};
 
@@ -123471,7 +123486,7 @@
 				return _extends({}, state, { loading: true });
 
 			case _browser.SEARCH_ERROR:
-				return _extends({}, state, { error: true, loading: false });
+				return _extends({}, state, { error: true, loading: false, message: action.message });
 
 			case _browser.SEARCH_SUCCESS:
 				return _extends({}, state, { error: false, loading: false, items: action.items });

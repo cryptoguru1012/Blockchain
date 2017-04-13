@@ -10,7 +10,7 @@ class ListBrowser extends React.Component {
 
 	render() {
 		let items = this.props.items.map((item) => {
-			return <ItemBrowser key={item.guid} data={item}/>
+			return <ItemBrowser key={item.txid} data={item}/>
 		});
 		return (
 			<Row>

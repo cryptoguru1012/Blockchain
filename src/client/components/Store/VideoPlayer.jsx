@@ -226,13 +226,13 @@ class VideoPlayer extends React.Component {
           </Row>
         </Col>
         <Col xs={3} md={2} lg={2}>
-          <RaisedButton
+          {this.props.onDelete && <RaisedButton
             icon={this.deleteIcon()}
             backgroundColor="#eb4d5c"
             labelColor="#fff"
             onClick={this.props.onDelete}
             fullWidth
-          />
+          />}
         </Col>
       </Row>
     );

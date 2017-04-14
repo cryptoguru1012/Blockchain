@@ -16,10 +16,6 @@ const initialState = {
 		{id: 1, value: 'Paypal', text: 'Paypal'},
 		{id: 2, value: 'Credit Card', text: 'Credit Card'},
 		{id: 3, value: 'Bitcoin', text: 'Bitcoin'}
-	],
-	currencies: [
-		{id: 1, value: 'USD', text: 'USD'},
-		{id: 2, value: 'EUR', text: 'EUR'}
 	]
 };
 

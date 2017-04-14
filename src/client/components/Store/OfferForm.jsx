@@ -69,16 +69,18 @@ class OfferForm extends React.Component {
 
 	renderCategories() {
 		if (this.props.categories.categories.length > 0) {
-			return this.props.categories.categories.map(category => {
-				return <MenuItem key={category._id} value={category.name} primaryText={category.name} />
+			return this.props.categories.categories.map((category, i) => {
+				return <MenuItem key={i} value={category.cat} primaryText={category.cat} />
 			})
 		}
 	}
 
 	renderCurrencies() {
-		return this.props.newItem.currencies.map(currency => {
-			return <MenuItem key={currency.id} value={currency.value} primaryText={currency.text} />
-		})
+		if (this.props.currencies.currencies.length > 0) {
+			return this.props.currencies.currencies.map((currency, i) => {
+				return <MenuItem key={i} value={currency.currency} primaryText={currency.currency} />
+			})
+		}
 	}
 
 	renderPayments() {

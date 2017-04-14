@@ -42,7 +42,10 @@ export function getOfferData(guid) {
 			})
 			.then(res => res.json())
 			.then(res => {
-				dispatch(loadSuccess(res))
+				if (typeof res === 'string')
+					dispatch(loadError(res))
+				else
+					dispatch(loadSuccess(res))
 			})
 			.catch(error => {
 				dispatch(loadError(error))

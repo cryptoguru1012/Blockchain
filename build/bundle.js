@@ -105766,7 +105766,7 @@
 				}).then(function (res) {
 					return res.json();
 				}).then(function (res) {
-					dispatch(loadSuccess(res));
+					if (typeof res === 'string') dispatch(loadError(res));else dispatch(loadSuccess(res));
 				}).catch(function (error) {
 					dispatch(loadError(error));
 				});

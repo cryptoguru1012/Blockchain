@@ -36,17 +36,16 @@ export function doItemCreate(params) {
 		dispatch(itemCreateStart());
 
 		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
-			.then(res => res.json())
-			.then(res => {
-				let token = res.token;
-				return fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offernew", {
-					headers: {
-						'Token': token,
-						'Content-Type': 'application/json'
-					},
-					method: "POST",
-					body: params,
-				})
+		.then(res => res.json())
+		.then(res => {
+			let token = res.token;
+			fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offernew", {
+				headers: {
+					'Token': token,
+					'Content-Type': 'application/json'
+				},
+				method: "POST",
+				body: params,
 			})
 			.then(res => res.json())
 			.then(res => {
@@ -55,6 +54,12 @@ export function doItemCreate(params) {
 				else
 					dispatch(itemCreateErr(res))
 			})
-			.catch(error => dispatch(itemCreateErr(error)));
+			.catch(error => {
+				dispatch(itemCreateErr(error))
+			});
+		})
+		.catch(error => {
+			dispatch(itemCreateErr(error))
+		});
 	};
 };

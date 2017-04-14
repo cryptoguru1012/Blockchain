@@ -32,18 +32,23 @@ export function getOfferData(guid) {
 		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
 		.then(res => res.json())
 		.then(res => {
-			if (res.ok) {
-				let token = res.token;
-				return fetch('http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offerinfo?guid=' + guid, {
-					headers: {
-						'Token': token
-					},
-					method: "GET"
-				})
-			}
+			let token = res.token;
+			fetch('http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offerinfo?guid=' + guid, {
+				headers: {
+					'Token': token
+				},
+				method: "GET"
+			})
+			.then(res => res.json())
+			.then(res => {
+				dispatch(loadSuccess(res))
+			})
+			.catch(error => {
+				dispatch(loadError(error))
+			});
 		})
-		.then(res => res.json())
-		.then(res => dispatch(loadSuccess(res)))
-		.catch(error => dispatch(loadError(error)));
+		.catch(error => {
+			dispatch(loadError(error))
+		});
 	};
 }

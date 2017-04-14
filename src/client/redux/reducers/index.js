@@ -11,6 +11,7 @@ export default combineReducers({
     items: showItems,
     register: registerReducer,
     categories: storeReducers.categoryReducer,
+    currencies: storeReducers.currencyReducer,
     newItem: storeReducers.newItemReducer,
     video: videoReducers,
     offer: offerReducers

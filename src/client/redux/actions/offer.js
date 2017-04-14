@@ -37,6 +37,7 @@ export function getOfferData(guid) {
 				headers: {
 					'Token': token
 				},
+				mode: 'cors',
 				method: "GET"
 			})
 			.then(res => res.json())

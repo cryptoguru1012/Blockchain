@@ -105763,6 +105763,7 @@
 					headers: {
 						'Token': token
 					},
+					mode: 'cors',
 					method: "GET"
 				}).then(function (res) {
 					return res.json();

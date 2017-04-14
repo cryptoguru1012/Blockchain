@@ -51,9 +51,9 @@ export function doItemCreate(params) {
 			.then(res => res.json())
 			.then(res => {
 				if (typeof res !== 'string')
-					dispatch(itemCreateErr(res))
-				else
 					dispatch(itemCreateSuccess(res))
+				else
+					dispatch(itemCreateErr(res))
 			})
 			.catch(error => dispatch(itemCreateErr(error)));
 	};

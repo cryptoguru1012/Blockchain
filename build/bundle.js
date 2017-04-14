@@ -105352,8 +105352,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(184);
-
 	var _CircularProgress = __webpack_require__(985);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
@@ -105417,7 +105415,7 @@
 			value: function handleSnackbarSuccessRequestClose(reason) {
 				if (reason !== 'clickaway' && !this.props.newItem.error) {
 					var guid = this.props.newItem.guid;
-					_reactRouter.browserHistory.push('/offer/' + guid);
+					window.location = '/offer/' + guid;
 				}
 			}
 		}, {

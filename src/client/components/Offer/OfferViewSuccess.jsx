@@ -19,7 +19,8 @@ class OfferViewSuccess extends React.Component {
 	render() {
 		return (
 			<Col xs={12}>
-				<h2>{this.props.data.title}</h2>
+				<h2>{'Title: ' + this.props.data.title}</h2>
+				<h3>{'Price: ' + this.props.data.price + ' ' + this.props.data.currency}</h3>
 				<VideoPlayer
 					url={this.state.description.urlVideo}
 					subtitles={this.state.description.subtitlesVideo}

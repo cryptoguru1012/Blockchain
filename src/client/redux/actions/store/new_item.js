@@ -35,11 +35,11 @@ export function doItemCreate(params) {
 		console.log(params);
 		dispatch(itemCreateStart());
 
-		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
 		.then(res => res.json())
 		.then(res => {
 			let token = res.token;
-			fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offernew", {
+			fetch("https://d2fzm6xoa70bg8.cloudfront.net/offernew", {
 				headers: {
 					'Token': token,
 					'Content-Type': 'application/json'

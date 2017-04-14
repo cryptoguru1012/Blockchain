@@ -97426,6 +97426,8 @@
 
 	var _category = __webpack_require__(1117);
 
+	var _currency = __webpack_require__(1612);
+
 	var _new_item = __webpack_require__(1118);
 
 	var _video = __webpack_require__(1119);
@@ -97495,6 +97497,7 @@
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      this.props.getCategories();
+	      this.props.getCurrencies();
 
 	      if (navigator.mediaDevices) {
 	        this.setState({
@@ -97530,6 +97533,7 @@
 	          null,
 	          _react2.default.createElement(_OfferForm2.default, {
 	            categories: this.props.categories,
+	            currencies: this.props.currencies,
 	            newItem: this.props.newItem,
 	            onCreate: this.props.onCreate,
 	            showSnackbar: this.props.showSnackbar,
@@ -97570,9 +97574,10 @@
 	function mapStateToProps(state) {
 	  var video = state.video;
 	  var categories = state.categories;
+	  var currencies = state.currencies;
 	  var newItem = state.newItem;
 
-	  return { video: video, categories: categories, newItem: newItem };
+	  return { video: video, categories: categories, currencies: currencies, newItem: newItem };
 	}
 
 	function mapDispatchToProps(dispatch) {
@@ -97594,6 +97599,9 @@
 	    },
 	    getCategories: function getCategories() {
 	      dispatch((0, _category.doCategoryReq)());
+	    },
+	    getCurrencies: function getCurrencies() {
+	      dispatch((0, _currency.doCurrencyReq)());
 	    },
 	    updateSubtitles: function updateSubtitles(subtitle) {
 	      dispatch((0, _video.updateSubtitles)(subtitle));
@@ -97636,7 +97644,7 @@
 	function categoryReqSuccess(res) {
 		return {
 			type: CATEGORY_REQ_SUCCESS,
-			payload: res.data
+			payload: res.categories
 		};
 	};
 
@@ -97644,19 +97652,26 @@
 		return function (dispatch, state) {
 			dispatch(categoryReqStart());
 
-			fetch('/API/store/categories', {
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'GET',
-				credentials: 'include'
-			}).then(function (res) {
+			fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62").then(function (res) {
 				return res.json();
 			}).then(function (res) {
-				if (res.error) dispatch(categoryReqErr());else dispatch(categoryReqSuccess(res));
+				var token = res.token;
+				fetch('http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/aliasinfo?aliasname=syscategory', {
+					headers: {
+						'Token': token
+					},
+					mode: 'cors',
+					method: "GET"
+				}).then(function (res) {
+					return res.json();
+				}).then(function (res) {
+					var data = JSON.parse(res.value);
+					dispatch(categoryReqSuccess(data));
+				}).catch(function (error) {
+					dispatch(categoryReqErr(error));
+				});
 			}).catch(function (error) {
-				dispatch(categoryReqErr());
+				dispatch(categoryReqErr(error));
 			});
 		};
 	};
@@ -105449,17 +105464,19 @@
 			key: 'renderCategories',
 			value: function renderCategories() {
 				if (this.props.categories.categories.length > 0) {
-					return this.props.categories.categories.map(function (category) {
-						return _react2.default.createElement(_materialUi.MenuItem, { key: category._id, value: category.name, primaryText: category.name });
+					return this.props.categories.categories.map(function (category, i) {
+						return _react2.default.createElement(_materialUi.MenuItem, { key: i, value: category.cat, primaryText: category.cat });
 					});
 				}
 			}
 		}, {
 			key: 'renderCurrencies',
 			value: function renderCurrencies() {
-				return this.props.newItem.currencies.map(function (currency) {
-					return _react2.default.createElement(_materialUi.MenuItem, { key: currency.id, value: currency.value, primaryText: currency.text });
-				});
+				if (this.props.currencies.currencies.length > 0) {
+					return this.props.currencies.currencies.map(function (currency, i) {
+						return _react2.default.createElement(_materialUi.MenuItem, { key: i, value: currency.currency, primaryText: currency.currency });
+					});
+				}
 			}
 		}, {
 			key: 'renderPayments',
@@ -123013,6 +123030,7 @@
 	    items: _items.showItems,
 	    register: _register2.default,
 	    categories: _store2.default.categoryReducer,
+	    currencies: _store2.default.currencyReducer,
 	    newItem: _store2.default.newItemReducer,
 	    video: _video2.default,
 	    offer: _offer2.default
@@ -123137,6 +123155,10 @@
 
 	var _category2 = _interopRequireDefault(_category);
 
+	var _currency = __webpack_require__(1613);
+
+	var _currency2 = _interopRequireDefault(_currency);
+
 	var _new_item = __webpack_require__(1605);
 
 	var _new_item2 = _interopRequireDefault(_new_item);
@@ -123145,6 +123167,7 @@
 
 	var storeReducers = {
 	    categoryReducer: _category2.default,
+	    currencyReducer: _currency2.default,
 	    newItemReducer: _new_item2.default
 	};
 
@@ -123213,8 +123236,7 @@
 		success: false,
 		message: '',
 		showSnackbar: false,
-		payments: [{ id: 1, value: 'Paypal', text: 'Paypal' }, { id: 2, value: 'Credit Card', text: 'Credit Card' }, { id: 3, value: 'Bitcoin', text: 'Bitcoin' }],
-		currencies: [{ id: 1, value: 'USD', text: 'USD' }, { id: 2, value: 'EUR', text: 'EUR' }]
+		payments: [{ id: 1, value: 'Paypal', text: 'Paypal' }, { id: 2, value: 'Credit Card', text: 'Credit Card' }, { id: 3, value: 'Bitcoin', text: 'Bitcoin' }]
 	};
 
 	function categoryReducer() {
@@ -123865,6 +123887,111 @@
 	}
 
 	module.exports = warning;
+
+/***/ },
+/* 1612 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.CURRENCY_REQ_SUCCESS = exports.CURRENCY_REQ_ERR = exports.CURRENCY_REQ_START = undefined;
+	exports.doCurrencyReq = doCurrencyReq;
+
+	__webpack_require__(1114);
+
+	var CURRENCY_REQ_START = exports.CURRENCY_REQ_START = 'CURRENCY_REQ_START';
+	var CURRENCY_REQ_ERR = exports.CURRENCY_REQ_ERR = 'CURRENCY_REQ_ERR';
+	var CURRENCY_REQ_SUCCESS = exports.CURRENCY_REQ_SUCCESS = 'CURRENCY_REQ_SUCCESS';
+
+	function currencyReqStart() {
+		return {
+			type: CURRENCY_REQ_START
+		};
+	};
+
+	function currencyReqErr() {
+		return {
+			type: CURRENCY_REQ_ERR
+		};
+	};
+
+	function currencyReqSuccess(res) {
+		return {
+			type: CURRENCY_REQ_SUCCESS,
+			payload: res.rates
+		};
+	};
+
+	function doCurrencyReq() {
+		return function (dispatch, state) {
+			dispatch(currencyReqStart());
+
+			fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62").then(function (res) {
+				return res.json();
+			}).then(function (res) {
+				var token = res.token;
+				fetch('http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/aliasinfo?aliasname=sysrates.peg', {
+					headers: {
+						'Token': token
+					},
+					mode: 'cors',
+					method: "GET"
+				}).then(function (res) {
+					return res.json();
+				}).then(function (res) {
+					var data = JSON.parse(res.value);
+					dispatch(currencyReqSuccess(data));
+				}).catch(function (error) {
+					dispatch(currencyReqErr(error));
+				});
+			}).catch(function (error) {
+				dispatch(currencyReqErr(error));
+			});
+		};
+	};
+
+/***/ },
+/* 1613 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.default = currencyReducer;
+
+	var _currency = __webpack_require__(1612);
+
+	var initialState = {
+	    loading: false,
+	    error: null,
+	    success: false,
+	    currencies: []
+	};
+
+	function currencyReducer() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _currency.CURRENCY_REQ_START:
+	            return _extends({}, state, { loading: true });
+	        case _currency.CURRENCY_REQ_ERR:
+	            return _extends({}, state, { error: true });
+	        case _currency.CURRENCY_REQ_SUCCESS:
+	            return _extends({}, state, { success: true, currencies: action.payload });
+
+	        default:
+	            return state;
+	    }
+	};
 
 /***/ }
 /******/ ]);

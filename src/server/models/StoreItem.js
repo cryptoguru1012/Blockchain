@@ -47,7 +47,7 @@ StoreItem.add({
 	},
 	paymentOptions: { 
 		type: Types.Select, 
-		options: 'Paypal, Credit Card, Bitcoin',
+		options: 'SYS',
 		required: true,
 		initial:true 
 	},

@@ -180,7 +180,9 @@ class VideoPlayer extends React.Component {
   }
 
   deleteIcon() {
-    return <Glyphicon glyph="trash" style={styles.white} />;
+    return (
+      <i className="material-icons" style={styles.white}>&#xE15E;</i>
+    );
   }
 
   renderControls() {

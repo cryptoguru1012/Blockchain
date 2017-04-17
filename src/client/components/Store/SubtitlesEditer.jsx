@@ -194,17 +194,14 @@ class SubtitlesEditer extends React.Component {
   }
 
   	saveIcon() {
-    	return <Glyphicon glyph="floppy-disk" style={styles.white} />;
+    	return <Glyphicon glyph="ok" style={styles.white} />;
   }
 
 	render() {
 		return (
 			<Row className="content-subtitles" style={styles.subtitlesContent}>
-				<Col xs={5} style={styles.centerText}>
-					<strong>Time</strong>
-				</Col>
-				<Col xs={7} style={styles.centerText}>
-					<strong>Auto-generated subtitles</strong>
+				<Col xs={12} style={styles.centerText}>
+					<strong>This is what we heard. You may edit for clarity</strong>
 				</Col>
 				<Col xs={12} className="subtitles" style={styles.subtitlesContainer}>
 					<hr/>
@@ -213,7 +210,6 @@ class SubtitlesEditer extends React.Component {
 				<Col xs={5}>
 					<RaisedButton
 						icon={this.plusIcon()}
-						label=" NEW SUBTITLE"
 						backgroundColor="#2ab27b"
 						labelColor="#fff"
 						onClick={this.handleAdd}
@@ -223,7 +219,6 @@ class SubtitlesEditer extends React.Component {
 				<Col xs={5} xsOffset={2}>
 					<RaisedButton
 						icon={this.saveIcon()}
-						label=" SAVE"
 						backgroundColor="#2ab27b"
 						labelColor="#fff"
 						onClick={this.props.onSave}

@@ -32,11 +32,11 @@ export function search(data) {
 			.map(k => esc(k) + '=' + esc(data[k]))
 			.join('&');
 
-		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
 			.then(res => res.json())
 			.then((res) => {
 				var token = res.token;
-				return fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:8001/offerfilter?" + query, {
+				return fetch("https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?" + query, {
 					"headers": {
 						"Token": token,
 					},

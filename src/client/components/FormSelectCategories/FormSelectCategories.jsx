@@ -14,15 +14,16 @@ class Browser extends React.Component {
 
 	renderCategories() {
 		if (this.props.categories.length > 0) {
-			return this.props.categories.map(category => {
-				return <MenuItem key={category._id} value={category.name} primaryText={category.name} />
+			return this.props.categories.map((category, i) => {
+				return <MenuItem key={i} value={category.cat} primaryText={category.cat} />
 			})
 		}
 	}
 
 	render() {
+		let required = (this.props.required) ? true: false;
 		return (
-			<FormsySelect name={this.props.name} floatingLabelText={this.props.label} required fullWidth={this.props.fullWidth}>
+			<FormsySelect name={this.props.name} floatingLabelText={this.props.label} required={required} fullWidth={this.props.fullWidth}>
 				{this.renderCategories()}
 			</FormsySelect>
 		);

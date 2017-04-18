@@ -37,7 +37,8 @@ class OfferForm extends React.Component {
 
 	handleSnackbarSuccessRequestClose(reason) {
 		if (reason !== 'clickaway' && !this.props.newItem.error) {
-			window.location.reload();
+			let guid = this.props.newItem.guid;
+			window.location = '/offer/' + guid;
 		}
 	}
 
@@ -46,31 +47,40 @@ class OfferForm extends React.Component {
 	}
 
 	handleSubmit(data) {
-		const fd = new FormData();
+		let description = {
+			text: data.description,
+			urlVideo: this.props.urlVideo,
+			subtitlesVideo: this.props.subtitlesVideo
+		};
+		let payload = {
+				alias: 'argvil19',
+				category: data.category,
+				title: data.name,
+				quantity: 1,
+				price: parseInt(data.price),
+				description: JSON.stringify(description),
+				currency: data.currency,
+				paymentoptions: data.paymentOptions,
+				private: data.certificate
+			};
 		
-		fd.append('name', data.name);
-		fd.append('category', data.category);
-		fd.append('price', data.price);
-		fd.append('currency', data.currency);
-		fd.append('payment', data.paymentOptions);
-		fd.append('description', data.itemDescription);
-		fd.append('certificate', data.certificate);
-		
-		this.props.onCreate(fd);
+		this.props.onCreate(JSON.stringify(payload));
 	}
 
 	renderCategories() {
 		if (this.props.categories.categories.length > 0) {
-			return this.props.categories.categories.map(category => {
-				return <MenuItem key={category._id} value={category._id} primaryText={category.name} />
+			return this.props.categories.categories.map((category, i) => {
+				return <MenuItem key={i} value={category.cat} primaryText={category.cat} />
 			})
 		}
 	}
 
 	renderCurrencies() {
-		return this.props.newItem.currencies.map(currency => {
-			return <MenuItem key={currency.id} value={currency.value} primaryText={currency.text} />
-		})
+		if (this.props.currencies.currencies.length > 0) {
+			return this.props.currencies.currencies.map((currency, i) => {
+				return <MenuItem key={i} value={currency.currency} primaryText={currency.currency} />
+			})
+		}
 	}
 
 	renderPayments() {
@@ -83,7 +93,7 @@ class OfferForm extends React.Component {
 		return ( 
 			<Row>
 				<Col xs={12}>
-					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={this.handleSubmit} >
+					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
 						<FormsyText
 							name="name"
 							floatingLabelText="Name"

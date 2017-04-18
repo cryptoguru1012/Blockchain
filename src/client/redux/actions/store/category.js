@@ -18,7 +18,7 @@ function categoryReqErr() {
 function categoryReqSuccess(res) {
 	return {
 		type: CATEGORY_REQ_SUCCESS,
-		payload: res.data
+		payload: res.categories
 	};
 };
 
@@ -26,23 +26,28 @@ export function doCategoryReq() {
 	return (dispatch, state) => {
 		dispatch(categoryReqStart());
 
-		fetch('/API/store/categories', {
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			method: 'GET',
-			credentials: 'include'
-		})
+		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
 		.then(res => res.json())
 		.then(res => {
-			if (res.error)
-				dispatch(categoryReqErr());
-			else
-				dispatch(categoryReqSuccess(res));
+			let token = res.token;
+			fetch('https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory', {
+				headers: {
+					'Token': token
+				},
+				mode: 'cors',
+				method: "GET"
+			})
+			.then(res => res.json())
+			.then(res => {
+				let data = JSON.parse(res.value);
+				dispatch(categoryReqSuccess(data))
+			})
+			.catch(error => {
+				dispatch(categoryReqErr(error))
+			});
 		})
 		.catch(error => {
-			dispatch(categoryReqErr());
+			dispatch(categoryReqErr(error))
 		});
 	};
 };

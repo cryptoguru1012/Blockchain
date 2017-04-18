@@ -22,7 +22,7 @@ function uploadError(payload) {
 function uploadSuccess(payload) {
 	return { 
 		type: UPLOAD_SUCCESS,
-		subtitles: payload.data.videoSubs
+		payload: payload.data
 	};
 }
 
@@ -54,7 +54,7 @@ export function updateSubtitles(subtitles) {
 export function setRecord(data, url) {
 	return (dispatch, getState) => {
 		dispatch(uploadStart(url));
-		fetch('https://shopshots-argvil19.c9users.io/API/parse', {
+		fetch('https://d3j22jloo6hpq6.cloudfront.net/API/parse', {
 			method: "POST",
 			mode: 'cors',
 			body: data

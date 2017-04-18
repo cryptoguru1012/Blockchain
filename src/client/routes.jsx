@@ -11,6 +11,7 @@ import Register                     from './components/Register';
 import Frontpage                    from './components/Frontpage';
 import Store                        from './components/Store';
 import Browser                      from './components/Browser';
+import Offer                        from './components/Offer';
 
 const Routes = (
   <Router render={(props) => <ReduxAsyncConnect {...props}/>} history={browserHistory}>
@@ -19,6 +20,9 @@ const Routes = (
       <Route path='/register' component={Register} />
       <Route path='/store/newItem' component={Store.NewItem} />
       <Route path='/browser' component={Browser} />
+      <Route path='/offer' component={Offer}>
+        <Route path=':id' component={Offer} />
+      </Route>
     </Route>
   </Router>
 );

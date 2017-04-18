@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 // redux
 import { doCategoryReq } from '../../redux/actions/store/category';
+import { doCurrencyReq } from '../../redux/actions/store/currency';
 import { doItemCreate, showSnackbar } from '../../redux/actions/store/new_item';
 import { setRecord, deleteRecord, setOfferForm, updateSubtitles } from '../../redux/actions/video';
 
@@ -33,6 +34,7 @@ class NewItem extends React.Component {
 
   componentWillMount() {
     this.props.getCategories();
+    this.props.getCurrencies();
 
     if (navigator.mediaDevices) {
       this.setState({
@@ -60,9 +62,12 @@ class NewItem extends React.Component {
         <Grid>
           <OfferForm
             categories={this.props.categories}
+            currencies={this.props.currencies}
             newItem={this.props.newItem}
             onCreate={this.props.onCreate}
             showSnackbar={this.props.showSnackbar}
+            urlVideo={this.props.video.url}
+            subtitlesVideo={this.props.video.subtitles}
           />
         </Grid>
       );
@@ -78,7 +83,7 @@ class NewItem extends React.Component {
     return (
       <Grid>
         <VideoPlayer
-          url={this.props.video.url}
+          url={this.props.video.localUrl}
           onDelete={this.props.onDelete}
           subtitles={this.props.video.subtitles}
         />
@@ -96,9 +101,10 @@ class NewItem extends React.Component {
 function mapStateToProps(state) {
   const video = state.video;
   const categories = state.categories;
+  const currencies = state.currencies;
   const newItem = state.newItem;
 
-  return { video, categories, newItem };
+  return { video, categories, currencies, newItem };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -120,6 +126,9 @@ function mapDispatchToProps(dispatch) {
     },
     getCategories: () => {
       dispatch(doCategoryReq());
+    },
+    getCurrencies: () => {
+      dispatch(doCurrencyReq());
     },
     updateSubtitles: (subtitle) => {
       dispatch(updateSubtitles(subtitle));

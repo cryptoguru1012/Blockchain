@@ -94,8 +94,8 @@ class VideoPlayer extends React.Component {
 
     // load subtitles
     self.props.subtitles.map(subtitle => {
-      let start = self.setTimetoSeconds(subtitle.startTime)
-        , end = self.setTimetoSeconds(subtitle.endTime)
+      let start = subtitle.startTime
+        , end = subtitle.endTime
         , newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
 
         newCue.line = -1;
@@ -112,21 +112,6 @@ class VideoPlayer extends React.Component {
       dataCues.push(cues[i]);
     for (var i = 0; i < dataCues.length; i++)
       self.player.track.removeCue(dataCues[i]);
-  }
-
-  setTimetoSeconds(value) {
-    let output = 0
-      , match = value.match(/([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/);
-
-    if (match) {
-      value = value.split(':');
-      let h = parseInt(value[0]) * 3600
-      , m = parseInt(value[1]) * 60
-      , s = parseFloat(value[2].replace(',', '.'));
-
-      output = h + m + s;
-    }
-    return output;
   }
 
   updateStatusBar(event) {

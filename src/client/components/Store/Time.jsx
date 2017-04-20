@@ -24,7 +24,7 @@ class Time extends React.Component {
 
 	render() {
 		return (
-			<spam>{this.setFormat(this.props.value)}</spam>
+			<spam>{this.props.value}</spam>
 		);
 	}
 

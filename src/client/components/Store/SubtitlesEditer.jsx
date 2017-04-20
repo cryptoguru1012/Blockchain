@@ -14,9 +14,9 @@ const styles = {
 	},
 	subtitlesContainer: {
 		position: 'relative',
-		height: '200px',
+		minHeight: '150px',
 		overflowY: 'auto',
-		maxHeight: '200px',
+		maxHeight: '300px',
 		margin: '10px 0',
 	},
 	v_center: {
@@ -82,17 +82,6 @@ class SubtitlesEditer extends React.Component {
 		this.props.updateSubtitles(newSubtitles);
 	}
 
-	setTimeFormat(value) {
-		let chars = value.split('');
-		for (let i = 0; i < chars.length; i++) {
-			if (i == 2 || i == 5)
-				chars[i] = ':';
-			else if (i == 8)
-				chars[i] = ',';
-		}
-		return chars.join('');
-	}
-
 	handleEdit(event, id) {
 		let newSubtitles = this.props.subtitles;
 
@@ -107,6 +96,15 @@ class SubtitlesEditer extends React.Component {
 		this.props.updateSubtitles(newSubtitles);
 	}
 
+	setTimeFormat(value) {
+		let chars = value.split('');
+		for (let i = 0; i < chars.length; i++) {
+			if (i == 1)
+				chars[i] = '.';
+		}
+		return chars.join('');
+	}
+
 	handleAdd() {
 		let newSubtitles = this.props.subtitles,
 			currentId = 0;
@@ -119,7 +117,7 @@ class SubtitlesEditer extends React.Component {
 				id: id,
 				startTime: '',
 				endTime: '',
-				text: 'id: ' + id,
+				text: '',
 				edit: true
 			};
 
@@ -142,11 +140,11 @@ class SubtitlesEditer extends React.Component {
 			<Row>
 				<Formsy.Form style={styles.form}>
 					<a onClick={e => this.handleDelete(subtitle.id)} style={styles.btnDelete}>X</a>
-					<Col xs={5} style={styles.v_center}>
+					<Col xs={3} style={styles.v_center}>
 						<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 						<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 					</Col>
-					<Col xs={7} style={styles.v_center}>
+					<Col xs={9} style={styles.v_center}>
 						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 					</Col>
 				</Formsy.Form>
@@ -157,11 +155,11 @@ class SubtitlesEditer extends React.Component {
 	subtitleEditOff(subtitle) {
 		return (
 			<Row>
-				<Col xs={5} style={styles.v_center}>
+				<Col xs={3} style={styles.v_center}>
 					<p>{subtitle.startTime} ->
 					<br/>{subtitle.endTime}</p>
 				</Col>
-				<Col xs={7} style={styles.v_center}>
+				<Col xs={9} style={styles.v_center}>
 					<p>{subtitle.text}</p>
 				</Col>
 			</Row>
@@ -206,17 +204,16 @@ class SubtitlesEditer extends React.Component {
 				<Col xs={12} className="subtitles" style={styles.subtitlesContainer}>
 					<hr/>
 					{this.renderSubtitles()}
-				</Col>
-				<Col xs={5}>
 					<RaisedButton
 						icon={this.plusIcon()}
+						label="Add subtitle"
 						backgroundColor="#2ab27b"
 						labelColor="#fff"
 						onClick={this.handleAdd}
 						fullWidth={true}
 					/>
 				</Col>
-				<Col xs={5} xsOffset={2}>
+				<Col xs={5} xsOffset={7}>
 					<RaisedButton
 						icon={this.saveIcon()}
 						backgroundColor="#2ab27b"

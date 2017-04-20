@@ -46,6 +46,12 @@ const styles = {
 	},
 		centerText: {
 		textAlign: 'center',
+	},
+	even: {
+		backgroundColor: '#ccc'
+	},
+	odd: {
+		backgroundColor: '#f2f2f2'
 	}
 };
 
@@ -177,11 +183,15 @@ class SubtitlesEditer extends React.Component {
 				return 1;
 			return 0;
 		});
-		return subtitles.map(subtitle => {
+		return subtitles.map((subtitle, i) => {
+			let style;
+			if (i%2 == 0)
+				style = styles.even;
+			else
+				style = styles.odd;
 			return (
-				<div key={subtitle.id} onClick={e => this.handleClick(e, subtitle.id)} className={"subtitle-" + subtitle.id}>
+				<div key={subtitle.id} onClick={e => this.handleClick(e, subtitle.id)} className="subtitle" id={"subtitle-" + subtitle.id} style={style}>
 					{(subtitle.edit) ? this.subtitleEditOn(subtitle) : this.subtitleEditOff(subtitle)}
-					<hr/>
 				</div>
 			)
 		});

@@ -223,7 +223,7 @@ class SubtitlesEditer extends React.Component {
 						fullWidth={true}
 					/>
 				</Col>
-				<Col xs={5} xsOffset={7}>
+				<Col xs={3} xsOffset={9} md={2} mdOffset={10} lg={2} lgOffset={10}>
 					<RaisedButton
 						icon={this.saveIcon()}
 						backgroundColor="#2ab27b"

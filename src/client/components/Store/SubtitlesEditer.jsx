@@ -162,7 +162,7 @@ class SubtitlesEditer extends React.Component {
 		return (
 			<Row>
 				<Col xs={3} style={styles.v_center}>
-					<p>{subtitle.startTime} Sec</p>
+					<p>{this.formatTime(subtitle.startTime)} Sec</p>
 				</Col>
 				<Col xs={9} style={styles.v_center}>
 					<p>{subtitle.text}</p>
@@ -207,6 +207,10 @@ class SubtitlesEditer extends React.Component {
 				</div>
 			)
 		});
+	}
+
+	formatTime(time) {
+		return String(time).replace('.',':');
 	}
 
 	plusIcon() {

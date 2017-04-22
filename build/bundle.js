@@ -103166,7 +103166,7 @@
 						_react2.default.createElement(
 							'p',
 							null,
-							subtitle.startTime,
+							this.formatTime(subtitle.startTime),
 							' Sec'
 						)
 					),
@@ -103220,6 +103220,11 @@
 						subtitle.edit ? _this3.subtitleEditOn(subtitle) : _this3.subtitleEditOff(subtitle)
 					);
 				});
+			}
+		}, {
+			key: 'formatTime',
+			value: function formatTime(time) {
+				return String(time).replace('.', ':');
 			}
 		}, {
 			key: 'plusIcon',

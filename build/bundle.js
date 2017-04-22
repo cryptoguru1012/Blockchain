@@ -102751,11 +102751,9 @@
 	      this.player.addEventListener('loadedmetadata', function (e) {
 	        // add subtitles
 	        self.setSubtitles();
-	        console.log('first added', self.player.track.cues);
 
 	        // showing real video duration
 	        self.setState({ duration: self.player.duration });
-	        _this2.props.setDuration(self.player.duration);
 	      });
 	      this.player.addEventListener('timeupdate', function (e) {
 	        _this2.setState({ counter: _this2.player.currentTime });
@@ -102763,6 +102761,8 @@
 	            barPercent = _this2.refs.statusBar.offsetParent.offsetWidth * percent;
 
 	        _this2.refs.statusBar.style.width = barPercent + 'px';
+	        self.setState({ duration: _this2.player.duration });
+	        _this2.props.setDuration(_this2.player.duration);
 	      });
 	    }
 	  }, {

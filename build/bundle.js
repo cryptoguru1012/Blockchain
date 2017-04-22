@@ -95310,11 +95310,6 @@
 	  }
 
 	  _createClass(NewItem, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.textInput.focus();
-	    }
-	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      this.props.getCategories();
@@ -100410,6 +100405,7 @@
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				this.refs.newVideo.click();
+				alert("i'm hereee");
 			}
 		}, {
 			key: 'handleChange',

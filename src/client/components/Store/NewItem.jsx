@@ -31,10 +31,6 @@ class NewItem extends React.Component {
       RecordRTC: false
     }
   }
-  
-  componentDidMount() {
-    this.textInput.focus();
-  }
 
   componentWillMount() {
     this.props.getCategories();

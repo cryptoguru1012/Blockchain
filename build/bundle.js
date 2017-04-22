@@ -100403,6 +100403,7 @@
 		_createClass(VideoRecord2, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				console.log("called it");
 				this.textInput.focus();
 			}
 		}, {

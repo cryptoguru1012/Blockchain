@@ -41,6 +41,7 @@ class VideoRecord2 extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log("called it");
 		this.textInput.focus();
 	}
 

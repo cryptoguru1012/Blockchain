@@ -81,7 +81,6 @@ class NewItem extends React.Component {
         <Grid>
           {this.state.RecordRTC && <VideoRecord onRecorded={this.props.onRecorded} />}
           {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded} 
-          ref={(input) => { this.textInput = input; }}
           />}
         </Grid>
       );

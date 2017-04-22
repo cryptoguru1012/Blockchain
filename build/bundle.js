@@ -95329,8 +95329,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
-
 	      if (this.props.video.loading) {
 	        return _react2.default.createElement(
 	          _reactBootstrap.Grid,
@@ -95370,10 +95368,7 @@
 	          _reactBootstrap.Grid,
 	          null,
 	          this.state.RecordRTC && _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded }),
-	          !this.state.RecordRTC && _react2.default.createElement(_VideoRecord4.default, { onRecorded: this.props.onRecorded,
-	            ref: function ref(input) {
-	              _this2.textInput = input;
-	            }
+	          !this.state.RecordRTC && _react2.default.createElement(_VideoRecord4.default, { onRecorded: this.props.onRecorded
 	          })
 	        );
 	      }
@@ -100412,6 +100407,11 @@
 		}
 
 		_createClass(VideoRecord2, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.refs.newVideo.click();
+			}
+		}, {
 			key: 'handleChange',
 			value: function handleChange(event) {
 				var blob = event.target.files[0],
@@ -100442,7 +100442,7 @@
 									'CLICK TO RECORD/UPLOAD'
 								),
 								_react2.default.createElement('input', { onChange: this.handleChange,
-									style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
+									ref: 'newVideo', style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
 							)
 						)
 					)

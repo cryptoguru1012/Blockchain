@@ -100432,11 +100432,6 @@
 							_react2.default.createElement(
 								'form',
 								{ encType: 'multipart/form-data' },
-								_react2.default.createElement(
-									'label',
-									{ htmlFor: 'file', style: styles.label },
-									'CLICK TO RECORD/UPLOAD'
-								),
 								_react2.default.createElement('input', { onChange: this.handleChange,
 									ref: 'newVideo', style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
 							)

@@ -59,7 +59,6 @@ class VideoRecord2 extends React.Component {
 				<div style={styles.centerStyle}>
          			<div style={styles.wellStyles}>
          			    <form encType="multipart/form-data">
-							<label htmlFor="file" style={styles.label}>CLICK TO RECORD/UPLOAD</label>
 							<input onChange={this.handleChange} 
 							ref="newVideo" style={styles.input} type="file" id="file" accept="video/*;capture=camcorder"/>
 						</form>

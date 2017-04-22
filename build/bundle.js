@@ -95310,6 +95310,11 @@
 	  }
 
 	  _createClass(NewItem, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.textInput.focus();
+	    }
+	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      this.props.getCategories();
@@ -95324,6 +95329,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      if (this.props.video.loading) {
 	        return _react2.default.createElement(
 	          _reactBootstrap.Grid,
@@ -95363,7 +95370,11 @@
 	          _reactBootstrap.Grid,
 	          null,
 	          this.state.RecordRTC && _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded }),
-	          !this.state.RecordRTC && _react2.default.createElement(_VideoRecord4.default, { onRecorded: this.props.onRecorded })
+	          !this.state.RecordRTC && _react2.default.createElement(_VideoRecord4.default, { onRecorded: this.props.onRecorded,
+	            ref: function ref(input) {
+	              _this2.textInput = input;
+	            }
+	          })
 	        );
 	      }
 	      return _react2.default.createElement(
@@ -100401,12 +100412,6 @@
 		}
 
 		_createClass(VideoRecord2, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				console.log("called it");
-				this.textInput.focus();
-			}
-		}, {
 			key: 'handleChange',
 			value: function handleChange(event) {
 				var blob = event.target.files[0],
@@ -100419,8 +100424,6 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var _this2 = this;
-
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
 					null,
@@ -100439,9 +100442,7 @@
 									'CLICK TO RECORD/UPLOAD'
 								),
 								_react2.default.createElement('input', { onChange: this.handleChange,
-									ref: function ref(input) {
-										_this2.textInput = input;
-									}, style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
+									style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
 							)
 						)
 					)

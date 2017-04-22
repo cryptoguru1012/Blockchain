@@ -31,6 +31,10 @@ class NewItem extends React.Component {
       RecordRTC: false
     }
   }
+  
+  componentDidMount() {
+    this.textInput.focus();
+  }
 
   componentWillMount() {
     this.props.getCategories();
@@ -76,7 +80,9 @@ class NewItem extends React.Component {
       return (
         <Grid>
           {this.state.RecordRTC && <VideoRecord onRecorded={this.props.onRecorded} />}
-          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded} />}
+          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded} 
+          ref={(input) => { this.textInput = input; }}
+          />}
         </Grid>
       );
     }

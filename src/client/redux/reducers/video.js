@@ -1,4 +1,4 @@
-import { DELETE_RECORD, UPLOAD_START, UPLOAD_ERROR, UPLOAD_SUCCESS, SET_OFFER, UPDATE_SUBTITLES } from '../actions/video';
+import { DELETE_RECORD, UPLOAD_START, UPLOAD_ERROR, UPLOAD_SUCCESS, SET_OFFER, UPDATE_SUBTITLES, SET_VIDEO_DURATION } from '../actions/video';
 
 const initialState = {
 	localUrl: null,
@@ -7,17 +7,16 @@ const initialState = {
 	recorded: false,
 	loading: false,
 	subtitles: [],
+	videoDuration: 0,
 	videoUploaded: false
 };
 
 function setFormatTime(arr) {
-	console.log('arr:',arr);
 	let newArr = [];
 	arr.map(a => {
 		a.startTime = setTimetoSeconds(a.startTime);
 		a.endTime = setTimetoSeconds(a.endTime);
 	});
-	console.log('newArr',arr);
 	return arr;
 }
 
@@ -38,6 +37,9 @@ function setTimetoSeconds(value) {
 
 const videoReducers = (state = initialState, action) => {
 	switch (action.type) {
+		case SET_VIDEO_DURATION: 
+			return { ...state, videoDuration: action.duration }
+
 		case DELETE_RECORD:
 			return { ...state, localUrl: null, recorded: false };
 

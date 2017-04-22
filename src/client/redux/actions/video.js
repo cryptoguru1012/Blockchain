@@ -5,6 +5,7 @@ export const UPLOAD_ERROR = 'UPLOAD_ERROR';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const SET_OFFER = 'SET_OFFER';
 export const UPDATE_SUBTITLES = 'UPDATE_SUBTITLES';
+export const SET_VIDEO_DURATION = 'SET_VIDEO_DURATION';
 
 function uploadStart(payload) {
 	return {
@@ -24,6 +25,13 @@ function uploadSuccess(payload) {
 		type: UPLOAD_SUCCESS,
 		payload: payload.data
 	};
+}
+
+export function setDuration(payload) {
+	return {
+		type: SET_VIDEO_DURATION,
+		duration: payload
+	}
 }
 
 export function deleteRecord() {

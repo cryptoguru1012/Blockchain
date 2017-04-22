@@ -44,7 +44,10 @@ const styles = {
 	white: {
     	color: '#fff',
 	},
-		centerText: {
+	gray: {
+		backgroundColor: '#ccc',
+	},
+	centerText: {
 		textAlign: 'center',
 	}
 };
@@ -138,34 +141,60 @@ class SubtitlesEditer extends React.Component {
 	}
 
 	subtitleEditOn(subtitle) {
-		return (
-			<Row>
-				<Formsy.Form style={styles.form}>
-					<a onClick={e => this.handleDelete(subtitle.id)} style={styles.btnDelete}>X</a>
-					<Col xs={5} style={styles.v_center}>
-						<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
-						<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
-					</Col>
-					<Col xs={7} style={styles.v_center}>
-						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
-					</Col>
-				</Formsy.Form>
-			</Row>
-		)
+		if((subtitle.id%2)===0) { 
+			return (
+				<Row style={styles.gray}>
+					<Formsy.Form style={styles.form}>
+						<a onClick={e => this.handleDelete(subtitle.id)} style={styles.btnDelete}>X</a>
+						<Col xs={5} style={styles.v_center}>
+							<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
+							<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
+						</Col>
+						<Col xs={7} style={styles.v_center}>
+							<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
+						</Col>
+					</Formsy.Form>
+				</Row>
+			)} else { 
+			return (
+				<Row>
+					<Formsy.Form style={styles.form}>
+						<a onClick={e => this.handleDelete(subtitle.id)} style={styles.btnDelete}>X</a>
+						<Col xs={5} style={styles.v_center}>
+							<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
+							<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
+						</Col>
+						<Col xs={7} style={styles.v_center}>
+							<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
+						</Col>
+					</Formsy.Form>
+				</Row>
+			)}
 	}
 
 	subtitleEditOff(subtitle) {
-		return (
-			<Row>
-				<Col xs={5} style={styles.v_center}>
-					<p>{subtitle.startTime} ->
-					<br/>{subtitle.endTime}</p>
-				</Col>
-				<Col xs={7} style={styles.v_center}>
-					<p>{subtitle.text}</p>
-				</Col>
-			</Row>
-		)
+		
+		if((subtitle.id%2) === 0) {
+			return (
+				<Row style={styles.gray}>
+					<Col xs={5} style={styles.v_center}>
+						<p>{subtitle.startTime}  -  {subtitle.endTime}</p>
+					</Col>
+					<Col xs={7} style={styles.v_center}>
+						<p>{subtitle.text}</p>
+					</Col>
+				</Row>
+		)} else {
+			return (
+				<Row>
+					<Col xs={5} style={styles.v_center}>
+						<p>{subtitle.startTime}  -  {subtitle.endTime}</p>
+					</Col>
+					<Col xs={7} style={styles.v_center}>
+						<p>{subtitle.text}</p>
+					</Col>
+				</Row>
+			)}
 	}
 
 

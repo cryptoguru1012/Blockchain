@@ -102522,7 +102522,7 @@
 				return _react2.default.createElement(
 					'spam',
 					null,
-					setFormat(this.props.value)
+					this.setFormat(this.props.value)
 				);
 			}
 		}]);

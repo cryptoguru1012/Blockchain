@@ -76,6 +76,7 @@ class VideoPlayer extends React.Component {
 
       // showing real video duration
       self.setState({ duration: self.player.duration });
+      this.props.setDuration(self.player.duration);
     });
     this.player.addEventListener('timeupdate', (e) => {
       this.setState({ counter: this.player.currentTime });

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { doCategoryReq } from '../../redux/actions/store/category';
 import { doCurrencyReq } from '../../redux/actions/store/currency';
 import { doItemCreate, showSnackbar } from '../../redux/actions/store/new_item';
-import { setRecord, deleteRecord, setOfferForm, updateSubtitles } from '../../redux/actions/video';
+import { setRecord, deleteRecord, setOfferForm, updateSubtitles, setDuration } from '../../redux/actions/video';
 
 // components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
@@ -86,12 +86,14 @@ class NewItem extends React.Component {
           url={this.props.video.localUrl}
           onDelete={this.props.onDelete}
           subtitles={this.props.video.subtitles}
+          setDuration={this.props.setDuration}
         />
         <SubtitlesEditer
           subtitles={this.props.video.subtitles}
           onSave={this.props.onSave}
           onCancel={this.props.onDelete}
           updateSubtitles={this.props.updateSubtitles}
+          videoDuration={this.props.video.videoDuration}
         />
       </Grid>
     );
@@ -132,6 +134,9 @@ function mapDispatchToProps(dispatch) {
     },
     updateSubtitles: (subtitle) => {
       dispatch(updateSubtitles(subtitle));
+    },
+    setDuration: (duration) => {
+      dispatch(setDuration(duration));
     }
   };
 }

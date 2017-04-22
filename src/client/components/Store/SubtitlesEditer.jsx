@@ -60,18 +60,17 @@ class SubtitlesEditer extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			videoDuration: this.props.videoDuration
+		}
+
 		this.renderSubtitles = this.renderSubtitles.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
-	}
-
-	componentDidMount() {
-		this.setState({
-			subtitles: this.props.subtitles,
-			index: this.props.subtitles.length,
-		});
+		this.sortSubtiltes = this.sortSubtiltes.bind(this);
+		this.sanitizeSubtitles = this.sanitizeSubtitles.bind(this);
 	}
 
 	handleClick(event, id) {
@@ -89,16 +88,18 @@ class SubtitlesEditer extends React.Component {
 	}
 
 	handleEdit(event, id) {
-		let newSubtitles = this.props.subtitles;
+		let newSubtitles = this.sortSubtiltes()
+			, target = event.target.name
+			, value = event.target.value
 
-		for (var i = 0; i < newSubtitles.length; i++) {
-			if (newSubtitles[i].id === id) {
-				if (event.target.name == 'startTime' || event.target.name == 'endTime')
-					newSubtitles[i][event.target.name] = this.setTimeFormat(event.target.value);
-				else
-					newSubtitles[i][event.target.name] = event.target.value;
+		newSubtitles.map((subtitle, i) => {
+			if (subtitle.id === id) {
+				if (target === 'startTime')
+					value = (parseFloat(value)) ? parseFloat(value) : 0;
+				subtitle[target] = value;
 			}
-		}
+		})
+
 		this.props.updateSubtitles(newSubtitles);
 	}
 
@@ -112,8 +113,8 @@ class SubtitlesEditer extends React.Component {
 	}
 
 	handleAdd() {
-		let newSubtitles = this.props.subtitles,
-			currentId = 0;
+		let newSubtitles = this.props.subtitles
+			, currentId = 0;
 		for (var i = 0; i < newSubtitles.length; i++) {
 			newSubtitles[i].edit = false;
 			currentId = (newSubtitles[i].id > currentId) ? newSubtitles[i].id : currentId;
@@ -121,8 +122,8 @@ class SubtitlesEditer extends React.Component {
 		let id = parseInt(currentId) + 1
 			, subtitle = {
 				id: id,
-				startTime: '',
-				endTime: '',
+				startTime: 0,
+				endTime: null,
 				text: '',
 				edit: true
 			};
@@ -147,8 +148,7 @@ class SubtitlesEditer extends React.Component {
 				<Formsy.Form style={styles.form}>
 					<a onClick={e => this.handleDelete(subtitle.id)} style={styles.btnDelete}>X</a>
 					<Col xs={3} style={styles.v_center}>
-						<FormsyText name="startTime" value={subtitle.startTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
-						<FormsyText name="endTime" value={subtitle.endTime} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
+						<FormsyText name="startTime" value={String(subtitle.startTime)} validations="isNumeric" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
 					</Col>
 					<Col xs={9} style={styles.v_center}>
 						<FormsyText name="text" value={subtitle.text} validations="isWords" onChange={(e) => this.handleEdit(e, subtitle.id)} fullWidth multiLine />
@@ -162,8 +162,7 @@ class SubtitlesEditer extends React.Component {
 		return (
 			<Row>
 				<Col xs={3} style={styles.v_center}>
-					<p>{subtitle.startTime} ->
-					<br/>{subtitle.endTime}</p>
+					<p>{subtitle.startTime} Sec</p>
 				</Col>
 				<Col xs={9} style={styles.v_center}>
 					<p>{subtitle.text}</p>
@@ -172,17 +171,30 @@ class SubtitlesEditer extends React.Component {
 		)
 	}
 
-
-
-	renderSubtitles() {;
-		let subtitles = this.props.subtitles;
-		subtitles.sort((a,b) => {
+	sortSubtiltes() {
+		return this.props.subtitles.sort((a,b) => {
 			if ( a.startTime < b.startTime )
 				return -1;
 			if ( a.startTime > b.startTime )
 				return 1;
 			return 0;
 		});
+	}
+
+	sanitizeSubtitles(subtiltesDuration) {
+		return this.sortSubtiltes().map((subtitle, i, subtitles) => {
+			if (subtitles.length > 0) {
+				if (i == (subtitles.length - 1) ) {
+					subtitle.endTime = subtiltesDuration;
+				} else {
+					subtitle.endTime = subtitles[i+1].startTime;
+				}
+			}
+		});
+	}
+
+	renderSubtitles() {
+		let subtitles = this.sortSubtiltes();
 		return subtitles.map((subtitle, i) => {
 			let style;
 			if (i%2 == 0)
@@ -199,13 +211,15 @@ class SubtitlesEditer extends React.Component {
 
 	plusIcon() {
     	return <Glyphicon glyph="plus" style={styles.white} />;
-  }
+    }
 
   	saveIcon() {
     	return <Glyphicon glyph="ok" style={styles.white} />;
-  }
+	}
 
 	render() {
+		this.sanitizeSubtitles(this.state.videoDuration);
+		console.log(this.sortSubtiltes());
 		return (
 			<Row className="content-subtitles" style={styles.subtitlesContent}>
 				<Col xs={12} style={styles.centerText}>

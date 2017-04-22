@@ -100403,7 +100403,7 @@
 		_createClass(VideoRecord2, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				this.textInput.focus();
+				this.handleChange();
 			}
 		}, {
 			key: 'handleChange',
@@ -100418,8 +100418,6 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var _this2 = this;
-
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
 					null,
@@ -100437,10 +100435,7 @@
 									{ htmlFor: 'file', style: styles.label },
 									'CLICK TO RECORD/UPLOAD'
 								),
-								_react2.default.createElement('input', { onChange: this.handleChange,
-									ref: function ref(input) {
-										_this2.textInput = input;
-									}, style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
+								_react2.default.createElement('input', { onChange: this.handleChange, style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
 							)
 						)
 					)

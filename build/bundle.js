@@ -100405,7 +100405,6 @@
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				this.refs.newVideo.click();
-				alert("i'm hereee");
 			}
 		}, {
 			key: 'handleChange',

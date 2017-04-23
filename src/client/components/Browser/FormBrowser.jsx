@@ -77,7 +77,7 @@ class FormBrowser extends React.Component {
 					</Col>
 					<Col xs={12}>
 						<Row>
-							<FormSelectCategories name="category" label="Category" fullWidth/>
+							<FormSelectCategories name="category" label="Category" required fullWidth />
 						</Row>
 					</Col>
 					{this.props.browser.loading &&

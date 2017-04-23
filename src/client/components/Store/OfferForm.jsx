@@ -21,10 +21,32 @@ class OfferForm extends React.Component {
 		this.handleSnackbarSuccessRequestClose = this.handleSnackbarSuccessRequestClose.bind(this);
 		this.handleSnackbarErrorRequestClose = this.handleSnackbarErrorRequestClose.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.getDescription = this.getDescription.bind(this);
+
+		// autofill description with subtitles
 
 		this.state = {
+			autoDescription: this.getDescription(),
 			canSubmit: false
 		};
+
+	}
+
+	getDescription() {
+		let arrDescription = []
+			, subtitles = this.props.subtitlesVideo.sort((a,b) => {
+			if ( a.startTime < b.startTime )
+				return -1;
+			if ( a.startTime > b.startTime )
+				return 1;
+			return 0;
+		});
+
+		subtitles.map(subtitle => {
+			arrDescription.push(subtitle.text);
+		});
+
+		return arrDescription.join(' ');
 	}
 
 	enableButton() {
@@ -131,6 +153,7 @@ class OfferForm extends React.Component {
 						</FormsySelect>
 						<FormsyText
 							name="description"
+							value={this.state.autoDescription}
 							floatingLabelText="Description"
 							hintText="Item description"
 							validations="isWords"

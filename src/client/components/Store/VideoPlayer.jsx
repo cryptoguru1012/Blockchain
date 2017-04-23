@@ -219,6 +219,9 @@ class VideoPlayer extends React.Component {
 		if (this.props.hideControls === undefined)
 			return (
 				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
+					<div style={styles.videoBar} onClick={e => this.updateStatusBar(e)}>
+						<div style={styles.statusBar} ref="statusBar" />
+					</div>
 					<Row>
 						<Col xs={3} md={2} mdOffset={3} lg={2} lgOffset={3}>
 							{this.renderActionButton()}
@@ -255,9 +258,6 @@ class VideoPlayer extends React.Component {
 				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
 					<video preload="metadata" ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)}>
 					</video>
-					<div style={styles.videoBar} onClick={e => this.updateStatusBar(e)}>
-						<div style={styles.statusBar} ref="statusBar" />
-					</div>
 				</Col>
 				{this.renderControls()}
 			</Row>

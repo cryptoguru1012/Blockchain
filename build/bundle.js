@@ -124092,6 +124092,10 @@
 
 	var _FormBrowser2 = _interopRequireDefault(_FormBrowser);
 
+	var _FilterBrowser = __webpack_require__(1624);
+
+	var _FilterBrowser2 = _interopRequireDefault(_FilterBrowser);
+
 	var _ListBrowser = __webpack_require__(1620);
 
 	var _ListBrowser2 = _interopRequireDefault(_ListBrowser);
@@ -124103,6 +124107,23 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var filters = [{
+		value: 'currency',
+		name: 'Currency'
+	}, {
+		value: 'title',
+		name: 'Name'
+	}, {
+		value: 'geolocation',
+		name: 'Geolocation'
+	}, {
+		value: 'paymentoptions_display',
+		name: 'Payment options'
+	}, {
+		value: 'category',
+		name: 'Category'
+	}];
 
 	var Browser = function (_React$Component) {
 		_inherits(Browser, _React$Component);
@@ -124123,6 +124144,7 @@
 						_reactBootstrap.Col,
 						{ xs: 12 },
 						_react2.default.createElement(_FormBrowser2.default, { onSearch: this.props.onSearch, browser: this.props.browser }),
+						_react2.default.createElement(_FilterBrowser2.default, { filters: filters, onFilter: this.props.onFilter }),
 						_react2.default.createElement(_ListBrowser2.default, { items: this.props.browser.items })
 					)
 				);
@@ -124142,6 +124164,9 @@
 		return {
 			onSearch: function onSearch(data) {
 				dispatch((0, _browser.search)(data));
+			},
+			onFilter: function onFilter(filter) {
+				dispatch((0, _browser.setFilter)(filter));
 			}
 		};
 	}
@@ -124157,7 +124182,8 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.SEARCH_SUCCESS = exports.SEARCH_ERROR = exports.SEARCH_START = undefined;
+	exports.FILTER_SEARCH = exports.SEARCH_SUCCESS = exports.SEARCH_ERROR = exports.SEARCH_START = undefined;
+	exports.setFilter = setFilter;
 	exports.search = search;
 
 	__webpack_require__(1114);
@@ -124165,6 +124191,7 @@
 	var SEARCH_START = exports.SEARCH_START = 'SEARCH_START';
 	var SEARCH_ERROR = exports.SEARCH_ERROR = 'SEARCH_ERROR';
 	var SEARCH_SUCCESS = exports.SEARCH_SUCCESS = 'SEARCH_SUCCESS';
+	var FILTER_SEARCH = exports.FILTER_SEARCH = 'FILTER_SEARCH';
 
 	function searchStart(payload) {
 		return {
@@ -124183,6 +124210,22 @@
 		return {
 			type: SEARCH_SUCCESS,
 			items: payload
+		};
+	}
+
+	function setFilter(filter) {
+		return function (dispatch, getState) {
+			console.log('filter: ', filter);
+			var items = getState().browser.items;
+			items.sort(function (a, b) {
+				if (a[filter] < b[filter]) return -1;
+				if (a[filter] > b[filter]) return 1;
+				return 0;
+			});
+			dispatch({
+				type: FILTER_SEARCH,
+				items: items
+			});
 		};
 	}
 
@@ -124792,12 +124835,121 @@
 			case _browser.SEARCH_SUCCESS:
 				return _extends({}, state, { error: false, loading: false, items: action.items });
 
+			case _browser.FILTER_SEARCH:
+				return _extends({}, state, { items: action.items });
+
 			default:
 				return state;
 		}
 	};
 
 	exports.default = browserReducers;
+
+/***/ },
+/* 1624 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactBootstrap = __webpack_require__(611);
+
+	var _lib = __webpack_require__(1100);
+
+	var _materialUi = __webpack_require__(948);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// components
+
+
+	var FilterBrowser = function (_React$Component) {
+		_inherits(FilterBrowser, _React$Component);
+
+		function FilterBrowser(props) {
+			_classCallCheck(this, FilterBrowser);
+
+			var _this = _possibleConstructorReturn(this, (FilterBrowser.__proto__ || Object.getPrototypeOf(FilterBrowser)).call(this, props));
+
+			_this.handleSubmit = _this.handleSubmit.bind(_this);
+			_this.renderFilterOption = _this.renderFilterOption.bind(_this);
+			return _this;
+		}
+
+		_createClass(FilterBrowser, [{
+			key: 'handleSubmit',
+			value: function handleSubmit(e) {
+				console.log(e.target);
+				this.props.onFilter(e.target.value);
+			}
+		}, {
+			key: 'renderFilterOption',
+			value: function renderFilterOption() {
+				if (this.props.filters.length > 0) {
+					return this.props.filters.map(function (filter, i) {
+						return _react2.default.createElement(
+							'option',
+							{ key: i, value: filter.value },
+							filter.name
+						);
+					});
+				}
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this2 = this;
+
+				return _react2.default.createElement(
+					_reactBootstrap.Row,
+					null,
+					_react2.default.createElement(
+						Formsy.Form,
+						null,
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 12 },
+							_react2.default.createElement(
+								_reactBootstrap.Row,
+								null,
+								_react2.default.createElement(
+									'select',
+									{ name: 'filter', onChange: function onChange(e) {
+											return _this2.handleSubmit(e);
+										} },
+									_react2.default.createElement(
+										'option',
+										{ value: '' },
+										'Filters'
+									),
+									this.renderFilterOption()
+								)
+							)
+						)
+					)
+				);
+			}
+		}]);
+
+		return FilterBrowser;
+	}(_react2.default.Component);
+
+	exports.default = FilterBrowser;
 
 /***/ }
 /******/ ]);

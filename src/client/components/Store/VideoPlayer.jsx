@@ -81,10 +81,12 @@ class VideoPlayer extends React.Component {
 				counter: self.player.currentTime,
 				duration: self.player.duration
 			});
-			let percent = self.player.currentTime / self.player.duration,
-				barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
+			if (self.refs.statusBar) {
+				let percent = self.player.currentTime / self.player.duration,
+					barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
 
-			self.refs.statusBar.style.width = `${barPercent}px`;
+				self.refs.statusBar.style.width = `${barPercent}px`;
+			}
 		});
 	}
 

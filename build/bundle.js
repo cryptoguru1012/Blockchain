@@ -124218,8 +124218,8 @@
 			console.log('filter: ', filter);
 			var items = getState().browser.items;
 			items.sort(function (a, b) {
-				if (a[filter] < b[filter]) return -1;
-				if (a[filter] > b[filter]) return 1;
+				if (String(a[filter]).toUpperCase() < String(b[filter]).toUpperCase()) return -1;
+				if (String(a[filter]).toUpperCase() > String(b[filter]).toUpperCase()) return 1;
 				return 0;
 			});
 			dispatch({

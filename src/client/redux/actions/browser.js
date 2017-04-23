@@ -29,9 +29,9 @@ export function setFilter(filter) {
 		console.log('filter: ', filter);
 		let items = getState().browser.items;
 		items.sort((a, b) => {
-			if ( a[filter] < b[filter] )
+			if ( String(a[filter]).toUpperCase() < String(b[filter]).toUpperCase() )
 				return -1;
-			if ( a[filter] > b[filter] )
+			if ( String(a[filter]).toUpperCase() > String(b[filter]).toUpperCase() )
 				return 1;
 			return 0;
 		});

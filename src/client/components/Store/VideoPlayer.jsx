@@ -61,7 +61,8 @@ class VideoPlayer extends React.Component {
 	}
 
 	componentDidMount() {
-		let self = this;
+		let self = this
+			, duration = 0;
 		this.player = this.refs.player;
 		this.player.src = this.props.url;
 		this.player.muted = false;
@@ -70,19 +71,18 @@ class VideoPlayer extends React.Component {
 			this.setState({ play: false });
 		});
 		this.player.addEventListener('loadedmetadata', (e) => {
-			// add subtitles
 			self.setSubtitles();
-			console.log('first added', self.player.track.cues);
-
-			// showing real video duration
 			self.setState({ duration: self.player.duration });
 		});
 		this.player.addEventListener('timeupdate', (e) => {
-			this.setState({ counter: this.player.currentTime });
-			let percent = this.player.currentTime / this.player.duration,
-				barPercent = this.refs.statusBar.offsetParent.offsetWidth * percent;
+			self.setState({
+				counter: self.player.currentTime,
+				duration: self.player.duration
+			});
+			let percent = self.player.currentTime / self.player.duration,
+				barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
 
-			this.refs.statusBar.style.width = `${barPercent}px`;
+			self.refs.statusBar.style.width = `${barPercent}px`;
 		});
 	}
 
@@ -241,10 +241,17 @@ class VideoPlayer extends React.Component {
 	}
 
 	render() {
+		let handleMouseOver = () => false
+			, handleMouseLeave = () => false;
+
+		if (this.props.playOnHover) {
+			handleMouseLeave = this.handleVideoOff;
+			handleMouseOver = this.handleVideoPlay;
+		}
 		return (
 			<Row style={styles.videoContainer}>
 				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-					<video preload="metadata" ref="player" style={styles.video} onMouseLeave={e => this.handleVideoStop(e)} onMouseOver={e => this.handleVideoPlay(e)}>
+					<video preload="metadata" ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)}>
 					</video>
 					<div style={styles.videoBar} onClick={e => this.updateStatusBar(e)}>
 						<div style={styles.statusBar} ref="statusBar" />

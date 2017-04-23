@@ -6,6 +6,41 @@ import VideoPlayer from '../Store/VideoPlayer';
 import GaleryItemBrowser from './GaleryItemBrowser';
 import { Link } from 'react-router';
 
+let styles = {
+	containerItemBrowser: {
+		position: 'relative',
+		padding: '25% 50%',
+		overflow: 'hidden',
+		marginTop: '20px'
+	},
+	contentItemBrowser: {
+		position: 'absolute',
+		top: '0',
+		left: '0',
+		width: '100%',
+		height: '100%'
+	},
+	infoContainer: {
+		position: 'absolute',
+		zIndex: '1',
+		padding: '20px'
+	},
+	bgContainer: {
+		position: 'absolute',
+		width: '100%',
+		bottom: '0'
+	},
+	link: {
+		color: '#fff',
+		textShadow: '1px 1px #000',
+		fontSize: '24px'
+	},
+	currency: {
+		color: '#fff',
+		textShadow: '1px 1px #000'
+	}
+}
+
 class ItemBrowser extends React.Component {
 	constructor(props) {
 		super(props);
@@ -31,21 +66,27 @@ class ItemBrowser extends React.Component {
 	render() {
 		return (
 			<Row>
-				<Col xs={12}>
-					<Row>
-						<Link to={'/offer/' + this.props.data.offer}><h3>{this.props.data.title}</h3></Link>
-						<p><strong>Price:</strong> {this.props.data.currency} {this.props.data.price}</p>
-						{typeof this.state.description === 'object' && <VideoPlayer
-							url={this.state.description.urlVideo}
-							subtitles={this.state.description.subtitlesVideo}
-							playOnHover
-							hideControls
-							muted
-						/>}
-						{this.state.images.length > 0 && <GaleryItemBrowser
-							images={this.state.images}
-						/>}
-					</Row>
+				<Col xs={12} style={styles.containerItemBrowser} className="containerItemBrowser">
+					<Link to={'/offer/' + this.props.data.offer}>
+						<div style={styles.contentItemBrowser} className="contentItemBrowser">
+							<div style={styles.infoContainer} className="infoContainer">
+								<p style={styles.link}>{this.props.data.title}</p>
+								<p style={styles.currency}>{this.props.data.price} {this.props.data.currency}</p>
+							</div>
+							<div style={styles.bgContainer} className="bgContainer">
+								{typeof this.state.description === 'object' && <VideoPlayer
+									url={this.state.description.urlVideo}
+									subtitles={this.state.description.subtitlesVideo}
+									playOnHover
+									hideControls
+									muted
+								/>}
+								{this.state.images.length > 0 && <GaleryItemBrowser
+									images={this.state.images}
+								/>}
+							</div>
+						</div>
+					</Link>
 				</Col>
 			</Row>
 		);

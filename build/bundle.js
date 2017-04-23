@@ -102753,10 +102753,12 @@
 						counter: self.player.currentTime,
 						duration: self.player.duration
 					});
-					var percent = self.player.currentTime / self.player.duration,
-					    barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
+					if (self.refs.statusBar) {
+						var percent = self.player.currentTime / self.player.duration,
+						    barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
 
-					self.refs.statusBar.style.width = barPercent + 'px';
+						self.refs.statusBar.style.width = barPercent + 'px';
+					}
 				});
 			}
 		}, {
@@ -102900,9 +102902,18 @@
 		}, {
 			key: 'renderControls',
 			value: function renderControls() {
+				var _this4 = this;
+
 				if (this.props.hideControls === undefined) return _react2.default.createElement(
 					_reactBootstrap.Col,
 					{ xs: 12, md: 6, mdOffset: 3, lg: 6, lgOffset: 3 },
+					_react2.default.createElement(
+						'div',
+						{ style: styles.videoBar, onClick: function onClick(e) {
+								return _this4.updateStatusBar(e);
+							} },
+						_react2.default.createElement('div', { style: styles.statusBar, ref: 'statusBar' })
+					),
 					_react2.default.createElement(
 						_reactBootstrap.Row,
 						null,
@@ -102939,8 +102950,6 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var _this4 = this;
-
 				var handleMouseOver = function handleMouseOver() {
 					return false;
 				},
@@ -102962,14 +102971,7 @@
 								return handleMouseLeave(e);
 							}, onMouseOver: function onMouseOver(e) {
 								return handleMouseOver(e);
-							} }),
-						_react2.default.createElement(
-							'div',
-							{ style: styles.videoBar, onClick: function onClick(e) {
-									return _this4.updateStatusBar(e);
-								} },
-							_react2.default.createElement('div', { style: styles.statusBar, ref: 'statusBar' })
-						)
+							} })
 					),
 					this.renderControls()
 				);
@@ -124568,6 +124570,41 @@
 	// components
 
 
+	var styles = {
+		containerItemBrowser: {
+			position: 'relative',
+			padding: '25% 50%',
+			overflow: 'hidden',
+			marginTop: '20px'
+		},
+		contentItemBrowser: {
+			position: 'absolute',
+			top: '0',
+			left: '0',
+			width: '100%',
+			height: '100%'
+		},
+		infoContainer: {
+			position: 'absolute',
+			zIndex: '1',
+			padding: '20px'
+		},
+		bgContainer: {
+			position: 'absolute',
+			width: '100%',
+			bottom: '0'
+		},
+		link: {
+			color: '#fff',
+			textShadow: '1px 1px #000',
+			fontSize: '24px'
+		},
+		currency: {
+			color: '#fff',
+			textShadow: '1px 1px #000'
+		}
+	};
+
 	var ItemBrowser = function (_React$Component) {
 		_inherits(ItemBrowser, _React$Component);
 
@@ -124602,42 +124639,44 @@
 					null,
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 12 },
+						{ xs: 12, style: styles.containerItemBrowser, className: 'containerItemBrowser' },
 						_react2.default.createElement(
-							_reactBootstrap.Row,
-							null,
+							_reactRouter.Link,
+							{ to: '/offer/' + this.props.data.offer },
 							_react2.default.createElement(
-								_reactRouter.Link,
-								{ to: '/offer/' + this.props.data.offer },
+								'div',
+								{ style: styles.contentItemBrowser, className: 'contentItemBrowser' },
 								_react2.default.createElement(
-									'h3',
-									null,
-									this.props.data.title
-								)
-							),
-							_react2.default.createElement(
-								'p',
-								null,
-								_react2.default.createElement(
-									'strong',
-									null,
-									'Price:'
+									'div',
+									{ style: styles.infoContainer, className: 'infoContainer' },
+									_react2.default.createElement(
+										'p',
+										{ style: styles.link },
+										this.props.data.title
+									),
+									_react2.default.createElement(
+										'p',
+										{ style: styles.currency },
+										this.props.data.price,
+										' ',
+										this.props.data.currency
+									)
 								),
-								' ',
-								this.props.data.currency,
-								' ',
-								this.props.data.price
-							),
-							_typeof(this.state.description) === 'object' && _react2.default.createElement(_VideoPlayer2.default, {
-								url: this.state.description.urlVideo,
-								subtitles: this.state.description.subtitlesVideo,
-								playOnHover: true,
-								hideControls: true,
-								muted: true
-							}),
-							this.state.images.length > 0 && _react2.default.createElement(_GaleryItemBrowser2.default, {
-								images: this.state.images
-							})
+								_react2.default.createElement(
+									'div',
+									{ style: styles.bgContainer, className: 'bgContainer' },
+									_typeof(this.state.description) === 'object' && _react2.default.createElement(_VideoPlayer2.default, {
+										url: this.state.description.urlVideo,
+										subtitles: this.state.description.subtitlesVideo,
+										playOnHover: true,
+										hideControls: true,
+										muted: true
+									}),
+									this.state.images.length > 0 && _react2.default.createElement(_GaleryItemBrowser2.default, {
+										images: this.state.images
+									})
+								)
+							)
 						)
 					)
 				);

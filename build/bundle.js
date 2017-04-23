@@ -105492,14 +105492,35 @@
 			_this.handleSnackbarSuccessRequestClose = _this.handleSnackbarSuccessRequestClose.bind(_this);
 			_this.handleSnackbarErrorRequestClose = _this.handleSnackbarErrorRequestClose.bind(_this);
 			_this.handleSubmit = _this.handleSubmit.bind(_this);
+			_this.getDescription = _this.getDescription.bind(_this);
+
+			// autofill description with subtitles
 
 			_this.state = {
+				autoDescription: _this.getDescription(),
 				canSubmit: false
 			};
+
 			return _this;
 		}
 
 		_createClass(OfferForm, [{
+			key: 'getDescription',
+			value: function getDescription() {
+				var arrDescription = [],
+				    subtitles = this.props.subtitlesVideo.sort(function (a, b) {
+					if (a.startTime < b.startTime) return -1;
+					if (a.startTime > b.startTime) return 1;
+					return 0;
+				});
+
+				subtitles.map(function (subtitle) {
+					arrDescription.push(subtitle.text);
+				});
+
+				return arrDescription.join(' ');
+			}
+		}, {
 			key: 'enableButton',
 			value: function enableButton() {
 				this.setState({ canSubmit: true });
@@ -105627,6 +105648,7 @@
 							),
 							_react2.default.createElement(_lib.FormsyText, {
 								name: 'description',
+								value: this.state.autoDescription,
 								floatingLabelText: 'Description',
 								hintText: 'Item description',
 								validations: 'isWords',

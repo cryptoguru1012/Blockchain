@@ -1,4 +1,4 @@
-import { SEARCH_START, SEARCH_ERROR, SEARCH_SUCCESS } from '../actions/browser';
+import { SEARCH_START, SEARCH_ERROR, SEARCH_SUCCESS, FILTER_SEARCH } from '../actions/browser';
 
 const initialState = {
 	error: null,
@@ -17,6 +17,9 @@ const browserReducers = (state = initialState, action) => {
 
 		case SEARCH_SUCCESS:
 			return { ...state, error: false, loading: false, items: action.items };
+
+		case FILTER_SEARCH:
+			return { ...state, items: action.items };
 
 		default:
 			return state;

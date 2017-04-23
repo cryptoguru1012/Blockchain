@@ -2,6 +2,7 @@ import 'whatwg-fetch';
 export const SEARCH_START = 'SEARCH_START';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
 export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
+export const FILTER_SEARCH = 'FILTER_SEARCH';
 
 function searchStart(payload) {
 	return {
@@ -21,6 +22,24 @@ function searchSuccess(payload) {
 		type: SEARCH_SUCCESS,
 		items: payload
 	};
+}
+
+export function setFilter(filter) {
+	return (dispatch, getState) => {
+		console.log('filter: ', filter);
+		let items = getState().browser.items;
+		items.sort((a, b) => {
+			if ( a[filter] < b[filter] )
+				return -1;
+			if ( a[filter] > b[filter] )
+				return 1;
+			return 0;
+		});
+		dispatch({
+			type: FILTER_SEARCH,
+			items: items
+		});
+	}
 }
 
 export function search(data) {

@@ -65,7 +65,9 @@ class VideoPlayer extends React.Component {
 			, duration = 0;
 		this.player = this.refs.player;
 		this.player.src = this.props.url;
-		this.player.muted = false;
+
+		this.player.muted = (this.props.muted) ? true: false;
+
 		this.player.controls = false;
 		this.player.addEventListener('ended', (e) => {
 			this.setState({ play: false });
@@ -245,7 +247,7 @@ class VideoPlayer extends React.Component {
 			, handleMouseLeave = () => false;
 
 		if (this.props.playOnHover) {
-			handleMouseLeave = this.handleVideoOff;
+			handleMouseLeave = this.handleVideoStop;
 			handleMouseOver = this.handleVideoPlay;
 		}
 		return (

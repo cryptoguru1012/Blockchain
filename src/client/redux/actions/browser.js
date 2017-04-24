@@ -65,7 +65,7 @@ export function setVisibilityFilter(filter) {
 
 export function setOrder(order) {
 	return (dispatch, getState) => {
-		let items = getState().browser.dataItems;
+		let items = Object.assign([], getState().browser.items);
 		items.sort((a, b) => {
 			if ( String(a[order]).toUpperCase() < String(b[order]).toUpperCase() )
 				return -1;

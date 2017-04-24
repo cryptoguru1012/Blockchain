@@ -105909,7 +105909,7 @@
 
 	function setOrder(order) {
 		return function (dispatch, getState) {
-			var items = getState().browser.dataItems;
+			var items = Object.assign([], getState().browser.items);
 			items.sort(function (a, b) {
 				if (String(a[order]).toUpperCase() < String(b[order]).toUpperCase()) return -1;
 				if (String(a[order]).toUpperCase() > String(b[order]).toUpperCase()) return 1;
@@ -106040,8 +106040,13 @@
 		}, {
 			key: 'handleSubmit',
 			value: function handleSubmit(data) {
-				console.log('data---->', data);
-				this.props.onSearch(data);
+				var data2 = {};
+				if (data.category) data2.category = data.category;
+				// if (data.regexp)
+				data2.regexp = data.regexp;
+
+				console.log('data ->', data2);
+				this.props.onSearch(data2);
 			}
 		}, {
 			key: 'render',
@@ -106090,7 +106095,7 @@
 							_react2.default.createElement(
 								_reactBootstrap.Row,
 								null,
-								_react2.default.createElement(_FormSelectCategories2.default, { name: 'category', label: 'Category', required: true, fullWidth: true })
+								_react2.default.createElement(_FormSelectCategories2.default, { name: 'category', label: 'Category', fullWidth: true })
 							)
 						),
 						this.props.browser.loading && _react2.default.createElement(_CircularProgress2.default, { size: 50, style: styles.spinnerStyle })

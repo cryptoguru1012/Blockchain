@@ -41,8 +41,14 @@ class FormBrowser extends React.Component {
 	}
 
 	handleSubmit(data) {
-		console.log('data---->', data);
-		this.props.onSearch(data);
+		let data2 = {};
+		if (data.category)
+			data2.category = data.category
+		// if (data.regexp)
+			data2.regexp = data.regexp
+
+		console.log('data ->', data2);
+		this.props.onSearch(data2);
 	}
 
 	render() {
@@ -77,7 +83,7 @@ class FormBrowser extends React.Component {
 					</Col>
 					<Col xs={12}>
 						<Row>
-							<FormSelectCategories name="category" label="Category" required fullWidth />
+							<FormSelectCategories name="category" label="Category" fullWidth />
 						</Row>
 					</Col>
 					{this.props.browser.loading &&

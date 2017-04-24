@@ -44,7 +44,10 @@ const styles = {
 	white: {
     	color: '#fff',
 	},
-		centerText: {
+	gray: {
+		backgroundColor: '#ccc',
+	},
+	centerText: {
 		textAlign: 'center',
 	},
 	even: {

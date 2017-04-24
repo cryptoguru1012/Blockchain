@@ -56,6 +56,16 @@ class Browser extends React.Component {
 		super(props);
 	}
 
+	componentDidMount() {
+		let data = {
+			regexp: null,
+			from: 8,
+			safesearch: 'No',
+			category: null
+		};
+		this.props.onSearch(data);
+	}
+
 	render() {
 		return (
 			<Grid>

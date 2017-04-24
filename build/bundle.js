@@ -105794,6 +105794,17 @@
 		}
 
 		_createClass(Browser, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var data = {
+					regexp: null,
+					from: 8,
+					safesearch: 'No',
+					category: null
+				};
+				this.props.onSearch(data);
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
@@ -105928,7 +105939,9 @@
 
 			var esc = encodeURIComponent;
 			var query = Object.keys(data).map(function (k) {
-				return esc(k) + '=' + esc(data[k]);
+				var a = esc(k),
+				    b = data[k] ? '=' + esc(data[k]) : '';
+				return a + b;
 			}).join('&');
 
 			fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62").then(function (res) {

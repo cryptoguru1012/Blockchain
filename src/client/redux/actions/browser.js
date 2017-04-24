@@ -86,7 +86,11 @@ export function search(data) {
 
 		var esc = encodeURIComponent;
 		var query = Object.keys(data)
-			.map(k => esc(k) + '=' + esc(data[k]))
+			.map(k => {
+				let a = esc(k)
+					, b = (data[k]) ? '=' + esc(data[k]) : '';
+				return a + b 
+			})
 			.join('&');
 
 		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")

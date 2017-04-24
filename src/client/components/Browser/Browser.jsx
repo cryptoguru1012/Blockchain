@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 
-import { setFilter, search } from '../../redux/actions/browser';
+import { setOrder, search } from '../../redux/actions/browser';
 
 import FormBrowser from './FormBrowser';
 import OrderByBrowser from './OrderByBrowser';
 import ListBrowser from './ListBrowser';
+import FilterBrowser from './FilterBrowser';
 
 let orderItems = [
 	{
@@ -29,7 +30,26 @@ let orderItems = [
 		value: 'category',
 		name: 'Category'
 	}
-]
+];
+
+let filterItems = [
+	{
+		value: 'SHOW_ALL',
+		name: 'All'
+	},
+	{
+		value: 'SHOW_VIDEOS',
+		name: 'Videos only'
+	},
+	{
+		value: 'SHOW_PHOTOS',
+		name: 'Photos only'
+	},
+	{
+		value: 'SHOW_TEXT',
+		name: 'Text only'
+	}
+];
 
 class Browser extends React.Component {
 	constructor(props) {
@@ -40,6 +60,7 @@ class Browser extends React.Component {
 		return (
 			<Grid>
 				<Col xs={12}>
+					<FilterBrowser items={filterItems} />
 					<FormBrowser onSearch={this.props.onSearch} browser={this.props.browser} />
 					<OrderByBrowser items={orderItems} onOrder={this.props.onOrder}/>
 					<ListBrowser items={this.props.browser.items}/>
@@ -60,8 +81,8 @@ function mapDispatchToProps(dispatch) {
 		onSearch: (data) => {
 			dispatch(search(data));
 		},
-		onFilter: (filter) => {
-			dispatch(setFilter(filter));
+		onOrder: (order) => {
+			dispatch(setOrder(order));
 		}
 	};
 }

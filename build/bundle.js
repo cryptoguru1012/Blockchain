@@ -26906,10 +26906,9 @@
 	  _react2.default.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: _App2.default },
-	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Frontpage2.default }),
+	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Browser2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/register', component: _Register2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/store/newItem', component: _Store2.default.NewItem }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/browser', component: _Browser2.default }),
 	    _react2.default.createElement(
 	      _reactRouter.Route,
 	      { path: '/offer', component: _Offer2.default },
@@ -42579,14 +42578,6 @@
 							_react2.default.createElement(_MenuItem2.default, {
 								onTouchTap: this.cerrar.bind(this),
 								primaryText: 'Home'
-							})
-						),
-						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: '/browser' },
-							_react2.default.createElement(_MenuItem2.default, {
-								onTouchTap: this.cerrar.bind(this),
-								primaryText: 'Browse'
 							})
 						),
 						_react2.default.createElement(

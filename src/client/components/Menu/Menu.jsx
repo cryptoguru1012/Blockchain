@@ -51,12 +51,6 @@ class Menu extends Component {
 							primaryText="Home"
 						/>
 					</Link>
-					<Link to="/browser">
-						<MenuItem
-							onTouchTap={this.cerrar.bind(this)}
-							primaryText="Browse"
-						/>
-					</Link>
 					<Link to="/store/newItem">
 						<MenuItem
 							onTouchTap={this.cerrar.bind(this)}

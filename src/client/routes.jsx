@@ -16,10 +16,9 @@ import Offer                        from './components/Offer';
 const Routes = (
   <Router render={(props) => <ReduxAsyncConnect {...props}/>} history={browserHistory}>
     <Route path='/' component={App}>
-      <IndexRoute component={Frontpage} />
+      <IndexRoute component={Browser} />
       <Route path='/register' component={Register} />
       <Route path='/store/newItem' component={Store.NewItem} />
-      <Route path='/browser' component={Browser} />
       <Route path='/offer' component={Offer}>
         <Route path=':id' component={Offer} />
       </Route>

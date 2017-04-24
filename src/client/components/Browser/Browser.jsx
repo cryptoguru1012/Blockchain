@@ -7,7 +7,7 @@ import { setFilter, search } from '../../redux/actions/browser';
 import FormBrowser from './FormBrowser';
 import FilterBrowser from './FilterBrowser';
 import ListBrowser from './ListBrowser';
-
+import GaleryItemBrowser from './GaleryItemBrowser';
 let filters = [
 	{
 		value: 'currency',
@@ -40,6 +40,7 @@ class Browser extends React.Component {
 		return (
 			<Grid>
 				<Col xs={12}>
+					<GaleryItemBrowser />
 					<FormBrowser onSearch={this.props.onSearch} browser={this.props.browser} />
 					<FilterBrowser filters={filters} onFilter={this.props.onFilter}/>
 					<ListBrowser items={this.props.browser.items}/>

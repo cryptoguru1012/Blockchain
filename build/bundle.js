@@ -102941,12 +102941,12 @@
 						null,
 						_react2.default.createElement(
 							_reactBootstrap.Col,
-							{ xs: 3, md: 2, mdOffset: 3, lg: 2, lgOffset: 3 },
+							{ xs: 3, md: 2, lg: 2 },
 							this.renderActionButton()
 						),
 						_react2.default.createElement(
 							_reactBootstrap.Col,
-							{ xs: 6, md: 2, lg: 2, style: styles.colTime },
+							{ xs: 6, md: 10, lg: 10, style: styles.colTime },
 							this.renderTime()
 						),
 						_react2.default.createElement(

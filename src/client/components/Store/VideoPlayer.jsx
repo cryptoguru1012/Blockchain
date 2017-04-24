@@ -235,10 +235,10 @@ class VideoPlayer extends React.Component {
 						<div style={styles.statusBar} ref="statusBar" />
 					</div>
 					<Row>
-						<Col xs={3} md={2} mdOffset={3} lg={2} lgOffset={3}>
+						<Col xs={3} md={2} lg={2}>
 							{this.renderActionButton()}
 						</Col>
-						<Col xs={6} md={2} lg={2} style={styles.colTime}>
+						<Col xs={6} md={10} lg={10} style={styles.colTime}>
 							{this.renderTime()}
 						</Col>
 						<Col xs={3} md={2} lg={2}>

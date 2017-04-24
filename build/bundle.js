@@ -105868,10 +105868,11 @@
 		};
 	}
 
-	function searchSuccess(payload) {
+	function searchSuccess(raw, filtered) {
 		return {
 			type: SEARCH_SUCCESS,
-			items: payload
+			dataItems: raw,
+			items: filtered
 		};
 	}
 
@@ -105944,7 +105945,10 @@
 			}).then(function (res) {
 				return res.json();
 			}).then(function (res) {
-				return dispatch(searchSuccess(res));
+				var filter = getState().browser.filter,
+				    filtered = clusterItems(res)[filter];
+
+				return dispatch(searchSuccess(res, filtered));
 			}).catch(function (error) {
 				return dispatch(searchError(error));
 			});
@@ -124905,7 +124909,7 @@
 				return _extends({}, state, { error: true, loading: false, message: action.message });
 
 			case _browser.SEARCH_SUCCESS:
-				return _extends({}, state, { error: false, loading: false, dataItems: action.items, items: action.items });
+				return _extends({}, state, { error: false, loading: false, dataItems: action.dataItems, items: action.items });
 
 			case _browser.ORDER_SEARCH:
 				return _extends({}, state, { items: action.items });

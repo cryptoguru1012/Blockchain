@@ -18,10 +18,11 @@ function searchError(payload) {
 	};
 }
 
-function searchSuccess(payload) {
+function searchSuccess(raw, filtered) {
 	return { 
 		type: SEARCH_SUCCESS,
-		items: payload
+		dataItems: raw,
+		items: filtered
 	};
 }
 
@@ -101,7 +102,12 @@ export function search(data) {
 				})
 			})
 			.then(res => res.json())
-			.then(res => dispatch(searchSuccess(res)))
+			.then(res => {
+				let filter = getState().browser.filter
+					, filtered = clusterItems(res)[filter];
+
+				return dispatch(searchSuccess(res, filtered))
+			})
 			.catch(error => dispatch(searchError(error)));
 	};
 }

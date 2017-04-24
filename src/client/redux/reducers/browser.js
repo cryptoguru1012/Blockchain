@@ -18,7 +18,7 @@ const browserReducers = (state = initialState, action) => {
 			return { ...state, error: true, loading: false, message: action.message };
 
 		case SEARCH_SUCCESS:
-			return { ...state, error: false, loading: false, dataItems: action.items, items: action.items };
+			return { ...state, error: false, loading: false, dataItems: action.dataItems, items: action.items };
 
 		case ORDER_SEARCH:
 			return { ...state, items: action.items };

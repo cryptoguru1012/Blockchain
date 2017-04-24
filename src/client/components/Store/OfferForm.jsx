@@ -21,10 +21,32 @@ class OfferForm extends React.Component {
 		this.handleSnackbarSuccessRequestClose = this.handleSnackbarSuccessRequestClose.bind(this);
 		this.handleSnackbarErrorRequestClose = this.handleSnackbarErrorRequestClose.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.getDescription = this.getDescription.bind(this);
+
+		// autofill description with subtitles
 
 		this.state = {
+			autoDescription: this.getDescription(),
 			canSubmit: false
 		};
+
+	}
+
+	getDescription() {
+		let arrDescription = []
+			, subtitles = this.props.subtitlesVideo.sort((a,b) => {
+			if ( a.startTime < b.startTime )
+				return -1;
+			if ( a.startTime > b.startTime )
+				return 1;
+			return 0;
+		});
+
+		subtitles.map(subtitle => {
+			arrDescription.push(subtitle.text);
+		});
+
+		return arrDescription.join(' ');
 	}
 
 	enableButton() {
@@ -78,7 +100,12 @@ class OfferForm extends React.Component {
 	renderCurrencies() {
 		if (this.props.currencies.currencies.length > 0) {
 			return this.props.currencies.currencies.map((currency, i) => {
-				return <MenuItem key={i} value={currency.currency} primaryText={currency.currency} />
+				if (i === 0) {
+					return <MenuItem selected default key={i} value={currency.currency} primaryText={currency.currency} />
+				}else{
+					return <MenuItem key={i} value={currency.currency} primaryText={currency.currency} />
+				}
+				
 			})
 		}
 	}
@@ -96,8 +123,8 @@ class OfferForm extends React.Component {
 					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
 						<FormsyText
 							name="name"
-							floatingLabelText="Name"
-							hintText="Item name"
+							floatingLabelText="Title"
+							hintText="Item title"
 							validations="isSpecialWords"
 							validationError="Please only use letters"
 							requiredError="This field is required"
@@ -118,7 +145,7 @@ class OfferForm extends React.Component {
 							fullWidth
 						/>
 						<FormsySelect
-							name="currency" floatingLabelText="Currency" required fullWidth>
+							name="currency" floatingLabelText="Currency to List in" required fullWidth>
 							{this.renderCurrencies()}
 						</FormsySelect>
 						<FormsySelect name="payment" floatingLabelText="Payment" required fullWidth>
@@ -126,6 +153,7 @@ class OfferForm extends React.Component {
 						</FormsySelect>
 						<FormsyText
 							name="description"
+							value={this.state.autoDescription}
 							floatingLabelText="Description"
 							hintText="Item description"
 							validations="isWords"
@@ -134,7 +162,9 @@ class OfferForm extends React.Component {
 							fullWidth
 							multiLine
 						/>
-						<FormsyToggle name="certificate" label="Certificate" />
+						{
+							// <FormsyToggle name="certificate" label="Certificate" />
+						}
 						{!this.props.newItem.loading &&
 							<RaisedButton
 								label="Send"
@@ -144,6 +174,7 @@ class OfferForm extends React.Component {
 								disabled={!this.state.canSubmit}
 							/>
 						}
+						
 					</Formsy.Form>
 					
 					{this.props.newItem.loading && !this.props.newItem.success &&

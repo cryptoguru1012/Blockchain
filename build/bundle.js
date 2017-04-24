@@ -97554,13 +97554,15 @@
 	        _react2.default.createElement(_VideoPlayer2.default, {
 	          url: this.props.video.localUrl,
 	          onDelete: this.props.onDelete,
-	          subtitles: this.props.video.subtitles
+	          subtitles: this.props.video.subtitles,
+	          setDuration: this.props.setDuration
 	        }),
 	        _react2.default.createElement(_SubtitlesEditer2.default, {
 	          subtitles: this.props.video.subtitles,
 	          onSave: this.props.onSave,
 	          onCancel: this.props.onDelete,
-	          updateSubtitles: this.props.updateSubtitles
+	          updateSubtitles: this.props.updateSubtitles,
+	          videoDuration: this.props.video.videoDuration
 	        })
 	      );
 	    }
@@ -97603,6 +97605,9 @@
 	    },
 	    updateSubtitles: function updateSubtitles(subtitle) {
 	      dispatch((0, _video.updateSubtitles)(subtitle));
+	    },
+	    setDuration: function setDuration(duration) {
+	      dispatch((0, _video.setDuration)(duration));
 	    }
 	  };
 	}
@@ -97823,7 +97828,8 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.UPDATE_SUBTITLES = exports.SET_OFFER = exports.UPLOAD_SUCCESS = exports.UPLOAD_ERROR = exports.UPLOAD_START = exports.DELETE_RECORD = undefined;
+	exports.SET_VIDEO_DURATION = exports.UPDATE_SUBTITLES = exports.SET_OFFER = exports.UPLOAD_SUCCESS = exports.UPLOAD_ERROR = exports.UPLOAD_START = exports.DELETE_RECORD = undefined;
+	exports.setDuration = setDuration;
 	exports.deleteRecord = deleteRecord;
 	exports.setOfferForm = setOfferForm;
 	exports.updateSubtitles = updateSubtitles;
@@ -97837,6 +97843,7 @@
 	var UPLOAD_SUCCESS = exports.UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 	var SET_OFFER = exports.SET_OFFER = 'SET_OFFER';
 	var UPDATE_SUBTITLES = exports.UPDATE_SUBTITLES = 'UPDATE_SUBTITLES';
+	var SET_VIDEO_DURATION = exports.SET_VIDEO_DURATION = 'SET_VIDEO_DURATION';
 
 	function uploadStart(payload) {
 		return {
@@ -97855,6 +97862,13 @@
 		return {
 			type: UPLOAD_SUCCESS,
 			payload: payload.data
+		};
+	}
+
+	function setDuration(payload) {
+		return {
+			type: SET_VIDEO_DURATION,
+			duration: payload
 		};
 	}
 
@@ -102492,10 +102506,13 @@
 				    seconds = sec_num - hours * 3600 - minutes * 60;
 
 				hours = hours < 10 && hours > 0 ? '0' + hours : hours;
-				minutes = minutes < 10 ? '0' + minutes : minutes;
+				// minutes = (minutes < 10) ? '0' + minutes : minutes;
 				seconds = seconds < 10 ? '0' + seconds : seconds;
 
-				if (hours) return hours + ':' + minutes + ':' + seconds;else return minutes + ':' + seconds;
+				// if (hours)
+				// 	return hours+':'+minutes+':'+seconds;
+				// else
+				return minutes + ':' + seconds;
 			}
 		}, {
 			key: 'render',
@@ -103018,9 +103035,9 @@
 		},
 		subtitlesContainer: {
 			position: 'relative',
-			height: '200px',
+			minHeight: '150px',
 			overflowY: 'auto',
-			maxHeight: '200px',
+			maxHeight: '300px',
 			margin: '10px 0'
 		},
 		v_center: {
@@ -103050,6 +103067,12 @@
 		},
 		centerText: {
 			textAlign: 'center'
+		},
+		even: {
+			backgroundColor: '#ccc'
+		},
+		odd: {
+			backgroundColor: '#f2f2f2'
 		}
 	};
 
@@ -103061,23 +103084,21 @@
 
 			var _this = _possibleConstructorReturn(this, (SubtitlesEditer.__proto__ || Object.getPrototypeOf(SubtitlesEditer)).call(this, props));
 
+			_this.state = {
+				videoDuration: _this.props.videoDuration
+			};
+
 			_this.renderSubtitles = _this.renderSubtitles.bind(_this);
 			_this.handleClick = _this.handleClick.bind(_this);
 			_this.handleEdit = _this.handleEdit.bind(_this);
 			_this.handleAdd = _this.handleAdd.bind(_this);
 			_this.handleDelete = _this.handleDelete.bind(_this);
+			_this.sortSubtiltes = _this.sortSubtiltes.bind(_this);
+			_this.sanitizeSubtitles = _this.sanitizeSubtitles.bind(_this);
 			return _this;
 		}
 
 		_createClass(SubtitlesEditer, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				this.setState({
-					subtitles: this.props.subtitles,
-					index: this.props.subtitles.length
-				});
-			}
-		}, {
 			key: 'handleClick',
 			value: function handleClick(event, id) {
 				var newSubtitles = this.props.subtitles;
@@ -103089,25 +103110,29 @@
 				this.props.updateSubtitles(newSubtitles);
 			}
 		}, {
+			key: 'handleEdit',
+			value: function handleEdit(event, id) {
+				var newSubtitles = this.sortSubtiltes(),
+				    target = event.target.name,
+				    value = event.target.value;
+
+				newSubtitles.map(function (subtitle, i) {
+					if (subtitle.id === id) {
+						if (target === 'startTime') value = parseFloat(value) ? parseFloat(value) : 0;
+						subtitle[target] = value;
+					}
+				});
+
+				this.props.updateSubtitles(newSubtitles);
+			}
+		}, {
 			key: 'setTimeFormat',
 			value: function setTimeFormat(value) {
 				var chars = value.split('');
 				for (var i = 0; i < chars.length; i++) {
-					if (i == 2 || i == 5) chars[i] = ':';else if (i == 8) chars[i] = ',';
+					if (i == 1) chars[i] = '.';
 				}
 				return chars.join('');
-			}
-		}, {
-			key: 'handleEdit',
-			value: function handleEdit(event, id) {
-				var newSubtitles = this.props.subtitles;
-
-				for (var i = 0; i < newSubtitles.length; i++) {
-					if (newSubtitles[i].id === id) {
-						if (event.target.name == 'startTime' || event.target.name == 'endTime') newSubtitles[i][event.target.name] = this.setTimeFormat(event.target.value);else newSubtitles[i][event.target.name] = event.target.value;
-					}
-				}
-				this.props.updateSubtitles(newSubtitles);
 			}
 		}, {
 			key: 'handleAdd',
@@ -103121,9 +103146,9 @@
 				var id = parseInt(currentId) + 1,
 				    subtitle = {
 					id: id,
-					startTime: '',
-					endTime: '',
-					text: 'id: ' + id,
+					startTime: 0,
+					endTime: null,
+					text: '',
 					edit: true
 				};
 
@@ -103161,17 +103186,14 @@
 						),
 						_react2.default.createElement(
 							_reactBootstrap.Col,
-							{ xs: 5, style: styles.v_center },
-							_react2.default.createElement(_lib.FormsyText, { name: 'startTime', value: subtitle.startTime, validations: 'isWords', onChange: function onChange(e) {
-									return _this2.handleEdit(e, subtitle.id);
-								}, fullWidth: true, multiLine: true }),
-							_react2.default.createElement(_lib.FormsyText, { name: 'endTime', value: subtitle.endTime, validations: 'isWords', onChange: function onChange(e) {
+							{ xs: 3, style: styles.v_center },
+							_react2.default.createElement(_lib.FormsyText, { name: 'startTime', value: String(subtitle.startTime), validations: 'isNumeric', onChange: function onChange(e) {
 									return _this2.handleEdit(e, subtitle.id);
 								}, fullWidth: true, multiLine: true })
 						),
 						_react2.default.createElement(
 							_reactBootstrap.Col,
-							{ xs: 7, style: styles.v_center },
+							{ xs: 9, style: styles.v_center },
 							_react2.default.createElement(_lib.FormsyText, { name: 'text', value: subtitle.text, validations: 'isWords', onChange: function onChange(e) {
 									return _this2.handleEdit(e, subtitle.id);
 								}, fullWidth: true, multiLine: true })
@@ -103187,19 +103209,17 @@
 					null,
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 5, style: styles.v_center },
+						{ xs: 3, style: styles.v_center },
 						_react2.default.createElement(
 							'p',
 							null,
-							subtitle.startTime,
-							' ->',
-							_react2.default.createElement('br', null),
-							subtitle.endTime
+							this.formatTime(subtitle.startTime),
+							' Sec'
 						)
 					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 7, style: styles.v_center },
+						{ xs: 9, style: styles.v_center },
 						_react2.default.createElement(
 							'p',
 							null,
@@ -103209,27 +103229,49 @@
 				);
 			}
 		}, {
-			key: 'renderSubtitles',
-			value: function renderSubtitles() {
-				var _this3 = this;
-
-				;
-				var subtitles = this.props.subtitles;
-				subtitles.sort(function (a, b) {
+			key: 'sortSubtiltes',
+			value: function sortSubtiltes() {
+				return this.props.subtitles.sort(function (a, b) {
 					if (a.startTime < b.startTime) return -1;
 					if (a.startTime > b.startTime) return 1;
 					return 0;
 				});
-				return subtitles.map(function (subtitle) {
+			}
+		}, {
+			key: 'sanitizeSubtitles',
+			value: function sanitizeSubtitles(subtiltesDuration) {
+				return this.sortSubtiltes().map(function (subtitle, i, subtitles) {
+					if (subtitles.length > 0) {
+						if (i == subtitles.length - 1) {
+							subtitle.endTime = subtiltesDuration;
+						} else {
+							subtitle.endTime = subtitles[i + 1].startTime;
+						}
+					}
+				});
+			}
+		}, {
+			key: 'renderSubtitles',
+			value: function renderSubtitles() {
+				var _this3 = this;
+
+				var subtitles = this.sortSubtiltes();
+				return subtitles.map(function (subtitle, i) {
+					var style = void 0;
+					if (i % 2 == 0) style = styles.even;else style = styles.odd;
 					return _react2.default.createElement(
 						'div',
 						{ key: subtitle.id, onClick: function onClick(e) {
 								return _this3.handleClick(e, subtitle.id);
-							}, className: "subtitle-" + subtitle.id },
-						subtitle.edit ? _this3.subtitleEditOn(subtitle) : _this3.subtitleEditOff(subtitle),
-						_react2.default.createElement('hr', null)
+							}, className: 'subtitle', id: "subtitle-" + subtitle.id, style: style },
+						subtitle.edit ? _this3.subtitleEditOn(subtitle) : _this3.subtitleEditOff(subtitle)
 					);
 				});
+			}
+		}, {
+			key: 'formatTime',
+			value: function formatTime(time) {
+				return String(time).replace('.', ':');
 			}
 		}, {
 			key: 'plusIcon',
@@ -103239,44 +103281,33 @@
 		}, {
 			key: 'saveIcon',
 			value: function saveIcon() {
-				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'floppy-disk', style: styles.white });
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'ok', style: styles.white });
 			}
 		}, {
 			key: 'render',
 			value: function render() {
+				this.sanitizeSubtitles(this.state.videoDuration);
+				console.log(this.sortSubtiltes());
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
 					{ className: 'content-subtitles', style: styles.subtitlesContent },
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 5, style: styles.centerText },
+						{ xs: 12, style: styles.centerText },
 						_react2.default.createElement(
 							'strong',
 							null,
-							'Time'
-						)
-					),
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 7, style: styles.centerText },
-						_react2.default.createElement(
-							'strong',
-							null,
-							'Auto-generated subtitles'
+							'This is what we heard. You may edit for clarity'
 						)
 					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
 						{ xs: 12, className: 'subtitles', style: styles.subtitlesContainer },
 						_react2.default.createElement('hr', null),
-						this.renderSubtitles()
-					),
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 5 },
+						this.renderSubtitles(),
 						_react2.default.createElement(_materialUi.RaisedButton, {
 							icon: this.plusIcon(),
-							label: ' NEW SUBTITLE',
+							label: 'Add subtitle',
 							backgroundColor: '#2ab27b',
 							labelColor: '#fff',
 							onClick: this.handleAdd,
@@ -103285,10 +103316,9 @@
 					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
-						{ xs: 5, xsOffset: 2 },
+						{ xs: 3, xsOffset: 9, md: 2, mdOffset: 10, lg: 2, lgOffset: 10 },
 						_react2.default.createElement(_materialUi.RaisedButton, {
 							icon: this.saveIcon(),
-							label: ' SAVE',
 							backgroundColor: '#2ab27b',
 							labelColor: '#fff',
 							onClick: this.props.onSave,
@@ -105509,14 +105539,35 @@
 			_this.handleSnackbarSuccessRequestClose = _this.handleSnackbarSuccessRequestClose.bind(_this);
 			_this.handleSnackbarErrorRequestClose = _this.handleSnackbarErrorRequestClose.bind(_this);
 			_this.handleSubmit = _this.handleSubmit.bind(_this);
+			_this.getDescription = _this.getDescription.bind(_this);
+
+			// autofill description with subtitles
 
 			_this.state = {
+				autoDescription: _this.getDescription(),
 				canSubmit: false
 			};
+
 			return _this;
 		}
 
 		_createClass(OfferForm, [{
+			key: 'getDescription',
+			value: function getDescription() {
+				var arrDescription = [],
+				    subtitles = this.props.subtitlesVideo.sort(function (a, b) {
+					if (a.startTime < b.startTime) return -1;
+					if (a.startTime > b.startTime) return 1;
+					return 0;
+				});
+
+				subtitles.map(function (subtitle) {
+					arrDescription.push(subtitle.text);
+				});
+
+				return arrDescription.join(' ');
+			}
+		}, {
 			key: 'enableButton',
 			value: function enableButton() {
 				this.setState({ canSubmit: true });
@@ -105575,7 +105626,11 @@
 			value: function renderCurrencies() {
 				if (this.props.currencies.currencies.length > 0) {
 					return this.props.currencies.currencies.map(function (currency, i) {
-						return _react2.default.createElement(_materialUi.MenuItem, { key: i, value: currency.currency, primaryText: currency.currency });
+						if (i === 0) {
+							return _react2.default.createElement(_materialUi.MenuItem, { selected: true, 'default': true, key: i, value: currency.currency, primaryText: currency.currency });
+						} else {
+							return _react2.default.createElement(_materialUi.MenuItem, { key: i, value: currency.currency, primaryText: currency.currency });
+						}
 					});
 				}
 			}
@@ -105604,8 +105659,8 @@
 								} },
 							_react2.default.createElement(_lib.FormsyText, {
 								name: 'name',
-								floatingLabelText: 'Name',
-								hintText: 'Item name',
+								floatingLabelText: 'Title',
+								hintText: 'Item title',
 								validations: 'isSpecialWords',
 								validationError: 'Please only use letters',
 								requiredError: 'This field is required',
@@ -105630,7 +105685,7 @@
 							_react2.default.createElement(
 								_lib.FormsySelect,
 								{
-									name: 'currency', floatingLabelText: 'Currency', required: true, fullWidth: true },
+									name: 'currency', floatingLabelText: 'Currency to List in', required: true, fullWidth: true },
 								this.renderCurrencies()
 							),
 							_react2.default.createElement(
@@ -105640,6 +105695,7 @@
 							),
 							_react2.default.createElement(_lib.FormsyText, {
 								name: 'description',
+								value: this.state.autoDescription,
 								floatingLabelText: 'Description',
 								hintText: 'Item description',
 								validations: 'isWords',
@@ -105648,7 +105704,6 @@
 								fullWidth: true,
 								multiLine: true
 							}),
-							_react2.default.createElement(_lib.FormsyToggle, { name: 'certificate', label: 'Certificate' }),
 							!this.props.newItem.loading && _react2.default.createElement(_materialUi.RaisedButton, {
 								label: 'Send',
 								type: 'submit',
@@ -125059,7 +125114,7 @@
 		success: false,
 		message: '',
 		showSnackbar: false,
-		payments: [{ id: 1, value: 'Paypal', text: 'Paypal' }, { id: 2, value: 'Credit Card', text: 'Credit Card' }, { id: 3, value: 'Bitcoin', text: 'Bitcoin' }]
+		payments: [{ id: 1, value: 'SYS', text: 'SYS' }]
 	};
 
 	function categoryReducer() {
@@ -125105,14 +125160,42 @@
 		recorded: false,
 		loading: false,
 		subtitles: [],
+		videoDuration: 0,
 		videoUploaded: false
 	};
+
+	function setFormatTime(arr) {
+		var newArr = [];
+		arr.map(function (a) {
+			a.startTime = setTimetoSeconds(a.startTime);
+			a.endTime = setTimetoSeconds(a.endTime);
+		});
+		return arr;
+	}
+
+	function setTimetoSeconds(value) {
+		var output = 0,
+		    match = value.match(/([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/);
+
+		if (match) {
+			value = value.split(':');
+			var h = parseInt(value[0]) * 3600,
+			    m = parseInt(value[1]) * 60,
+			    s = parseFloat(value[2].replace(',', '.'));
+
+			output = h + m + s;
+		}
+		return output;
+	}
 
 	var videoReducers = function videoReducers() {
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 		var action = arguments[1];
 
 		switch (action.type) {
+			case _video.SET_VIDEO_DURATION:
+				return _extends({}, state, { videoDuration: action.duration });
+
 			case _video.DELETE_RECORD:
 				return _extends({}, state, { localUrl: null, recorded: false });
 
@@ -125123,7 +125206,7 @@
 				return _extends({}, state, { error: true, loading: false });
 
 			case _video.UPLOAD_SUCCESS:
-				return _extends({}, state, { url: action.payload.videoLink, recorded: true, error: false, loading: false, subtitles: action.payload.videoSubs });
+				return _extends({}, state, { url: action.payload.videoLink, recorded: true, error: false, loading: false, subtitles: setFormatTime(action.payload.videoSubs) });
 
 			case _video.SET_OFFER:
 				return _extends({}, state, { videoUploaded: true });

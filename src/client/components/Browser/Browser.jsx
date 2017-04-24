@@ -5,10 +5,10 @@ import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import { setFilter, search } from '../../redux/actions/browser';
 
 import FormBrowser from './FormBrowser';
-import FilterBrowser from './FilterBrowser';
+import OrderByBrowser from './OrderByBrowser';
 import ListBrowser from './ListBrowser';
 
-let filters = [
+let orderItems = [
 	{
 		value: 'currency',
 		name: 'Currency'
@@ -41,7 +41,7 @@ class Browser extends React.Component {
 			<Grid>
 				<Col xs={12}>
 					<FormBrowser onSearch={this.props.onSearch} browser={this.props.browser} />
-					<FilterBrowser filters={filters} onFilter={this.props.onFilter}/>
+					<OrderByBrowser items={orderItems} onOrder={this.props.onOrder}/>
 					<ListBrowser items={this.props.browser.items}/>
 				</Col>
 			</Grid>

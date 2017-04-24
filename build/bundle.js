@@ -102911,6 +102911,17 @@
 				});
 			}
 		}, {
+			key: 'renderTime',
+			value: function renderTime() {
+				if (this.state.duration !== Infinity) return _react2.default.createElement(
+					_reactBootstrap.Row,
+					{ style: styles.centerRow },
+					_react2.default.createElement(_Time2.default, { value: this.state.counter }),
+					'/',
+					_react2.default.createElement(_Time2.default, { value: this.state.duration })
+				);
+			}
+		}, {
 			key: 'renderControls',
 			value: function renderControls() {
 				var _this5 = this;
@@ -102936,13 +102947,7 @@
 						_react2.default.createElement(
 							_reactBootstrap.Col,
 							{ xs: 6, md: 2, lg: 2, style: styles.colTime },
-							_react2.default.createElement(
-								_reactBootstrap.Row,
-								{ style: styles.centerRow },
-								_react2.default.createElement(_Time2.default, { value: this.state.counter }),
-								'/',
-								_react2.default.createElement(_Time2.default, { value: this.state.duration })
-							)
+							this.renderTime()
 						),
 						_react2.default.createElement(
 							_reactBootstrap.Col,

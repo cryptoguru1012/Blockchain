@@ -218,6 +218,15 @@ class VideoPlayer extends React.Component {
 		);
 	}
 
+	renderTime() {
+		if (this.state.duration !== Infinity)
+			return (
+				<Row style={styles.centerRow}>
+					<Time value={this.state.counter} />/<Time value={this.state.duration} />
+				</Row>
+			)
+	}
+
 	renderControls() {
 		if (this.props.hideControls === undefined)
 			return (
@@ -230,9 +239,7 @@ class VideoPlayer extends React.Component {
 							{this.renderActionButton()}
 						</Col>
 						<Col xs={6} md={2} lg={2} style={styles.colTime}>
-							<Row style={styles.centerRow}>
-								<Time value={this.state.counter} />/<Time value={this.state.duration} />
-							</Row>
+							{this.renderTime()}
 						</Col>
 						<Col xs={3} md={2} lg={2}>
 							{this.props.onDelete && <RaisedButton

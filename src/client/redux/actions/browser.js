@@ -2,7 +2,8 @@ import 'whatwg-fetch';
 export const SEARCH_START = 'SEARCH_START';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
 export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
-export const FILTER_SEARCH = 'FILTER_SEARCH';
+export const ORDER_SEARCH = 'ORDER_SEARCH';
+export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 
 function searchStart(payload) {
 	return {
@@ -24,14 +25,50 @@ function searchSuccess(payload) {
 	};
 }
 
-export function setFilter(filter) {
+function clusterItems(items) {
+	let hasVideo = []
+		, hasPhoto = []
+		, hasOnlyText = [];
+
+	items.map(item => {
+		let description = item.description;
+		let images = [];
+		let isJson = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test( description.replace(/"(\\.|[^"\\])*"/g, ''))) && eval('(' + description + ')');
+
+		if (isJson)
+			hasVideo.push(item);
+		else
+			if (description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g))
+				hasPhoto.push(item);
+			else
+				hasOnlyText.push(item);
+	});
+
+	return ({
+		SHOW_ALL: items,
+		SHOW_VIDEOS: hasVideo, 
+		SHOW_PHOTOS: hasPhoto, 
+		SHOW_TEXT: hasOnlyText
+	})
+}
+
+export function setVisibilityFilter(filter) {
 	return (dispatch, getState) => {
-		console.log('filter: ', filter);
-		let items = getState().browser.items;
+		dispatch({
+			type: SET_VISIBILITY_FILTER,
+			items: clusterItems(getState().browser.dataItems)[filter],
+			filter
+		});
+	}
+}
+
+export function setOrder(order) {
+	return (dispatch, getState) => {
+		let items = getState().browser.dataItems;
 		items.sort((a, b) => {
-			if ( String(a[filter]).toUpperCase() < String(b[filter]).toUpperCase() )
+			if ( String(a[order]).toUpperCase() < String(b[order]).toUpperCase() )
 				return -1;
-			if ( String(a[filter]).toUpperCase() > String(b[filter]).toUpperCase() )
+			if ( String(a[order]).toUpperCase() > String(b[order]).toUpperCase() )
 				return 1;
 			return 0;
 		});

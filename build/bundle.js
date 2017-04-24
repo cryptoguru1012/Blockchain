@@ -102772,15 +102772,18 @@
 		}, {
 			key: 'setSubtitles',
 			value: function setSubtitles() {
+				var _this3 = this;
+
 				var self = this;
 				// settings subtitles
 				self.player.track = self.player.addTextTrack("captions", "English", "en");
 				self.player.track.mode = "showing";
 
 				// load subtitles
+				console.log(self.props.subtitles);
 				self.props.subtitles.map(function (subtitle) {
-					var start = subtitle.startTime,
-					    end = subtitle.endTime,
+					var start = _this3.setTimetoSeconds(subtitle.startTime),
+					    end = _this3.setTimetoSeconds(subtitle.endTime),
 					    newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
 
 					newCue.line = -1;
@@ -102803,18 +102806,18 @@
 		}, {
 			key: 'setTimetoSeconds',
 			value: function setTimetoSeconds(value) {
-				var output = 0,
-				    match = value.match(/([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/);
+				var match = /([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/;
 
-				if (match) {
+				if (value.match(match)) {
 					value = value.split(':');
 					var h = parseInt(value[0]) * 3600,
 					    m = parseInt(value[1]) * 60,
 					    s = parseFloat(value[2].replace(',', '.'));
 
-					output = h + m + s;
+					return h + m + s;
 				}
-				return output;
+
+				return value;
 			}
 		}, {
 			key: 'updateStatusBar',
@@ -102885,7 +102888,7 @@
 		}, {
 			key: 'renderActionButton',
 			value: function renderActionButton() {
-				var _this3 = this;
+				var _this4 = this;
 
 				if (!this.state.play) {
 					return _react2.default.createElement(_materialUi.RaisedButton, {
@@ -102902,7 +102905,7 @@
 					labelColor: '#fff',
 					onClick: this.handleVideoPause,
 					onContextMenu: function onContextMenu(e) {
-						return _this3.handleVideoStop(e);
+						return _this4.handleVideoStop(e);
 					},
 					fullWidth: true
 				});
@@ -102910,7 +102913,7 @@
 		}, {
 			key: 'renderControls',
 			value: function renderControls() {
-				var _this4 = this;
+				var _this5 = this;
 
 				if (this.props.hideControls === undefined) return _react2.default.createElement(
 					_reactBootstrap.Col,
@@ -102918,7 +102921,7 @@
 					_react2.default.createElement(
 						'div',
 						{ style: styles.videoBar, onClick: function onClick(e) {
-								return _this4.updateStatusBar(e);
+								return _this5.updateStatusBar(e);
 							} },
 						_react2.default.createElement('div', { style: styles.statusBar, ref: 'statusBar' })
 					),
@@ -105939,6 +105942,15 @@
 		};
 	}
 
+	function isJson(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
+
 	function clusterItems(items) {
 		var hasVideo = [],
 		    hasPhoto = [],
@@ -105946,10 +105958,8 @@
 
 		items.map(function (item) {
 			var description = item.description;
-			var images = [];
-			var isJson = !/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(description.replace(/"(\\.|[^"\\])*"/g, '')) && eval('(' + description + ')');
 
-			if (isJson) hasVideo.push(item);else if (description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g)) hasPhoto.push(item);else hasOnlyText.push(item);
+			if (isJson(description)) hasVideo.push(item);else if (description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g)) hasPhoto.push(item);else hasOnlyText.push(item);
 		});
 
 		return {
@@ -106527,6 +106537,15 @@
 		}
 	};
 
+	function isJson(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
+
 	var ItemBrowser = function (_React$Component) {
 		_inherits(ItemBrowser, _React$Component);
 
@@ -106536,10 +106555,9 @@
 			var _this = _possibleConstructorReturn(this, (ItemBrowser.__proto__ || Object.getPrototypeOf(ItemBrowser)).call(this, props));
 
 			var description = _this.props.data.description;
-			var isJson = !/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(description.replace(/"(\\.|[^"\\])*"/g, '')) && eval('(' + description + ')');
 			var images = [];
 
-			if (isJson) {
+			if (isJson(description)) {
 				description = JSON.parse(description);
 			} else {
 				var hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);

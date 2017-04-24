@@ -41,15 +41,23 @@ let styles = {
 	}
 }
 
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 class ItemBrowser extends React.Component {
 	constructor(props) {
 		super(props);
 
 		let description = this.props.data.description;
-		let isJson = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test( description.replace(/"(\\.|[^"\\])*"/g, ''))) && eval('(' + description + ')');
 		let images = [];
 
-		if (isJson) {
+		if (isJson(description)) {
 			description = JSON.parse(description);
 		} else {
 			let hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);

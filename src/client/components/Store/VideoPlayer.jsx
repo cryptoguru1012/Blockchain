@@ -97,9 +97,10 @@ class VideoPlayer extends React.Component {
 		self.player.track.mode = "showing";
 
 		// load subtitles
+		console.log(self.props.subtitles);
 		self.props.subtitles.map(subtitle => {
-			let start = subtitle.startTime
-				, end = subtitle.endTime
+			let start = this.setTimetoSeconds(subtitle.startTime)
+				, end = this.setTimetoSeconds(subtitle.endTime)
 				, newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
 
 				newCue.line = -1;
@@ -119,18 +120,18 @@ class VideoPlayer extends React.Component {
 	}
 
 	setTimetoSeconds(value) {
-		let output = 0
-			, match = value.match(/([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/);
+		let match = /([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/;
 
-		if (match) {
+		if (value.match(match)) {
 			value = value.split(':');
 			let h = parseInt(value[0]) * 3600
 			, m = parseInt(value[1]) * 60
 			, s = parseFloat(value[2].replace(',', '.'));
 
-			output = h + m + s;
+			return h + m + s;
 		}
-		return output;
+
+		return value;
 	}
 
 	updateStatusBar(event) {

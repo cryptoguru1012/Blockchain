@@ -26,6 +26,15 @@ function searchSuccess(raw, filtered) {
 	};
 }
 
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 function clusterItems(items) {
 	let hasVideo = []
 		, hasPhoto = []
@@ -33,10 +42,8 @@ function clusterItems(items) {
 
 	items.map(item => {
 		let description = item.description;
-		let images = [];
-		let isJson = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test( description.replace(/"(\\.|[^"\\])*"/g, ''))) && eval('(' + description + ')');
-
-		if (isJson)
+		
+		if (isJson(description))
 			hasVideo.push(item);
 		else
 			if (description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g))

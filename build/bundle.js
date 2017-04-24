@@ -102779,8 +102779,8 @@
 
 				// load subtitles
 				self.props.subtitles.map(function (subtitle) {
-					var start = self.setTimetoSeconds(subtitle.startTime),
-					    end = self.setTimetoSeconds(subtitle.endTime),
+					var start = subtitle.startTime,
+					    end = subtitle.endTime,
 					    newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
 
 					newCue.line = -1;
@@ -103243,7 +103243,8 @@
 				return this.sortSubtiltes().map(function (subtitle, i, subtitles) {
 					if (subtitles.length > 0) {
 						if (i == subtitles.length - 1) {
-							subtitle.endTime = subtiltesDuration;
+							// subtitle.endTime = subtiltesDuration;
+							subtitle.endTime = subtitle.startTime + 2;
 						} else {
 							subtitle.endTime = subtitles[i + 1].startTime;
 						}

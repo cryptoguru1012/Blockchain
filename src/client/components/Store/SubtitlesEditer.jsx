@@ -185,7 +185,8 @@ class SubtitlesEditer extends React.Component {
 		return this.sortSubtiltes().map((subtitle, i, subtitles) => {
 			if (subtitles.length > 0) {
 				if (i == (subtitles.length - 1) ) {
-					subtitle.endTime = subtiltesDuration;
+					// subtitle.endTime = subtiltesDuration;
+					subtitle.endTime = subtitle.startTime + 2;
 				} else {
 					subtitle.endTime = subtitles[i+1].startTime;
 				}

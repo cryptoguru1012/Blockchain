@@ -98,8 +98,8 @@ class VideoPlayer extends React.Component {
 
 		// load subtitles
 		self.props.subtitles.map(subtitle => {
-			let start = self.setTimetoSeconds(subtitle.startTime)
-				, end = self.setTimetoSeconds(subtitle.endTime)
+			let start = subtitle.startTime
+				, end = subtitle.endTime
 				, newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
 
 				newCue.line = -1;

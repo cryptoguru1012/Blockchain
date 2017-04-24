@@ -73,7 +73,7 @@ export function setOrder(order) {
 			return 0;
 		});
 		dispatch({
-			type: FILTER_SEARCH,
+			type: ORDER_SEARCH,
 			items: items
 		});
 	}

@@ -7,6 +7,7 @@ import { setOrder, search } from '../../redux/actions/browser';
 import FormBrowser from './FormBrowser';
 import OrderByBrowser from './OrderByBrowser';
 import ListBrowser from './ListBrowser';
+import GaleryItemBrowser from './GaleryItemBrowser';
 import FilterBrowser from './FilterBrowser';
 
 let orderItems = [
@@ -70,6 +71,7 @@ class Browser extends React.Component {
 		return (
 			<Grid>
 				<Col xs={12}>
+					<GaleryItemBrowser />
 					<FilterBrowser items={filterItems} />
 					<FormBrowser onSearch={this.props.onSearch} browser={this.props.browser} />
 					<OrderByBrowser items={orderItems} onOrder={this.props.onOrder}/>

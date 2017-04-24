@@ -63,8 +63,6 @@ class FormBrowser extends React.Component {
 								hintText="Search..."
 								validations="isSpecialWords"
 								validationError="Please only use letters"
-								requiredError="This field is required"
-								required
 								fullWidth
 							/>
 						</Row>

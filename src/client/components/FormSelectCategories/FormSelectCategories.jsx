@@ -15,7 +15,12 @@ class Browser extends React.Component {
 	renderCategories() {
 		if (this.props.categories.length > 0) {
 			return this.props.categories.map((category, i) => {
-				return <MenuItem key={i} value={category.cat} primaryText={category.cat} />
+				if(i == 0){
+					return (<MenuItem required key={i} value={category.cat} primaryText={category.cat} />);
+				}else{
+					return (<MenuItem key={i} value={category.cat} primaryText={category.cat} />);
+				}
+				
 			})
 		}
 	}

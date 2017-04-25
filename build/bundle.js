@@ -105873,9 +105873,9 @@
 						_reactBootstrap.Col,
 						{ xs: 12 },
 						_react2.default.createElement(_GaleryItemBrowser2.default, null),
-						_react2.default.createElement(_FilterBrowser2.default, { items: filterItems }),
 						_react2.default.createElement(_FormBrowser2.default, { onSearch: this.props.onSearch, browser: this.props.browser }),
 						_react2.default.createElement(_OrderByBrowser2.default, { items: orderItems, onOrder: this.props.onOrder }),
+						_react2.default.createElement(_FilterBrowser2.default, { items: filterItems }),
 						_react2.default.createElement(_ListBrowser2.default, { items: this.props.browser.items })
 					)
 				);
@@ -109191,7 +109191,12 @@
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
 					null,
-					filters
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'center',
+						null,
+						filters
+					)
 				);
 			}
 		}]);
@@ -109211,6 +109216,8 @@
 		value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(2);
@@ -109228,6 +109235,15 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var styles = {
+		filter: {
+			padding: '5px 10px',
+			color: 'rgba(0, 0, 0, 0.298039)',
+			fontSize: '16px',
+			fontWeight: 'bold'
+		}
+	};
 
 	var FilterLink = function (_React$Component) {
 		_inherits(FilterLink, _React$Component);
@@ -109255,7 +109271,7 @@
 				if (this.props.active) {
 					return _react2.default.createElement(
 						'span',
-						null,
+						{ style: _extends({}, styles.filter, { color: 'rgb(255, 109, 0)' }) },
 						this.props.children
 					);
 				}
@@ -109264,7 +109280,7 @@
 					'a',
 					{ href: '#', onClick: function onClick(e) {
 							return _this2.handleClick(e);
-						} },
+						}, style: styles.filter },
 					this.props.children
 				);
 			}

@@ -44,6 +44,7 @@ class OrderByBrowser extends React.Component {
         					  	floatingLabelText="Order by"
          					 	value={this.state.selected}
           						onChange={this.handleSubmit}
+          						fullWidth
         					>		
 								{this.renderItemsOption()}
 							</SelectField>

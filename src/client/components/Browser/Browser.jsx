@@ -72,9 +72,9 @@ class Browser extends React.Component {
 			<Grid>
 				<Col xs={12}>
 					<GaleryItemBrowser />
-					<FilterBrowser items={filterItems} />
 					<FormBrowser onSearch={this.props.onSearch} browser={this.props.browser} />
 					<OrderByBrowser items={orderItems} onOrder={this.props.onOrder}/>
+					<FilterBrowser items={filterItems} />
 					<ListBrowser items={this.props.browser.items}/>
 				</Col>
 			</Grid>

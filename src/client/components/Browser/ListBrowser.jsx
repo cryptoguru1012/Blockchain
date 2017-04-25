@@ -17,8 +17,8 @@ class ListBrowser extends React.Component {
 
 	render() {
 		let items = this.props.items.map((item) => {
-			return ( <GridTile title= {item.title} subtitle = {item.price+item.currency}> 
-						<ItemBrowser key={item.txid} data={item}/>
+			return ( <GridTile key={item.txid} title={item.title} subtitle={item.price +item.currency}> 
+						<ItemBrowser data={item}/>
 					</GridTile>)
 		});	
 		return (

@@ -3,6 +3,15 @@ import { connect } from 'react-redux';
 
 import { setVisibilityFilter } from '../../redux/actions/browser';
 
+let styles = {
+	filter: {
+		padding: '5px 10px',
+		color: 'rgba(0, 0, 0, 0.298039)',
+		fontSize: '16px',
+		fontWeight: 'bold'
+	}
+}
+
 class FilterLink extends React.Component {
 	constructor(props) {
 		super(props);
@@ -17,11 +26,11 @@ class FilterLink extends React.Component {
 
 	render() {
 		if (this.props.active) {
-			return <span>{this.props.children}</span>
+			return <span style={{...styles.filter, color: 'rgb(255, 109, 0)'}}>{this.props.children}</span>
 		}
 
 		return (
-			<a href="#" onClick={e => this.handleClick(e)} >
+			<a href="#" onClick={e => this.handleClick(e)} style={styles.filter} >
 				{this.props.children}
 			</a>
 		)

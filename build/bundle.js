@@ -106313,7 +106313,13 @@
 
 	var _lib = __webpack_require__(1100);
 
-	var _materialUi = __webpack_require__(948);
+	var _SelectField = __webpack_require__(1043);
+
+	var _SelectField2 = _interopRequireDefault(_SelectField);
+
+	var _MenuItem = __webpack_require__(924);
+
+	var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -106336,12 +106342,18 @@
 
 			_this.handleSubmit = _this.handleSubmit.bind(_this);
 			_this.renderItemsOption = _this.renderItemsOption.bind(_this);
+			_this.state = {
+				value: ''
+			};
 			return _this;
 		}
 
 		_createClass(OrderByBrowser, [{
 			key: 'handleSubmit',
 			value: function handleSubmit(e) {
+				this.setState({
+					value: e.target.value
+				});
 				console.log(e.target);
 				this.props.onOrder(e.target.value);
 			}
@@ -106351,7 +106363,7 @@
 				if (this.props.items.length > 0) {
 					return this.props.items.map(function (item, i) {
 						return _react2.default.createElement(
-							'option',
+							_MenuItem2.default,
 							{ key: i, value: item.value },
 							item.name
 						);
@@ -106376,20 +106388,15 @@
 								_reactBootstrap.Row,
 								null,
 								_react2.default.createElement(
-									'label',
-									null,
-									'Order by: '
-								),
-								_react2.default.createElement(
-									'select',
-									{ name: 'item', onChange: function onChange(e) {
+									_SelectField2.default,
+									{
+										fullWidth: true,
+										floatingLabelText: 'Order by',
+										name: 'item',
+										value: this.state.value,
+										onChange: function onChange(e) {
 											return _this2.handleSubmit(e);
 										} },
-									_react2.default.createElement(
-										'option',
-										{ value: '' },
-										'options'
-									),
 									this.renderItemsOption()
 								)
 							)
@@ -106422,6 +106429,8 @@
 
 	var _reactBootstrap = __webpack_require__(611);
 
+	var _GridList = __webpack_require__(1016);
+
 	var _ItemBrowser = __webpack_require__(1152);
 
 	var _ItemBrowser2 = _interopRequireDefault(_ItemBrowser);
@@ -106433,6 +106442,12 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var styles = {
+		gridList: {
+			overflowY: 'auto'
+		}
+	};
 
 	var ListBrowser = function (_React$Component) {
 		_inherits(ListBrowser, _React$Component);
@@ -106447,7 +106462,11 @@
 			key: 'render',
 			value: function render() {
 				var items = this.props.items.map(function (item) {
-					return _react2.default.createElement(_ItemBrowser2.default, { key: item.txid, data: item });
+					return _react2.default.createElement(
+						_GridList.GridTile,
+						{ key: item.txid, title: item.title, subtitle: item.price + item.currency },
+						_react2.default.createElement(_ItemBrowser2.default, { data: item })
+					);
 				});
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
@@ -106455,7 +106474,14 @@
 					_react2.default.createElement(
 						_reactBootstrap.Col,
 						{ xs: 12 },
-						items
+						_react2.default.createElement(
+							_GridList.GridList,
+							{
+								cellHeight: 'auto',
+								style: styles.gridList
+							},
+							items
+						)
 					)
 				);
 			}
@@ -106593,23 +106619,7 @@
 								{ style: styles.contentItemBrowser, className: 'contentItemBrowser' },
 								_react2.default.createElement(
 									'div',
-									{ style: styles.infoContainer, className: 'infoContainer' },
-									_react2.default.createElement(
-										'p',
-										{ style: styles.link },
-										this.props.data.title
-									),
-									_react2.default.createElement(
-										'p',
-										{ style: styles.currency },
-										this.props.data.price,
-										' ',
-										this.props.data.currency
-									)
-								),
-								_react2.default.createElement(
-									'div',
-									{ style: styles.bgContainer, className: 'bgContainer' },
+									{ className: 'bgContainer' },
 									_typeof(this.state.description) === 'object' && _react2.default.createElement(_VideoPlayer2.default, {
 										url: this.state.description.urlVideo,
 										subtitles: this.state.description.subtitlesVideo,
@@ -106617,9 +106627,7 @@
 										hideControls: true,
 										muted: true
 									}),
-									this.state.images.length > 0 && _react2.default.createElement(_GaleryItemBrowser2.default, {
-										images: this.state.images
-									})
+									this.state.images.length > 0
 								)
 							)
 						)

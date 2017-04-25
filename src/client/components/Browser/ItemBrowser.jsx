@@ -77,11 +77,7 @@ class ItemBrowser extends React.Component {
 				<Col xs={12} style={styles.containerItemBrowser} className="containerItemBrowser">
 					<Link to={'/offer/' + this.props.data.offer}>
 						<div style={styles.contentItemBrowser} className="contentItemBrowser">
-							<div style={styles.infoContainer} className="infoContainer">
-								<p style={styles.link}>{this.props.data.title}</p>
-								<p style={styles.currency}>{this.props.data.price} {this.props.data.currency}</p>
-							</div>
-							<div style={styles.bgContainer} className="bgContainer">
+							<div className="bgContainer">
 								{typeof this.state.description === 'object' && <VideoPlayer
 									url={this.state.description.urlVideo}
 									subtitles={this.state.description.subtitlesVideo}
@@ -89,9 +85,7 @@ class ItemBrowser extends React.Component {
 									hideControls
 									muted
 								/>}
-								{this.state.images.length > 0 && <GaleryItemBrowser
-									images={this.state.images}
-								/>}
+								{this.state.images.length > 0 }
 							</div>
 						</div>
 					</Link>

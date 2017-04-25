@@ -41,7 +41,7 @@ class OrderByBrowser extends React.Component {
 					<Col xs={12}>
 						<Row>
 							<SelectField
-        					  	floatingLabelText="Frequency"
+        					  	floatingLabelText="Order by"
          					 	value={this.state.selected}
           						onChange={this.handleSubmit}
         					>		

@@ -77,7 +77,7 @@ class ItemBrowser extends React.Component {
 				<Col xs={12} style={styles.containerItemBrowser} className="containerItemBrowser">
 					<Link to={'/offer/' + this.props.data.offer}>
 						<div style={styles.contentItemBrowser} className="contentItemBrowser">
-							<div className="bgContainer">
+							<div style={styles.bgContainer} className="bgContainer">
 								{typeof this.state.description === 'object' && <VideoPlayer
 									url={this.state.description.urlVideo}
 									subtitles={this.state.description.subtitlesVideo}

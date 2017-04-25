@@ -2,8 +2,9 @@ import React from 'react';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import CircularProgress from 'material-ui/CircularProgress';
-import { RaisedButton } from 'material-ui';
+import { IconButton } from 'material-ui';
 import { FormsyText } from 'formsy-material-ui/lib';
+import Search from 'material-ui/svg-icons/action/search';
 
 import FormSelectCategories from './../FormSelectCategories'
 
@@ -55,7 +56,7 @@ class FormBrowser extends React.Component {
 		return (
 			<Row>
 				<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={this.handleSubmit} >
-					<Col xs={8} style={styles.align}>
+					<Col xs={11} style={styles.align}>
 						<Row>
 							<FormsyText
 								name="regexp"
@@ -67,15 +68,15 @@ class FormBrowser extends React.Component {
 							/>
 						</Row>
 					</Col>
-					<Col xs={4} style={styles.align}>
+					<Col xs={1} style={styles.align}>
 						<Row>
 							{!this.props.browser.loading &&
-								<RaisedButton
-									label="Search"
+								<IconButton
 									type="submit"
 									disabled={!this.state.canSubmit}
-									fullWidth
-								/>
+								>
+									<Search />
+								</IconButton>
 							}
 						</Row>
 					</Col>

@@ -3,8 +3,8 @@ import React from 'react';
 // components
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import { FormsySelect } from 'formsy-material-ui/lib';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { MenuItem } from 'material-ui';
+import { SelectField } from 'material-ui';
 
 class OrderByBrowser extends React.Component {
 	constructor(props) {
@@ -12,22 +12,24 @@ class OrderByBrowser extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.renderItemsOption = this.renderItemsOption.bind(this);
 		this.state = {
-			value : ''
+			selected: ''
 		}
 	}
 
 	handleSubmit(e) {
 		this.setState({
-      		value: e.target.value,
-    	});
-		console.log(e.target);
+			selected: e.target.label
+		});
+		console.log(e.target.label);
 		this.props.onOrder(e.target.value);
 	}
 
 	renderItemsOption() {
 		if (this.props.items.length > 0) {
 			return this.props.items.map((item, i) => {
-				return <MenuItem key={i} value={item.value}>{item.name}</MenuItem>
+				return <MenuItem 
+				value={item.value}
+				label={item.name} primaryText={item.name} />
 			})
 		}
 	}
@@ -38,12 +40,11 @@ class OrderByBrowser extends React.Component {
 				<Formsy.Form>
 					<Col xs={12}>
 						<Row>
-							<SelectField 
-							fullWidth= {true}
-							floatingLabelText="Order by"
-							name="item" 
-							value={this.state.value}
-							 onChange={e => this.handleSubmit(e)}>
+							<SelectField
+        					  	floatingLabelText="Frequency"
+         					 	value={this.state.selected}
+          						onChange={this.handleSubmit}
+        					>		
 								{this.renderItemsOption()}
 							</SelectField>
 						</Row>

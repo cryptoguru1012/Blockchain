@@ -12,6 +12,8 @@ import { setOrder } from '../../redux/actions/browser';
 import FormSelectCategories from './../FormSelectCategories';
 import OrderByBrowser from './OrderByBrowser';
 
+require('./styles/form-browser.scss');
+
 let orderItems = [
   {
     value: 'currency',
@@ -42,9 +44,9 @@ const styles = {
     padding: 5,
   },
   align: {
-    verticalAlign: 'middle',
     display: 'inline-block',
     float: 'none',
+    textAlign: 'center',
   },
 };
 
@@ -80,13 +82,13 @@ class FormBrowser extends React.Component {
 
   render() {
     return (
-      <Row>
+      <Row className="form-browser-container">
         <Formsy.Form
           onValid={this.enableButton}
           onInvalid={this.disableButton}
           onValidSubmit={this.handleSubmit}
         >
-          <Col xs={11} style={styles.align}>
+          <Col sm={11} xs={10} style={styles.align}>
             <Row>
               <FormsyText
                 name="regexp"
@@ -98,10 +100,10 @@ class FormBrowser extends React.Component {
               />
             </Row>
           </Col>
-          <Col xs={1} style={styles.align}>
+          <Col sm={1} xs={2} style={styles.align}>
             <Row>
               {!this.props.browser.loading &&
-                <IconButton type="submit" disabled={!this.state.canSubmit}>
+                <IconButton className="search-button" type="submit" disabled={!this.state.canSubmit}>
                   <Search />
                 </IconButton>}
             </Row>

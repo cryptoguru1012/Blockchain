@@ -14,7 +14,7 @@ class FilterBrowser extends React.Component {
 		});
 		return (
 			<Row>
-				<Col xs={6}>
+				<Col xs={12}>
 					<br/>
 					<center>
 						{filters}

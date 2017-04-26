@@ -14,10 +14,12 @@ class FilterBrowser extends React.Component {
 		});
 		return (
 			<Row>
+				<Col xs={6}>
 					<br/>
 					<center>
 						{filters}
 					</center>
+				</Col>
 			</Row>
 		)
 	}

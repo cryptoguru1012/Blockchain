@@ -26,6 +26,8 @@ class ListBrowser extends React.Component {
           title={item.title}
           subtitle={item.price + item.currency}
           className="grid-tile"
+          cols={1}
+          rows={1}
         >
           <div>
             {textFlag

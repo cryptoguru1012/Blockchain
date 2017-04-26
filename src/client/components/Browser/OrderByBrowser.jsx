@@ -16,12 +16,12 @@ class OrderByBrowser extends React.Component {
     };
   }
 
-  handleSubmit(e) {
+  handleSubmit(e, index, value) {
     this.setState({
-      selected: e.target.label,
+      selected: value,
     });
-    console.log(e.target.label);
-    this.props.onOrder(e.target.value);
+    console.log(value);
+    this.props.onOrder(value);
   }
 
   renderItemsOption() {

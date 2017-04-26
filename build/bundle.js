@@ -27570,7 +27570,7 @@
 
 	var _Store2 = _interopRequireDefault(_Store);
 
-	var _Browser = __webpack_require__(962);
+	var _Browser = __webpack_require__(946);
 
 	var _Browser2 = _interopRequireDefault(_Browser);
 
@@ -94899,15 +94899,15 @@
 
 	var _VideoRecord4 = _interopRequireDefault(_VideoRecord3);
 
-	var _VideoPlayer = __webpack_require__(946);
+	var _VideoPlayer = __webpack_require__(979);
 
 	var _VideoPlayer2 = _interopRequireDefault(_VideoPlayer);
 
-	var _SubtitlesEditer = __webpack_require__(947);
+	var _SubtitlesEditer = __webpack_require__(980);
 
 	var _SubtitlesEditer2 = _interopRequireDefault(_SubtitlesEditer);
 
-	var _OfferForm = __webpack_require__(961);
+	var _OfferForm = __webpack_require__(994);
 
 	var _OfferForm2 = _interopRequireDefault(_OfferForm);
 
@@ -100003,7 +100003,7 @@
 
 	var _reactBootstrap = __webpack_require__(543);
 
-	var _Browser = __webpack_require__(962);
+	var _Browser = __webpack_require__(946);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -100107,355 +100107,16 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _Browser = __webpack_require__(947);
 
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Time = __webpack_require__(944);
-
-	var _Time2 = _interopRequireDefault(_Time);
-
-	var _reactBootstrap = __webpack_require__(543);
-
-	var _materialUi = __webpack_require__(770);
+	var _Browser2 = _interopRequireDefault(_Browser);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var styles = {
-		white: {
-			color: '#fff'
-		},
-		videoContainer: {
-			display: 'relative',
-			marginTop: '5px'
-		},
-		video: {
-			width: '100%',
-			display: 'block'
-		},
-		videoBar: {
-			position: 'relative',
-			display: 'inline-block',
-			width: '100%',
-			height: '30px',
-			backgroundColor: '#e0e0e0'
-		},
-		statusBar: {
-			position: 'absolute',
-			top: '0px',
-			left: '0px',
-			backgroundColor: '#263238',
-			width: '0%',
-			height: '100%'
-		},
-		centerRow: {
-			margin: 'auto',
-			display: 'table'
-		},
-		colTime: {
-			margin: 0,
-			padding: 0
-		}
-	};
-
-	var VideoPlayer = function (_React$Component) {
-		_inherits(VideoPlayer, _React$Component);
-
-		function VideoPlayer(props) {
-			_classCallCheck(this, VideoPlayer);
-
-			var _this = _possibleConstructorReturn(this, (VideoPlayer.__proto__ || Object.getPrototypeOf(VideoPlayer)).call(this, props));
-
-			_this.state = {
-				play: false,
-				duration: 0,
-				counter: 0
-			};
-
-			_this.player;
-			_this.track;
-			_this.handleVideoPlay = _this.handleVideoPlay.bind(_this);
-			_this.handleVideoPause = _this.handleVideoPause.bind(_this);
-			_this.handleVideoStop = _this.handleVideoStop.bind(_this);
-			_this.updateStatusBar = _this.updateStatusBar.bind(_this);
-			_this.setSubtitles = _this.setSubtitles.bind(_this);
-			_this.removeSubtitles = _this.removeSubtitles.bind(_this);
-			return _this;
-		}
-
-		_createClass(VideoPlayer, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				var _this2 = this;
-
-				var self = this,
-				    duration = 0;
-				this.player = this.refs.player;
-				this.player.src = this.props.url;
-
-				this.player.muted = this.props.muted ? true : false;
-
-				this.player.controls = false;
-				this.player.addEventListener('ended', function (e) {
-					_this2.setState({ play: false });
-				});
-				this.player.addEventListener('loadedmetadata', function (e) {
-					self.setSubtitles();
-					self.setState({ duration: self.player.duration });
-				});
-				this.player.addEventListener('timeupdate', function (e) {
-					self.setState({
-						counter: self.player.currentTime,
-						duration: self.player.duration
-					});
-					if (self.refs.statusBar) {
-						var percent = self.player.currentTime / self.player.duration,
-						    barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
-
-						self.refs.statusBar.style.width = barPercent + 'px';
-					}
-				});
-			}
-		}, {
-			key: 'setSubtitles',
-			value: function setSubtitles() {
-				var _this3 = this;
-
-				var self = this;
-				// settings subtitles
-				self.player.track = self.player.addTextTrack("captions", "English", "en");
-				self.player.track.mode = "showing";
-
-				// load subtitles
-				console.log(self.props.subtitles);
-				self.props.subtitles.map(function (subtitle) {
-					var start = _this3.setTimetoSeconds(subtitle.startTime),
-					    end = _this3.setTimetoSeconds(subtitle.endTime),
-					    newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
-
-					newCue.line = -1;
-					self.player.track.addCue(newCue);
-				});
-			}
-		}, {
-			key: 'removeSubtitles',
-			value: function removeSubtitles() {
-				var self = this,
-				    cues = self.player.track.cues,
-				    dataCues = [];
-
-				for (var i = 0; i < cues.length; i++) {
-					dataCues.push(cues[i]);
-				}for (var i = 0; i < dataCues.length; i++) {
-					self.player.track.removeCue(dataCues[i]);
-				}
-			}
-		}, {
-			key: 'setTimetoSeconds',
-			value: function setTimetoSeconds(value) {
-				var matchValue = /([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/;
-
-				if (String(value).match(matchValue)) {
-					value = value.split(':');
-					var h = parseInt(value[0]) * 3600,
-					    m = parseInt(value[1]) * 60,
-					    s = parseFloat(value[2].replace(',', '.'));
-
-					return h + m + s;
-				}
-
-				return value;
-			}
-		}, {
-			key: 'updateStatusBar',
-			value: function updateStatusBar(event) {
-				var offsetLeft = event.target.offsetLeft,
-				    clientX = event.clientX;
-
-				this.player.currentTime = this.player.duration * ((clientX - offsetLeft) / this.refs.statusBar.offsetParent.offsetWidth);
-			}
-		}, {
-			key: 'componentWillReceiveProps',
-			value: function componentWillReceiveProps(nextProps) {
-				var self = this;
-
-				if (!self.player.track) return false;
-
-				console.log('will remove', self.player.track.cues);
-				self.removeSubtitles();
-				console.log('revoved cues');
-
-				self.setSubtitles();
-				console.log('added', self.player.track.cues);
-			}
-		}, {
-			key: 'handleVideoPlay',
-			value: function handleVideoPlay() {
-				if (this.player) {
-					this.setState({ play: true });
-					this.player.play();
-				}
-			}
-		}, {
-			key: 'handleVideoPause',
-			value: function handleVideoPause() {
-				if (this.player) {
-					this.setState({ play: false });
-					this.player.pause();
-				}
-			}
-		}, {
-			key: 'handleVideoStop',
-			value: function handleVideoStop(e) {
-				e.preventDefault();
-				if (this.player) {
-					this.setState({
-						play: false,
-						counter: 0
-					});
-					this.player.pause();
-					this.player.currentTime = 0;
-				}
-			}
-		}, {
-			key: 'playIcon',
-			value: function playIcon() {
-				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'play', style: styles.white });
-			}
-		}, {
-			key: 'pauseIcon',
-			value: function pauseIcon() {
-				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'pause', style: styles.white });
-			}
-		}, {
-			key: 'deleteIcon',
-			value: function deleteIcon() {
-				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'trash', style: styles.white });
-			}
-		}, {
-			key: 'renderActionButton',
-			value: function renderActionButton() {
-				var _this4 = this;
-
-				if (!this.state.play) {
-					return _react2.default.createElement(_materialUi.RaisedButton, {
-						icon: this.playIcon(),
-						backgroundColor: '#000',
-						labelColor: '#fff',
-						onClick: this.handleVideoPlay,
-						fullWidth: true
-					});
-				}
-				return _react2.default.createElement(_materialUi.RaisedButton, {
-					icon: this.pauseIcon(),
-					backgroundColor: '#000',
-					labelColor: '#fff',
-					onClick: this.handleVideoPause,
-					onContextMenu: function onContextMenu(e) {
-						return _this4.handleVideoStop(e);
-					},
-					fullWidth: true
-				});
-			}
-		}, {
-			key: 'renderTime',
-			value: function renderTime() {
-				if (this.state.duration !== Infinity) return _react2.default.createElement(
-					_reactBootstrap.Row,
-					{ style: styles.centerRow },
-					_react2.default.createElement(_Time2.default, { value: this.state.counter }),
-					'/',
-					_react2.default.createElement(_Time2.default, { value: this.state.duration })
-				);
-			}
-		}, {
-			key: 'renderControls',
-			value: function renderControls() {
-				var _this5 = this;
-
-				if (this.props.hideControls === undefined) return _react2.default.createElement(
-					_reactBootstrap.Col,
-					{ xs: 12, md: 6, mdOffset: 3, lg: 6, lgOffset: 3 },
-					_react2.default.createElement(
-						'div',
-						{ style: styles.videoBar, onClick: function onClick(e) {
-								return _this5.updateStatusBar(e);
-							} },
-						_react2.default.createElement('div', { style: styles.statusBar, ref: 'statusBar' })
-					),
-					_react2.default.createElement(
-						_reactBootstrap.Row,
-						null,
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 3, md: 2, lg: 2 },
-							this.renderActionButton()
-						),
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 6, md: 10, lg: 10, style: styles.colTime },
-							this.renderTime()
-						),
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 3, md: 2, lg: 2 },
-							this.props.onDelete && _react2.default.createElement(_materialUi.RaisedButton, {
-								icon: this.deleteIcon(),
-								backgroundColor: '#eb4d5c',
-								labelColor: '#fff',
-								onClick: this.props.onDelete,
-								fullWidth: true
-							})
-						)
-					)
-				);
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				var handleMouseOver = function handleMouseOver() {
-					return false;
-				},
-				    handleMouseLeave = function handleMouseLeave() {
-					return false;
-				};
-
-				if (this.props.playOnHover) {
-					handleMouseLeave = this.handleVideoStop;
-					handleMouseOver = this.handleVideoPlay;
-				}
-				return _react2.default.createElement(
-					_reactBootstrap.Row,
-					{ style: styles.videoContainer },
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 12, md: 6, mdOffset: 3, lg: 6, lgOffset: 3 },
-						_react2.default.createElement('video', { preload: 'metadata', ref: 'player', style: styles.video, onMouseLeave: function onMouseLeave(e) {
-								return handleMouseLeave(e);
-							}, onMouseOver: function onMouseOver(e) {
-								return handleMouseOver(e);
-							} })
-					),
-					this.renderControls()
-				);
-			}
-		}]);
-
-		return VideoPlayer;
-	}(_react2.default.Component);
-
-	exports.default = VideoPlayer;
+	exports.default = _Browser2.default;
 
 /***/ }),
 /* 947 */
@@ -100475,2470 +100136,23 @@
 
 	var _reactRedux = __webpack_require__(282);
 
-	var _reactPlayer = __webpack_require__(948);
-
-	var _reactPlayer2 = _interopRequireDefault(_reactPlayer);
-
-	var _video = __webpack_require__(941);
-
 	var _reactBootstrap = __webpack_require__(543);
 
-	var _lib = __webpack_require__(922);
+	var _browser = __webpack_require__(948);
 
-	var _materialUi = __webpack_require__(770);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var styles = {
-		subtitlesContent: {
-			padding: '20px 0',
-			minHeight: '500px'
-		},
-		subtitlesContainer: {
-			position: 'relative',
-			minHeight: '150px',
-			overflowY: 'auto',
-			maxHeight: '300px',
-			margin: '10px 0'
-		},
-		v_center: {
-			display: 'inline-block',
-			verticalAlign: 'middle',
-			float: 'none'
-		},
-		inputText: {
-			width: '100%'
-		},
-		form: {
-			position: 'relative'
-		},
-		btnDelete: {
-			position: 'absolute',
-			top: '-38px',
-			right: '15px',
-			backgroundColor: '#eb4d5c',
-			color: '#fff',
-			borderRadius: '50%',
-			width: '35px',
-			height: '35px',
-			padding: '8px 13px'
-		},
-		white: {
-			color: '#fff'
-		},
-		centerText: {
-			textAlign: 'center'
-		},
-		even: {
-			backgroundColor: '#ccc'
-		},
-		odd: {
-			backgroundColor: '#f2f2f2'
-		}
-	};
-
-	var SubtitlesEditer = function (_React$Component) {
-		_inherits(SubtitlesEditer, _React$Component);
-
-		function SubtitlesEditer(props) {
-			_classCallCheck(this, SubtitlesEditer);
-
-			var _this = _possibleConstructorReturn(this, (SubtitlesEditer.__proto__ || Object.getPrototypeOf(SubtitlesEditer)).call(this, props));
-
-			_this.state = {
-				videoDuration: _this.props.videoDuration
-			};
-
-			_this.renderSubtitles = _this.renderSubtitles.bind(_this);
-			_this.handleClick = _this.handleClick.bind(_this);
-			_this.handleEdit = _this.handleEdit.bind(_this);
-			_this.handleAdd = _this.handleAdd.bind(_this);
-			_this.handleDelete = _this.handleDelete.bind(_this);
-			_this.sortSubtiltes = _this.sortSubtiltes.bind(_this);
-			_this.sanitizeSubtitles = _this.sanitizeSubtitles.bind(_this);
-			return _this;
-		}
-
-		_createClass(SubtitlesEditer, [{
-			key: 'handleClick',
-			value: function handleClick(event, id) {
-				var newSubtitles = this.props.subtitles;
-				for (var i = 0; i < newSubtitles.length; i++) {
-					if (newSubtitles[i].id === id) {
-						if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'A') return false;else newSubtitles[i].edit = !newSubtitles[i].edit;
-					} else newSubtitles[i].edit = false;
-				}
-				this.props.updateSubtitles(newSubtitles);
-			}
-		}, {
-			key: 'handleEdit',
-			value: function handleEdit(event, id) {
-				var newSubtitles = this.sortSubtiltes(),
-				    target = event.target.name,
-				    value = event.target.value;
-
-				newSubtitles.map(function (subtitle, i) {
-					if (subtitle.id === id) {
-						if (target === 'startTime') value = parseFloat(value) ? parseFloat(value) : 0;
-						subtitle[target] = value;
-					}
-				});
-
-				this.props.updateSubtitles(newSubtitles);
-			}
-		}, {
-			key: 'setTimeFormat',
-			value: function setTimeFormat(value) {
-				var chars = value.split('');
-				for (var i = 0; i < chars.length; i++) {
-					if (i == 1) chars[i] = '.';
-				}
-				return chars.join('');
-			}
-		}, {
-			key: 'handleAdd',
-			value: function handleAdd() {
-				var newSubtitles = this.props.subtitles,
-				    currentId = 0;
-				for (var i = 0; i < newSubtitles.length; i++) {
-					newSubtitles[i].edit = false;
-					currentId = newSubtitles[i].id > currentId ? newSubtitles[i].id : currentId;
-				}
-				var id = parseInt(currentId) + 1,
-				    subtitle = {
-					id: id,
-					startTime: 0,
-					endTime: null,
-					text: '',
-					edit: true
-				};
-
-				newSubtitles = newSubtitles.concat([subtitle]);
-				this.props.updateSubtitles(newSubtitles);
-			}
-		}, {
-			key: 'handleDelete',
-			value: function handleDelete(id) {
-				var newSubtitles = this.props.subtitles;
-				for (var i = 0; i < newSubtitles.length; i++) {
-					if (newSubtitles[i].id === id) {
-						newSubtitles = newSubtitles.splice(i, 1);
-					}
-				}
-				this.props.updateSubtitles(newSubtitles);
-			}
-		}, {
-			key: 'subtitleEditOn',
-			value: function subtitleEditOn(subtitle) {
-				var _this2 = this;
-
-				return _react2.default.createElement(
-					_reactBootstrap.Row,
-					null,
-					_react2.default.createElement(
-						Formsy.Form,
-						{ style: styles.form },
-						_react2.default.createElement(
-							'a',
-							{ onClick: function onClick(e) {
-									return _this2.handleDelete(subtitle.id);
-								}, style: styles.btnDelete },
-							'X'
-						),
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 3, style: styles.v_center },
-							_react2.default.createElement(_lib.FormsyText, { name: 'startTime', value: String(subtitle.startTime), validations: 'isNumeric', onChange: function onChange(e) {
-									return _this2.handleEdit(e, subtitle.id);
-								}, fullWidth: true, multiLine: true })
-						),
-						_react2.default.createElement(
-							_reactBootstrap.Col,
-							{ xs: 9, style: styles.v_center },
-							_react2.default.createElement(_lib.FormsyText, { name: 'text', value: subtitle.text, validations: 'isWords', onChange: function onChange(e) {
-									return _this2.handleEdit(e, subtitle.id);
-								}, fullWidth: true, multiLine: true })
-						)
-					)
-				);
-			}
-		}, {
-			key: 'subtitleEditOff',
-			value: function subtitleEditOff(subtitle) {
-				return _react2.default.createElement(
-					_reactBootstrap.Row,
-					null,
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 3, style: styles.v_center },
-						_react2.default.createElement(
-							'p',
-							null,
-							this.formatTime(subtitle.startTime),
-							' Sec'
-						)
-					),
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 9, style: styles.v_center },
-						_react2.default.createElement(
-							'p',
-							null,
-							subtitle.text
-						)
-					)
-				);
-			}
-		}, {
-			key: 'sortSubtiltes',
-			value: function sortSubtiltes() {
-				return this.props.subtitles.sort(function (a, b) {
-					if (a.startTime < b.startTime) return -1;
-					if (a.startTime > b.startTime) return 1;
-					return 0;
-				});
-			}
-		}, {
-			key: 'sanitizeSubtitles',
-			value: function sanitizeSubtitles(subtiltesDuration) {
-				return this.sortSubtiltes().map(function (subtitle, i, subtitles) {
-					if (subtitles.length > 0) {
-						if (i == subtitles.length - 1) {
-							// subtitle.endTime = subtiltesDuration;
-							subtitle.endTime = subtitle.startTime + 2;
-						} else {
-							subtitle.endTime = subtitles[i + 1].startTime;
-						}
-					}
-				});
-			}
-		}, {
-			key: 'renderSubtitles',
-			value: function renderSubtitles() {
-				var _this3 = this;
-
-				var subtitles = this.sortSubtiltes();
-				return subtitles.map(function (subtitle, i) {
-					var style = void 0;
-					if (i % 2 == 0) style = styles.even;else style = styles.odd;
-					return _react2.default.createElement(
-						'div',
-						{ key: subtitle.id, onClick: function onClick(e) {
-								return _this3.handleClick(e, subtitle.id);
-							}, className: 'subtitle', id: "subtitle-" + subtitle.id, style: style },
-						subtitle.edit ? _this3.subtitleEditOn(subtitle) : _this3.subtitleEditOff(subtitle)
-					);
-				});
-			}
-		}, {
-			key: 'formatTime',
-			value: function formatTime(time) {
-				return String(time).replace('.', ':');
-			}
-		}, {
-			key: 'plusIcon',
-			value: function plusIcon() {
-				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'plus', style: styles.white });
-			}
-		}, {
-			key: 'saveIcon',
-			value: function saveIcon() {
-				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'ok', style: styles.white });
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				this.sanitizeSubtitles(this.state.videoDuration);
-				console.log(this.sortSubtiltes());
-				return _react2.default.createElement(
-					_reactBootstrap.Row,
-					{ className: 'content-subtitles', style: styles.subtitlesContent },
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 12, style: styles.centerText },
-						_react2.default.createElement(
-							'strong',
-							null,
-							'This is what we heard. You may edit for clarity'
-						)
-					),
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 12, className: 'subtitles', style: styles.subtitlesContainer },
-						_react2.default.createElement('hr', null),
-						this.renderSubtitles(),
-						_react2.default.createElement(_materialUi.RaisedButton, {
-							icon: this.plusIcon(),
-							label: 'Add subtitle',
-							backgroundColor: '#2ab27b',
-							labelColor: '#fff',
-							onClick: this.handleAdd,
-							fullWidth: true
-						})
-					),
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 3, xsOffset: 9, md: 2, mdOffset: 10, lg: 2, lgOffset: 10 },
-						_react2.default.createElement(_materialUi.RaisedButton, {
-							icon: this.saveIcon(),
-							backgroundColor: '#2ab27b',
-							labelColor: '#fff',
-							onClick: this.props.onSave,
-							fullWidth: true
-						})
-					)
-				);
-			}
-		}]);
-
-		return SubtitlesEditer;
-	}(_react2.default.Component);
-
-	exports.default = SubtitlesEditer;
-
-/***/ }),
-/* 948 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _props3 = __webpack_require__(949);
-
-	var _YouTube = __webpack_require__(950);
-
-	var _YouTube2 = _interopRequireDefault(_YouTube);
-
-	var _SoundCloud = __webpack_require__(954);
-
-	var _SoundCloud2 = _interopRequireDefault(_SoundCloud);
-
-	var _Vimeo = __webpack_require__(957);
-
-	var _Vimeo2 = _interopRequireDefault(_Vimeo);
-
-	var _FilePlayer = __webpack_require__(956);
-
-	var _FilePlayer2 = _interopRequireDefault(_FilePlayer);
-
-	var _Streamable = __webpack_require__(958);
-
-	var _Streamable2 = _interopRequireDefault(_Streamable);
-
-	var _Vidme = __webpack_require__(959);
-
-	var _Vidme2 = _interopRequireDefault(_Vidme);
-
-	var _Wistia = __webpack_require__(960);
-
-	var _Wistia2 = _interopRequireDefault(_Wistia);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ReactPlayer = function (_Component) {
-	  _inherits(ReactPlayer, _Component);
-
-	  function ReactPlayer() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, ReactPlayer);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ReactPlayer.__proto__ || Object.getPrototypeOf(ReactPlayer)).call.apply(_ref, [this].concat(args))), _this), _this.seekTo = function (fraction) {
-	      if (_this.player) {
-	        _this.player.seekTo(fraction);
-	      }
-	    }, _this.progress = function () {
-	      if (_this.props.url && _this.player) {
-	        var loaded = _this.player.getFractionLoaded() || 0;
-	        var played = _this.player.getFractionPlayed() || 0;
-	        var progress = {};
-	        if (loaded !== _this.prevLoaded) {
-	          progress.loaded = loaded;
-	        }
-	        if (played !== _this.prevPlayed) {
-	          progress.played = played;
-	        }
-	        if (progress.loaded || progress.played) {
-	          _this.props.onProgress(progress);
-	        }
-	        _this.prevLoaded = loaded;
-	        _this.prevPlayed = played;
-	      }
-	      _this.progressTimeout = setTimeout(_this.progress, _this.props.progressFrequency);
-	    }, _this.ref = function (player) {
-	      _this.player = player;
-	    }, _this.renderPlayer = function (Player) {
-	      var active = Player.canPlay(_this.props.url);
-
-	      var _this$props = _this.props,
-	          youtubeConfig = _this$props.youtubeConfig,
-	          soundcloudConfig = _this$props.soundcloudConfig,
-	          vimeoConfig = _this$props.vimeoConfig,
-	          fileConfig = _this$props.fileConfig,
-	          activeProps = _objectWithoutProperties(_this$props, ['youtubeConfig', 'soundcloudConfig', 'vimeoConfig', 'fileConfig']);
-
-	      var props = active ? _extends({}, activeProps, { ref: _this.ref }) : {};
-	      return _react2['default'].createElement(Player, _extends({
-	        key: Player.displayName,
-	        youtubeConfig: youtubeConfig,
-	        soundcloudConfig: soundcloudConfig,
-	        vimeoConfig: vimeoConfig,
-	        fileConfig: fileConfig
-	      }, props));
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(ReactPlayer, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.progress();
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      clearTimeout(this.progressTimeout);
-	    }
-	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.url !== nextProps.url || this.props.playing !== nextProps.playing || this.props.volume !== nextProps.volume || this.props.playbackRate !== nextProps.playbackRate || this.props.height !== nextProps.height || this.props.width !== nextProps.width || this.props.hidden !== nextProps.hidden;
-	    }
-	  }, {
-	    key: 'renderPlayers',
-	    value: function renderPlayers() {
-	      // Build array of players to render based on URL and preload config
-	      var _props = this.props,
-	          url = _props.url,
-	          youtubeConfig = _props.youtubeConfig,
-	          vimeoConfig = _props.vimeoConfig;
-
-	      var players = [];
-	      if (_YouTube2['default'].canPlay(url)) {
-	        players.push(_YouTube2['default']);
-	      } else if (_SoundCloud2['default'].canPlay(url)) {
-	        players.push(_SoundCloud2['default']);
-	      } else if (_Vimeo2['default'].canPlay(url)) {
-	        players.push(_Vimeo2['default']);
-	      } else if (_Streamable2['default'].canPlay(url)) {
-	        players.push(_Streamable2['default']);
-	      } else if (_Vidme2['default'].canPlay(url)) {
-	        players.push(_Vidme2['default']);
-	      } else if (_Wistia2['default'].canPlay(url)) {
-	        players.push(_Wistia2['default']);
-	      } else if (url) {
-	        // Fall back to FilePlayer if nothing else can play the URL
-	        players.push(_FilePlayer2['default']);
-	      }
-	      // Render additional players if preload config is set
-	      if (!_YouTube2['default'].canPlay(url) && youtubeConfig.preload) {
-	        players.push(_YouTube2['default']);
-	      }
-	      if (!_Vimeo2['default'].canPlay(url) && vimeoConfig.preload) {
-	        players.push(_Vimeo2['default']);
-	      }
-	      return players.map(this.renderPlayer);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props2 = this.props,
-	          style = _props2.style,
-	          width = _props2.width,
-	          height = _props2.height,
-	          className = _props2.className,
-	          hidden = _props2.hidden;
-
-	      var players = this.renderPlayers();
-	      return _react2['default'].createElement(
-	        'div',
-	        { style: _extends({}, style, { width: width, height: height }), className: className, hidden: hidden },
-	        players
-	      );
-	    }
-	  }]);
-
-	  return ReactPlayer;
-	}(_react.Component);
-
-	ReactPlayer.displayName = 'ReactPlayer';
-	ReactPlayer.propTypes = _props3.propTypes;
-	ReactPlayer.defaultProps = _props3.defaultProps;
-	exports['default'] = ReactPlayer;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 949 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.defaultProps = exports.propTypes = undefined;
-
-	var _react = __webpack_require__(2);
-
-	var string = _react.PropTypes.string,
-	    bool = _react.PropTypes.bool,
-	    number = _react.PropTypes.number,
-	    oneOfType = _react.PropTypes.oneOfType,
-	    shape = _react.PropTypes.shape,
-	    object = _react.PropTypes.object,
-	    func = _react.PropTypes.func;
-	var propTypes = exports.propTypes = {
-	  url: string,
-	  playing: bool,
-	  loop: bool,
-	  controls: bool,
-	  volume: number,
-	  playbackRate: number,
-	  width: oneOfType([string, number]),
-	  height: oneOfType([string, number]),
-	  hidden: bool,
-	  className: string,
-	  style: object,
-	  progressFrequency: number,
-	  soundcloudConfig: shape({
-	    clientId: string,
-	    showArtwork: bool
-	  }),
-	  youtubeConfig: shape({
-	    playerVars: object,
-	    preload: bool
-	  }),
-	  vimeoConfig: shape({
-	    iframeParams: object,
-	    preload: bool
-	  }),
-	  fileConfig: shape({
-	    attributes: object
-	  }),
-	  onReady: func,
-	  onStart: func,
-	  onPlay: func,
-	  onPause: func,
-	  onBuffer: func,
-	  onEnded: func,
-	  onError: func,
-	  onDuration: func,
-	  onProgress: func
-	};
-
-	var defaultProps = exports.defaultProps = {
-	  playing: false,
-	  loop: false,
-	  controls: false,
-	  volume: 0.8,
-	  playbackRate: 1,
-	  width: 640,
-	  height: 360,
-	  hidden: false,
-	  progressFrequency: 1000,
-	  soundcloudConfig: {
-	    clientId: 'e8b6f84fbcad14c301ca1355cae1dea2',
-	    showArtwork: true
-	  },
-	  youtubeConfig: {
-	    playerVars: {},
-	    preload: false
-	  },
-	  vimeoConfig: {
-	    iframeParams: {},
-	    preload: false
-	  },
-	  fileConfig: {
-	    attributes: {}
-	  },
-	  onReady: function onReady() {},
-	  onStart: function onStart() {},
-	  onPlay: function onPlay() {},
-	  onPause: function onPause() {},
-	  onBuffer: function onBuffer() {},
-	  onEnded: function onEnded() {},
-	  onError: function onError() {},
-	  onDuration: function onDuration() {},
-	  onProgress: function onProgress() {}
-	};
-
-/***/ }),
-/* 950 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _loadScript = __webpack_require__(951);
-
-	var _loadScript2 = _interopRequireDefault(_loadScript);
-
-	var _Base2 = __webpack_require__(952);
-
-	var _Base3 = _interopRequireDefault(_Base2);
-
-	var _utils = __webpack_require__(953);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SDK_URL = 'https://www.youtube.com/iframe_api';
-	var SDK_GLOBAL = 'YT';
-	var SDK_GLOBAL_READY = 'onYouTubeIframeAPIReady';
-	var MATCH_URL = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-	var BLANK_VIDEO_URL = 'https://www.youtube.com/watch?v=GlCmAC4MHek';
-	var DEFAULT_PLAYER_VARS = {
-	  autoplay: 0,
-	  playsinline: 1,
-	  showinfo: 0,
-	  rel: 0,
-	  iv_load_policy: 3
-	};
-
-	var YouTube = function (_Base) {
-	  _inherits(YouTube, _Base);
-
-	  function YouTube() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, YouTube);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YouTube.__proto__ || Object.getPrototypeOf(YouTube)).call.apply(_ref, [this].concat(args))), _this), _this.onStateChange = function (_ref2) {
-	      var data = _ref2.data;
-	      var _this$props = _this.props,
-	          onPause = _this$props.onPause,
-	          onBuffer = _this$props.onBuffer;
-	      var _window$SDK_GLOBAL$Pl = window[SDK_GLOBAL].PlayerState,
-	          PLAYING = _window$SDK_GLOBAL$Pl.PLAYING,
-	          PAUSED = _window$SDK_GLOBAL$Pl.PAUSED,
-	          BUFFERING = _window$SDK_GLOBAL$Pl.BUFFERING,
-	          ENDED = _window$SDK_GLOBAL$Pl.ENDED,
-	          CUED = _window$SDK_GLOBAL$Pl.CUED;
-
-	      if (data === PLAYING) _this.onPlay();
-	      if (data === PAUSED) onPause();
-	      if (data === BUFFERING) onBuffer();
-	      if (data === ENDED) _this.onEnded();
-	      if (data === CUED) _this.onReady();
-	    }, _this.onEnded = function () {
-	      var _this$props2 = _this.props,
-	          loop = _this$props2.loop,
-	          onEnded = _this$props2.onEnded;
-
-	      if (loop) {
-	        _this.seekTo(0);
-	      }
-	      onEnded();
-	    }, _this.ref = function (container) {
-	      _this.container = container;
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(YouTube, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _props = this.props,
-	          url = _props.url,
-	          youtubeConfig = _props.youtubeConfig;
-
-	      if (!url && youtubeConfig.preload) {
-	        this.preloading = true;
-	        this.load(BLANK_VIDEO_URL);
-	      }
-	      _get(YouTube.prototype.__proto__ || Object.getPrototypeOf(YouTube.prototype), 'componentDidMount', this).call(this);
-	    }
-	  }, {
-	    key: 'getSDK',
-	    value: function getSDK() {
-	      if (window[SDK_GLOBAL] && window[SDK_GLOBAL].loaded) {
-	        return Promise.resolve(window[SDK_GLOBAL]);
-	      }
-	      return new Promise(function (resolve, reject) {
-	        var previousOnReady = window[SDK_GLOBAL_READY];
-	        window[SDK_GLOBAL_READY] = function () {
-	          if (previousOnReady) previousOnReady();
-	          resolve(window[SDK_GLOBAL]);
-	        };
-	        (0, _loadScript2['default'])(SDK_URL, function (err) {
-	          if (err) reject(err);
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'load',
-	    value: function load(url) {
-	      var _this2 = this;
-
-	      var _props2 = this.props,
-	          controls = _props2.controls,
-	          youtubeConfig = _props2.youtubeConfig,
-	          _onError = _props2.onError;
-
-	      var id = url && url.match(MATCH_URL)[1];
-	      if (this.isReady) {
-	        this.player.cueVideoById({
-	          videoId: id,
-	          startSeconds: (0, _utils.parseStartTime)(url)
-	        });
-	        return;
-	      }
-	      if (this.loadingSDK) {
-	        this.loadOnReady = url;
-	        return;
-	      }
-	      this.loadingSDK = true;
-	      this.getSDK().then(function (YT) {
-	        _this2.player = new YT.Player(_this2.container, {
-	          width: '100%',
-	          height: '100%',
-	          videoId: id,
-	          playerVars: _extends({}, DEFAULT_PLAYER_VARS, {
-	            controls: controls ? 1 : 0,
-	            start: (0, _utils.parseStartTime)(url),
-	            origin: window.location.origin
-	          }, youtubeConfig.playerVars),
-	          events: {
-	            onReady: function onReady() {
-	              _this2.loadingSDK = false;
-	              _this2.onReady();
-	            },
-	            onStateChange: _this2.onStateChange,
-	            onError: function onError(event) {
-	              return _onError(event.data);
-	            }
-	          }
-	        });
-	      }, _onError);
-	    }
-	  }, {
-	    key: 'play',
-	    value: function play() {
-	      if (!this.isReady || !this.player.playVideo) return;
-	      this.player.playVideo();
-	    }
-	  }, {
-	    key: 'pause',
-	    value: function pause() {
-	      if (!this.isReady || !this.player.pauseVideo) return;
-	      this.player.pauseVideo();
-	    }
-	  }, {
-	    key: 'stop',
-	    value: function stop() {
-	      if (!this.isReady || !this.player.stopVideo) return;
-	      this.player.stopVideo();
-	    }
-	  }, {
-	    key: 'seekTo',
-	    value: function seekTo(fraction) {
-	      _get(YouTube.prototype.__proto__ || Object.getPrototypeOf(YouTube.prototype), 'seekTo', this).call(this, fraction);
-	      if (!this.isReady || !this.player.seekTo) return;
-	      this.player.seekTo(this.getDuration() * fraction);
-	    }
-	  }, {
-	    key: 'setVolume',
-	    value: function setVolume(fraction) {
-	      if (!this.isReady || !this.player.setVolume) return;
-	      this.player.setVolume(fraction * 100);
-	    }
-	  }, {
-	    key: 'setPlaybackRate',
-	    value: function setPlaybackRate(rate) {
-	      if (!this.isReady || !this.player.setPlaybackRate) return;
-	      this.player.setPlaybackRate(rate);
-	    }
-	  }, {
-	    key: 'getDuration',
-	    value: function getDuration() {
-	      if (!this.isReady || !this.player.getDuration) return null;
-	      return this.player.getDuration();
-	    }
-	  }, {
-	    key: 'getFractionPlayed',
-	    value: function getFractionPlayed() {
-	      if (!this.isReady || !this.getDuration()) return null;
-	      return this.player.getCurrentTime() / this.getDuration();
-	    }
-	  }, {
-	    key: 'getFractionLoaded',
-	    value: function getFractionLoaded() {
-	      if (!this.isReady || !this.player.getVideoLoadedFraction) return null;
-	      return this.player.getVideoLoadedFraction();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var style = {
-	        width: '100%',
-	        height: '100%',
-	        display: this.props.url ? 'block' : 'none'
-	      };
-	      return _react2['default'].createElement(
-	        'div',
-	        { style: style },
-	        _react2['default'].createElement('div', { ref: this.ref })
-	      );
-	    }
-	  }], [{
-	    key: 'canPlay',
-	    value: function canPlay(url) {
-	      return MATCH_URL.test(url);
-	    }
-	  }]);
-
-	  return YouTube;
-	}(_Base3['default']);
-
-	YouTube.displayName = 'YouTube';
-	exports['default'] = YouTube;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 951 */
-/***/ (function(module, exports) {
-
-	
-	module.exports = function load (src, opts, cb) {
-	  var head = document.head || document.getElementsByTagName('head')[0]
-	  var script = document.createElement('script')
-
-	  if (typeof opts === 'function') {
-	    cb = opts
-	    opts = {}
-	  }
-
-	  opts = opts || {}
-	  cb = cb || function() {}
-
-	  script.type = opts.type || 'text/javascript'
-	  script.charset = opts.charset || 'utf8';
-	  script.async = 'async' in opts ? !!opts.async : true
-	  script.src = src
-
-	  if (opts.attrs) {
-	    setAttributes(script, opts.attrs)
-	  }
-
-	  if (opts.text) {
-	    script.text = '' + opts.text
-	  }
-
-	  var onend = 'onload' in script ? stdOnEnd : ieOnEnd
-	  onend(script, cb)
-
-	  // some good legacy browsers (firefox) fail the 'in' detection above
-	  // so as a fallback we always set onload
-	  // old IE will ignore this and new IE will set onload
-	  if (!script.onload) {
-	    stdOnEnd(script, cb);
-	  }
-
-	  head.appendChild(script)
-	}
-
-	function setAttributes(script, attrs) {
-	  for (var attr in attrs) {
-	    script.setAttribute(attr, attrs[attr]);
-	  }
-	}
-
-	function stdOnEnd (script, cb) {
-	  script.onload = function () {
-	    this.onerror = this.onload = null
-	    cb(null, script)
-	  }
-	  script.onerror = function () {
-	    // this.onload = null here is necessary
-	    // because even IE9 works not like others
-	    this.onerror = this.onload = null
-	    cb(new Error('Failed to load ' + this.src), script)
-	  }
-	}
-
-	function ieOnEnd (script, cb) {
-	  script.onreadystatechange = function () {
-	    if (this.readyState != 'complete' && this.readyState != 'loaded') return
-	    this.onreadystatechange = null
-	    cb(null, script) // there is no way to catch loading errors in IE8
-	  }
-	}
-
-
-/***/ }),
-/* 952 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _props2 = __webpack_require__(949);
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SEEK_ON_PLAY_EXPIRY = 5000;
-
-	var Base = function (_Component) {
-	  _inherits(Base, _Component);
-
-	  function Base() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, Base);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Base.__proto__ || Object.getPrototypeOf(Base)).call.apply(_ref, [this].concat(args))), _this), _this.isReady = false, _this.startOnPlay = true, _this.durationOnPlay = false, _this.seekOnPlay = null, _this.onPlay = function () {
-	      var _this$props = _this.props,
-	          volume = _this$props.volume,
-	          onStart = _this$props.onStart,
-	          onPlay = _this$props.onPlay,
-	          onDuration = _this$props.onDuration,
-	          playbackRate = _this$props.playbackRate;
-
-	      if (_this.startOnPlay) {
-	        _this.setPlaybackRate(playbackRate);
-	        _this.setVolume(volume);
-	        onStart();
-	        _this.startOnPlay = false;
-	      }
-	      onPlay();
-	      if (_this.seekOnPlay) {
-	        _this.seekTo(_this.seekOnPlay);
-	        _this.seekOnPlay = null;
-	      }
-	      if (_this.durationOnPlay) {
-	        onDuration(_this.getDuration());
-	        _this.durationOnPlay = false;
-	      }
-	    }, _this.onReady = function () {
-	      var _this$props2 = _this.props,
-	          onReady = _this$props2.onReady,
-	          playing = _this$props2.playing,
-	          onDuration = _this$props2.onDuration;
-
-	      _this.isReady = true;
-	      onReady();
-	      if (playing || _this.preloading) {
-	        _this.preloading = false;
-	        if (_this.loadOnReady) {
-	          _this.load(_this.loadOnReady);
-	          _this.loadOnReady = null;
-	        } else {
-	          _this.play();
-	        }
-	      }
-	      var duration = _this.getDuration();
-	      if (duration) {
-	        onDuration(duration);
-	      } else {
-	        _this.durationOnPlay = true;
-	      }
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(Base, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var url = this.props.url;
-
-	      this.mounted = true;
-	      if (url) {
-	        this.load(url);
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      this.stop();
-	      this.mounted = false;
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      var _props = this.props,
-	          url = _props.url,
-	          playing = _props.playing,
-	          volume = _props.volume,
-	          playbackRate = _props.playbackRate;
-	      // Invoke player methods based on incoming props
-
-	      if (url !== nextProps.url && nextProps.url) {
-	        this.seekOnPlay = null;
-	        this.startOnPlay = true;
-	        this.load(nextProps.url);
-	      } else if (url && !nextProps.url) {
-	        this.stop();
-	        clearTimeout(this.updateTimeout);
-	      } else if (!playing && nextProps.playing) {
-	        this.play();
-	      } else if (playing && !nextProps.playing) {
-	        this.pause();
-	      } else if (volume !== nextProps.volume) {
-	        this.setVolume(nextProps.volume);
-	      } else if (playbackRate !== nextProps.playbackRate) {
-	        this.setPlaybackRate(nextProps.playbackRate);
-	      }
-	    }
-	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.url !== nextProps.url;
-	    }
-	  }, {
-	    key: 'seekTo',
-	    value: function seekTo(fraction) {
-	      var _this2 = this;
-
-	      // When seeking before player is ready, store value and seek later
-	      if (!this.isReady && fraction !== 0) {
-	        this.seekOnPlay = fraction;
-	        setTimeout(function () {
-	          _this2.seekOnPlay = null;
-	        }, SEEK_ON_PLAY_EXPIRY);
-	      }
-	    }
-	  }]);
-
-	  return Base;
-	}(_react.Component);
-
-	Base.propTypes = _props2.propTypes;
-	Base.defaultProps = _props2.defaultProps;
-	exports['default'] = Base;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 953 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-	exports.parseStartTime = parseStartTime;
-	var MATCH_START_QUERY = /[?&#](?:start|t)=([0-9hms]+)/;
-	var MATCH_START_STAMP = /(\d+)(h|m|s)/g;
-	var MATCH_NUMERIC = /^\d+$/;
-
-	// Parse YouTube URL for a start time param, ie ?t=1h14m30s
-	// and return the start time in seconds
-	function parseStartTime(url) {
-	  var match = url.match(MATCH_START_QUERY);
-	  if (match) {
-	    var stamp = match[1];
-	    if (stamp.match(MATCH_START_STAMP)) {
-	      return parseStartStamp(stamp);
-	    }
-	    if (MATCH_NUMERIC.test(stamp)) {
-	      return parseInt(stamp, 10);
-	    }
-	  }
-	  return 0;
-	}
-
-	function parseStartStamp(stamp) {
-	  var seconds = 0;
-	  var array = MATCH_START_STAMP.exec(stamp);
-	  while (array !== null) {
-	    var _array = array,
-	        _array2 = _slicedToArray(_array, 3),
-	        count = _array2[1],
-	        period = _array2[2];
-
-	    if (period === 'h') seconds += parseInt(count, 10) * 60 * 60;
-	    if (period === 'm') seconds += parseInt(count, 10) * 60;
-	    if (period === 's') seconds += parseInt(count, 10);
-	    array = MATCH_START_STAMP.exec(stamp);
-	  }
-	  return seconds;
-	}
-
-/***/ }),
-/* 954 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _fetchJsonp = __webpack_require__(955);
-
-	var _fetchJsonp2 = _interopRequireDefault(_fetchJsonp);
-
-	var _FilePlayer2 = __webpack_require__(956);
-
-	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
-
-	var _props3 = __webpack_require__(949);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var RESOLVE_URL = '//api.soundcloud.com/resolve.json';
-	var MATCH_URL = /^https?:\/\/(soundcloud.com|snd.sc)\/([a-z0-9-_]+\/[a-z0-9-_]+)$/;
-
-	var songData = {}; // Cache song data requests
-
-	var SoundCloud = function (_FilePlayer) {
-	  _inherits(SoundCloud, _FilePlayer);
-
-	  function SoundCloud() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, SoundCloud);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SoundCloud.__proto__ || Object.getPrototypeOf(SoundCloud)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-	      image: null
-	    }, _this.clientId = _this.props.soundcloudConfig.clientId || _props3.defaultProps.soundcloudConfig.clientId, _this.ref = function (player) {
-	      _this.player = player;
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(SoundCloud, [{
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      return _get(SoundCloud.prototype.__proto__ || Object.getPrototypeOf(SoundCloud.prototype), 'shouldComponentUpdate', this).call(this, nextProps, nextState) || this.state.image !== nextState.image;
-	    }
-	  }, {
-	    key: 'getSongData',
-	    value: function getSongData(url) {
-	      var _this2 = this;
-
-	      if (songData[url]) {
-	        return Promise.resolve(songData[url]);
-	      }
-	      return (0, _fetchJsonp2['default'])(RESOLVE_URL + '?url=' + url + '&client_id=' + this.clientId).then(function (response) {
-	        if (response.ok) {
-	          songData[url] = response.json();
-	          return songData[url];
-	        } else {
-	          _this2.props.onError(new Error('SoundCloud track could not be resolved'));
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'load',
-	    value: function load(url) {
-	      var _this3 = this;
-
-	      var _props = this.props,
-	          soundcloudConfig = _props.soundcloudConfig,
-	          onError = _props.onError;
-
-	      this.stop();
-	      this.getSongData(url).then(function (data) {
-	        if (!_this3.mounted) return;
-	        if (!data.streamable) {
-	          onError(new Error('SoundCloud track is not streamable'));
-	          return;
-	        }
-	        var image = data.artwork_url || data.user.avatar_url;
-	        if (image && soundcloudConfig.showArtwork) {
-	          _this3.setState({ image: image.replace('-large', '-t500x500') });
-	        }
-	        _this3.player.src = data.stream_url + '?client_id=' + _this3.clientId;
-	      }, onError);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props2 = this.props,
-	          url = _props2.url,
-	          loop = _props2.loop,
-	          controls = _props2.controls;
-
-	      var style = {
-	        display: url ? 'block' : 'none',
-	        height: '100%',
-	        backgroundImage: this.state.image ? 'url(' + this.state.image + ')' : null,
-	        backgroundSize: 'cover',
-	        backgroundPosition: 'center'
-	      };
-	      return _react2['default'].createElement(
-	        'div',
-	        { style: style },
-	        _react2['default'].createElement('audio', {
-	          ref: this.ref,
-	          type: 'audio/mpeg',
-	          preload: 'auto',
-	          style: {
-	            width: '100%',
-	            height: '100%'
-	          },
-	          controls: controls,
-	          loop: loop
-	        })
-	      );
-	    }
-	  }], [{
-	    key: 'canPlay',
-	    value: function canPlay(url) {
-	      return MATCH_URL.test(url);
-	    }
-	  }]);
-
-	  return SoundCloud;
-	}(_FilePlayer3['default']);
-
-	SoundCloud.displayName = 'SoundCloud';
-	exports['default'] = SoundCloud;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 955 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
-	    factory(exports, module);
-	  } else {
-	    var mod = {
-	      exports: {}
-	    };
-	    factory(mod.exports, mod);
-	    global.fetchJsonp = mod.exports;
-	  }
-	})(this, function (exports, module) {
-	  'use strict';
-
-	  var defaultOptions = {
-	    timeout: 5000,
-	    jsonpCallback: 'callback',
-	    jsonpCallbackFunction: null
-	  };
-
-	  function generateCallbackFunction() {
-	    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
-	  }
-
-	  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
-	  // error if request timeout
-	  function clearFunction(functionName) {
-	    // IE8 throws an exception when you try to delete a property on window
-	    // http://stackoverflow.com/a/1824228/751089
-	    try {
-	      delete window[functionName];
-	    } catch (e) {
-	      window[functionName] = undefined;
-	    }
-	  }
-
-	  function removeScript(scriptId) {
-	    var script = document.getElementById(scriptId);
-	    document.getElementsByTagName('head')[0].removeChild(script);
-	  }
-
-	  function fetchJsonp(_url) {
-	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	    // to avoid param reassign
-	    var url = _url;
-	    var timeout = options.timeout || defaultOptions.timeout;
-	    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
-
-	    var timeoutId = undefined;
-
-	    return new Promise(function (resolve, reject) {
-	      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
-	      var scriptId = jsonpCallback + '_' + callbackFunction;
-
-	      window[callbackFunction] = function (response) {
-	        resolve({
-	          ok: true,
-	          // keep consistent with fetch API
-	          json: function json() {
-	            return Promise.resolve(response);
-	          }
-	        });
-
-	        if (timeoutId) clearTimeout(timeoutId);
-
-	        removeScript(scriptId);
-
-	        clearFunction(callbackFunction);
-	      };
-
-	      // Check if the user set their own params, and if not add a ? to start a list of params
-	      url += url.indexOf('?') === -1 ? '?' : '&';
-
-	      var jsonpScript = document.createElement('script');
-	      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
-	      jsonpScript.id = scriptId;
-	      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-
-	      timeoutId = setTimeout(function () {
-	        reject(new Error('JSONP request to ' + _url + ' timed out'));
-
-	        clearFunction(callbackFunction);
-	        removeScript(scriptId);
-	      }, timeout);
-	    });
-	  }
-
-	  // export as global function
-	  /*
-	  let local;
-	  if (typeof global !== 'undefined') {
-	    local = global;
-	  } else if (typeof self !== 'undefined') {
-	    local = self;
-	  } else {
-	    try {
-	      local = Function('return this')();
-	    } catch (e) {
-	      throw new Error('polyfill failed because global object is unavailable in this environment');
-	    }
-	  }
-	  local.fetchJsonp = fetchJsonp;
-	  */
-
-	  module.exports = fetchJsonp;
-	});
-
-/***/ }),
-/* 956 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Base2 = __webpack_require__(952);
-
-	var _Base3 = _interopRequireDefault(_Base2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx)($|\?)/i;
-
-	var FilePlayer = function (_Base) {
-	  _inherits(FilePlayer, _Base);
-
-	  function FilePlayer() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, FilePlayer);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = FilePlayer.__proto__ || Object.getPrototypeOf(FilePlayer)).call.apply(_ref, [this].concat(args))), _this), _this.ref = function (player) {
-	      _this.player = player;
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(FilePlayer, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      var _props = this.props,
-	          onPause = _props.onPause,
-	          onEnded = _props.onEnded,
-	          onError = _props.onError;
-
-	      this.player.addEventListener('canplay', this.onReady);
-	      this.player.addEventListener('play', this.onPlay);
-	      this.player.addEventListener('pause', function () {
-	        if (_this2.mounted) {
-	          onPause();
-	        }
-	      });
-	      this.player.addEventListener('ended', onEnded);
-	      this.player.addEventListener('error', onError);
-	      this.player.setAttribute('webkit-playsinline', '');
-	      _get(FilePlayer.prototype.__proto__ || Object.getPrototypeOf(FilePlayer.prototype), 'componentDidMount', this).call(this);
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      var _props2 = this.props,
-	          onPause = _props2.onPause,
-	          onEnded = _props2.onEnded,
-	          onError = _props2.onError;
-
-	      this.player.removeEventListener('canplay', this.onReady);
-	      this.player.removeEventListener('play', this.onPlay);
-	      this.player.removeEventListener('pause', onPause);
-	      this.player.removeEventListener('ended', onEnded);
-	      this.player.removeEventListener('error', onError);
-	      _get(FilePlayer.prototype.__proto__ || Object.getPrototypeOf(FilePlayer.prototype), 'componentWillUnmount', this).call(this);
-	    }
-	  }, {
-	    key: 'load',
-	    value: function load(url) {
-	      this.player.src = url;
-	    }
-	  }, {
-	    key: 'play',
-	    value: function play() {
-	      this.player.play();
-	    }
-	  }, {
-	    key: 'pause',
-	    value: function pause() {
-	      this.player.pause();
-	    }
-	  }, {
-	    key: 'stop',
-	    value: function stop() {
-	      this.player.removeAttribute('src');
-	    }
-	  }, {
-	    key: 'seekTo',
-	    value: function seekTo(fraction) {
-	      _get(FilePlayer.prototype.__proto__ || Object.getPrototypeOf(FilePlayer.prototype), 'seekTo', this).call(this, fraction);
-	      this.player.currentTime = this.getDuration() * fraction;
-	    }
-	  }, {
-	    key: 'setVolume',
-	    value: function setVolume(fraction) {
-	      this.player.volume = fraction;
-	    }
-	  }, {
-	    key: 'setPlaybackRate',
-	    value: function setPlaybackRate(rate) {
-	      this.player.playbackRate = rate;
-	    }
-	  }, {
-	    key: 'getDuration',
-	    value: function getDuration() {
-	      if (!this.isReady) return null;
-	      return this.player.duration;
-	    }
-	  }, {
-	    key: 'getFractionPlayed',
-	    value: function getFractionPlayed() {
-	      if (!this.isReady) return null;
-	      return this.player.currentTime / this.getDuration();
-	    }
-	  }, {
-	    key: 'getFractionLoaded',
-	    value: function getFractionLoaded() {
-	      if (!this.isReady || this.player.buffered.length === 0) return null;
-	      return this.player.buffered.end(0) / this.getDuration();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props3 = this.props,
-	          url = _props3.url,
-	          loop = _props3.loop,
-	          controls = _props3.controls,
-	          fileConfig = _props3.fileConfig;
-
-	      var Media = AUDIO_EXTENSIONS.test(url) ? 'audio' : 'video';
-	      var style = {
-	        width: '100%',
-	        height: '100%',
-	        display: url ? 'block' : 'none'
-	      };
-	      return _react2['default'].createElement(Media, _extends({
-	        ref: this.ref,
-	        style: style,
-	        preload: 'auto',
-	        controls: controls,
-	        loop: loop
-	      }, fileConfig.attributes));
-	    }
-	  }], [{
-	    key: 'canPlay',
-	    value: function canPlay(url) {
-	      return true;
-	    }
-	  }]);
-
-	  return FilePlayer;
-	}(_Base3['default']);
-
-	FilePlayer.displayName = 'FilePlayer';
-	exports['default'] = FilePlayer;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 957 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _queryString = __webpack_require__(219);
-
-	var _Base2 = __webpack_require__(952);
-
-	var _Base3 = _interopRequireDefault(_Base2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var IFRAME_SRC = 'https://player.vimeo.com/video/';
-	var MATCH_URL = /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/;
-	var MATCH_MESSAGE_ORIGIN = /^https?:\/\/player.vimeo.com/;
-	var BLANK_VIDEO_URL = 'https://vimeo.com/127250231';
-	var DEFAULT_IFRAME_PARAMS = {
-	  api: 1,
-	  autoplay: 0,
-	  badge: 0,
-	  byline: 0,
-	  fullscreen: 1,
-	  portrait: 0,
-	  title: 0
-	};
-
-	var Vimeo = function (_Base) {
-	  _inherits(Vimeo, _Base);
-
-	  function Vimeo() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, Vimeo);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Vimeo.__proto__ || Object.getPrototypeOf(Vimeo)).call.apply(_ref, [this].concat(args))), _this), _this.onMessage = function (e) {
-	      if (!MATCH_MESSAGE_ORIGIN.test(e.origin)) return;
-	      _this.origin = _this.origin || e.origin;
-	      var data = JSON.parse(e.data);
-	      if (data.event === 'ready') {
-	        _this.postMessage('getDuration');
-	        _this.postMessage('addEventListener', 'playProgress');
-	        _this.postMessage('addEventListener', 'loadProgress');
-	        _this.postMessage('addEventListener', 'play');
-	        _this.postMessage('addEventListener', 'pause');
-	        _this.postMessage('addEventListener', 'finish');
-	      }
-	      if (data.event === 'playProgress') _this.fractionPlayed = data.data.percent;
-	      if (data.event === 'loadProgress') _this.fractionLoaded = data.data.percent;
-	      if (data.event === 'play') _this.onPlay();
-	      if (data.event === 'pause') _this.props.onPause();
-	      if (data.event === 'finish') _this.onEnded();
-	      if (data.method === 'getDuration') {
-	        _this.duration = data.value; // Store for use later
-	        _this.onReady();
-	      }
-	    }, _this.onEnded = function () {
-	      var _this$props = _this.props,
-	          loop = _this$props.loop,
-	          onEnded = _this$props.onEnded;
-
-	      if (loop) {
-	        _this.seekTo(0);
-	      }
-	      onEnded();
-	    }, _this.postMessage = function (method, value) {
-	      if (!_this.origin) return;
-	      var data = JSON.stringify({ method: method, value: value });
-	      return _this.iframe.contentWindow && _this.iframe.contentWindow.postMessage(data, _this.origin);
-	    }, _this.ref = function (iframe) {
-	      _this.iframe = iframe;
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(Vimeo, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _props = this.props,
-	          url = _props.url,
-	          vimeoConfig = _props.vimeoConfig;
-
-	      window.addEventListener('message', this.onMessage, false);
-
-	      if (!url && vimeoConfig.preload) {
-	        this.preloading = true;
-	        this.load(BLANK_VIDEO_URL);
-	      }
-
-	      _get(Vimeo.prototype.__proto__ || Object.getPrototypeOf(Vimeo.prototype), 'componentDidMount', this).call(this);
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      window.removeEventListener('message', this.onMessage, false);
-	      _get(Vimeo.prototype.__proto__ || Object.getPrototypeOf(Vimeo.prototype), 'componentWillUnmount', this).call(this);
-	    }
-	  }, {
-	    key: 'getIframeParams',
-	    value: function getIframeParams() {
-	      return _extends({}, DEFAULT_IFRAME_PARAMS, this.props.vimeoConfig.iframeParams);
-	    }
-	  }, {
-	    key: 'load',
-	    value: function load(url) {
-	      var id = url.match(MATCH_URL)[3];
-	      this.iframe.src = IFRAME_SRC + id + '?' + (0, _queryString.stringify)(this.getIframeParams());
-	    }
-	  }, {
-	    key: 'play',
-	    value: function play() {
-	      this.postMessage('play');
-	    }
-	  }, {
-	    key: 'pause',
-	    value: function pause() {
-	      this.postMessage('pause');
-	    }
-	  }, {
-	    key: 'stop',
-	    value: function stop() {
-	      this.iframe.src = '';
-	    }
-	  }, {
-	    key: 'seekTo',
-	    value: function seekTo(fraction) {
-	      _get(Vimeo.prototype.__proto__ || Object.getPrototypeOf(Vimeo.prototype), 'seekTo', this).call(this, fraction);
-	      this.postMessage('seekTo', this.duration * fraction);
-	    }
-	  }, {
-	    key: 'setVolume',
-	    value: function setVolume(fraction) {
-	      this.postMessage('setVolume', fraction);
-	    }
-	  }, {
-	    key: 'setPlaybackRate',
-	    value: function setPlaybackRate(rate) {
-	      this.postMessage('setPlaybackRate', rate);
-	    }
-	  }, {
-	    key: 'getDuration',
-	    value: function getDuration() {
-	      return this.duration;
-	    }
-	  }, {
-	    key: 'getFractionPlayed',
-	    value: function getFractionPlayed() {
-	      return this.fractionPlayed || null;
-	    }
-	  }, {
-	    key: 'getFractionLoaded',
-	    value: function getFractionLoaded() {
-	      return this.fractionLoaded || null;
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _getIframeParams = this.getIframeParams(),
-	          fullscreen = _getIframeParams.fullscreen;
-
-	      var style = {
-	        display: this.props.url ? 'block' : 'none',
-	        width: '100%',
-	        height: '100%'
-	      };
-	      return _react2['default'].createElement('iframe', {
-	        ref: this.ref,
-	        frameBorder: '0',
-	        style: style,
-	        allowFullScreen: fullscreen
-	      });
-	    }
-	  }], [{
-	    key: 'canPlay',
-	    value: function canPlay(url) {
-	      return MATCH_URL.test(url);
-	    }
-	  }]);
-
-	  return Vimeo;
-	}(_Base3['default']);
-
-	Vimeo.displayName = 'Vimeo';
-	exports['default'] = Vimeo;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 958 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _FilePlayer2 = __webpack_require__(956);
-
-	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var RESOLVE_URL = 'https://api.streamable.com/videos/';
-	var MATCH_URL = /^https?:\/\/streamable.com\/([a-z0-9]+)$/;
-
-	var cache = {}; // Cache song data requests
-
-	var Streamable = function (_FilePlayer) {
-	  _inherits(Streamable, _FilePlayer);
-
-	  function Streamable() {
-	    _classCallCheck(this, Streamable);
-
-	    return _possibleConstructorReturn(this, (Streamable.__proto__ || Object.getPrototypeOf(Streamable)).apply(this, arguments));
-	  }
-
-	  _createClass(Streamable, [{
-	    key: 'getData',
-	    value: function getData(url) {
-	      var onError = this.props.onError;
-
-	      var id = url.match(MATCH_URL)[1];
-	      if (cache[id]) {
-	        return Promise.resolve(cache[id]);
-	      }
-	      return window.fetch(RESOLVE_URL + id).then(function (response) {
-	        if (response.status === 200) {
-	          cache[id] = response.json();
-	          return cache[id];
-	        } else {
-	          onError(new Error('Streamable track could not be resolved'));
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'load',
-	    value: function load(url) {
-	      var _this2 = this;
-
-	      var onError = this.props.onError;
-
-	      this.stop();
-	      this.getData(url).then(function (data) {
-	        if (!_this2.mounted) return;
-	        _this2.player.src = data.files.mp4.url;
-	      }, onError);
-	    }
-	  }], [{
-	    key: 'canPlay',
-	    value: function canPlay(url) {
-	      return MATCH_URL.test(url);
-	    }
-	  }]);
-
-	  return Streamable;
-	}(_FilePlayer3['default']);
-
-	Streamable.displayName = 'Streamable';
-	exports['default'] = Streamable;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 959 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _FilePlayer2 = __webpack_require__(956);
-
-	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var RESOLVE_URL = 'https://api.vid.me/videoByUrl/';
-	var MATCH_URL = /^https?:\/\/vid.me\/([a-z0-9]+)$/i;
-
-	var cache = {}; // Cache song data requests
-
-	var Vidme = function (_FilePlayer) {
-	  _inherits(Vidme, _FilePlayer);
-
-	  function Vidme() {
-	    _classCallCheck(this, Vidme);
-
-	    return _possibleConstructorReturn(this, (Vidme.__proto__ || Object.getPrototypeOf(Vidme)).apply(this, arguments));
-	  }
-
-	  _createClass(Vidme, [{
-	    key: 'getData',
-	    value: function getData(url) {
-	      var onError = this.props.onError;
-
-	      var id = url.match(MATCH_URL)[1];
-	      if (cache[id]) {
-	        return Promise.resolve(cache[id]);
-	      }
-	      return window.fetch(RESOLVE_URL + id).then(function (response) {
-	        if (response.status === 200) {
-	          cache[id] = response.json();
-	          return cache[id];
-	        } else {
-	          onError(new Error('Vidme track could not be resolved'));
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'load',
-	    value: function load(url) {
-	      var _this2 = this;
-
-	      var onError = this.props.onError;
-
-	      this.stop();
-	      this.getData(url).then(function (data) {
-	        if (!_this2.mounted) return;
-	        _this2.player.src = data.video.complete_url;
-	      }, onError);
-	    }
-	  }], [{
-	    key: 'canPlay',
-	    value: function canPlay(url) {
-	      return MATCH_URL.test(url);
-	    }
-	  }]);
-
-	  return Vidme;
-	}(_FilePlayer3['default']);
-
-	Vidme.displayName = 'Vidme';
-	exports['default'] = Vidme;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 960 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _loadScript = __webpack_require__(951);
-
-	var _loadScript2 = _interopRequireDefault(_loadScript);
-
-	var _Base2 = __webpack_require__(952);
-
-	var _Base3 = _interopRequireDefault(_Base2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SDK_URL = '//fast.wistia.com/assets/external/E-v1.js';
-	var SDK_GLOBAL = 'Wistia';
-	var MATCH_URL = /^https?:\/\/(.+)?(wistia.com|wi.st)\/(medias|embed)\/(.*)$/;
-
-	var Wistia = function (_Base) {
-	  _inherits(Wistia, _Base);
-
-	  function Wistia() {
-	    _classCallCheck(this, Wistia);
-
-	    return _possibleConstructorReturn(this, (Wistia.__proto__ || Object.getPrototypeOf(Wistia)).apply(this, arguments));
-	  }
-
-	  _createClass(Wistia, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      var _props = this.props,
-	          onStart = _props.onStart,
-	          onPause = _props.onPause,
-	          onEnded = _props.onEnded;
-
-	      this.loadingSDK = true;
-	      this.getSDK().then(function () {
-	        window._wq = window._wq || [];
-	        window._wq.push({
-	          id: _this2.getID(_this2.props.url),
-	          onReady: function onReady(player) {
-	            _this2.loadingSDK = false;
-	            _this2.player = player;
-	            _this2.player.bind('start', onStart);
-	            _this2.player.bind('play', _this2.onPlay);
-	            _this2.player.bind('pause', onPause);
-	            _this2.player.bind('end', onEnded);
-	            _this2.onReady();
-	          }
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'getSDK',
-	    value: function getSDK() {
-	      return new Promise(function (resolve, reject) {
-	        if (window[SDK_GLOBAL]) {
-	          resolve();
-	        } else {
-	          (0, _loadScript2['default'])(SDK_URL, function (err, script) {
-	            if (err) reject(err);
-	            resolve(script);
-	          });
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'getID',
-	    value: function getID(url) {
-	      return url && url.match(MATCH_URL)[4];
-	    }
-	  }, {
-	    key: 'load',
-	    value: function load(url) {
-	      var id = this.getID(url);
-	      if (this.isReady) {
-	        this.player.replaceWith(id);
-	        this.props.onReady();
-	        this.onReady();
-	      }
-	    }
-	  }, {
-	    key: 'play',
-	    value: function play() {
-	      if (!this.isReady || !this.player) return;
-	      this.player.play();
-	    }
-	  }, {
-	    key: 'pause',
-	    value: function pause() {
-	      if (!this.isReady || !this.player) return;
-	      this.player && this.player.pause();
-	    }
-	  }, {
-	    key: 'stop',
-	    value: function stop() {
-	      if (!this.isReady || !this.player) return;
-	      this.player.pause();
-	    }
-	  }, {
-	    key: 'seekTo',
-	    value: function seekTo(fraction) {
-	      _get(Wistia.prototype.__proto__ || Object.getPrototypeOf(Wistia.prototype), 'seekTo', this).call(this, fraction);
-	      if (!this.isReady || !this.player) return;
-	      this.player.time(this.getDuration() * fraction);
-	    }
-	  }, {
-	    key: 'setVolume',
-	    value: function setVolume(fraction) {
-	      if (!this.isReady || !this.player || !this.player.volume) return;
-	      this.player.volume(fraction);
-	    }
-	  }, {
-	    key: 'setPlaybackRate',
-	    value: function setPlaybackRate(rate) {
-	      if (!this.isReady || !this.player || !this.player.playbackRate) return;
-	      this.player.playbackRate(rate);
-	    }
-	  }, {
-	    key: 'getDuration',
-	    value: function getDuration() {
-	      if (!this.isReady || !this.player || !this.player.duration) return;
-	      return this.player.duration();
-	    }
-	  }, {
-	    key: 'getFractionPlayed',
-	    value: function getFractionPlayed() {
-	      if (!this.isReady || !this.player || !this.player.percentWatched) return null;
-	      return this.player.percentWatched();
-	    }
-	  }, {
-	    key: 'getFractionLoaded',
-	    value: function getFractionLoaded() {
-	      return null;
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var id = this.getID(this.props.url);
-	      var className = 'wistia_embed wistia_async_' + id;
-	      var style = {
-	        width: '100%',
-	        height: '100%',
-	        display: this.props.url ? 'block' : 'none'
-	      };
-	      return _react2['default'].createElement('div', { className: className, style: style });
-	    }
-	  }], [{
-	    key: 'canPlay',
-	    value: function canPlay(url) {
-	      return MATCH_URL.test(url);
-	    }
-	  }]);
-
-	  return Wistia;
-	}(_Base3['default']);
-
-	Wistia.displayName = 'Wistia';
-	exports['default'] = Wistia;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 961 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _CircularProgress = __webpack_require__(807);
-
-	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
-
-	var _formsyReact = __webpack_require__(915);
-
-	var _formsyReact2 = _interopRequireDefault(_formsyReact);
-
-	var _materialUi = __webpack_require__(770);
-
-	var _lib = __webpack_require__(922);
-
-	var _reactBootstrap = __webpack_require__(543);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var spinnerStyle = {
-		margin: 'auto',
-		display: 'block',
-		padding: 5
-	};
-
-	var OfferForm = function (_React$Component) {
-		_inherits(OfferForm, _React$Component);
-
-		function OfferForm(props) {
-			_classCallCheck(this, OfferForm);
-
-			var _this = _possibleConstructorReturn(this, (OfferForm.__proto__ || Object.getPrototypeOf(OfferForm)).call(this, props));
-
-			_this.enableButton = _this.enableButton.bind(_this);
-			_this.disableButton = _this.disableButton.bind(_this);
-			_this.handleSnackbarSuccessRequestClose = _this.handleSnackbarSuccessRequestClose.bind(_this);
-			_this.handleSnackbarErrorRequestClose = _this.handleSnackbarErrorRequestClose.bind(_this);
-			_this.handleSubmit = _this.handleSubmit.bind(_this);
-			_this.getDescription = _this.getDescription.bind(_this);
-
-			// autofill description with subtitles
-
-			_this.state = {
-				autoDescription: _this.getDescription(),
-				canSubmit: false
-			};
-
-			return _this;
-		}
-
-		_createClass(OfferForm, [{
-			key: 'getDescription',
-			value: function getDescription() {
-				var arrDescription = [],
-				    subtitles = this.props.subtitlesVideo.sort(function (a, b) {
-					if (a.startTime < b.startTime) return -1;
-					if (a.startTime > b.startTime) return 1;
-					return 0;
-				});
-
-				subtitles.map(function (subtitle) {
-					arrDescription.push(subtitle.text);
-				});
-
-				return arrDescription.join(' ');
-			}
-		}, {
-			key: 'enableButton',
-			value: function enableButton() {
-				this.setState({ canSubmit: true });
-			}
-		}, {
-			key: 'disableButton',
-			value: function disableButton() {
-				this.setState({ canSubmit: false });
-			}
-		}, {
-			key: 'handleSnackbarSuccessRequestClose',
-			value: function handleSnackbarSuccessRequestClose(reason) {
-				if (reason !== 'clickaway' && !this.props.newItem.error) {
-					var guid = this.props.newItem.guid;
-					window.location = '/offer/' + guid;
-				}
-			}
-		}, {
-			key: 'handleSnackbarErrorRequestClose',
-			value: function handleSnackbarErrorRequestClose() {
-				this.props.showSnackbar();
-			}
-		}, {
-			key: 'handleSubmit',
-			value: function handleSubmit(data) {
-				var description = {
-					text: data.description,
-					urlVideo: this.props.urlVideo,
-					subtitlesVideo: this.props.subtitlesVideo
-				};
-				var payload = {
-					alias: 'argvil19',
-					category: data.category,
-					title: data.name,
-					quantity: 1,
-					price: parseInt(data.price),
-					description: JSON.stringify(description),
-					currency: data.currency,
-					paymentoptions: data.paymentOptions,
-					private: data.certificate
-				};
-
-				this.props.onCreate(JSON.stringify(payload));
-			}
-		}, {
-			key: 'renderCategories',
-			value: function renderCategories() {
-				if (this.props.categories.categories.length > 0) {
-					return this.props.categories.categories.map(function (category, i) {
-						return _react2.default.createElement(_materialUi.MenuItem, { key: i, value: category.cat, primaryText: category.cat });
-					});
-				}
-			}
-		}, {
-			key: 'renderCurrencies',
-			value: function renderCurrencies() {
-				if (this.props.currencies.currencies.length > 0) {
-					return this.props.currencies.currencies.map(function (currency, i) {
-						if (i === 0) {
-							return _react2.default.createElement(_materialUi.MenuItem, { selected: true, 'default': true, key: i, value: currency.currency, primaryText: currency.currency });
-						} else {
-							return _react2.default.createElement(_materialUi.MenuItem, { key: i, value: currency.currency, primaryText: currency.currency });
-						}
-					});
-				}
-			}
-		}, {
-			key: 'renderPayments',
-			value: function renderPayments() {
-				return this.props.newItem.payments.map(function (payment) {
-					return _react2.default.createElement(_materialUi.MenuItem, { key: payment.id, value: payment.value, primaryText: payment.text });
-				});
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				var _this2 = this;
-
-				return _react2.default.createElement(
-					_reactBootstrap.Row,
-					null,
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 12 },
-						_react2.default.createElement(
-							_formsyReact2.default.Form,
-							{ onValid: this.enableButton, onInvalid: this.disableButton, onValidSubmit: function onValidSubmit(e) {
-									return _this2.handleSubmit(e);
-								} },
-							_react2.default.createElement(_lib.FormsyText, {
-								name: 'name',
-								floatingLabelText: 'Title',
-								hintText: 'Item title',
-								validations: 'isSpecialWords',
-								validationError: 'Please only use letters',
-								requiredError: 'This field is required',
-								required: true,
-								fullWidth: true
-							}),
-							_react2.default.createElement(
-								_lib.FormsySelect,
-								{ name: 'category', floatingLabelText: 'Category', required: true, fullWidth: true },
-								this.renderCategories()
-							),
-							_react2.default.createElement(_lib.FormsyText, {
-								name: 'price',
-								floatingLabelText: 'Price',
-								hintText: 'Item price',
-								validations: 'isNumeric',
-								validationError: 'Please provide a number',
-								requiredError: 'This field is required',
-								required: true,
-								fullWidth: true
-							}),
-							_react2.default.createElement(
-								_lib.FormsySelect,
-								{
-									name: 'currency', floatingLabelText: 'Currency to List in', required: true, fullWidth: true },
-								this.renderCurrencies()
-							),
-							_react2.default.createElement(
-								_lib.FormsySelect,
-								{ name: 'payment', floatingLabelText: 'Payment', required: true, fullWidth: true },
-								this.renderPayments()
-							),
-							_react2.default.createElement(_lib.FormsyText, {
-								name: 'description',
-								value: this.state.autoDescription,
-								floatingLabelText: 'Description',
-								hintText: 'Item description',
-								validations: 'isWords',
-								validationError: 'This field cannot be empty.',
-								required: true,
-								fullWidth: true,
-								multiLine: true
-							}),
-							!this.props.newItem.loading && _react2.default.createElement(_materialUi.RaisedButton, {
-								label: 'Send',
-								type: 'submit',
-								primary: false,
-								fullWidth: true,
-								disabled: !this.state.canSubmit
-							})
-						),
-						this.props.newItem.loading && !this.props.newItem.success && _react2.default.createElement(_CircularProgress2.default, { size: 50, style: spinnerStyle }),
-						_react2.default.createElement(_materialUi.Snackbar, {
-							open: this.props.newItem.success,
-							message: 'Success! Item created.',
-							autoHideDuration: 2000,
-							onRequestClose: this.handleSnackbarSuccessRequestClose
-						}),
-						_react2.default.createElement(_materialUi.Snackbar, {
-							open: this.props.newItem.showSnackbar,
-							message: this.props.newItem.message,
-							autoHideDuration: 2000,
-							onRequestClose: this.handleSnackbarErrorRequestClose
-						})
-					)
-				);
-			}
-		}]);
-
-		return OfferForm;
-	}(_react2.default.Component);
-
-	exports.default = OfferForm;
-
-/***/ }),
-/* 962 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _Browser = __webpack_require__(963);
-
-	var _Browser2 = _interopRequireDefault(_Browser);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _Browser2.default;
-
-/***/ }),
-/* 963 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(282);
-
-	var _reactBootstrap = __webpack_require__(543);
-
-	var _browser = __webpack_require__(964);
-
-	var _FormBrowser = __webpack_require__(965);
+	var _FormBrowser = __webpack_require__(949);
 
 	var _FormBrowser2 = _interopRequireDefault(_FormBrowser);
 
-	var _ListBrowser = __webpack_require__(970);
+	var _ListBrowser = __webpack_require__(955);
 
 	var _ListBrowser2 = _interopRequireDefault(_ListBrowser);
 
-	var _BrowserCarousel = __webpack_require__(1201);
+	var _BrowserCarousel = __webpack_require__(956);
 
 	var _BrowserCarousel2 = _interopRequireDefault(_BrowserCarousel);
 
-	var _FilterBrowser = __webpack_require__(993);
+	var _FilterBrowser = __webpack_require__(977);
 
 	var _FilterBrowser2 = _interopRequireDefault(_FilterBrowser);
 
@@ -103022,7 +100236,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Browser);
 
 /***/ }),
-/* 964 */
+/* 948 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103153,7 +100367,7 @@
 	}
 
 /***/ }),
-/* 965 */
+/* 949 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103184,17 +100398,17 @@
 
 	var _lib = __webpack_require__(922);
 
-	var _search = __webpack_require__(966);
+	var _search = __webpack_require__(950);
 
 	var _search2 = _interopRequireDefault(_search);
 
-	var _browser = __webpack_require__(964);
+	var _browser = __webpack_require__(948);
 
-	var _FormSelectCategories = __webpack_require__(967);
+	var _FormSelectCategories = __webpack_require__(951);
 
 	var _FormSelectCategories2 = _interopRequireDefault(_FormSelectCategories);
 
-	var _OrderByBrowser = __webpack_require__(969);
+	var _OrderByBrowser = __webpack_require__(953);
 
 	var _OrderByBrowser2 = _interopRequireDefault(_OrderByBrowser);
 
@@ -103206,7 +100420,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	__webpack_require__(1200);
+	__webpack_require__(954);
 
 	var orderItems = [{
 	  value: 'currency',
@@ -103358,7 +100572,7 @@
 	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(FormBrowser);
 
 /***/ }),
-/* 966 */
+/* 950 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103395,7 +100609,7 @@
 	exports.default = ActionSearch;
 
 /***/ }),
-/* 967 */
+/* 951 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103404,7 +100618,7 @@
 	  value: true
 	});
 
-	var _FormSelectCategories = __webpack_require__(968);
+	var _FormSelectCategories = __webpack_require__(952);
 
 	var _FormSelectCategories2 = _interopRequireDefault(_FormSelectCategories);
 
@@ -103413,7 +100627,7 @@
 	exports.default = _FormSelectCategories2.default;
 
 /***/ }),
-/* 968 */
+/* 952 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103501,7 +100715,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Browser);
 
 /***/ }),
-/* 969 */
+/* 953 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103594,7 +100808,14 @@
 	exports.default = OrderByBrowser;
 
 /***/ }),
-/* 970 */
+/* 954 */
+/***/ (function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	"use strict";
+
+/***/ }),
+/* 955 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103613,7 +100834,7 @@
 
 	var _GridList = __webpack_require__(838);
 
-	var _ItemBrowser = __webpack_require__(971);
+	var _ItemBrowser = __webpack_require__(1200);
 
 	var _ItemBrowser2 = _interopRequireDefault(_ItemBrowser);
 
@@ -103644,10 +100865,16 @@
 			key: 'render',
 			value: function render() {
 				var items = this.props.items.map(function (item) {
+					var textFlag = item.description.indexOf("http") > -1;
 					return _react2.default.createElement(
 						_GridList.GridTile,
 						{ key: item.txid, title: item.title, subtitle: item.price + item.currency },
-						_react2.default.createElement(_ItemBrowser2.default, { data: item })
+						_react2.default.createElement(
+							'div',
+							null,
+							!textFlag ? item.description : '',
+							_react2.default.createElement(_ItemBrowser2.default, { data: item })
+						)
 					);
 				});
 				return _react2.default.createElement(
@@ -103675,157 +100902,7 @@
 	exports.default = ListBrowser;
 
 /***/ }),
-/* 971 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactBootstrap = __webpack_require__(543);
-
-	var _VideoPlayer = __webpack_require__(946);
-
-	var _VideoPlayer2 = _interopRequireDefault(_VideoPlayer);
-
-	var _GaleryItemBrowser = __webpack_require__(972);
-
-	var _GaleryItemBrowser2 = _interopRequireDefault(_GaleryItemBrowser);
-
-	var _reactRouter = __webpack_require__(183);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// components
-
-
-	var styles = {
-		containerItemBrowser: {
-			position: 'relative',
-			padding: '25% 50%',
-			overflow: 'hidden',
-			marginTop: '20px'
-		},
-		contentItemBrowser: {
-			position: 'absolute',
-			top: '0',
-			left: '0',
-			width: '100%',
-			height: '100%'
-		},
-		infoContainer: {
-			position: 'absolute',
-			zIndex: '1',
-			padding: '20px'
-		},
-		bgContainer: {
-			position: 'absolute',
-			width: '100%',
-			bottom: '0'
-		},
-		link: {
-			color: '#fff',
-			textShadow: '1px 1px #000',
-			fontSize: '24px'
-		},
-		currency: {
-			color: '#fff',
-			textShadow: '1px 1px #000'
-		}
-	};
-
-	function isJson(str) {
-		try {
-			JSON.parse(str);
-		} catch (e) {
-			return false;
-		}
-		return true;
-	}
-
-	var ItemBrowser = function (_React$Component) {
-		_inherits(ItemBrowser, _React$Component);
-
-		function ItemBrowser(props) {
-			_classCallCheck(this, ItemBrowser);
-
-			var _this = _possibleConstructorReturn(this, (ItemBrowser.__proto__ || Object.getPrototypeOf(ItemBrowser)).call(this, props));
-
-			var description = _this.props.data.description;
-			var images = [];
-
-			if (isJson(description)) {
-				description = JSON.parse(description);
-			} else {
-				var hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
-				if (hasImages) images = hasImages;
-			}
-
-			_this.state = {
-				description: description,
-				images: images
-			};
-			return _this;
-		}
-
-		_createClass(ItemBrowser, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					_reactBootstrap.Row,
-					null,
-					_react2.default.createElement(
-						_reactBootstrap.Col,
-						{ xs: 12, style: styles.containerItemBrowser, className: 'containerItemBrowser' },
-						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: '/offer/' + this.props.data.offer },
-							_react2.default.createElement(
-								'div',
-								{ style: styles.contentItemBrowser, className: 'contentItemBrowser' },
-								_react2.default.createElement(
-									'div',
-									{ style: styles.bgContainer, className: 'bgContainer' },
-									_typeof(this.state.description) === 'object' && _react2.default.createElement(_VideoPlayer2.default, {
-										url: this.state.description.urlVideo,
-										subtitles: this.state.description.subtitlesVideo,
-										playOnHover: true,
-										hideControls: true,
-										muted: true
-									}),
-									this.state.images.length > 0 && _react2.default.createElement(_GaleryItemBrowser2.default, {
-										images: this.state.images })
-								)
-							)
-						)
-					)
-				);
-			}
-		}]);
-
-		return ItemBrowser;
-	}(_react2.default.Component);
-
-	exports.default = ItemBrowser;
-
-/***/ }),
-/* 972 */
+/* 956 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103842,6 +100919,10 @@
 
 	var _reactBootstrap = __webpack_require__(543);
 
+	var _reactSlick = __webpack_require__(957);
+
+	var _reactSlick2 = _interopRequireDefault(_reactSlick);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -103853,20 +100934,22 @@
 	// components
 
 
-	var GaleryItemBrowser = function (_React$Component) {
-	  _inherits(GaleryItemBrowser, _React$Component);
+	__webpack_require__(976);
 
-	  function GaleryItemBrowser(props) {
-	    _classCallCheck(this, GaleryItemBrowser);
+	var BrowserCarousel = function (_React$Component) {
+	  _inherits(BrowserCarousel, _React$Component);
 
-	    var _this = _possibleConstructorReturn(this, (GaleryItemBrowser.__proto__ || Object.getPrototypeOf(GaleryItemBrowser)).call(this, props));
+	  function BrowserCarousel(props) {
+	    _classCallCheck(this, BrowserCarousel);
+
+	    var _this = _possibleConstructorReturn(this, (BrowserCarousel.__proto__ || Object.getPrototypeOf(BrowserCarousel)).call(this, props));
 
 	    _this.renderSlide = _this.renderSlide.bind(_this);
-	    console.log('run GaleryItemBrowser');
+	    // console.log('run GaleryItemBrowser');
 	    return _this;
 	  }
 
-	  _createClass(GaleryItemBrowser, [{
+	  _createClass(BrowserCarousel, [{
 	    key: 'renderSlide',
 	    value: function renderSlide() {
 	      return this.props.images.map(function (image, i) {
@@ -103876,33 +100959,177 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var settings = {
+	        dots: false,
+	        infinite: true,
+	        speed: 500,
+	        slidesToShow: 4,
+	        slidesToScroll: 1,
+	        autoplay: true,
+	        autoplaySpeed: 2000,
+	        pauseOnHover: true,
+	        responsive: [{
+	          breakpoint: 426,
+	          settings: {
+	            slidesToShow: 1
+	          }
+	        }, {
+	          breakpoint: 768,
+	          settings: {
+	            slidesToShow: 2
+	          }
+	        }, {
+	          breakpoint: 1024,
+	          settings: {
+	            slidesToShow: 3
+	          }
+	        }, {
+	          breakpoint: 1200,
+	          settings: {
+	            slidesToShow: 4
+	          }
+	        }]
+	      };
 	      return _react2.default.createElement(
 	        _reactBootstrap.Row,
-	        null,
+	        { className: 'slider-container' },
 	        _react2.default.createElement(
 	          _reactBootstrap.Col,
 	          { xs: 12 },
-	          this.renderSlide()
+	          _react2.default.createElement(
+	            _reactSlick2.default,
+	            settings,
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'item-slider' },
+	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/1' }),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content-slider' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'content-text' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'comment' },
+	                    'Test-1'
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'item-slider' },
+	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/2' }),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content-slider' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'content-text' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'comment' },
+	                    'Test-2'
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'item-slider' },
+	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/3' }),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content-slider' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'content-text' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'comment' },
+	                    'Test-3'
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'item-slider' },
+	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/4' }),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content-slider' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'content-text' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'comment' },
+	                    'Test-4'
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'item-slider' },
+	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/5' }),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content-slider' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'content-text' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'comment' },
+	                    'Test-5'
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'item-slider' },
+	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/6' }),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content-slider' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'content-text' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'comment' },
+	                    'Test-6'
+	                  )
+	                )
+	              )
+	            )
+	          )
 	        )
 	      );
 	    }
 	  }]);
 
-	  return GaleryItemBrowser;
+	  return BrowserCarousel;
 	}(_react2.default.Component);
 
-	exports.default = GaleryItemBrowser;
+	exports.default = BrowserCarousel;
+
+	// {this.renderSlide()}
 
 /***/ }),
-/* 973 */
+/* 957 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(974);
+	module.exports = __webpack_require__(958);
 
 /***/ }),
-/* 974 */
+/* 958 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103915,21 +101142,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _innerSlider = __webpack_require__(975);
+	var _innerSlider = __webpack_require__(959);
 
 	var _objectAssign = __webpack_require__(4);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _json2mq = __webpack_require__(984);
+	var _json2mq = __webpack_require__(968);
 
 	var _json2mq2 = _interopRequireDefault(_json2mq);
 
-	var _defaultProps = __webpack_require__(980);
+	var _defaultProps = __webpack_require__(964);
 
 	var _defaultProps2 = _interopRequireDefault(_defaultProps);
 
-	var _canUseDom = __webpack_require__(986);
+	var _canUseDom = __webpack_require__(970);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
@@ -103941,7 +101168,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var enquire = _canUseDom2.default && __webpack_require__(987);
+	var enquire = _canUseDom2.default && __webpack_require__(971);
 
 	var Slider = function (_React$Component) {
 	  _inherits(Slider, _React$Component);
@@ -104064,7 +101291,7 @@
 	exports.default = Slider;
 
 /***/ }),
-/* 975 */
+/* 959 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -104078,19 +101305,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventHandlers = __webpack_require__(976);
+	var _eventHandlers = __webpack_require__(960);
 
 	var _eventHandlers2 = _interopRequireDefault(_eventHandlers);
 
-	var _helpers = __webpack_require__(978);
+	var _helpers = __webpack_require__(962);
 
 	var _helpers2 = _interopRequireDefault(_helpers);
 
-	var _initialState = __webpack_require__(979);
+	var _initialState = __webpack_require__(963);
 
 	var _initialState2 = _interopRequireDefault(_initialState);
 
-	var _defaultProps = __webpack_require__(980);
+	var _defaultProps = __webpack_require__(964);
 
 	var _defaultProps2 = _interopRequireDefault(_defaultProps);
 
@@ -104106,11 +101333,11 @@
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _track = __webpack_require__(981);
+	var _track = __webpack_require__(965);
 
-	var _dots = __webpack_require__(982);
+	var _dots = __webpack_require__(966);
 
-	var _arrows = __webpack_require__(983);
+	var _arrows = __webpack_require__(967);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -104348,16 +101575,16 @@
 	});
 
 /***/ }),
-/* 976 */
+/* 960 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _trackHelper = __webpack_require__(977);
+	var _trackHelper = __webpack_require__(961);
 
-	var _helpers = __webpack_require__(978);
+	var _helpers = __webpack_require__(962);
 
 	var _helpers2 = _interopRequireDefault(_helpers);
 
@@ -104695,7 +101922,7 @@
 	exports.default = EventHandlers;
 
 /***/ }),
-/* 977 */
+/* 961 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -104856,7 +102083,7 @@
 	};
 
 /***/ }),
-/* 978 */
+/* 962 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -104873,7 +102100,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _trackHelper = __webpack_require__(977);
+	var _trackHelper = __webpack_require__(961);
 
 	var _objectAssign = __webpack_require__(4);
 
@@ -105230,7 +102457,7 @@
 	exports.default = helpers;
 
 /***/ }),
-/* 979 */
+/* 963 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -105281,7 +102508,7 @@
 	module.exports = initialState;
 
 /***/ }),
-/* 980 */
+/* 964 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -105347,7 +102574,7 @@
 	module.exports = defaultProps;
 
 /***/ }),
-/* 981 */
+/* 965 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -105530,7 +102757,7 @@
 	}(_react2.default.Component);
 
 /***/ }),
-/* 982 */
+/* 966 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -105622,7 +102849,7 @@
 	}(_react2.default.Component);
 
 /***/ }),
-/* 983 */
+/* 967 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -105640,7 +102867,7 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _helpers = __webpack_require__(978);
+	var _helpers = __webpack_require__(962);
 
 	var _helpers2 = _interopRequireDefault(_helpers);
 
@@ -105761,10 +102988,10 @@
 	}(_react2.default.Component);
 
 /***/ }),
-/* 984 */
+/* 968 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var camel2hyphen = __webpack_require__(985);
+	var camel2hyphen = __webpack_require__(969);
 
 	var isDimension = function (feature) {
 	  var re = /[height|width]$/;
@@ -105817,7 +103044,7 @@
 	module.exports = json2mq;
 
 /***/ }),
-/* 985 */
+/* 969 */
 /***/ (function(module, exports) {
 
 	var camel2hyphen = function (str) {
@@ -105831,7 +103058,7 @@
 	module.exports = camel2hyphen;
 
 /***/ }),
-/* 986 */
+/* 970 */
 /***/ (function(module, exports) {
 
 	var canUseDOM = !!(
@@ -105843,19 +103070,19 @@
 	module.exports = canUseDOM;
 
 /***/ }),
-/* 987 */
+/* 971 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var MediaQueryDispatch = __webpack_require__(988);
+	var MediaQueryDispatch = __webpack_require__(972);
 	module.exports = new MediaQueryDispatch();
 
 
 /***/ }),
-/* 988 */
+/* 972 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var MediaQuery = __webpack_require__(989);
-	var Util = __webpack_require__(991);
+	var MediaQuery = __webpack_require__(973);
+	var Util = __webpack_require__(975);
 	var each = Util.each;
 	var isFunction = Util.isFunction;
 	var isArray = Util.isArray;
@@ -105942,11 +103169,11 @@
 
 
 /***/ }),
-/* 989 */
+/* 973 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var QueryHandler = __webpack_require__(990);
-	var each = __webpack_require__(991).each;
+	var QueryHandler = __webpack_require__(974);
+	var each = __webpack_require__(975).each;
 
 	/**
 	 * Represents a single media query, manages it's state and registered handlers for this query
@@ -106041,7 +103268,7 @@
 
 
 /***/ }),
-/* 990 */
+/* 974 */
 /***/ (function(module, exports) {
 
 	/**
@@ -106121,7 +103348,7 @@
 
 
 /***/ }),
-/* 991 */
+/* 975 */
 /***/ (function(module, exports) {
 
 	/**
@@ -106171,14 +103398,14 @@
 
 
 /***/ }),
-/* 992 */
+/* 976 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	"use strict";
 
 /***/ }),
-/* 993 */
+/* 977 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -106195,7 +103422,7 @@
 
 	var _reactBootstrap = __webpack_require__(543);
 
-	var _FilterLink = __webpack_require__(994);
+	var _FilterLink = __webpack_require__(978);
 
 	var _FilterLink2 = _interopRequireDefault(_FilterLink);
 
@@ -106249,7 +103476,7 @@
 	exports.default = FilterBrowser;
 
 /***/ }),
-/* 994 */
+/* 978 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -106268,7 +103495,7 @@
 
 	var _reactRedux = __webpack_require__(282);
 
-	var _browser = __webpack_require__(964);
+	var _browser = __webpack_require__(948);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -106346,6 +103573,2791 @@
 	};
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FilterLink);
+
+/***/ }),
+/* 979 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Time = __webpack_require__(944);
+
+	var _Time2 = _interopRequireDefault(_Time);
+
+	var _reactBootstrap = __webpack_require__(543);
+
+	var _materialUi = __webpack_require__(770);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var styles = {
+		white: {
+			color: '#fff'
+		},
+		videoContainer: {
+			display: 'relative'
+		},
+		video: {
+			//width: '100%',
+			display: 'block'
+		},
+		videoBar: {
+			position: 'relative',
+			display: 'inline-block',
+			width: '100%',
+			height: '30px',
+			backgroundColor: '#e0e0e0'
+		},
+		statusBar: {
+			position: 'absolute',
+			top: '0px',
+			left: '0px',
+			backgroundColor: '#263238',
+			width: '0%',
+			height: '100%'
+		},
+		centerRow: {
+			margin: 'auto',
+			display: 'table'
+		},
+		colTime: {
+			margin: 0,
+			padding: 0
+		}
+	};
+
+	var VideoPlayer = function (_React$Component) {
+		_inherits(VideoPlayer, _React$Component);
+
+		function VideoPlayer(props) {
+			_classCallCheck(this, VideoPlayer);
+
+			var _this = _possibleConstructorReturn(this, (VideoPlayer.__proto__ || Object.getPrototypeOf(VideoPlayer)).call(this, props));
+
+			_this.state = {
+				play: false,
+				duration: 0,
+				counter: 0
+			};
+
+			_this.player;
+			_this.track;
+			_this.handleVideoPlay = _this.handleVideoPlay.bind(_this);
+			_this.handleVideoPause = _this.handleVideoPause.bind(_this);
+			_this.handleVideoStop = _this.handleVideoStop.bind(_this);
+			_this.updateStatusBar = _this.updateStatusBar.bind(_this);
+			_this.setSubtitles = _this.setSubtitles.bind(_this);
+			_this.removeSubtitles = _this.removeSubtitles.bind(_this);
+			return _this;
+		}
+
+		_createClass(VideoPlayer, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _this2 = this;
+
+				var self = this,
+				    duration = 0;
+				this.player = this.refs.player;
+				this.player.src = this.props.url;
+
+				this.player.muted = this.props.muted ? true : false;
+
+				this.player.controls = false;
+				this.player.addEventListener('ended', function (e) {
+					_this2.setState({ play: false });
+				});
+				this.player.addEventListener('loadedmetadata', function (e) {
+					self.setSubtitles();
+					self.setState({ duration: self.player.duration });
+				});
+				this.player.addEventListener('timeupdate', function (e) {
+					self.setState({
+						counter: self.player.currentTime,
+						duration: self.player.duration
+					});
+					if (self.refs.statusBar) {
+						var percent = self.player.currentTime / self.player.duration,
+						    barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
+
+						self.refs.statusBar.style.width = barPercent + 'px';
+					}
+				});
+			}
+		}, {
+			key: 'setSubtitles',
+			value: function setSubtitles() {
+				var _this3 = this;
+
+				var self = this;
+				// settings subtitles
+				self.player.track = self.player.addTextTrack("captions", "English", "en");
+				self.player.track.mode = "showing";
+
+				// load subtitles
+				console.log(self.props.subtitles);
+				self.props.subtitles.map(function (subtitle) {
+					var start = _this3.setTimetoSeconds(subtitle.startTime),
+					    end = _this3.setTimetoSeconds(subtitle.endTime),
+					    newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
+
+					newCue.line = -1;
+					self.player.track.addCue(newCue);
+				});
+			}
+		}, {
+			key: 'removeSubtitles',
+			value: function removeSubtitles() {
+				var self = this,
+				    cues = self.player.track.cues,
+				    dataCues = [];
+
+				for (var i = 0; i < cues.length; i++) {
+					dataCues.push(cues[i]);
+				}for (var i = 0; i < dataCues.length; i++) {
+					self.player.track.removeCue(dataCues[i]);
+				}
+			}
+		}, {
+			key: 'setTimetoSeconds',
+			value: function setTimetoSeconds(value) {
+				var matchValue = /([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/;
+
+				if (String(value).match(matchValue)) {
+					value = value.split(':');
+					var h = parseInt(value[0]) * 3600,
+					    m = parseInt(value[1]) * 60,
+					    s = parseFloat(value[2].replace(',', '.'));
+
+					return h + m + s;
+				}
+
+				return value;
+			}
+		}, {
+			key: 'updateStatusBar',
+			value: function updateStatusBar(event) {
+				var offsetLeft = event.target.offsetLeft,
+				    clientX = event.clientX;
+
+				this.player.currentTime = this.player.duration * ((clientX - offsetLeft) / this.refs.statusBar.offsetParent.offsetWidth);
+			}
+		}, {
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(nextProps) {
+				var self = this;
+
+				if (!self.player.track) return false;
+
+				console.log('will remove', self.player.track.cues);
+				self.removeSubtitles();
+				console.log('revoved cues');
+
+				self.setSubtitles();
+				console.log('added', self.player.track.cues);
+			}
+		}, {
+			key: 'handleVideoPlay',
+			value: function handleVideoPlay() {
+				if (this.player) {
+					this.setState({ play: true });
+					this.player.play();
+				}
+			}
+		}, {
+			key: 'handleVideoPause',
+			value: function handleVideoPause() {
+				if (this.player) {
+					this.setState({ play: false });
+					this.player.pause();
+				}
+			}
+		}, {
+			key: 'handleVideoStop',
+			value: function handleVideoStop(e) {
+				e.preventDefault();
+				if (this.player) {
+					this.setState({
+						play: false,
+						counter: 0
+					});
+					this.player.pause();
+					this.player.currentTime = 0;
+				}
+			}
+		}, {
+			key: 'playIcon',
+			value: function playIcon() {
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'play', style: styles.white });
+			}
+		}, {
+			key: 'pauseIcon',
+			value: function pauseIcon() {
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'pause', style: styles.white });
+			}
+		}, {
+			key: 'deleteIcon',
+			value: function deleteIcon() {
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'trash', style: styles.white });
+			}
+		}, {
+			key: 'renderActionButton',
+			value: function renderActionButton() {
+				var _this4 = this;
+
+				if (!this.state.play) {
+					return _react2.default.createElement(_materialUi.RaisedButton, {
+						icon: this.playIcon(),
+						backgroundColor: '#000',
+						labelColor: '#fff',
+						onClick: this.handleVideoPlay,
+						fullWidth: true
+					});
+				}
+				return _react2.default.createElement(_materialUi.RaisedButton, {
+					icon: this.pauseIcon(),
+					backgroundColor: '#000',
+					labelColor: '#fff',
+					onClick: this.handleVideoPause,
+					onContextMenu: function onContextMenu(e) {
+						return _this4.handleVideoStop(e);
+					},
+					fullWidth: true
+				});
+			}
+		}, {
+			key: 'renderTime',
+			value: function renderTime() {
+				if (this.state.duration !== Infinity) return _react2.default.createElement(
+					_reactBootstrap.Row,
+					{ style: styles.centerRow },
+					_react2.default.createElement(_Time2.default, { value: this.state.counter }),
+					'/',
+					_react2.default.createElement(_Time2.default, { value: this.state.duration })
+				);
+			}
+		}, {
+			key: 'renderControls',
+			value: function renderControls() {
+				var _this5 = this;
+
+				if (this.props.hideControls === undefined) return _react2.default.createElement(
+					_reactBootstrap.Col,
+					{ xs: 12, md: 6, mdOffset: 3, lg: 6, lgOffset: 3 },
+					_react2.default.createElement(
+						'div',
+						{ style: styles.videoBar, onClick: function onClick(e) {
+								return _this5.updateStatusBar(e);
+							} },
+						_react2.default.createElement('div', { style: styles.statusBar, ref: 'statusBar' })
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Row,
+						null,
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 3, md: 2, lg: 2 },
+							this.renderActionButton()
+						),
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 6, md: 10, lg: 10, style: styles.colTime },
+							this.renderTime()
+						),
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 3, md: 2, lg: 2 },
+							this.props.onDelete && _react2.default.createElement(_materialUi.RaisedButton, {
+								icon: this.deleteIcon(),
+								backgroundColor: '#eb4d5c',
+								labelColor: '#fff',
+								onClick: this.props.onDelete,
+								fullWidth: true
+							})
+						)
+					)
+				);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var handleMouseOver = function handleMouseOver() {
+					return false;
+				},
+				    handleMouseLeave = function handleMouseLeave() {
+					return false;
+				};
+
+				if (this.props.playOnHover) {
+					handleMouseLeave = this.handleVideoStop;
+					handleMouseOver = this.handleVideoPlay;
+				}
+				return _react2.default.createElement(
+					_reactBootstrap.Row,
+					{ style: styles.videoContainer },
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 12, md: 6, mdOffset: 3, lg: 6, lgOffset: 3 },
+						_react2.default.createElement('video', { preload: 'metadata', ref: 'player', style: styles.video, onMouseLeave: function onMouseLeave(e) {
+								return handleMouseLeave(e);
+							}, onMouseOver: function onMouseOver(e) {
+								return handleMouseOver(e);
+							} })
+					),
+					this.renderControls()
+				);
+			}
+		}]);
+
+		return VideoPlayer;
+	}(_react2.default.Component);
+
+	exports.default = VideoPlayer;
+
+/***/ }),
+/* 980 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(282);
+
+	var _reactPlayer = __webpack_require__(981);
+
+	var _reactPlayer2 = _interopRequireDefault(_reactPlayer);
+
+	var _video = __webpack_require__(941);
+
+	var _reactBootstrap = __webpack_require__(543);
+
+	var _lib = __webpack_require__(922);
+
+	var _materialUi = __webpack_require__(770);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var styles = {
+		subtitlesContent: {
+			padding: '20px 0',
+			minHeight: '500px'
+		},
+		subtitlesContainer: {
+			position: 'relative',
+			minHeight: '150px',
+			overflowY: 'auto',
+			maxHeight: '300px',
+			margin: '10px 0'
+		},
+		v_center: {
+			display: 'inline-block',
+			verticalAlign: 'middle',
+			float: 'none'
+		},
+		inputText: {
+			width: '100%'
+		},
+		form: {
+			position: 'relative'
+		},
+		btnDelete: {
+			position: 'absolute',
+			top: '-38px',
+			right: '15px',
+			backgroundColor: '#eb4d5c',
+			color: '#fff',
+			borderRadius: '50%',
+			width: '35px',
+			height: '35px',
+			padding: '8px 13px'
+		},
+		white: {
+			color: '#fff'
+		},
+		centerText: {
+			textAlign: 'center'
+		},
+		even: {
+			backgroundColor: '#ccc'
+		},
+		odd: {
+			backgroundColor: '#f2f2f2'
+		}
+	};
+
+	var SubtitlesEditer = function (_React$Component) {
+		_inherits(SubtitlesEditer, _React$Component);
+
+		function SubtitlesEditer(props) {
+			_classCallCheck(this, SubtitlesEditer);
+
+			var _this = _possibleConstructorReturn(this, (SubtitlesEditer.__proto__ || Object.getPrototypeOf(SubtitlesEditer)).call(this, props));
+
+			_this.state = {
+				videoDuration: _this.props.videoDuration
+			};
+
+			_this.renderSubtitles = _this.renderSubtitles.bind(_this);
+			_this.handleClick = _this.handleClick.bind(_this);
+			_this.handleEdit = _this.handleEdit.bind(_this);
+			_this.handleAdd = _this.handleAdd.bind(_this);
+			_this.handleDelete = _this.handleDelete.bind(_this);
+			_this.sortSubtiltes = _this.sortSubtiltes.bind(_this);
+			_this.sanitizeSubtitles = _this.sanitizeSubtitles.bind(_this);
+			return _this;
+		}
+
+		_createClass(SubtitlesEditer, [{
+			key: 'handleClick',
+			value: function handleClick(event, id) {
+				var newSubtitles = this.props.subtitles;
+				for (var i = 0; i < newSubtitles.length; i++) {
+					if (newSubtitles[i].id === id) {
+						if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'A') return false;else newSubtitles[i].edit = !newSubtitles[i].edit;
+					} else newSubtitles[i].edit = false;
+				}
+				this.props.updateSubtitles(newSubtitles);
+			}
+		}, {
+			key: 'handleEdit',
+			value: function handleEdit(event, id) {
+				var newSubtitles = this.sortSubtiltes(),
+				    target = event.target.name,
+				    value = event.target.value;
+
+				newSubtitles.map(function (subtitle, i) {
+					if (subtitle.id === id) {
+						if (target === 'startTime') value = parseFloat(value) ? parseFloat(value) : 0;
+						subtitle[target] = value;
+					}
+				});
+
+				this.props.updateSubtitles(newSubtitles);
+			}
+		}, {
+			key: 'setTimeFormat',
+			value: function setTimeFormat(value) {
+				var chars = value.split('');
+				for (var i = 0; i < chars.length; i++) {
+					if (i == 1) chars[i] = '.';
+				}
+				return chars.join('');
+			}
+		}, {
+			key: 'handleAdd',
+			value: function handleAdd() {
+				var newSubtitles = this.props.subtitles,
+				    currentId = 0;
+				for (var i = 0; i < newSubtitles.length; i++) {
+					newSubtitles[i].edit = false;
+					currentId = newSubtitles[i].id > currentId ? newSubtitles[i].id : currentId;
+				}
+				var id = parseInt(currentId) + 1,
+				    subtitle = {
+					id: id,
+					startTime: 0,
+					endTime: null,
+					text: '',
+					edit: true
+				};
+
+				newSubtitles = newSubtitles.concat([subtitle]);
+				this.props.updateSubtitles(newSubtitles);
+			}
+		}, {
+			key: 'handleDelete',
+			value: function handleDelete(id) {
+				var newSubtitles = this.props.subtitles;
+				for (var i = 0; i < newSubtitles.length; i++) {
+					if (newSubtitles[i].id === id) {
+						newSubtitles = newSubtitles.splice(i, 1);
+					}
+				}
+				this.props.updateSubtitles(newSubtitles);
+			}
+		}, {
+			key: 'subtitleEditOn',
+			value: function subtitleEditOn(subtitle) {
+				var _this2 = this;
+
+				return _react2.default.createElement(
+					_reactBootstrap.Row,
+					null,
+					_react2.default.createElement(
+						Formsy.Form,
+						{ style: styles.form },
+						_react2.default.createElement(
+							'a',
+							{ onClick: function onClick(e) {
+									return _this2.handleDelete(subtitle.id);
+								}, style: styles.btnDelete },
+							'X'
+						),
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 3, style: styles.v_center },
+							_react2.default.createElement(_lib.FormsyText, { name: 'startTime', value: String(subtitle.startTime), validations: 'isNumeric', onChange: function onChange(e) {
+									return _this2.handleEdit(e, subtitle.id);
+								}, fullWidth: true, multiLine: true })
+						),
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 9, style: styles.v_center },
+							_react2.default.createElement(_lib.FormsyText, { name: 'text', value: subtitle.text, validations: 'isWords', onChange: function onChange(e) {
+									return _this2.handleEdit(e, subtitle.id);
+								}, fullWidth: true, multiLine: true })
+						)
+					)
+				);
+			}
+		}, {
+			key: 'subtitleEditOff',
+			value: function subtitleEditOff(subtitle) {
+				return _react2.default.createElement(
+					_reactBootstrap.Row,
+					null,
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 3, style: styles.v_center },
+						_react2.default.createElement(
+							'p',
+							null,
+							this.formatTime(subtitle.startTime),
+							' Sec'
+						)
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 9, style: styles.v_center },
+						_react2.default.createElement(
+							'p',
+							null,
+							subtitle.text
+						)
+					)
+				);
+			}
+		}, {
+			key: 'sortSubtiltes',
+			value: function sortSubtiltes() {
+				return this.props.subtitles.sort(function (a, b) {
+					if (a.startTime < b.startTime) return -1;
+					if (a.startTime > b.startTime) return 1;
+					return 0;
+				});
+			}
+		}, {
+			key: 'sanitizeSubtitles',
+			value: function sanitizeSubtitles(subtiltesDuration) {
+				return this.sortSubtiltes().map(function (subtitle, i, subtitles) {
+					if (subtitles.length > 0) {
+						if (i == subtitles.length - 1) {
+							// subtitle.endTime = subtiltesDuration;
+							subtitle.endTime = subtitle.startTime + 2;
+						} else {
+							subtitle.endTime = subtitles[i + 1].startTime;
+						}
+					}
+				});
+			}
+		}, {
+			key: 'renderSubtitles',
+			value: function renderSubtitles() {
+				var _this3 = this;
+
+				var subtitles = this.sortSubtiltes();
+				return subtitles.map(function (subtitle, i) {
+					var style = void 0;
+					if (i % 2 == 0) style = styles.even;else style = styles.odd;
+					return _react2.default.createElement(
+						'div',
+						{ key: subtitle.id, onClick: function onClick(e) {
+								return _this3.handleClick(e, subtitle.id);
+							}, className: 'subtitle', id: "subtitle-" + subtitle.id, style: style },
+						subtitle.edit ? _this3.subtitleEditOn(subtitle) : _this3.subtitleEditOff(subtitle)
+					);
+				});
+			}
+		}, {
+			key: 'formatTime',
+			value: function formatTime(time) {
+				return String(time).replace('.', ':');
+			}
+		}, {
+			key: 'plusIcon',
+			value: function plusIcon() {
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'plus', style: styles.white });
+			}
+		}, {
+			key: 'saveIcon',
+			value: function saveIcon() {
+				return _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'ok', style: styles.white });
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				this.sanitizeSubtitles(this.state.videoDuration);
+				console.log(this.sortSubtiltes());
+				return _react2.default.createElement(
+					_reactBootstrap.Row,
+					{ className: 'content-subtitles', style: styles.subtitlesContent },
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 12, style: styles.centerText },
+						_react2.default.createElement(
+							'strong',
+							null,
+							'This is what we heard. You may edit for clarity'
+						)
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 12, className: 'subtitles', style: styles.subtitlesContainer },
+						_react2.default.createElement('hr', null),
+						this.renderSubtitles(),
+						_react2.default.createElement(_materialUi.RaisedButton, {
+							icon: this.plusIcon(),
+							label: 'Add subtitle',
+							backgroundColor: '#2ab27b',
+							labelColor: '#fff',
+							onClick: this.handleAdd,
+							fullWidth: true
+						})
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 3, xsOffset: 9, md: 2, mdOffset: 10, lg: 2, lgOffset: 10 },
+						_react2.default.createElement(_materialUi.RaisedButton, {
+							icon: this.saveIcon(),
+							backgroundColor: '#2ab27b',
+							labelColor: '#fff',
+							onClick: this.props.onSave,
+							fullWidth: true
+						})
+					)
+				);
+			}
+		}]);
+
+		return SubtitlesEditer;
+	}(_react2.default.Component);
+
+	exports.default = SubtitlesEditer;
+
+/***/ }),
+/* 981 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _props3 = __webpack_require__(982);
+
+	var _YouTube = __webpack_require__(983);
+
+	var _YouTube2 = _interopRequireDefault(_YouTube);
+
+	var _SoundCloud = __webpack_require__(987);
+
+	var _SoundCloud2 = _interopRequireDefault(_SoundCloud);
+
+	var _Vimeo = __webpack_require__(990);
+
+	var _Vimeo2 = _interopRequireDefault(_Vimeo);
+
+	var _FilePlayer = __webpack_require__(989);
+
+	var _FilePlayer2 = _interopRequireDefault(_FilePlayer);
+
+	var _Streamable = __webpack_require__(991);
+
+	var _Streamable2 = _interopRequireDefault(_Streamable);
+
+	var _Vidme = __webpack_require__(992);
+
+	var _Vidme2 = _interopRequireDefault(_Vidme);
+
+	var _Wistia = __webpack_require__(993);
+
+	var _Wistia2 = _interopRequireDefault(_Wistia);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ReactPlayer = function (_Component) {
+	  _inherits(ReactPlayer, _Component);
+
+	  function ReactPlayer() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, ReactPlayer);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ReactPlayer.__proto__ || Object.getPrototypeOf(ReactPlayer)).call.apply(_ref, [this].concat(args))), _this), _this.seekTo = function (fraction) {
+	      if (_this.player) {
+	        _this.player.seekTo(fraction);
+	      }
+	    }, _this.progress = function () {
+	      if (_this.props.url && _this.player) {
+	        var loaded = _this.player.getFractionLoaded() || 0;
+	        var played = _this.player.getFractionPlayed() || 0;
+	        var progress = {};
+	        if (loaded !== _this.prevLoaded) {
+	          progress.loaded = loaded;
+	        }
+	        if (played !== _this.prevPlayed) {
+	          progress.played = played;
+	        }
+	        if (progress.loaded || progress.played) {
+	          _this.props.onProgress(progress);
+	        }
+	        _this.prevLoaded = loaded;
+	        _this.prevPlayed = played;
+	      }
+	      _this.progressTimeout = setTimeout(_this.progress, _this.props.progressFrequency);
+	    }, _this.ref = function (player) {
+	      _this.player = player;
+	    }, _this.renderPlayer = function (Player) {
+	      var active = Player.canPlay(_this.props.url);
+
+	      var _this$props = _this.props,
+	          youtubeConfig = _this$props.youtubeConfig,
+	          soundcloudConfig = _this$props.soundcloudConfig,
+	          vimeoConfig = _this$props.vimeoConfig,
+	          fileConfig = _this$props.fileConfig,
+	          activeProps = _objectWithoutProperties(_this$props, ['youtubeConfig', 'soundcloudConfig', 'vimeoConfig', 'fileConfig']);
+
+	      var props = active ? _extends({}, activeProps, { ref: _this.ref }) : {};
+	      return _react2['default'].createElement(Player, _extends({
+	        key: Player.displayName,
+	        youtubeConfig: youtubeConfig,
+	        soundcloudConfig: soundcloudConfig,
+	        vimeoConfig: vimeoConfig,
+	        fileConfig: fileConfig
+	      }, props));
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(ReactPlayer, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.progress();
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      clearTimeout(this.progressTimeout);
+	    }
+	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps) {
+	      return this.props.url !== nextProps.url || this.props.playing !== nextProps.playing || this.props.volume !== nextProps.volume || this.props.playbackRate !== nextProps.playbackRate || this.props.height !== nextProps.height || this.props.width !== nextProps.width || this.props.hidden !== nextProps.hidden;
+	    }
+	  }, {
+	    key: 'renderPlayers',
+	    value: function renderPlayers() {
+	      // Build array of players to render based on URL and preload config
+	      var _props = this.props,
+	          url = _props.url,
+	          youtubeConfig = _props.youtubeConfig,
+	          vimeoConfig = _props.vimeoConfig;
+
+	      var players = [];
+	      if (_YouTube2['default'].canPlay(url)) {
+	        players.push(_YouTube2['default']);
+	      } else if (_SoundCloud2['default'].canPlay(url)) {
+	        players.push(_SoundCloud2['default']);
+	      } else if (_Vimeo2['default'].canPlay(url)) {
+	        players.push(_Vimeo2['default']);
+	      } else if (_Streamable2['default'].canPlay(url)) {
+	        players.push(_Streamable2['default']);
+	      } else if (_Vidme2['default'].canPlay(url)) {
+	        players.push(_Vidme2['default']);
+	      } else if (_Wistia2['default'].canPlay(url)) {
+	        players.push(_Wistia2['default']);
+	      } else if (url) {
+	        // Fall back to FilePlayer if nothing else can play the URL
+	        players.push(_FilePlayer2['default']);
+	      }
+	      // Render additional players if preload config is set
+	      if (!_YouTube2['default'].canPlay(url) && youtubeConfig.preload) {
+	        players.push(_YouTube2['default']);
+	      }
+	      if (!_Vimeo2['default'].canPlay(url) && vimeoConfig.preload) {
+	        players.push(_Vimeo2['default']);
+	      }
+	      return players.map(this.renderPlayer);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props2 = this.props,
+	          style = _props2.style,
+	          width = _props2.width,
+	          height = _props2.height,
+	          className = _props2.className,
+	          hidden = _props2.hidden;
+
+	      var players = this.renderPlayers();
+	      return _react2['default'].createElement(
+	        'div',
+	        { style: _extends({}, style, { width: width, height: height }), className: className, hidden: hidden },
+	        players
+	      );
+	    }
+	  }]);
+
+	  return ReactPlayer;
+	}(_react.Component);
+
+	ReactPlayer.displayName = 'ReactPlayer';
+	ReactPlayer.propTypes = _props3.propTypes;
+	ReactPlayer.defaultProps = _props3.defaultProps;
+	exports['default'] = ReactPlayer;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 982 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.defaultProps = exports.propTypes = undefined;
+
+	var _react = __webpack_require__(2);
+
+	var string = _react.PropTypes.string,
+	    bool = _react.PropTypes.bool,
+	    number = _react.PropTypes.number,
+	    oneOfType = _react.PropTypes.oneOfType,
+	    shape = _react.PropTypes.shape,
+	    object = _react.PropTypes.object,
+	    func = _react.PropTypes.func;
+	var propTypes = exports.propTypes = {
+	  url: string,
+	  playing: bool,
+	  loop: bool,
+	  controls: bool,
+	  volume: number,
+	  playbackRate: number,
+	  width: oneOfType([string, number]),
+	  height: oneOfType([string, number]),
+	  hidden: bool,
+	  className: string,
+	  style: object,
+	  progressFrequency: number,
+	  soundcloudConfig: shape({
+	    clientId: string,
+	    showArtwork: bool
+	  }),
+	  youtubeConfig: shape({
+	    playerVars: object,
+	    preload: bool
+	  }),
+	  vimeoConfig: shape({
+	    iframeParams: object,
+	    preload: bool
+	  }),
+	  fileConfig: shape({
+	    attributes: object
+	  }),
+	  onReady: func,
+	  onStart: func,
+	  onPlay: func,
+	  onPause: func,
+	  onBuffer: func,
+	  onEnded: func,
+	  onError: func,
+	  onDuration: func,
+	  onProgress: func
+	};
+
+	var defaultProps = exports.defaultProps = {
+	  playing: false,
+	  loop: false,
+	  controls: false,
+	  volume: 0.8,
+	  playbackRate: 1,
+	  width: 640,
+	  height: 360,
+	  hidden: false,
+	  progressFrequency: 1000,
+	  soundcloudConfig: {
+	    clientId: 'e8b6f84fbcad14c301ca1355cae1dea2',
+	    showArtwork: true
+	  },
+	  youtubeConfig: {
+	    playerVars: {},
+	    preload: false
+	  },
+	  vimeoConfig: {
+	    iframeParams: {},
+	    preload: false
+	  },
+	  fileConfig: {
+	    attributes: {}
+	  },
+	  onReady: function onReady() {},
+	  onStart: function onStart() {},
+	  onPlay: function onPlay() {},
+	  onPause: function onPause() {},
+	  onBuffer: function onBuffer() {},
+	  onEnded: function onEnded() {},
+	  onError: function onError() {},
+	  onDuration: function onDuration() {},
+	  onProgress: function onProgress() {}
+	};
+
+/***/ }),
+/* 983 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _loadScript = __webpack_require__(984);
+
+	var _loadScript2 = _interopRequireDefault(_loadScript);
+
+	var _Base2 = __webpack_require__(985);
+
+	var _Base3 = _interopRequireDefault(_Base2);
+
+	var _utils = __webpack_require__(986);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SDK_URL = 'https://www.youtube.com/iframe_api';
+	var SDK_GLOBAL = 'YT';
+	var SDK_GLOBAL_READY = 'onYouTubeIframeAPIReady';
+	var MATCH_URL = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+	var BLANK_VIDEO_URL = 'https://www.youtube.com/watch?v=GlCmAC4MHek';
+	var DEFAULT_PLAYER_VARS = {
+	  autoplay: 0,
+	  playsinline: 1,
+	  showinfo: 0,
+	  rel: 0,
+	  iv_load_policy: 3
+	};
+
+	var YouTube = function (_Base) {
+	  _inherits(YouTube, _Base);
+
+	  function YouTube() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, YouTube);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YouTube.__proto__ || Object.getPrototypeOf(YouTube)).call.apply(_ref, [this].concat(args))), _this), _this.onStateChange = function (_ref2) {
+	      var data = _ref2.data;
+	      var _this$props = _this.props,
+	          onPause = _this$props.onPause,
+	          onBuffer = _this$props.onBuffer;
+	      var _window$SDK_GLOBAL$Pl = window[SDK_GLOBAL].PlayerState,
+	          PLAYING = _window$SDK_GLOBAL$Pl.PLAYING,
+	          PAUSED = _window$SDK_GLOBAL$Pl.PAUSED,
+	          BUFFERING = _window$SDK_GLOBAL$Pl.BUFFERING,
+	          ENDED = _window$SDK_GLOBAL$Pl.ENDED,
+	          CUED = _window$SDK_GLOBAL$Pl.CUED;
+
+	      if (data === PLAYING) _this.onPlay();
+	      if (data === PAUSED) onPause();
+	      if (data === BUFFERING) onBuffer();
+	      if (data === ENDED) _this.onEnded();
+	      if (data === CUED) _this.onReady();
+	    }, _this.onEnded = function () {
+	      var _this$props2 = _this.props,
+	          loop = _this$props2.loop,
+	          onEnded = _this$props2.onEnded;
+
+	      if (loop) {
+	        _this.seekTo(0);
+	      }
+	      onEnded();
+	    }, _this.ref = function (container) {
+	      _this.container = container;
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(YouTube, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _props = this.props,
+	          url = _props.url,
+	          youtubeConfig = _props.youtubeConfig;
+
+	      if (!url && youtubeConfig.preload) {
+	        this.preloading = true;
+	        this.load(BLANK_VIDEO_URL);
+	      }
+	      _get(YouTube.prototype.__proto__ || Object.getPrototypeOf(YouTube.prototype), 'componentDidMount', this).call(this);
+	    }
+	  }, {
+	    key: 'getSDK',
+	    value: function getSDK() {
+	      if (window[SDK_GLOBAL] && window[SDK_GLOBAL].loaded) {
+	        return Promise.resolve(window[SDK_GLOBAL]);
+	      }
+	      return new Promise(function (resolve, reject) {
+	        var previousOnReady = window[SDK_GLOBAL_READY];
+	        window[SDK_GLOBAL_READY] = function () {
+	          if (previousOnReady) previousOnReady();
+	          resolve(window[SDK_GLOBAL]);
+	        };
+	        (0, _loadScript2['default'])(SDK_URL, function (err) {
+	          if (err) reject(err);
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'load',
+	    value: function load(url) {
+	      var _this2 = this;
+
+	      var _props2 = this.props,
+	          controls = _props2.controls,
+	          youtubeConfig = _props2.youtubeConfig,
+	          _onError = _props2.onError;
+
+	      var id = url && url.match(MATCH_URL)[1];
+	      if (this.isReady) {
+	        this.player.cueVideoById({
+	          videoId: id,
+	          startSeconds: (0, _utils.parseStartTime)(url)
+	        });
+	        return;
+	      }
+	      if (this.loadingSDK) {
+	        this.loadOnReady = url;
+	        return;
+	      }
+	      this.loadingSDK = true;
+	      this.getSDK().then(function (YT) {
+	        _this2.player = new YT.Player(_this2.container, {
+	          width: '100%',
+	          height: '100%',
+	          videoId: id,
+	          playerVars: _extends({}, DEFAULT_PLAYER_VARS, {
+	            controls: controls ? 1 : 0,
+	            start: (0, _utils.parseStartTime)(url),
+	            origin: window.location.origin
+	          }, youtubeConfig.playerVars),
+	          events: {
+	            onReady: function onReady() {
+	              _this2.loadingSDK = false;
+	              _this2.onReady();
+	            },
+	            onStateChange: _this2.onStateChange,
+	            onError: function onError(event) {
+	              return _onError(event.data);
+	            }
+	          }
+	        });
+	      }, _onError);
+	    }
+	  }, {
+	    key: 'play',
+	    value: function play() {
+	      if (!this.isReady || !this.player.playVideo) return;
+	      this.player.playVideo();
+	    }
+	  }, {
+	    key: 'pause',
+	    value: function pause() {
+	      if (!this.isReady || !this.player.pauseVideo) return;
+	      this.player.pauseVideo();
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      if (!this.isReady || !this.player.stopVideo) return;
+	      this.player.stopVideo();
+	    }
+	  }, {
+	    key: 'seekTo',
+	    value: function seekTo(fraction) {
+	      _get(YouTube.prototype.__proto__ || Object.getPrototypeOf(YouTube.prototype), 'seekTo', this).call(this, fraction);
+	      if (!this.isReady || !this.player.seekTo) return;
+	      this.player.seekTo(this.getDuration() * fraction);
+	    }
+	  }, {
+	    key: 'setVolume',
+	    value: function setVolume(fraction) {
+	      if (!this.isReady || !this.player.setVolume) return;
+	      this.player.setVolume(fraction * 100);
+	    }
+	  }, {
+	    key: 'setPlaybackRate',
+	    value: function setPlaybackRate(rate) {
+	      if (!this.isReady || !this.player.setPlaybackRate) return;
+	      this.player.setPlaybackRate(rate);
+	    }
+	  }, {
+	    key: 'getDuration',
+	    value: function getDuration() {
+	      if (!this.isReady || !this.player.getDuration) return null;
+	      return this.player.getDuration();
+	    }
+	  }, {
+	    key: 'getFractionPlayed',
+	    value: function getFractionPlayed() {
+	      if (!this.isReady || !this.getDuration()) return null;
+	      return this.player.getCurrentTime() / this.getDuration();
+	    }
+	  }, {
+	    key: 'getFractionLoaded',
+	    value: function getFractionLoaded() {
+	      if (!this.isReady || !this.player.getVideoLoadedFraction) return null;
+	      return this.player.getVideoLoadedFraction();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var style = {
+	        width: '100%',
+	        height: '100%',
+	        display: this.props.url ? 'block' : 'none'
+	      };
+	      return _react2['default'].createElement(
+	        'div',
+	        { style: style },
+	        _react2['default'].createElement('div', { ref: this.ref })
+	      );
+	    }
+	  }], [{
+	    key: 'canPlay',
+	    value: function canPlay(url) {
+	      return MATCH_URL.test(url);
+	    }
+	  }]);
+
+	  return YouTube;
+	}(_Base3['default']);
+
+	YouTube.displayName = 'YouTube';
+	exports['default'] = YouTube;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 984 */
+/***/ (function(module, exports) {
+
+	
+	module.exports = function load (src, opts, cb) {
+	  var head = document.head || document.getElementsByTagName('head')[0]
+	  var script = document.createElement('script')
+
+	  if (typeof opts === 'function') {
+	    cb = opts
+	    opts = {}
+	  }
+
+	  opts = opts || {}
+	  cb = cb || function() {}
+
+	  script.type = opts.type || 'text/javascript'
+	  script.charset = opts.charset || 'utf8';
+	  script.async = 'async' in opts ? !!opts.async : true
+	  script.src = src
+
+	  if (opts.attrs) {
+	    setAttributes(script, opts.attrs)
+	  }
+
+	  if (opts.text) {
+	    script.text = '' + opts.text
+	  }
+
+	  var onend = 'onload' in script ? stdOnEnd : ieOnEnd
+	  onend(script, cb)
+
+	  // some good legacy browsers (firefox) fail the 'in' detection above
+	  // so as a fallback we always set onload
+	  // old IE will ignore this and new IE will set onload
+	  if (!script.onload) {
+	    stdOnEnd(script, cb);
+	  }
+
+	  head.appendChild(script)
+	}
+
+	function setAttributes(script, attrs) {
+	  for (var attr in attrs) {
+	    script.setAttribute(attr, attrs[attr]);
+	  }
+	}
+
+	function stdOnEnd (script, cb) {
+	  script.onload = function () {
+	    this.onerror = this.onload = null
+	    cb(null, script)
+	  }
+	  script.onerror = function () {
+	    // this.onload = null here is necessary
+	    // because even IE9 works not like others
+	    this.onerror = this.onload = null
+	    cb(new Error('Failed to load ' + this.src), script)
+	  }
+	}
+
+	function ieOnEnd (script, cb) {
+	  script.onreadystatechange = function () {
+	    if (this.readyState != 'complete' && this.readyState != 'loaded') return
+	    this.onreadystatechange = null
+	    cb(null, script) // there is no way to catch loading errors in IE8
+	  }
+	}
+
+
+/***/ }),
+/* 985 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _props2 = __webpack_require__(982);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SEEK_ON_PLAY_EXPIRY = 5000;
+
+	var Base = function (_Component) {
+	  _inherits(Base, _Component);
+
+	  function Base() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Base);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Base.__proto__ || Object.getPrototypeOf(Base)).call.apply(_ref, [this].concat(args))), _this), _this.isReady = false, _this.startOnPlay = true, _this.durationOnPlay = false, _this.seekOnPlay = null, _this.onPlay = function () {
+	      var _this$props = _this.props,
+	          volume = _this$props.volume,
+	          onStart = _this$props.onStart,
+	          onPlay = _this$props.onPlay,
+	          onDuration = _this$props.onDuration,
+	          playbackRate = _this$props.playbackRate;
+
+	      if (_this.startOnPlay) {
+	        _this.setPlaybackRate(playbackRate);
+	        _this.setVolume(volume);
+	        onStart();
+	        _this.startOnPlay = false;
+	      }
+	      onPlay();
+	      if (_this.seekOnPlay) {
+	        _this.seekTo(_this.seekOnPlay);
+	        _this.seekOnPlay = null;
+	      }
+	      if (_this.durationOnPlay) {
+	        onDuration(_this.getDuration());
+	        _this.durationOnPlay = false;
+	      }
+	    }, _this.onReady = function () {
+	      var _this$props2 = _this.props,
+	          onReady = _this$props2.onReady,
+	          playing = _this$props2.playing,
+	          onDuration = _this$props2.onDuration;
+
+	      _this.isReady = true;
+	      onReady();
+	      if (playing || _this.preloading) {
+	        _this.preloading = false;
+	        if (_this.loadOnReady) {
+	          _this.load(_this.loadOnReady);
+	          _this.loadOnReady = null;
+	        } else {
+	          _this.play();
+	        }
+	      }
+	      var duration = _this.getDuration();
+	      if (duration) {
+	        onDuration(duration);
+	      } else {
+	        _this.durationOnPlay = true;
+	      }
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Base, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var url = this.props.url;
+
+	      this.mounted = true;
+	      if (url) {
+	        this.load(url);
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.stop();
+	      this.mounted = false;
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var _props = this.props,
+	          url = _props.url,
+	          playing = _props.playing,
+	          volume = _props.volume,
+	          playbackRate = _props.playbackRate;
+	      // Invoke player methods based on incoming props
+
+	      if (url !== nextProps.url && nextProps.url) {
+	        this.seekOnPlay = null;
+	        this.startOnPlay = true;
+	        this.load(nextProps.url);
+	      } else if (url && !nextProps.url) {
+	        this.stop();
+	        clearTimeout(this.updateTimeout);
+	      } else if (!playing && nextProps.playing) {
+	        this.play();
+	      } else if (playing && !nextProps.playing) {
+	        this.pause();
+	      } else if (volume !== nextProps.volume) {
+	        this.setVolume(nextProps.volume);
+	      } else if (playbackRate !== nextProps.playbackRate) {
+	        this.setPlaybackRate(nextProps.playbackRate);
+	      }
+	    }
+	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps) {
+	      return this.props.url !== nextProps.url;
+	    }
+	  }, {
+	    key: 'seekTo',
+	    value: function seekTo(fraction) {
+	      var _this2 = this;
+
+	      // When seeking before player is ready, store value and seek later
+	      if (!this.isReady && fraction !== 0) {
+	        this.seekOnPlay = fraction;
+	        setTimeout(function () {
+	          _this2.seekOnPlay = null;
+	        }, SEEK_ON_PLAY_EXPIRY);
+	      }
+	    }
+	  }]);
+
+	  return Base;
+	}(_react.Component);
+
+	Base.propTypes = _props2.propTypes;
+	Base.defaultProps = _props2.defaultProps;
+	exports['default'] = Base;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 986 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	exports.parseStartTime = parseStartTime;
+	var MATCH_START_QUERY = /[?&#](?:start|t)=([0-9hms]+)/;
+	var MATCH_START_STAMP = /(\d+)(h|m|s)/g;
+	var MATCH_NUMERIC = /^\d+$/;
+
+	// Parse YouTube URL for a start time param, ie ?t=1h14m30s
+	// and return the start time in seconds
+	function parseStartTime(url) {
+	  var match = url.match(MATCH_START_QUERY);
+	  if (match) {
+	    var stamp = match[1];
+	    if (stamp.match(MATCH_START_STAMP)) {
+	      return parseStartStamp(stamp);
+	    }
+	    if (MATCH_NUMERIC.test(stamp)) {
+	      return parseInt(stamp, 10);
+	    }
+	  }
+	  return 0;
+	}
+
+	function parseStartStamp(stamp) {
+	  var seconds = 0;
+	  var array = MATCH_START_STAMP.exec(stamp);
+	  while (array !== null) {
+	    var _array = array,
+	        _array2 = _slicedToArray(_array, 3),
+	        count = _array2[1],
+	        period = _array2[2];
+
+	    if (period === 'h') seconds += parseInt(count, 10) * 60 * 60;
+	    if (period === 'm') seconds += parseInt(count, 10) * 60;
+	    if (period === 's') seconds += parseInt(count, 10);
+	    array = MATCH_START_STAMP.exec(stamp);
+	  }
+	  return seconds;
+	}
+
+/***/ }),
+/* 987 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _fetchJsonp = __webpack_require__(988);
+
+	var _fetchJsonp2 = _interopRequireDefault(_fetchJsonp);
+
+	var _FilePlayer2 = __webpack_require__(989);
+
+	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
+
+	var _props3 = __webpack_require__(982);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RESOLVE_URL = '//api.soundcloud.com/resolve.json';
+	var MATCH_URL = /^https?:\/\/(soundcloud.com|snd.sc)\/([a-z0-9-_]+\/[a-z0-9-_]+)$/;
+
+	var songData = {}; // Cache song data requests
+
+	var SoundCloud = function (_FilePlayer) {
+	  _inherits(SoundCloud, _FilePlayer);
+
+	  function SoundCloud() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, SoundCloud);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SoundCloud.__proto__ || Object.getPrototypeOf(SoundCloud)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	      image: null
+	    }, _this.clientId = _this.props.soundcloudConfig.clientId || _props3.defaultProps.soundcloudConfig.clientId, _this.ref = function (player) {
+	      _this.player = player;
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(SoundCloud, [{
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps, nextState) {
+	      return _get(SoundCloud.prototype.__proto__ || Object.getPrototypeOf(SoundCloud.prototype), 'shouldComponentUpdate', this).call(this, nextProps, nextState) || this.state.image !== nextState.image;
+	    }
+	  }, {
+	    key: 'getSongData',
+	    value: function getSongData(url) {
+	      var _this2 = this;
+
+	      if (songData[url]) {
+	        return Promise.resolve(songData[url]);
+	      }
+	      return (0, _fetchJsonp2['default'])(RESOLVE_URL + '?url=' + url + '&client_id=' + this.clientId).then(function (response) {
+	        if (response.ok) {
+	          songData[url] = response.json();
+	          return songData[url];
+	        } else {
+	          _this2.props.onError(new Error('SoundCloud track could not be resolved'));
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'load',
+	    value: function load(url) {
+	      var _this3 = this;
+
+	      var _props = this.props,
+	          soundcloudConfig = _props.soundcloudConfig,
+	          onError = _props.onError;
+
+	      this.stop();
+	      this.getSongData(url).then(function (data) {
+	        if (!_this3.mounted) return;
+	        if (!data.streamable) {
+	          onError(new Error('SoundCloud track is not streamable'));
+	          return;
+	        }
+	        var image = data.artwork_url || data.user.avatar_url;
+	        if (image && soundcloudConfig.showArtwork) {
+	          _this3.setState({ image: image.replace('-large', '-t500x500') });
+	        }
+	        _this3.player.src = data.stream_url + '?client_id=' + _this3.clientId;
+	      }, onError);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props2 = this.props,
+	          url = _props2.url,
+	          loop = _props2.loop,
+	          controls = _props2.controls;
+
+	      var style = {
+	        display: url ? 'block' : 'none',
+	        height: '100%',
+	        backgroundImage: this.state.image ? 'url(' + this.state.image + ')' : null,
+	        backgroundSize: 'cover',
+	        backgroundPosition: 'center'
+	      };
+	      return _react2['default'].createElement(
+	        'div',
+	        { style: style },
+	        _react2['default'].createElement('audio', {
+	          ref: this.ref,
+	          type: 'audio/mpeg',
+	          preload: 'auto',
+	          style: {
+	            width: '100%',
+	            height: '100%'
+	          },
+	          controls: controls,
+	          loop: loop
+	        })
+	      );
+	    }
+	  }], [{
+	    key: 'canPlay',
+	    value: function canPlay(url) {
+	      return MATCH_URL.test(url);
+	    }
+	  }]);
+
+	  return SoundCloud;
+	}(_FilePlayer3['default']);
+
+	SoundCloud.displayName = 'SoundCloud';
+	exports['default'] = SoundCloud;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 988 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
+	    factory(exports, module);
+	  } else {
+	    var mod = {
+	      exports: {}
+	    };
+	    factory(mod.exports, mod);
+	    global.fetchJsonp = mod.exports;
+	  }
+	})(this, function (exports, module) {
+	  'use strict';
+
+	  var defaultOptions = {
+	    timeout: 5000,
+	    jsonpCallback: 'callback',
+	    jsonpCallbackFunction: null
+	  };
+
+	  function generateCallbackFunction() {
+	    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
+	  }
+
+	  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
+	  // error if request timeout
+	  function clearFunction(functionName) {
+	    // IE8 throws an exception when you try to delete a property on window
+	    // http://stackoverflow.com/a/1824228/751089
+	    try {
+	      delete window[functionName];
+	    } catch (e) {
+	      window[functionName] = undefined;
+	    }
+	  }
+
+	  function removeScript(scriptId) {
+	    var script = document.getElementById(scriptId);
+	    document.getElementsByTagName('head')[0].removeChild(script);
+	  }
+
+	  function fetchJsonp(_url) {
+	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    // to avoid param reassign
+	    var url = _url;
+	    var timeout = options.timeout || defaultOptions.timeout;
+	    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
+
+	    var timeoutId = undefined;
+
+	    return new Promise(function (resolve, reject) {
+	      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
+	      var scriptId = jsonpCallback + '_' + callbackFunction;
+
+	      window[callbackFunction] = function (response) {
+	        resolve({
+	          ok: true,
+	          // keep consistent with fetch API
+	          json: function json() {
+	            return Promise.resolve(response);
+	          }
+	        });
+
+	        if (timeoutId) clearTimeout(timeoutId);
+
+	        removeScript(scriptId);
+
+	        clearFunction(callbackFunction);
+	      };
+
+	      // Check if the user set their own params, and if not add a ? to start a list of params
+	      url += url.indexOf('?') === -1 ? '?' : '&';
+
+	      var jsonpScript = document.createElement('script');
+	      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+	      jsonpScript.id = scriptId;
+	      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+
+	      timeoutId = setTimeout(function () {
+	        reject(new Error('JSONP request to ' + _url + ' timed out'));
+
+	        clearFunction(callbackFunction);
+	        removeScript(scriptId);
+	      }, timeout);
+	    });
+	  }
+
+	  // export as global function
+	  /*
+	  let local;
+	  if (typeof global !== 'undefined') {
+	    local = global;
+	  } else if (typeof self !== 'undefined') {
+	    local = self;
+	  } else {
+	    try {
+	      local = Function('return this')();
+	    } catch (e) {
+	      throw new Error('polyfill failed because global object is unavailable in this environment');
+	    }
+	  }
+	  local.fetchJsonp = fetchJsonp;
+	  */
+
+	  module.exports = fetchJsonp;
+	});
+
+/***/ }),
+/* 989 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Base2 = __webpack_require__(985);
+
+	var _Base3 = _interopRequireDefault(_Base2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx)($|\?)/i;
+
+	var FilePlayer = function (_Base) {
+	  _inherits(FilePlayer, _Base);
+
+	  function FilePlayer() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, FilePlayer);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = FilePlayer.__proto__ || Object.getPrototypeOf(FilePlayer)).call.apply(_ref, [this].concat(args))), _this), _this.ref = function (player) {
+	      _this.player = player;
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(FilePlayer, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      var _props = this.props,
+	          onPause = _props.onPause,
+	          onEnded = _props.onEnded,
+	          onError = _props.onError;
+
+	      this.player.addEventListener('canplay', this.onReady);
+	      this.player.addEventListener('play', this.onPlay);
+	      this.player.addEventListener('pause', function () {
+	        if (_this2.mounted) {
+	          onPause();
+	        }
+	      });
+	      this.player.addEventListener('ended', onEnded);
+	      this.player.addEventListener('error', onError);
+	      this.player.setAttribute('webkit-playsinline', '');
+	      _get(FilePlayer.prototype.__proto__ || Object.getPrototypeOf(FilePlayer.prototype), 'componentDidMount', this).call(this);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      var _props2 = this.props,
+	          onPause = _props2.onPause,
+	          onEnded = _props2.onEnded,
+	          onError = _props2.onError;
+
+	      this.player.removeEventListener('canplay', this.onReady);
+	      this.player.removeEventListener('play', this.onPlay);
+	      this.player.removeEventListener('pause', onPause);
+	      this.player.removeEventListener('ended', onEnded);
+	      this.player.removeEventListener('error', onError);
+	      _get(FilePlayer.prototype.__proto__ || Object.getPrototypeOf(FilePlayer.prototype), 'componentWillUnmount', this).call(this);
+	    }
+	  }, {
+	    key: 'load',
+	    value: function load(url) {
+	      this.player.src = url;
+	    }
+	  }, {
+	    key: 'play',
+	    value: function play() {
+	      this.player.play();
+	    }
+	  }, {
+	    key: 'pause',
+	    value: function pause() {
+	      this.player.pause();
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      this.player.removeAttribute('src');
+	    }
+	  }, {
+	    key: 'seekTo',
+	    value: function seekTo(fraction) {
+	      _get(FilePlayer.prototype.__proto__ || Object.getPrototypeOf(FilePlayer.prototype), 'seekTo', this).call(this, fraction);
+	      this.player.currentTime = this.getDuration() * fraction;
+	    }
+	  }, {
+	    key: 'setVolume',
+	    value: function setVolume(fraction) {
+	      this.player.volume = fraction;
+	    }
+	  }, {
+	    key: 'setPlaybackRate',
+	    value: function setPlaybackRate(rate) {
+	      this.player.playbackRate = rate;
+	    }
+	  }, {
+	    key: 'getDuration',
+	    value: function getDuration() {
+	      if (!this.isReady) return null;
+	      return this.player.duration;
+	    }
+	  }, {
+	    key: 'getFractionPlayed',
+	    value: function getFractionPlayed() {
+	      if (!this.isReady) return null;
+	      return this.player.currentTime / this.getDuration();
+	    }
+	  }, {
+	    key: 'getFractionLoaded',
+	    value: function getFractionLoaded() {
+	      if (!this.isReady || this.player.buffered.length === 0) return null;
+	      return this.player.buffered.end(0) / this.getDuration();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props3 = this.props,
+	          url = _props3.url,
+	          loop = _props3.loop,
+	          controls = _props3.controls,
+	          fileConfig = _props3.fileConfig;
+
+	      var Media = AUDIO_EXTENSIONS.test(url) ? 'audio' : 'video';
+	      var style = {
+	        width: '100%',
+	        height: '100%',
+	        display: url ? 'block' : 'none'
+	      };
+	      return _react2['default'].createElement(Media, _extends({
+	        ref: this.ref,
+	        style: style,
+	        preload: 'auto',
+	        controls: controls,
+	        loop: loop
+	      }, fileConfig.attributes));
+	    }
+	  }], [{
+	    key: 'canPlay',
+	    value: function canPlay(url) {
+	      return true;
+	    }
+	  }]);
+
+	  return FilePlayer;
+	}(_Base3['default']);
+
+	FilePlayer.displayName = 'FilePlayer';
+	exports['default'] = FilePlayer;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 990 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _queryString = __webpack_require__(219);
+
+	var _Base2 = __webpack_require__(985);
+
+	var _Base3 = _interopRequireDefault(_Base2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var IFRAME_SRC = 'https://player.vimeo.com/video/';
+	var MATCH_URL = /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/;
+	var MATCH_MESSAGE_ORIGIN = /^https?:\/\/player.vimeo.com/;
+	var BLANK_VIDEO_URL = 'https://vimeo.com/127250231';
+	var DEFAULT_IFRAME_PARAMS = {
+	  api: 1,
+	  autoplay: 0,
+	  badge: 0,
+	  byline: 0,
+	  fullscreen: 1,
+	  portrait: 0,
+	  title: 0
+	};
+
+	var Vimeo = function (_Base) {
+	  _inherits(Vimeo, _Base);
+
+	  function Vimeo() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Vimeo);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Vimeo.__proto__ || Object.getPrototypeOf(Vimeo)).call.apply(_ref, [this].concat(args))), _this), _this.onMessage = function (e) {
+	      if (!MATCH_MESSAGE_ORIGIN.test(e.origin)) return;
+	      _this.origin = _this.origin || e.origin;
+	      var data = JSON.parse(e.data);
+	      if (data.event === 'ready') {
+	        _this.postMessage('getDuration');
+	        _this.postMessage('addEventListener', 'playProgress');
+	        _this.postMessage('addEventListener', 'loadProgress');
+	        _this.postMessage('addEventListener', 'play');
+	        _this.postMessage('addEventListener', 'pause');
+	        _this.postMessage('addEventListener', 'finish');
+	      }
+	      if (data.event === 'playProgress') _this.fractionPlayed = data.data.percent;
+	      if (data.event === 'loadProgress') _this.fractionLoaded = data.data.percent;
+	      if (data.event === 'play') _this.onPlay();
+	      if (data.event === 'pause') _this.props.onPause();
+	      if (data.event === 'finish') _this.onEnded();
+	      if (data.method === 'getDuration') {
+	        _this.duration = data.value; // Store for use later
+	        _this.onReady();
+	      }
+	    }, _this.onEnded = function () {
+	      var _this$props = _this.props,
+	          loop = _this$props.loop,
+	          onEnded = _this$props.onEnded;
+
+	      if (loop) {
+	        _this.seekTo(0);
+	      }
+	      onEnded();
+	    }, _this.postMessage = function (method, value) {
+	      if (!_this.origin) return;
+	      var data = JSON.stringify({ method: method, value: value });
+	      return _this.iframe.contentWindow && _this.iframe.contentWindow.postMessage(data, _this.origin);
+	    }, _this.ref = function (iframe) {
+	      _this.iframe = iframe;
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Vimeo, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _props = this.props,
+	          url = _props.url,
+	          vimeoConfig = _props.vimeoConfig;
+
+	      window.addEventListener('message', this.onMessage, false);
+
+	      if (!url && vimeoConfig.preload) {
+	        this.preloading = true;
+	        this.load(BLANK_VIDEO_URL);
+	      }
+
+	      _get(Vimeo.prototype.__proto__ || Object.getPrototypeOf(Vimeo.prototype), 'componentDidMount', this).call(this);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      window.removeEventListener('message', this.onMessage, false);
+	      _get(Vimeo.prototype.__proto__ || Object.getPrototypeOf(Vimeo.prototype), 'componentWillUnmount', this).call(this);
+	    }
+	  }, {
+	    key: 'getIframeParams',
+	    value: function getIframeParams() {
+	      return _extends({}, DEFAULT_IFRAME_PARAMS, this.props.vimeoConfig.iframeParams);
+	    }
+	  }, {
+	    key: 'load',
+	    value: function load(url) {
+	      var id = url.match(MATCH_URL)[3];
+	      this.iframe.src = IFRAME_SRC + id + '?' + (0, _queryString.stringify)(this.getIframeParams());
+	    }
+	  }, {
+	    key: 'play',
+	    value: function play() {
+	      this.postMessage('play');
+	    }
+	  }, {
+	    key: 'pause',
+	    value: function pause() {
+	      this.postMessage('pause');
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      this.iframe.src = '';
+	    }
+	  }, {
+	    key: 'seekTo',
+	    value: function seekTo(fraction) {
+	      _get(Vimeo.prototype.__proto__ || Object.getPrototypeOf(Vimeo.prototype), 'seekTo', this).call(this, fraction);
+	      this.postMessage('seekTo', this.duration * fraction);
+	    }
+	  }, {
+	    key: 'setVolume',
+	    value: function setVolume(fraction) {
+	      this.postMessage('setVolume', fraction);
+	    }
+	  }, {
+	    key: 'setPlaybackRate',
+	    value: function setPlaybackRate(rate) {
+	      this.postMessage('setPlaybackRate', rate);
+	    }
+	  }, {
+	    key: 'getDuration',
+	    value: function getDuration() {
+	      return this.duration;
+	    }
+	  }, {
+	    key: 'getFractionPlayed',
+	    value: function getFractionPlayed() {
+	      return this.fractionPlayed || null;
+	    }
+	  }, {
+	    key: 'getFractionLoaded',
+	    value: function getFractionLoaded() {
+	      return this.fractionLoaded || null;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _getIframeParams = this.getIframeParams(),
+	          fullscreen = _getIframeParams.fullscreen;
+
+	      var style = {
+	        display: this.props.url ? 'block' : 'none',
+	        width: '100%',
+	        height: '100%'
+	      };
+	      return _react2['default'].createElement('iframe', {
+	        ref: this.ref,
+	        frameBorder: '0',
+	        style: style,
+	        allowFullScreen: fullscreen
+	      });
+	    }
+	  }], [{
+	    key: 'canPlay',
+	    value: function canPlay(url) {
+	      return MATCH_URL.test(url);
+	    }
+	  }]);
+
+	  return Vimeo;
+	}(_Base3['default']);
+
+	Vimeo.displayName = 'Vimeo';
+	exports['default'] = Vimeo;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 991 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _FilePlayer2 = __webpack_require__(989);
+
+	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RESOLVE_URL = 'https://api.streamable.com/videos/';
+	var MATCH_URL = /^https?:\/\/streamable.com\/([a-z0-9]+)$/;
+
+	var cache = {}; // Cache song data requests
+
+	var Streamable = function (_FilePlayer) {
+	  _inherits(Streamable, _FilePlayer);
+
+	  function Streamable() {
+	    _classCallCheck(this, Streamable);
+
+	    return _possibleConstructorReturn(this, (Streamable.__proto__ || Object.getPrototypeOf(Streamable)).apply(this, arguments));
+	  }
+
+	  _createClass(Streamable, [{
+	    key: 'getData',
+	    value: function getData(url) {
+	      var onError = this.props.onError;
+
+	      var id = url.match(MATCH_URL)[1];
+	      if (cache[id]) {
+	        return Promise.resolve(cache[id]);
+	      }
+	      return window.fetch(RESOLVE_URL + id).then(function (response) {
+	        if (response.status === 200) {
+	          cache[id] = response.json();
+	          return cache[id];
+	        } else {
+	          onError(new Error('Streamable track could not be resolved'));
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'load',
+	    value: function load(url) {
+	      var _this2 = this;
+
+	      var onError = this.props.onError;
+
+	      this.stop();
+	      this.getData(url).then(function (data) {
+	        if (!_this2.mounted) return;
+	        _this2.player.src = data.files.mp4.url;
+	      }, onError);
+	    }
+	  }], [{
+	    key: 'canPlay',
+	    value: function canPlay(url) {
+	      return MATCH_URL.test(url);
+	    }
+	  }]);
+
+	  return Streamable;
+	}(_FilePlayer3['default']);
+
+	Streamable.displayName = 'Streamable';
+	exports['default'] = Streamable;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 992 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _FilePlayer2 = __webpack_require__(989);
+
+	var _FilePlayer3 = _interopRequireDefault(_FilePlayer2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RESOLVE_URL = 'https://api.vid.me/videoByUrl/';
+	var MATCH_URL = /^https?:\/\/vid.me\/([a-z0-9]+)$/i;
+
+	var cache = {}; // Cache song data requests
+
+	var Vidme = function (_FilePlayer) {
+	  _inherits(Vidme, _FilePlayer);
+
+	  function Vidme() {
+	    _classCallCheck(this, Vidme);
+
+	    return _possibleConstructorReturn(this, (Vidme.__proto__ || Object.getPrototypeOf(Vidme)).apply(this, arguments));
+	  }
+
+	  _createClass(Vidme, [{
+	    key: 'getData',
+	    value: function getData(url) {
+	      var onError = this.props.onError;
+
+	      var id = url.match(MATCH_URL)[1];
+	      if (cache[id]) {
+	        return Promise.resolve(cache[id]);
+	      }
+	      return window.fetch(RESOLVE_URL + id).then(function (response) {
+	        if (response.status === 200) {
+	          cache[id] = response.json();
+	          return cache[id];
+	        } else {
+	          onError(new Error('Vidme track could not be resolved'));
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'load',
+	    value: function load(url) {
+	      var _this2 = this;
+
+	      var onError = this.props.onError;
+
+	      this.stop();
+	      this.getData(url).then(function (data) {
+	        if (!_this2.mounted) return;
+	        _this2.player.src = data.video.complete_url;
+	      }, onError);
+	    }
+	  }], [{
+	    key: 'canPlay',
+	    value: function canPlay(url) {
+	      return MATCH_URL.test(url);
+	    }
+	  }]);
+
+	  return Vidme;
+	}(_FilePlayer3['default']);
+
+	Vidme.displayName = 'Vidme';
+	exports['default'] = Vidme;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 993 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _loadScript = __webpack_require__(984);
+
+	var _loadScript2 = _interopRequireDefault(_loadScript);
+
+	var _Base2 = __webpack_require__(985);
+
+	var _Base3 = _interopRequireDefault(_Base2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SDK_URL = '//fast.wistia.com/assets/external/E-v1.js';
+	var SDK_GLOBAL = 'Wistia';
+	var MATCH_URL = /^https?:\/\/(.+)?(wistia.com|wi.st)\/(medias|embed)\/(.*)$/;
+
+	var Wistia = function (_Base) {
+	  _inherits(Wistia, _Base);
+
+	  function Wistia() {
+	    _classCallCheck(this, Wistia);
+
+	    return _possibleConstructorReturn(this, (Wistia.__proto__ || Object.getPrototypeOf(Wistia)).apply(this, arguments));
+	  }
+
+	  _createClass(Wistia, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      var _props = this.props,
+	          onStart = _props.onStart,
+	          onPause = _props.onPause,
+	          onEnded = _props.onEnded;
+
+	      this.loadingSDK = true;
+	      this.getSDK().then(function () {
+	        window._wq = window._wq || [];
+	        window._wq.push({
+	          id: _this2.getID(_this2.props.url),
+	          onReady: function onReady(player) {
+	            _this2.loadingSDK = false;
+	            _this2.player = player;
+	            _this2.player.bind('start', onStart);
+	            _this2.player.bind('play', _this2.onPlay);
+	            _this2.player.bind('pause', onPause);
+	            _this2.player.bind('end', onEnded);
+	            _this2.onReady();
+	          }
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'getSDK',
+	    value: function getSDK() {
+	      return new Promise(function (resolve, reject) {
+	        if (window[SDK_GLOBAL]) {
+	          resolve();
+	        } else {
+	          (0, _loadScript2['default'])(SDK_URL, function (err, script) {
+	            if (err) reject(err);
+	            resolve(script);
+	          });
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'getID',
+	    value: function getID(url) {
+	      return url && url.match(MATCH_URL)[4];
+	    }
+	  }, {
+	    key: 'load',
+	    value: function load(url) {
+	      var id = this.getID(url);
+	      if (this.isReady) {
+	        this.player.replaceWith(id);
+	        this.props.onReady();
+	        this.onReady();
+	      }
+	    }
+	  }, {
+	    key: 'play',
+	    value: function play() {
+	      if (!this.isReady || !this.player) return;
+	      this.player.play();
+	    }
+	  }, {
+	    key: 'pause',
+	    value: function pause() {
+	      if (!this.isReady || !this.player) return;
+	      this.player && this.player.pause();
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      if (!this.isReady || !this.player) return;
+	      this.player.pause();
+	    }
+	  }, {
+	    key: 'seekTo',
+	    value: function seekTo(fraction) {
+	      _get(Wistia.prototype.__proto__ || Object.getPrototypeOf(Wistia.prototype), 'seekTo', this).call(this, fraction);
+	      if (!this.isReady || !this.player) return;
+	      this.player.time(this.getDuration() * fraction);
+	    }
+	  }, {
+	    key: 'setVolume',
+	    value: function setVolume(fraction) {
+	      if (!this.isReady || !this.player || !this.player.volume) return;
+	      this.player.volume(fraction);
+	    }
+	  }, {
+	    key: 'setPlaybackRate',
+	    value: function setPlaybackRate(rate) {
+	      if (!this.isReady || !this.player || !this.player.playbackRate) return;
+	      this.player.playbackRate(rate);
+	    }
+	  }, {
+	    key: 'getDuration',
+	    value: function getDuration() {
+	      if (!this.isReady || !this.player || !this.player.duration) return;
+	      return this.player.duration();
+	    }
+	  }, {
+	    key: 'getFractionPlayed',
+	    value: function getFractionPlayed() {
+	      if (!this.isReady || !this.player || !this.player.percentWatched) return null;
+	      return this.player.percentWatched();
+	    }
+	  }, {
+	    key: 'getFractionLoaded',
+	    value: function getFractionLoaded() {
+	      return null;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var id = this.getID(this.props.url);
+	      var className = 'wistia_embed wistia_async_' + id;
+	      var style = {
+	        width: '100%',
+	        height: '100%',
+	        display: this.props.url ? 'block' : 'none'
+	      };
+	      return _react2['default'].createElement('div', { className: className, style: style });
+	    }
+	  }], [{
+	    key: 'canPlay',
+	    value: function canPlay(url) {
+	      return MATCH_URL.test(url);
+	    }
+	  }]);
+
+	  return Wistia;
+	}(_Base3['default']);
+
+	Wistia.displayName = 'Wistia';
+	exports['default'] = Wistia;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 994 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CircularProgress = __webpack_require__(807);
+
+	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
+	var _formsyReact = __webpack_require__(915);
+
+	var _formsyReact2 = _interopRequireDefault(_formsyReact);
+
+	var _materialUi = __webpack_require__(770);
+
+	var _lib = __webpack_require__(922);
+
+	var _reactBootstrap = __webpack_require__(543);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var spinnerStyle = {
+		margin: 'auto',
+		display: 'block',
+		padding: 5
+	};
+
+	var OfferForm = function (_React$Component) {
+		_inherits(OfferForm, _React$Component);
+
+		function OfferForm(props) {
+			_classCallCheck(this, OfferForm);
+
+			var _this = _possibleConstructorReturn(this, (OfferForm.__proto__ || Object.getPrototypeOf(OfferForm)).call(this, props));
+
+			_this.enableButton = _this.enableButton.bind(_this);
+			_this.disableButton = _this.disableButton.bind(_this);
+			_this.handleSnackbarSuccessRequestClose = _this.handleSnackbarSuccessRequestClose.bind(_this);
+			_this.handleSnackbarErrorRequestClose = _this.handleSnackbarErrorRequestClose.bind(_this);
+			_this.handleSubmit = _this.handleSubmit.bind(_this);
+			_this.getDescription = _this.getDescription.bind(_this);
+
+			// autofill description with subtitles
+
+			_this.state = {
+				autoDescription: _this.getDescription(),
+				canSubmit: false
+			};
+
+			return _this;
+		}
+
+		_createClass(OfferForm, [{
+			key: 'getDescription',
+			value: function getDescription() {
+				var arrDescription = [],
+				    subtitles = this.props.subtitlesVideo.sort(function (a, b) {
+					if (a.startTime < b.startTime) return -1;
+					if (a.startTime > b.startTime) return 1;
+					return 0;
+				});
+
+				subtitles.map(function (subtitle) {
+					arrDescription.push(subtitle.text);
+				});
+
+				return arrDescription.join(' ');
+			}
+		}, {
+			key: 'enableButton',
+			value: function enableButton() {
+				this.setState({ canSubmit: true });
+			}
+		}, {
+			key: 'disableButton',
+			value: function disableButton() {
+				this.setState({ canSubmit: false });
+			}
+		}, {
+			key: 'handleSnackbarSuccessRequestClose',
+			value: function handleSnackbarSuccessRequestClose(reason) {
+				if (reason !== 'clickaway' && !this.props.newItem.error) {
+					var guid = this.props.newItem.guid;
+					window.location = '/offer/' + guid;
+				}
+			}
+		}, {
+			key: 'handleSnackbarErrorRequestClose',
+			value: function handleSnackbarErrorRequestClose() {
+				this.props.showSnackbar();
+			}
+		}, {
+			key: 'handleSubmit',
+			value: function handleSubmit(data) {
+				var description = {
+					text: data.description,
+					urlVideo: this.props.urlVideo,
+					subtitlesVideo: this.props.subtitlesVideo
+				};
+				var payload = {
+					alias: 'argvil19',
+					category: data.category,
+					title: data.name,
+					quantity: 1,
+					price: parseInt(data.price),
+					description: JSON.stringify(description),
+					currency: data.currency,
+					paymentoptions: data.paymentOptions,
+					private: data.certificate
+				};
+
+				this.props.onCreate(JSON.stringify(payload));
+			}
+		}, {
+			key: 'renderCategories',
+			value: function renderCategories() {
+				if (this.props.categories.categories.length > 0) {
+					return this.props.categories.categories.map(function (category, i) {
+						return _react2.default.createElement(_materialUi.MenuItem, { key: i, value: category.cat, primaryText: category.cat });
+					});
+				}
+			}
+		}, {
+			key: 'renderCurrencies',
+			value: function renderCurrencies() {
+				if (this.props.currencies.currencies.length > 0) {
+					return this.props.currencies.currencies.map(function (currency, i) {
+						if (i === 0) {
+							return _react2.default.createElement(_materialUi.MenuItem, { selected: true, 'default': true, key: i, value: currency.currency, primaryText: currency.currency });
+						} else {
+							return _react2.default.createElement(_materialUi.MenuItem, { key: i, value: currency.currency, primaryText: currency.currency });
+						}
+					});
+				}
+			}
+		}, {
+			key: 'renderPayments',
+			value: function renderPayments() {
+				return this.props.newItem.payments.map(function (payment) {
+					return _react2.default.createElement(_materialUi.MenuItem, { key: payment.id, value: payment.value, primaryText: payment.text });
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this2 = this;
+
+				return _react2.default.createElement(
+					_reactBootstrap.Row,
+					null,
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 12 },
+						_react2.default.createElement(
+							_formsyReact2.default.Form,
+							{ onValid: this.enableButton, onInvalid: this.disableButton, onValidSubmit: function onValidSubmit(e) {
+									return _this2.handleSubmit(e);
+								} },
+							_react2.default.createElement(_lib.FormsyText, {
+								name: 'name',
+								floatingLabelText: 'Title',
+								hintText: 'Item title',
+								validations: 'isSpecialWords',
+								validationError: 'Please only use letters',
+								requiredError: 'This field is required',
+								required: true,
+								fullWidth: true
+							}),
+							_react2.default.createElement(
+								_lib.FormsySelect,
+								{ name: 'category', floatingLabelText: 'Category', required: true, fullWidth: true },
+								this.renderCategories()
+							),
+							_react2.default.createElement(_lib.FormsyText, {
+								name: 'price',
+								floatingLabelText: 'Price',
+								hintText: 'Item price',
+								validations: 'isNumeric',
+								validationError: 'Please provide a number',
+								requiredError: 'This field is required',
+								required: true,
+								fullWidth: true
+							}),
+							_react2.default.createElement(
+								_lib.FormsySelect,
+								{
+									name: 'currency', floatingLabelText: 'Currency to List in', required: true, fullWidth: true },
+								this.renderCurrencies()
+							),
+							_react2.default.createElement(
+								_lib.FormsySelect,
+								{ name: 'payment', floatingLabelText: 'Payment', required: true, fullWidth: true },
+								this.renderPayments()
+							),
+							_react2.default.createElement(_lib.FormsyText, {
+								name: 'description',
+								value: this.state.autoDescription,
+								floatingLabelText: 'Description',
+								hintText: 'Item description',
+								validations: 'isWords',
+								validationError: 'This field cannot be empty.',
+								required: true,
+								fullWidth: true,
+								multiLine: true
+							}),
+							!this.props.newItem.loading && _react2.default.createElement(_materialUi.RaisedButton, {
+								label: 'Send',
+								type: 'submit',
+								primary: false,
+								fullWidth: true,
+								disabled: !this.state.canSubmit
+							})
+						),
+						this.props.newItem.loading && !this.props.newItem.success && _react2.default.createElement(_CircularProgress2.default, { size: 50, style: spinnerStyle }),
+						_react2.default.createElement(_materialUi.Snackbar, {
+							open: this.props.newItem.success,
+							message: 'Success! Item created.',
+							autoHideDuration: 2000,
+							onRequestClose: this.handleSnackbarSuccessRequestClose
+						}),
+						_react2.default.createElement(_materialUi.Snackbar, {
+							open: this.props.newItem.showSnackbar,
+							message: this.props.newItem.message,
+							autoHideDuration: 2000,
+							onRequestClose: this.handleSnackbarErrorRequestClose
+						})
+					)
+				);
+			}
+		}]);
+
+		return OfferForm;
+	}(_react2.default.Component);
+
+	exports.default = OfferForm;
 
 /***/ }),
 /* 995 */
@@ -106579,7 +106591,7 @@
 
 	var _reactBootstrap = __webpack_require__(543);
 
-	var _VideoPlayer = __webpack_require__(946);
+	var _VideoPlayer = __webpack_require__(979);
 
 	var _VideoPlayer2 = _interopRequireDefault(_VideoPlayer);
 
@@ -118847,7 +118859,7 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _browser = __webpack_require__(964);
+	var _browser = __webpack_require__(948);
 
 	var initialState = {
 		error: null,
@@ -118930,10 +118942,153 @@
 
 /***/ }),
 /* 1200 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	// removed by extract-text-webpack-plugin
-	"use strict";
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactBootstrap = __webpack_require__(543);
+
+	var _VideoPlayer = __webpack_require__(979);
+
+	var _VideoPlayer2 = _interopRequireDefault(_VideoPlayer);
+
+	var _GaleryItemBrowser = __webpack_require__(1201);
+
+	var _GaleryItemBrowser2 = _interopRequireDefault(_GaleryItemBrowser);
+
+	var _reactRouter = __webpack_require__(183);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// components
+
+
+	var styles = {
+		containerItemBrowser: {
+			position: 'relative',
+			padding: '25% 50%',
+			overflow: 'hidden',
+			marginTop: '20px'
+		},
+		contentItemBrowser: {
+			position: 'absolute',
+			top: '0',
+			left: '0',
+			width: '100%',
+			height: '100%'
+		},
+		infoContainer: {
+			position: 'absolute',
+			zIndex: '1',
+			padding: '20px'
+		},
+		bgContainer: {
+			position: 'absolute',
+			width: '100%',
+			bottom: '0'
+		},
+		link: {
+			color: '#fff',
+			textShadow: '1px 1px #000',
+			fontSize: '24px'
+		},
+		currency: {
+			color: '#fff',
+			textShadow: '1px 1px #000'
+		}
+	};
+
+	function isJson(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
+
+	var ItemBrowser = function (_React$Component) {
+		_inherits(ItemBrowser, _React$Component);
+
+		function ItemBrowser(props) {
+			_classCallCheck(this, ItemBrowser);
+
+			var _this = _possibleConstructorReturn(this, (ItemBrowser.__proto__ || Object.getPrototypeOf(ItemBrowser)).call(this, props));
+
+			var description = _this.props.data.description;
+			var images = [];
+
+			if (isJson(description)) {
+				description = JSON.parse(description);
+			} else {
+				var hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
+				if (hasImages) images = hasImages;
+			}
+
+			_this.state = {
+				description: description,
+				images: images
+			};
+			return _this;
+		}
+
+		_createClass(ItemBrowser, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					_reactBootstrap.Row,
+					null,
+					_react2.default.createElement(
+						_reactBootstrap.Col,
+						{ xs: 12, style: styles.containerItemBrowser, className: 'containerItemBrowser' },
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ to: '/offer/' + this.props.data.offer },
+							_react2.default.createElement(
+								'div',
+								{ style: styles.contentItemBrowser, className: 'contentItemBrowser' },
+								_react2.default.createElement(
+									'div',
+									{ style: styles.bgContainer, className: 'bgContainer' },
+									_typeof(this.state.description) === 'object' && _react2.default.createElement(_VideoPlayer2.default, {
+										url: this.state.description.urlVideo,
+										subtitles: this.state.description.subtitlesVideo,
+										playOnHover: true,
+										hideControls: true,
+										muted: true
+									}),
+									this.state.images.length > 0 && _react2.default.createElement(_GaleryItemBrowser2.default, {
+										images: this.state.images })
+								)
+							)
+						)
+					)
+				);
+			}
+		}]);
+
+		return ItemBrowser;
+	}(_react2.default.Component);
+
+	exports.default = ItemBrowser;
 
 /***/ }),
 /* 1201 */
@@ -118953,10 +119108,6 @@
 
 	var _reactBootstrap = __webpack_require__(543);
 
-	var _reactSlick = __webpack_require__(973);
-
-	var _reactSlick2 = _interopRequireDefault(_reactSlick);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -118968,22 +119119,20 @@
 	// components
 
 
-	__webpack_require__(992);
+	var GaleryItemBrowser = function (_React$Component) {
+	  _inherits(GaleryItemBrowser, _React$Component);
 
-	var BrowserCarousel = function (_React$Component) {
-	  _inherits(BrowserCarousel, _React$Component);
+	  function GaleryItemBrowser(props) {
+	    _classCallCheck(this, GaleryItemBrowser);
 
-	  function BrowserCarousel(props) {
-	    _classCallCheck(this, BrowserCarousel);
-
-	    var _this = _possibleConstructorReturn(this, (BrowserCarousel.__proto__ || Object.getPrototypeOf(BrowserCarousel)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (GaleryItemBrowser.__proto__ || Object.getPrototypeOf(GaleryItemBrowser)).call(this, props));
 
 	    _this.renderSlide = _this.renderSlide.bind(_this);
-	    // console.log('run GaleryItemBrowser');
+	    console.log('run GaleryItemBrowser');
 	    return _this;
 	  }
 
-	  _createClass(BrowserCarousel, [{
+	  _createClass(GaleryItemBrowser, [{
 	    key: 'renderSlide',
 	    value: function renderSlide() {
 	      return this.props.images.map(function (image, i) {
@@ -118993,166 +119142,22 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var settings = {
-	        dots: false,
-	        infinite: true,
-	        speed: 500,
-	        slidesToShow: 4,
-	        slidesToScroll: 1,
-	        autoplay: true,
-	        autoplaySpeed: 2000,
-	        pauseOnHover: true,
-	        responsive: [{
-	          breakpoint: 426,
-	          settings: {
-	            slidesToShow: 1
-	          }
-	        }, {
-	          breakpoint: 768,
-	          settings: {
-	            slidesToShow: 2
-	          }
-	        }, {
-	          breakpoint: 1024,
-	          settings: {
-	            slidesToShow: 3
-	          }
-	        }, {
-	          breakpoint: 1200,
-	          settings: {
-	            slidesToShow: 4
-	          }
-	        }]
-	      };
 	      return _react2.default.createElement(
 	        _reactBootstrap.Row,
-	        { className: 'slider-container' },
+	        null,
 	        _react2.default.createElement(
 	          _reactBootstrap.Col,
 	          { xs: 12 },
-	          _react2.default.createElement(
-	            _reactSlick2.default,
-	            settings,
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'item-slider' },
-	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/1' }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content-slider' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'content-text' },
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: 'comment' },
-	                    'Test-1'
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'item-slider' },
-	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/2' }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content-slider' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'content-text' },
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: 'comment' },
-	                    'Test-2'
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'item-slider' },
-	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/3' }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content-slider' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'content-text' },
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: 'comment' },
-	                    'Test-3'
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'item-slider' },
-	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/4' }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content-slider' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'content-text' },
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: 'comment' },
-	                    'Test-4'
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'item-slider' },
-	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/5' }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content-slider' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'content-text' },
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: 'comment' },
-	                    'Test-5'
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'item-slider' },
-	              _react2.default.createElement('img', { alt: '', src: 'http://lorempixel.com/300/300/technics/6' }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content-slider' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'content-text' },
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: 'comment' },
-	                    'Test-6'
-	                  )
-	                )
-	              )
-	            )
-	          )
+	          this.renderSlide()
 	        )
 	      );
 	    }
 	  }]);
 
-	  return BrowserCarousel;
+	  return GaleryItemBrowser;
 	}(_react2.default.Component);
 
-	exports.default = BrowserCarousel;
-
-	// {this.renderSlide()}
+	exports.default = GaleryItemBrowser;
 
 /***/ })
 /******/ ]);

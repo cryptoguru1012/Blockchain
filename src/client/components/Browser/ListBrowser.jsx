@@ -17,8 +17,14 @@ class ListBrowser extends React.Component {
 
 	render() {
 		let items = this.props.items.map((item) => {
+			var textFlag = (item.description.indexOf("http") >-1 );
 			return ( <GridTile key={item.txid} title={item.title} subtitle={item.price +item.currency}> 
-						<ItemBrowser data={item}/>
+				<div>
+				{ !textFlag ? ( item.description ) : ''}
+					
+				
+				<ItemBrowser data={item}/> 
+				</div>
 					</GridTile>)
 		});	
 		return (

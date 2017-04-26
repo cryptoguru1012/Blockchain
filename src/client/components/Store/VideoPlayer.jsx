@@ -10,10 +10,10 @@ const styles = {
 	},
 	videoContainer: {
 		display: 'relative',
-		marginTop: '5px',
+		//marginTop: '5px',
 	},
 	video: {
-		width: '100%',
+		//width: '100%',
 		display: 'block',
 	},
 	videoBar: {

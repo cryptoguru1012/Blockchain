@@ -1,0 +1,19 @@
+div.grid-tile{
+    div.row{
+        margin: 0;
+        padding: 0;
+
+    }
+
+    .description-only-text{
+			padding: 20px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			max-height: 40px;
+			//white-space: nowrap;
+			p{
+				font-size: 1.2em;
+				margin: 0;
+			}
+		}
+}

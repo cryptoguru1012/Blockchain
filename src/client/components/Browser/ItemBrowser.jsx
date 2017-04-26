@@ -6,29 +6,14 @@ import VideoPlayer from '../Store/VideoPlayer';
 import GaleryItemBrowser from './GaleryItemBrowser';
 import { Link } from 'react-router';
 
+require('./styles/item-browser.scss');
+
 let styles = {
-	containerItemBrowser: {
-		position: 'relative',
-		padding: '25% 50%',
-		overflow: 'hidden',
-		marginTop: '20px'
-	},
-	contentItemBrowser: {
-		position: 'absolute',
-		top: '0',
-		left: '0',
-		width: '100%',
-		height: '100%'
-	},
+	
 	infoContainer: {
 		position: 'absolute',
 		zIndex: '1',
 		padding: '20px'
-	},
-	bgContainer: {
-		position: 'absolute',
-		width: '100%',
-		bottom: '0'
 	},
 	link: {
 		color: '#fff',
@@ -74,10 +59,10 @@ class ItemBrowser extends React.Component {
 	render() {
 		return (
 			<Row>
-				<Col xs={12} style={styles.containerItemBrowser} className="containerItemBrowser">
+				<Col xs={12} className="containerItemBrowser">
 					<Link to={'/offer/' + this.props.data.offer}>
-						<div style={styles.contentItemBrowser} className="contentItemBrowser">
-							<div style={styles.bgContainer} className="bgContainer">
+						<div className="contentItemBrowser">
+							<div className="bgContainer">
 								{typeof this.state.description === 'object' && <VideoPlayer
 									url={this.state.description.urlVideo}
 									subtitles={this.state.description.subtitlesVideo}

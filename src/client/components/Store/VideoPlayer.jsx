@@ -13,7 +13,7 @@ const styles = {
 		//marginTop: '5px',
 	},
 	video: {
-		//width: '100%',
+		width: '100%',
 		display: 'block',
 	},
 	videoBar: {
@@ -264,7 +264,7 @@ class VideoPlayer extends React.Component {
 			handleMouseOver = this.handleVideoPlay;
 		}
 		return (
-			<Row style={styles.videoContainer}>
+			<Row className="video-component" style={styles.videoContainer}>
 				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
 					<video preload="metadata" ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)}>
 					</video>

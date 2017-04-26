@@ -38,7 +38,7 @@ class OrderByBrowser extends React.Component {
 		return (
 			<Row>
 				<Formsy.Form>
-					<Col xs={12}>
+					<Col xs={6}>
 						<Row>
 							<SelectField
         					  	floatingLabelText="Order by"

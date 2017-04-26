@@ -80,7 +80,7 @@ class FormBrowser extends React.Component {
 							}
 						</Row>
 					</Col>
-					<Col xs={12}>
+					<Col xs={6}>
 						<Row>
 							<FormSelectCategories name="category" label="Category" fullWidth />
 						</Row>

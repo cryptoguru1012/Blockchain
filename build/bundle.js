@@ -100867,7 +100867,6 @@
 	    key: 'render',
 	    value: function render() {
 	      var items = this.props.items.map(function (item) {
-	        var textFlag = item.description.indexOf('http') > -1;
 	        return _react2.default.createElement(
 	          _GridList.GridTile,
 	          {
@@ -100878,20 +100877,7 @@
 	            cols: 1,
 	            rows: 1
 	          },
-	          _react2.default.createElement(
-	            'div',
-	            null,
-	            textFlag ? '' : _react2.default.createElement(
-	              'div',
-	              { className: 'description-only-text' },
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                !textFlag ? item.description : ''
-	              )
-	            ),
-	            !textFlag ? _react2.default.createElement('div', { className: 'containerItemBrowser col-xs-12' }) : _react2.default.createElement(_ItemBrowser2.default, { data: item })
-	          )
+	          _react2.default.createElement(_ItemBrowser2.default, { data: item })
 	        );
 	      });
 	      return _react2.default.createElement(
@@ -100995,7 +100981,7 @@
 
 			var description = _this.props.data.description;
 			var images = [];
-
+			var textOnly = false;
 			if (isJson(description)) {
 				description = JSON.parse(description);
 			} else {
@@ -101005,7 +100991,8 @@
 
 			_this.state = {
 				description: description,
-				images: images
+				images: images,
+				textOnly: String(description).indexOf('http') > -1
 			};
 			return _this;
 		}
@@ -101035,6 +101022,13 @@
 										hideControls: true,
 										muted: true
 									}),
+									this.state.textOnly === false && _react2.default.createElement(
+										'p',
+										null,
+										' ',
+										String(this.state.description),
+										' '
+									),
 									this.state.images.length > 0 && _react2.default.createElement(_GaleryItemBrowser2.default, {
 										images: this.state.images })
 								)

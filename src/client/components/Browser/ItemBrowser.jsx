@@ -41,7 +41,7 @@ class ItemBrowser extends React.Component {
 
 		let description = this.props.data.description;
 		let images = [];
-
+		let textOnly = false;
 		if (isJson(description)) {
 			description = JSON.parse(description);
 		} else {
@@ -52,7 +52,8 @@ class ItemBrowser extends React.Component {
 
 		this.state = {
 			description: description,
-			images: images
+			images: images,
+			textOnly: (String(description).indexOf('http') > -1)
 		};
 	}
 
@@ -70,6 +71,7 @@ class ItemBrowser extends React.Component {
 									hideControls
 									muted
 								/>}
+								{ this.state.textOnly === false && <p> {String(this.state.description)} </p>}
 								{this.state.images.length > 0 && <GaleryItemBrowser
 									images={this.state.images}/>
 								}

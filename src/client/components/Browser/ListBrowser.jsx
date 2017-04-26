@@ -19,7 +19,6 @@ class ListBrowser extends React.Component {
 
   render() {
     let items = this.props.items.map((item) => {
-      var textFlag = item.description.indexOf('http') > -1;
       return (
         <GridTile
           key={item.txid}
@@ -29,17 +28,7 @@ class ListBrowser extends React.Component {
           cols={1}
           rows={1}
         >
-          <div>
-            {textFlag
-              ? ''
-              : <div className="description-only-text">
-                <p>
-                  {!textFlag ? item.description : ''}
-                </p>
-              </div>}
-            {!textFlag ? <div className="containerItemBrowser col-xs-12" /> : <ItemBrowser data={item} />}
-
-          </div>
+          <ItemBrowser data={item} />
         </GridTile>
       );
     });

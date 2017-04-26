@@ -31,7 +31,7 @@ class ListBrowser extends React.Component {
       );
     });
     return (
-      <Row style={{ marginBottom: '20px', marginTop: '20px' }}>
+      <Row>
         <Col xs={12}>
           <GridList style={styles.gridList}>
             {items}

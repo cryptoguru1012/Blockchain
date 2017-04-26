@@ -2,7 +2,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const port = process.env.PORT || 3000;
-const publicPath = 'http://localhost:' + port + '/';
+const publicPath = `http://localhost:${port}/`;
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -11,13 +11,12 @@ const plugins = [
       NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
     },
   }),
+  new ExtractTextPlugin('public/styles.css', { allChunks: true }),
 ];
 
 if (process.env.NODE_ENV === 'production') {
   plugins.push(new webpack.optimize.DedupePlugin());
   plugins.push(new webpack.optimize.OccurenceOrderPlugin());
-} else if (process.env.NODE_ENV !== 'production') {
-  plugins.push(new ExtractTextPlugin('public/styles.css', { allChunks: true }));
 }
 
 module.exports = {
@@ -27,9 +26,9 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'build'),
     filename: 'bundle.js',
-    publicPath: publicPath,
+    publicPath,
   },
-  plugins: plugins,
+  plugins,
   resolve: {
     extensions: ['', '.js', '.jsx', '.css'],
   },
@@ -50,11 +49,26 @@ module.exports = {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract('css!sass'),
       },
-      { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml&name=public/fonts/[name].[ext]' },
-      { test: /\.woff$/, loader: 'url?limit=65000&mimetype=application/font-woff&name=public/fonts/[name].[ext]' },
-      { test: /\.woff2$/, loader: 'url?limit=65000&mimetype=application/font-woff2&name=public/fonts/[name].[ext]' },
-      { test: /\.[ot]tf$/, loader: 'url?limit=65000&mimetype=application/octet-stream&name=public/fonts/[name].[ext]' },
-      { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name].[ext]' }
+      {
+        test: /\.svg$/,
+        loader: 'url?limit=65000&mimetype=image/svg+xml&name=public/fonts/[name].[ext]',
+      },
+      {
+        test: /\.woff$/,
+        loader: 'url?limit=65000&mimetype=application/font-woff&name=public/fonts/[name].[ext]',
+      },
+      {
+        test: /\.woff2$/,
+        loader: 'url?limit=65000&mimetype=application/font-woff2&name=public/fonts/[name].[ext]',
+      },
+      {
+        test: /\.[ot]tf$/,
+        loader: 'url?limit=65000&mimetype=application/octet-stream&name=public/fonts/[name].[ext]',
+      },
+      {
+        test: /\.eot$/,
+        loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name].[ext]',
+      },
     ],
   },
 };

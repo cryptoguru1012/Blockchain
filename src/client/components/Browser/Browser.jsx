@@ -2,53 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 
-import { setOrder, search } from '../../redux/actions/browser';
+import { search } from '../../redux/actions/browser';
 
 import FormBrowser from './FormBrowser';
-import OrderByBrowser from './OrderByBrowser';
 import ListBrowser from './ListBrowser';
 import GaleryItemBrowser from './GaleryItemBrowser';
 import FilterBrowser from './FilterBrowser';
 
-let orderItems = [
-	{
-		value: 'currency',
-		name: 'Currency'
-	}, 
-	{
-		value: 'title',
-		name: 'Name'
-	},
-	{
-		value: 'geolocation',
-		name: 'Geolocation'
-	},
-	{
-		value: 'paymentoptions_display',
-		name: 'Payment options'
-	},
-	{
-		value: 'category',
-		name: 'Category'
-	}
-];
-
 let filterItems = [
 	{
 		value: 'SHOW_ALL',
-		name: 'All'
+		name: 'All',
 	},
 	{
 		value: 'SHOW_VIDEOS',
-		name: 'Videos only'
+		name: 'Videos only',
 	},
 	{
 		value: 'SHOW_PHOTOS',
-		name: 'Photos only'
+		name: 'Photos only',
 	},
 	{
 		value: 'SHOW_TEXT',
-		name: 'Text only'
+		name: 'Text only',
 	}
 ];
 
@@ -73,7 +49,6 @@ class Browser extends React.Component {
 				<Col xs={12}>
 					<GaleryItemBrowser />
 					<FormBrowser onSearch={this.props.onSearch} browser={this.props.browser} />
-					<OrderByBrowser items={orderItems} onOrder={this.props.onOrder}/>
 					<FilterBrowser items={filterItems} />
 					<ListBrowser items={this.props.browser.items}/>
 				</Col>
@@ -93,9 +68,6 @@ function mapDispatchToProps(dispatch) {
 		onSearch: (data) => {
 			dispatch(search(data));
 		},
-		onOrder: (order) => {
-			dispatch(setOrder(order));
-		}
 	};
 }
 

@@ -61,7 +61,7 @@ class GaleryItemBrowser extends React.Component {
         <Col xs={12}>
           <Slider {...settings}>
             <div className="item-slider">
-              <img alt="" responsive src="http://lorempixel.com/300/300/technics/1" />
+              <img alt="" src="http://lorempixel.com/300/300/technics/1" />
 			  <div className="content-slider">
 			  	<div className="content-text">
 			  		<span className="comment">Test-1</span>
@@ -69,7 +69,7 @@ class GaleryItemBrowser extends React.Component {
 			  </div>
             </div>
             <div className="item-slider">
-              <img alt="" responsive src="http://lorempixel.com/300/300/technics/2" />
+              <img alt="" src="http://lorempixel.com/300/300/technics/2" />
 			  <div className="content-slider">
 			  	<div className="content-text">
 			  		<span className="comment">Test-2</span>
@@ -77,7 +77,7 @@ class GaleryItemBrowser extends React.Component {
 			  </div>
             </div>
             <div className="item-slider">
-              <img alt="" responsive src="http://lorempixel.com/300/300/technics/3" />
+              <img alt="" src="http://lorempixel.com/300/300/technics/3" />
 			  <div className="content-slider">
 			  	<div className="content-text">
 			  		<span className="comment">Test-3</span>
@@ -85,7 +85,7 @@ class GaleryItemBrowser extends React.Component {
 			  </div>
             </div>
             <div className="item-slider">
-              <img alt="" responsive src="http://lorempixel.com/300/300/technics/4" />
+              <img alt="" src="http://lorempixel.com/300/300/technics/4" />
 			  <div className="content-slider">
 			  	<div className="content-text">
 			  		<span className="comment">Test-4</span>
@@ -93,7 +93,7 @@ class GaleryItemBrowser extends React.Component {
 			  </div>
             </div>
             <div className="item-slider">
-              <img alt="" responsive src="http://lorempixel.com/300/300/technics/5" />
+              <img alt="" src="http://lorempixel.com/300/300/technics/5" />
 			  <div className="content-slider">
 			  	<div className="content-text">
 			  		<span className="comment">Test-5</span>
@@ -101,7 +101,7 @@ class GaleryItemBrowser extends React.Component {
 			  </div>
             </div>
             <div className="item-slider">
-              <img alt="" responsive src="http://lorempixel.com/300/300/technics/6" />
+              <img alt="" src="http://lorempixel.com/300/300/technics/6" />
 			  <div className="content-slider">
 				<div className="content-text">
 					<span className="comment">Test-6</span>

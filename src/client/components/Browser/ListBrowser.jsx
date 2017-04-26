@@ -8,7 +8,7 @@ require('./styles/list-browser.scss');
 
 const styles = {
   gridList: {
-    overflowY: 'auto',
+    overflowY: 'scroll',
   },
 };
 

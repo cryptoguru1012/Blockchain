@@ -100850,7 +100850,7 @@
 
 	var styles = {
 	  gridList: {
-	    overflowY: 'auto'
+	    overflowY: 'scroll'
 	  }
 	};
 

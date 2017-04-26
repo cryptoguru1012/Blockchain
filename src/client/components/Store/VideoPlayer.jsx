@@ -27,7 +27,7 @@ const styles = {
 		position: 'absolute',
 		top: '0px',
 		left: '0px',
-		backgroundColor: '#ff6d00',
+		backgroundColor: '#263238',
 		width: '0%',
 		height: '100%',
 	},

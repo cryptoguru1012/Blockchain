@@ -22,7 +22,7 @@ class ListBrowser extends React.Component {
 					</GridTile>)
 		});	
 		return (
-			<Row>
+			<Row style={{ marginBottom: '20px' }}>
 				<Col xs={12}>
 					<GridList
 						cellHeight= {'auto'}

@@ -26,7 +26,7 @@ class FilterLink extends React.Component {
 
 	render() {
 		if (this.props.active) {
-			return <span style={{...styles.filter, color: 'rgb(255, 109, 0)'}}>{this.props.children}</span>
+			return <span style={{ ...styles.filter, color: '#263238' }}>{this.props.children}</span>;
 		}
 
 		return (

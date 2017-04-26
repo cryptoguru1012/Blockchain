@@ -8,7 +8,7 @@ require('./styles/list-browser.scss');
 
 const styles = {
   gridList: {
-    overflowY: 'scroll',
+    overflowY: 'auto',
   },
 };
 
@@ -46,7 +46,7 @@ class ListBrowser extends React.Component {
     return (
       <Row style={{ marginBottom: '20px', marginTop: '20px' }}>
         <Col xs={12}>
-          <GridList cellHeight={'auto'} style={styles.gridList}>
+          <GridList style={styles.gridList}>
             {items}
           </GridList>
         </Col>

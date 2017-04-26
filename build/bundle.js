@@ -100850,7 +100850,7 @@
 
 	var styles = {
 	  gridList: {
-	    overflowY: 'scroll'
+	    overflowY: 'auto'
 	  }
 	};
 
@@ -100902,7 +100902,7 @@
 	          { xs: 12 },
 	          _react2.default.createElement(
 	            _GridList.GridList,
-	            { cellHeight: 'auto', style: styles.gridList },
+	            { style: styles.gridList },
 	            items
 	          )
 	        )

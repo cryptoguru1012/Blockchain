@@ -1,8 +1,8 @@
 import React from 'react';
-import Time from './Time';
-
 import { Row, Col, Grid, Glyphicon } from 'react-bootstrap';
 import { RaisedButton } from 'material-ui';
+import Time from './Time';
+
 
 const styles = {
 	white: {
@@ -82,10 +82,10 @@ class VideoPlayer extends React.Component {
 				duration: self.player.duration
 			});
 			if (self.refs.statusBar) {
-				let percent = self.player.currentTime / self.player.duration,
-					barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
+				let percent = self.player.currentTime / self.player.duration;
+					// barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
 
-				self.refs.statusBar.style.width = `${barPercent}px`;
+				self.refs.statusBar.style.width = `${percent * 100}%`;
 			}
 		});
 	}
@@ -238,7 +238,7 @@ class VideoPlayer extends React.Component {
 						<Col xs={3} md={2} lg={2}>
 							{this.renderActionButton()}
 						</Col>
-						<Col xs={6} md={10} lg={10} style={styles.colTime}>
+						<Col xs={6} md={8} lg={8} style={styles.colTime}>
 							{this.renderTime()}
 						</Col>
 						<Col xs={3} md={2} lg={2}>

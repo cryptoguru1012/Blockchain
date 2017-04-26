@@ -6,7 +6,7 @@ import { search } from '../../redux/actions/browser';
 
 import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
-import GaleryItemBrowser from './GaleryItemBrowser';
+import BrowserCarousel from './BrowserCarousel';
 import FilterBrowser from './FilterBrowser';
 
 let filterItems = [
@@ -47,7 +47,7 @@ class Browser extends React.Component {
 		return (
 			<Grid>
 				<Col xs={12}>
-					<GaleryItemBrowser />
+					<BrowserCarousel />
 					<FormBrowser onSearch={this.props.onSearch} browser={this.props.browser} />
 					<FilterBrowser items={filterItems} />
 					<ListBrowser items={this.props.browser.items}/>

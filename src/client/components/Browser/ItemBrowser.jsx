@@ -85,7 +85,9 @@ class ItemBrowser extends React.Component {
 									hideControls
 									muted
 								/>}
-								{this.state.images.length > 0 }
+								{this.state.images.length > 0 && <GaleryItemBrowser
+									images={this.state.images}/>
+								}
 							</div>
 						</div>
 					</Link>

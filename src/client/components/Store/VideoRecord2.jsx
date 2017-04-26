@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Row, Col, Grid, Button } from 'react-bootstrap';
+import { Browser } from './../Browser';
 
 const styles = {
 	wellStyles: {
@@ -63,6 +64,7 @@ class VideoRecord2 extends React.Component {
 						</form>
 					</div>
 				</div>
+				<Browser />
 			</Row>
 		);
 	}

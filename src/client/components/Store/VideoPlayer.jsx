@@ -120,9 +120,9 @@ class VideoPlayer extends React.Component {
 	}
 
 	setTimetoSeconds(value) {
-		let match = /([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/;
+		let matchValue = /([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/;
 
-		if (value.match(match)) {
+		if (String(value).match(matchValue)) {
 			value = value.split(':');
 			let h = parseInt(value[0]) * 3600
 			, m = parseInt(value[1]) * 60

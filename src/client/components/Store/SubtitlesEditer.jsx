@@ -11,6 +11,7 @@ import { RaisedButton } from 'material-ui';
 const styles = {
 	subtitlesContent: {
 		padding: '20px 0',
+		minHeight: '500px'		
 	},
 	subtitlesContainer: {
 		position: 'relative',

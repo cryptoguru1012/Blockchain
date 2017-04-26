@@ -55,6 +55,7 @@ class ItemBrowser extends React.Component {
 			images: images,
 			textOnly: (String(description).indexOf('http') > -1)
 		};
+		console.log(textOnly);
 	}
 
 	render() {

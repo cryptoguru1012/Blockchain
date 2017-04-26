@@ -100875,7 +100875,7 @@
 	            subtitle: item.price + item.currency,
 	            className: 'grid-tile',
 	            cols: 1,
-	            rows: 1
+	            rows: 2
 	          },
 	          _react2.default.createElement(_ItemBrowser2.default, { data: item })
 	        );
@@ -100994,6 +100994,7 @@
 				images: images,
 				textOnly: String(description).indexOf('http') > -1
 			};
+			console.log(textOnly);
 			return _this;
 		}
 

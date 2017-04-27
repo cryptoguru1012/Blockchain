@@ -1,19 +1,68 @@
-div.grid-tile{
-    div.row{
-        margin: 0;
+div.grids{
+    width: 100%;
+	margin-bottom: 15px;
+	margin-top: 15px;
+
+    div.grid-container{
+		margin: 0;
+		margin: 5px 0px 0px 0px;
         padding: 0;
+        position: relative;
+        border: 1px solid #eaeaea;
+        min-height: 208px;
+        min-width: 215px;
+		overflow: hidden;
+        div.grid-media-content{
+            position: relative;
+            bottom: 0px;
+            height: 100%;
+            width: 100%;
+            left: 0px;
 
+            span.only-text{
+                padding: 10px 10px 40px 10px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+        }
+        div.grid-text-content{
+            position: absolute;
+            bottom: 0px;
+            height: 40px;
+            width: 100%;
+            left: 0px;
+            background-color: rgba(47, 47, 47, 0.84);
+            span{
+                color: white;
+            }
+            span.title{
+                position: absolute;
+                bottom: 18px;
+                left: 12px;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				max-height: 20px;
+            }
+            span.price{
+                position: absolute;
+                bottom: 0px;
+                left: 12px;
+            }
+            span.cat{
+                position: absolute;
+                bottom: 0px;
+                left: 12px;
+            }
+        }
     }
+    
+}
 
-    .description-only-text{
-			padding: 20px;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			max-height: 40px;
-			//white-space: nowrap;
-			p{
-				font-size: 1.2em;
-				margin: 0;
-			}
-		}
+@media screen and (min-width: 767px) and (max-width: 1200px) {
+    div.grid-container{
+        min-height: 210px !important;
+    }
 }

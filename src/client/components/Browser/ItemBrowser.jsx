@@ -61,7 +61,7 @@ class ItemBrowser extends React.Component {
 	render() {
 		return (
 			<Row>
-				<Col xs={12} className="containerItemBrowser">
+				<Col className="containerItemBrowser">
 					<Link to={'/offer/' + this.props.data.offer}>
 						<div className="contentItemBrowser">
 							<div className="bgContainer">

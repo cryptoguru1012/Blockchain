@@ -1,28 +1,30 @@
 .containerItemBrowser{
-    position: relative;
-	padding: 25% 50%;
-	// overflow: hidden;
-	margin-top: 20px;
+    //position: relative;
+	//overflow: hidden;
 
     .contentItemBrowser {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
 
         .bgContainer {
             position: absolute;
-            width: 100%;
-			height: 100%;
-            bottom: 0;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+
+			p{
+				padding: 10px 10px 40px 10px;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				color: #212121;
+    			text-decoration: none;
+			}
 
 			div.row{
 				height: 100%;
 				div{
-					margin: 0;
-					padding: 0;
-					height: 100%;
 					img{
 						height: 100%;
 					}

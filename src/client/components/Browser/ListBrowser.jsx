@@ -20,22 +20,21 @@ class ListBrowser extends React.Component {
   render() {
     let items = this.props.items.map((item) => {
       return (
-        <GridTile
-          key={item.txid}
-          title={item.title}
-          subtitle={item.price + item.currency}
-          className="grid-tile"
-        >
-          <ItemBrowser data={item} />
-        </GridTile>
+        <div key={item.txid} className="grid-container col-xs-12 col-sm-6 col-md-4 col-lg-3">
+          <div className="grid-media-content">
+            <ItemBrowser data={item} />
+          </div>
+          <div className="grid-text-content">
+            <span className="title">{item.title}</span>
+            <span className="price">{item.price + item.currency}</span>
+          </div>
+        </div>
       );
     });
     return (
       <Row>
-        <Col xs={12}>
-          <GridList style={styles.gridList}>
+        <Col xs={12} className="grids">
             {items}
-          </GridList>
         </Col>
       </Row>
     );

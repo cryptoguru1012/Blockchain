@@ -100057,6 +100057,11 @@
 		}
 
 		_createClass(VideoRecord2, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.refs.newVideo.click();
+			}
+		}, {
 			key: 'handleChange',
 			value: function handleChange(event) {
 				var blob = event.target.files[0],
@@ -100065,11 +100070,6 @@
 
 				data.append('video', blob, 'videoRecorded.mp4');
 				this.props.onRecorded(data, url);
-			}
-		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				this.refs.upload.click();
 			}
 		}, {
 			key: 'render',
@@ -100086,7 +100086,7 @@
 							_react2.default.createElement(
 								'form',
 								{ encType: 'multipart/form-data' },
-								_react2.default.createElement('input', { ref: 'upload', onChange: this.handleChange, style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
+								_react2.default.createElement('input', { onChange: this.handleChange, ref: 'newVideo', style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
 							)
 						)
 					),
@@ -101001,7 +101001,7 @@
 				images: images,
 				textOnly: String(description).indexOf('http') > -1 || String(description.urlVideo).indexOf('http') > -1
 			};
-			console.log(description.urlVideo);
+			//console.log(description.urlVideo);
 			return _this;
 		}
 

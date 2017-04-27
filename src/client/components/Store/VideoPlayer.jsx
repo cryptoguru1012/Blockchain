@@ -60,6 +60,10 @@ class VideoPlayer extends React.Component {
 		this.removeSubtitles = this.removeSubtitles.bind(this);
 	}
 
+	componentWillUnmount() {
+		this.player = false;
+	}
+
 	componentDidMount() {
 		let self = this
 			, duration = 0;
@@ -70,14 +74,14 @@ class VideoPlayer extends React.Component {
 
 		this.player.controls = false;
 		this.player.addEventListener('ended', (e) => {
-			this.setState({ play: false });
+			self.player && self.setState({ play: false });
 		});
 		this.player.addEventListener('loadedmetadata', (e) => {
 			self.setSubtitles();
-			self.setState({ duration: self.player.duration });
+			self.player && self.setState({ duration: self.player.duration });
 		});
 		this.player.addEventListener('timeupdate', (e) => {
-			self.setState({
+			self.player && self.setState({
 				counter: self.player.currentTime,
 				duration: self.player.duration
 			});
@@ -93,19 +97,22 @@ class VideoPlayer extends React.Component {
 	setSubtitles() {
 		let self = this;
 		// settings subtitles
-		self.player.track = self.player.addTextTrack("captions", "English", "en");
-		self.player.track.mode = "showing";
 
-		// load subtitles
-		console.log(self.props.subtitles);
-		self.props.subtitles.map(subtitle => {
-			let start = this.setTimetoSeconds(subtitle.startTime)
-				, end = this.setTimetoSeconds(subtitle.endTime)
-				, newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
+		if (self.player) {
+			self.player.track = self.player.addTextTrack("captions", "English", "en");
+			self.player.track.mode = "showing";
 
-				newCue.line = -1;
-			self.player.track.addCue(newCue); 
-		});
+			// load subtitles
+			console.log(self.props.subtitles);
+			self.props.subtitles.map(subtitle => {
+				let start = this.setTimetoSeconds(subtitle.startTime)
+					, end = this.setTimetoSeconds(subtitle.endTime)
+					, newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
+
+					newCue.line = -1;
+				self.player.track.addCue(newCue); 
+			});
+		}
 	}
 
 	removeSubtitles() {

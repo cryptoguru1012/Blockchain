@@ -100003,8 +100003,6 @@
 
 	var _reactBootstrap = __webpack_require__(543);
 
-	var _Browser = __webpack_require__(946);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -100089,8 +100087,7 @@
 								_react2.default.createElement('input', { onChange: this.handleChange, ref: 'newVideo', style: styles.input, type: 'file', id: 'file', accept: 'video/*;capture=camcorder' })
 							)
 						)
-					),
-					_react2.default.createElement(_Browser.Browser, null)
+					)
 				);
 			}
 		}]);

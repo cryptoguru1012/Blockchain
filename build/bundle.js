@@ -101275,7 +101275,7 @@
 						play: false,
 						counter: 0
 					});
-					this.player.pause();
+					this.player.stop();
 					this.player.currentTime = 0;
 				}
 			}
@@ -101383,7 +101383,7 @@
 				};
 
 				if (this.props.playOnHover) {
-					handleMouseLeave = this.handleVideoStop;
+					handleMouseLeave = this.handleVideoPause;
 					handleMouseOver = this.handleVideoPlay;
 				}
 				return _react2.default.createElement(

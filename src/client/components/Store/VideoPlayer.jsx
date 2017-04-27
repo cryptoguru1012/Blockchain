@@ -184,7 +184,7 @@ class VideoPlayer extends React.Component {
 				play: false,
 				counter: 0
 			});
-			this.player.stop();
+			this.player.pause();
 			this.player.currentTime = 0;
 		}
 	}

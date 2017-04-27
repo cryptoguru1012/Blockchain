@@ -53,9 +53,9 @@ class ItemBrowser extends React.Component {
 		this.state = {
 			description: description,
 			images: images,
-			textOnly: (String(description).indexOf('http') > -1)
+			textOnly: (String(description).indexOf('http') > -1) || (String(description.urlVideo).indexOf('http') > -1)
 		};
-		console.log(textOnly);
+		console.log(description.urlVideo);
 	}
 
 	render() {

@@ -45,14 +45,16 @@ class Browser extends React.Component {
 
 	render() {
 		return (
-			<Grid>
-				<Col xs={12}>
-					<BrowserCarousel />
-					<FormBrowser onSearch={this.props.onSearch} browser={this.props.browser} />
-					<FilterBrowser items={filterItems} />
-					<ListBrowser items={this.props.browser.items}/>
-				</Col>
-			</Grid>
+			<div width="100%">	
+				<BrowserCarousel />		
+				<Grid>
+					<Col xs={12}>
+						<FormBrowser onSearch={this.props.onSearch} 	browser={this.props.browser} />
+						<FilterBrowser items={filterItems} />
+						<ListBrowser items={this.props.browser.items}/>
+					</Col>
+				</Grid>
+			</div>
 		);
 	}
 }

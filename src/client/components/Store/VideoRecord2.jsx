@@ -40,9 +40,9 @@ class VideoRecord2 extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	componentDidMount() {
-		this.refs.newVideo.click();
-	}
+//	componentDidMount() {
+//		this.refs.newVideo.click();
+//	}
 
 	handleChange(event) {
 		let blob = event.target.files[0]

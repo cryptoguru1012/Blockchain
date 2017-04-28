@@ -11,8 +11,11 @@ const styles = {
 	videoContainer: {
 		display: 'relative',
 		//marginTop: '5px',
+		width: '640px',
+		height: '480px'
 	},
 	video: {
+		width: '100%',
 		display: 'block',
 	},
 	videoBar: {

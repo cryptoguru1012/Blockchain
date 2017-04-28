@@ -273,7 +273,7 @@ class VideoPlayer extends React.Component {
 		return (
 			<Row className="video-component" style={styles.videoContainer}>
 				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-					<video preload="metadata" ref="player" style={styles.video} poster="https://wallpaperbrowse.com/media/images/pictures-1.jpg" onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)}>
+					<video preload="auto" ref="player" style={styles.video} poster="https://wallpaperbrowse.com/media/images/pictures-1.jpg" onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={ e => handleVideoPlay(e})>
 					</video>
 				</Col>
 				{this.renderControls()}

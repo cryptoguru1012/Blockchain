@@ -38,7 +38,7 @@ class VideoRecord extends React.Component {
         video: true,
       },
       videoOptions: {
-        mimeType: 'video/mp4',
+        type: 'video',
         audioBitsPerSecond: 128000,
         videoBitsPerSecond: 128000,
         bitsPerSecond: 128000,
@@ -106,7 +106,7 @@ class VideoRecord extends React.Component {
       window.Video.stopRecording((url) => {
         let data = new FormData(),
           blob = window.Video.blob;
-        data.append('video', blob, 'videoRecorded.mp4');
+        data.append('video/mp4', blob, 'videoRecorded.mp4');
         self.props.onRecorded(data, url);
       });
 

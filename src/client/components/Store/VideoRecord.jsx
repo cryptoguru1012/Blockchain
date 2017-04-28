@@ -106,7 +106,7 @@ class VideoRecord extends React.Component {
       window.Video.stopRecording((url) => {
         let data = new FormData(),
           blob = window.Video.blob;
-        data.append('video/mp4', blob, 'videoRecorded.mp4');
+        data.append('video', blob, 'videoRecorded.mp4');
         self.props.onRecorded(data, url);
       });
 

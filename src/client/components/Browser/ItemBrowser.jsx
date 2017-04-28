@@ -55,7 +55,6 @@ class ItemBrowser extends React.Component {
 			images: images,
 			textOnly: (String(description).indexOf('http') > -1) || (String(description.urlVideo).indexOf('http') > -1)
 		};
-		//console.log(description.urlVideo);
 	}
 
 	render() {
@@ -72,7 +71,6 @@ class ItemBrowser extends React.Component {
 									hideControls
 									muted
 								/>}
-								{ this.state.textOnly === false && <p> {String(this.state.description)} </p>}
 								{this.state.images.length > 0 && <GaleryItemBrowser
 									images={this.state.images}/>
 								}
@@ -86,3 +84,6 @@ class ItemBrowser extends React.Component {
 }
 
 export default ItemBrowser;
+
+
+//	{ this.state.textOnly === false && <p> {String(this.state.description)} </p>}

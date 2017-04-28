@@ -71,6 +71,7 @@ class ItemBrowser extends React.Component {
 									hideControls
 									muted
 								/>}
+								{ this.state.textOnly === false && <p> {String(this.state.description)} </p>}
 								{this.state.images.length > 0 && <GaleryItemBrowser
 									images={this.state.images}/>
 								}
@@ -84,6 +85,3 @@ class ItemBrowser extends React.Component {
 }
 
 export default ItemBrowser;
-
-
-//	{ this.state.textOnly === false && <p> {String(this.state.description)} </p>}

@@ -13,7 +13,6 @@ const styles = {
 		//marginTop: '5px',
 	},
 	video: {
-		width: '100%',
 		display: 'block',
 	},
 	videoBar: {

@@ -58,7 +58,7 @@ class BrowserCarousel extends React.Component {
     };
     return (
       <Row className="slider-container">
-        <Col xs={12}>
+        <Col xs={6}>
           <Slider {...settings}>
             <div className="item-slider">
               <img alt="" src="http://lorempixel.com/300/300/technics/1" />

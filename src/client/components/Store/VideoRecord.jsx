@@ -27,9 +27,13 @@ class VideoRecord extends React.Component {
   constructor(props) {
     super(props);
 
+    // const StereoAudioRecorder = RecordRTC.StereoAudioRecorder;
+    // const WhammyRecorder = RecordRTC.WhammyRecorder;
     this.intervalTrigger;
     this.localStream = null;
+    // this.audioURL = null;
     this.video;
+    this.audio;
     this.state = {
       counter: 0,
       isRecording: false,
@@ -37,8 +41,17 @@ class VideoRecord extends React.Component {
         audio: true,
         video: true,
       },
-      videoOptions: {
-        mimeType: 'video/mp4',
+      video: {
+        type: 'video',
+        mimeType: 'video/webm\;codecs=h264',
+        width: 640,
+        height: 480,
+        // recorderType: WhammyRecorder,
+      },
+      audio: {
+        type: 'audio',
+        mimeType: 'audio/wav',
+        // recorderType: StereoAudioRecorder,
       },
     };
 
@@ -48,6 +61,7 @@ class VideoRecord extends React.Component {
 
   componentDidMount() {
     this.video = this.refs.video;
+    this.audio = this.refs.video;
     if (navigator.mediaDevices !== undefined)
       navigator.mediaDevices
         .getUserMedia(this.state.permissions)
@@ -58,17 +72,24 @@ class VideoRecord extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.localStream !== null) this.localStream.stop();
+    if (this.localStream !== null) {
+      this.localStream.stop();
+    }
   }
 
   successCallback(stream) {
     const video = this.video;
+    const audio = this.audio;
     this.localStream = stream;
 
-    window.Video = RecordRTC(this.localStream, this.state.videoOptions);
+    window.Video = RecordRTC(this.localStream, this.state.video);
+    window.Audio = RecordRTC(this.localStream, this.state.audio);
     video.src = window.URL.createObjectURL(this.localStream);
+    audio.src = window.URL.createObjectURL(this.localStream);
+
     video.muted = true;
     video.controls = false;
+    audio.play();
     video.play();
   }
 
@@ -82,7 +103,10 @@ class VideoRecord extends React.Component {
     if (window.Video !== undefined && !self.state.isRecording) {
       let counter = 0;
       self.setState({ isRecording: true });
+
       window.Video.startRecording();
+      window.Audio.startRecording();
+
       self.intervalTrigger = window.setInterval(
         () => {
           counter++;
@@ -98,12 +122,19 @@ class VideoRecord extends React.Component {
 
     if (window.Video !== undefined && self.state.isRecording) {
       self.video.pause();
+      self.audio.pause();
       window.clearInterval(self.intervalTrigger);
       self.setState({ isRecording: false });
       window.Video.stopRecording((url) => {
-        let data = new FormData(),
-          blob = window.Video.blob;
-        data.append('video', blob, 'videoRecorded.mp4');
+        window.Audio.stopRecording();
+          let data = new FormData(),
+          blob = window.Video.blob,
+          blobA = window.Audio.blob;
+
+        // Here result of convert mp4 file
+        console.log('THIS IS A CONCOLE LOG (VideoRecordComponent/Line135): "Error for no send to parser"');
+        // data.append('video', blob, 'videoRecorded.webm');
+        // data.append('video', blobA, 'audioRecorded.wav');
         self.props.onRecorded(data, url);
       });
 

@@ -39,11 +39,10 @@ class VideoRecord extends React.Component {
         video: true,
       },
       videoOptions: {
-        type: 'video/mp4;codecs=H264',
+        mimeType: 'video/mp4;codecs=H264',
         audioBitsPerSecond: 128000,
         videoBitsPerSecond: 128000,
         bitsPerSecond: 128000,
-
       },
     };
    

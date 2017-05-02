@@ -27,8 +27,10 @@ class VideoRecord extends React.Component {
   constructor(props) {
     super(props);
 
-    // const StereoAudioRecorder = RecordRTC.StereoAudioRecorder;
-    // const WhammyRecorder = RecordRTC.WhammyRecorder;
+    const isFirefox = !!navigator.mozGetUserMedia;
+
+    const StereoAudioRecorder = RecordRTC.StereoAudioRecorder;
+    const WhammyRecorder = RecordRTC.WhammyRecorder;
     this.intervalTrigger;
     this.localStream = null;
     // this.audioURL = null;
@@ -43,15 +45,17 @@ class VideoRecord extends React.Component {
       },
       video: {
         type: 'video',
-        mimeType: 'video/webm\;codecs=h264',
+        mimeType: 'video/mp4',
         width: 640,
         height: 480,
-        // recorderType: WhammyRecorder,
+        videoBitsPerSecond: 128000,
+        recorderType: WhammyRecorder,
       },
       audio: {
         type: 'audio',
         mimeType: 'audio/wav',
-        // recorderType: StereoAudioRecorder,
+        audioBitsPerSecond: 128000,
+        recorderType: StereoAudioRecorder,
       },
     };
 
@@ -61,7 +65,7 @@ class VideoRecord extends React.Component {
 
   componentDidMount() {
     this.video = this.refs.video;
-    this.audio = this.refs.video;
+    this.audio = this.refs.audio;
     if (navigator.mediaDevices !== undefined)
       navigator.mediaDevices
         .getUserMedia(this.state.permissions)
@@ -89,7 +93,8 @@ class VideoRecord extends React.Component {
 
     video.muted = true;
     video.controls = false;
-    audio.play();
+    // audio.muted = true;
+    // audio.play();
     video.play();
   }
 
@@ -134,7 +139,7 @@ class VideoRecord extends React.Component {
         // Here result of convert mp4 file
         console.log('THIS IS A CONCOLE LOG (VideoRecordComponent/Line135): "Error for no send to parser"');
         // data.append('video', blob, 'videoRecorded.webm');
-        // data.append('video', blobA, 'audioRecorded.wav');
+        // data.append('audio', blobA, 'audioRecorded.wav');
         self.props.onRecorded(data, url);
       });
 
@@ -152,6 +157,7 @@ class VideoRecord extends React.Component {
         <Row>
           <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
             <video ref="video" style={styles.colCentered} />
+            <audio ref="audio" style={styles.colCentered} />
           </Col>
         </Row>
         <Row>

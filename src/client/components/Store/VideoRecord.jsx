@@ -58,7 +58,7 @@ class VideoRecord extends React.Component {
         recorderType: StereoAudioRecorder,
       },
     };
-
+   
     this.startRecord = this.startRecord.bind(this);
     this.saveRecord = this.saveRecord.bind(this);
   }
@@ -121,10 +121,12 @@ class VideoRecord extends React.Component {
       );
     }
   }
-
+    
   saveRecord() {
     const self = this;
-
+    // let formData = new FormData();
+    // let data= new FormData();
+    
     if (window.Video !== undefined && self.state.isRecording) {
       self.video.pause();
       self.audio.pause();
@@ -146,6 +148,8 @@ class VideoRecord extends React.Component {
       this.localStream.stop();
     }
   }
+
+  
 
   stopIcon() {
     return <Glyphicon glyph="stop" style={styles.white} />;
@@ -193,3 +197,4 @@ class VideoRecord extends React.Component {
 }
 
 export default VideoRecord;
+

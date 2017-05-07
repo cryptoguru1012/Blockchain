@@ -8,75 +8,75 @@ export const UPDATE_SUBTITLES = 'UPDATE_SUBTITLES';
 export const SET_VIDEO_DURATION = 'SET_VIDEO_DURATION';
 
 function uploadStart(payload) {
-  return {
-    type: UPLOAD_START,
-    url: payload,
-  };
+	return {
+		type: UPLOAD_START,
+		url: payload
+	};
 }
 
 function uploadError(payload) {
-  return {
-    type: UPLOAD_ERROR,
-  };
+	return {
+		type: UPLOAD_ERROR
+	};
 }
 
 function uploadSuccess(payload) {
-  return {
-    type: UPLOAD_SUCCESS,
-    payload: payload.data,
-  };
+	return { 
+		type: UPLOAD_SUCCESS,
+		payload: payload.data
+	};
 }
 
 export function setDuration(payload) {
-  return {
-    type: SET_VIDEO_DURATION,
-    duration: payload,
-  };
+	return {
+		type: SET_VIDEO_DURATION,
+		duration: payload
+	}
 }
 
 export function deleteRecord() {
-  return (dispatch, getState) => {
-    dispatch({
-      type: DELETE_RECORD,
-    });
-  };
+	return (dispatch, getState) => {
+		dispatch({
+			type: DELETE_RECORD
+		});
+	}
 }
 
 export function setOfferForm() {
-  return (dispatch, getState) => {
-    dispatch({
-      type: SET_OFFER,
-    });
-  };
+	return (dispatch, getState) => {
+		dispatch({
+			type: SET_OFFER
+		});
+	}
 }
 
 export function updateSubtitles(subtitles) {
-  return (dispatch, getState) => {
-    dispatch({
-      type: UPDATE_SUBTITLES,
-      subtitles,
-    });
-  };
+	return (dispatch, getState) => {
+		dispatch({
+			type: UPDATE_SUBTITLES,
+			subtitles: subtitles
+		});
+	}
 }
 
 export function setRecord(data, url) {
-  return (dispatch, getState) => {
-    dispatch(uploadStart(url));
-    fetch('https://d3j22jloo6hpq6.cloudfront.net/API/parse', {
-      method: 'POST',
-      mode: 'cors',
-      body: data,
-    })
-      .then(res => res.json())
-      .then((res) => {
-        if (!res.success) {
-          dispatch(uploadError(null));
-        } else {
-          dispatch(uploadSuccess(res));
-        }
-      })
-      .catch((error) => {
-        dispatch(uploadError(null));
-      });
-  };
+	return (dispatch, getState) => {
+		dispatch(uploadStart(url));
+		fetch('https://d3j22jloo6hpq6.cloudfront.net/API/parse', {
+			method: "POST",
+			mode: 'cors',
+			body: data
+		})
+		.then(res => res.json())
+		.then(res => {
+			if (!res.success) {
+				dispatch(uploadError(null));
+			} else {
+				dispatch(uploadSuccess(res));
+			}
+		})
+		.catch(error => {
+			dispatch(uploadError(null));
+		});
+	};
 }

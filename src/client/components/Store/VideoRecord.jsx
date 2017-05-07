@@ -27,15 +27,10 @@ class VideoRecord extends React.Component {
   constructor(props) {
     super(props);
 
-    const isFirefox = !!navigator.mozGetUserMedia;
-
-    const StereoAudioRecorder = RecordRTC.StereoAudioRecorder;
-    const WhammyRecorder = RecordRTC.WhammyRecorder;
     this.intervalTrigger;
     this.localStream = null;
-    // this.audioURL = null;
-    this.video;
     this.audio;
+    this.video;
     this.state = {
       counter: 0,
       isRecording: false,
@@ -43,19 +38,11 @@ class VideoRecord extends React.Component {
         audio: true,
         video: true,
       },
-      video: {
-        type: 'video',
-        mimeType: 'video/mp4',
-        width: 640,
-        height: 480,
-        videoBitsPerSecond: 128000,
-        recorderType: WhammyRecorder,
-      },
-      audio: {
-        type: 'audio',
-        mimeType: 'audio/wav',
+      videoOptions: {
+        mimeType: 'video/mp4;codecs=H264',
         audioBitsPerSecond: 128000,
-        recorderType: StereoAudioRecorder,
+        videoBitsPerSecond: 128000,
+        bitsPerSecond: 128000,
       },
     };
    
@@ -65,7 +52,6 @@ class VideoRecord extends React.Component {
 
   componentDidMount() {
     this.video = this.refs.video;
-    this.audio = this.refs.audio;
     if (navigator.mediaDevices !== undefined)
       navigator.mediaDevices
         .getUserMedia(this.state.permissions)
@@ -76,25 +62,17 @@ class VideoRecord extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.localStream !== null) {
-      this.localStream.stop();
-    }
+    if (this.localStream !== null) this.localStream.stop();
   }
 
   successCallback(stream) {
     const video = this.video;
-    const audio = this.audio;
     this.localStream = stream;
-
-    window.Video = RecordRTC(this.localStream, this.state.video);
-    window.Audio = RecordRTC(this.localStream, this.state.audio);
+    
+    window.Video = RecordRTC(this.localStream, this.state.videoOptions);
     video.src = window.URL.createObjectURL(this.localStream);
-    audio.src = window.URL.createObjectURL(this.localStream);
-
     video.muted = true;
     video.controls = false;
-    // audio.muted = true;
-    // audio.play();
     video.play();
   }
 
@@ -108,10 +86,7 @@ class VideoRecord extends React.Component {
     if (window.Video !== undefined && !self.state.isRecording) {
       let counter = 0;
       self.setState({ isRecording: true });
-
       window.Video.startRecording();
-      window.Audio.startRecording();
-
       self.intervalTrigger = window.setInterval(
         () => {
           counter++;
@@ -124,25 +99,17 @@ class VideoRecord extends React.Component {
     
   saveRecord() {
     const self = this;
-    // let formData = new FormData();
-    // let data= new FormData();
+    let formData = new FormData();
+    let data= new FormData();
     
     if (window.Video !== undefined && self.state.isRecording) {
       self.video.pause();
-      self.audio.pause();
       window.clearInterval(self.intervalTrigger);
       self.setState({ isRecording: false });
       window.Video.stopRecording((url) => {
-        window.Audio.stopRecording();
-          let data = new FormData(),
-          blob = window.Video.blob,
-          blobA = window.Audio.blob;
-
-        // Here result of convert mp4 file
-        console.log('THIS IS A CONCOLE LOG (VideoRecordComponent/Line135): "Error for no send to parser"');
-        // data.append('video', blob, 'videoRecorded.webm');
-        // data.append('audio', blobA, 'audioRecorded.wav');
-        self.props.onRecorded(data, url);
+          let blob = window.Video.blob;
+          data.append('video', blob, 'videoRecorded.mp4');
+          self.props.onRecorded(data, url);
       });
 
       this.localStream.stop();
@@ -161,7 +128,6 @@ class VideoRecord extends React.Component {
         <Row>
           <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
             <video ref="video" style={styles.colCentered} />
-            <audio ref="audio" style={styles.colCentered} />
           </Col>
         </Row>
         <Row>

@@ -59,6 +59,9 @@ export function updateSubtitles(subtitles) {
 	}
 }
 
+// https://d3j22jloo6hpq6.cloudfront.net/API/parse
+// https://shopshots-argvil19.c9users.io/API/parse
+
 export function setRecord(data, url) {
 	return (dispatch, getState) => {
 		dispatch(uploadStart(url));

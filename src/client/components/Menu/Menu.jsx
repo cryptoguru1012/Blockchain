@@ -1,11 +1,19 @@
 import React, { Component, PropTypes } from 'react';
-import { Row, Col, Grid, Nav, Navbar, NavItem, NavDropdown } from 'react-bootstrap';
+import {
+  Row,
+  Col,
+  Grid,
+  Nav,
+  Navbar,
+  NavItem,
+  NavDropdown,
+} from 'react-bootstrap';
 import { Router, Route, Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 
-import style from './css/style.css';
+require('./styles/menu.scss');
 
 class Menu extends Component {
   constructor(props) {
@@ -22,19 +30,13 @@ class Menu extends Component {
   }
 
   render() {
-    const style_bar = {
-      backgroundColor: {
-        backgroundColor: 'rgb(255, 109, 0)',
-      },
-    };
-
     return (
       <div>
-        <Navbar fixedTop fluid staticTop className={style.navegador}>
+        <Navbar fixedTop fluid staticTop className="navegador">
           <AppBar
             title="Shopshot"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
-            style={style_bar.backgroundColor}
+            className="appbar-color"
             onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
             onTouchTap={this.handleToggle.bind(this)}
           />
@@ -46,21 +48,10 @@ class Menu extends Component {
         >
           <AppBar showMenuIconButton={false} title="Menu" />
           <Link to="/">
-            <MenuItem
-              onTouchTap={this.cerrar.bind(this)}
-              primaryText="Home"
-            />
+            <MenuItem onTouchTap={this.cerrar.bind(this)} primaryText="Home" />
           </Link>
-          <MenuItem
-            disabled
-            onTouchTap={this.cerrar.bind(this)}
-            primaryText="Browse"
-          />
           <Link to="/store/newItem">
-          <MenuItem
-            onTouchTap={this.cerrar.bind(this)}
-            primaryText="Sell"
-          />
+            <MenuItem onTouchTap={this.cerrar.bind(this)} primaryText="Sell" />
           </Link>
           <MenuItem
             disabled

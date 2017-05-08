@@ -11,13 +11,13 @@ import { RaisedButton } from 'material-ui';
 const styles = {
 	subtitlesContent: {
 		padding: '20px 0',
+		minHeight: '500px'		
 	},
 	subtitlesContainer: {
 		position: 'relative',
 		minHeight: '150px',
 		overflowY: 'auto',
 		maxHeight: '300px',
-		margin: '10px 0',
 	},
 	v_center: {
 		display: 'inline-block',
@@ -39,7 +39,9 @@ const styles = {
 		borderRadius: '50%',
 		width: '35px',
 		height: '35px',
-		padding: '8px 13px'
+		padding: '8px 13px',
+		cursor: 'pointer',
+		textDecoration: 'none',
 	},
 	white: {
     	color: '#fff',
@@ -188,7 +190,8 @@ class SubtitlesEditer extends React.Component {
 		return this.sortSubtiltes().map((subtitle, i, subtitles) => {
 			if (subtitles.length > 0) {
 				if (i == (subtitles.length - 1) ) {
-					subtitle.endTime = subtiltesDuration;
+					// subtitle.endTime = subtiltesDuration;
+					subtitle.endTime = subtitle.startTime + 2;
 				} else {
 					subtitle.endTime = subtitles[i+1].startTime;
 				}
@@ -229,10 +232,10 @@ class SubtitlesEditer extends React.Component {
 		console.log(this.sortSubtiltes());
 		return (
 			<Row className="content-subtitles" style={styles.subtitlesContent}>
-				<Col xs={12} style={styles.centerText}>
+				<Col lg={8} lgOffset={2} xs={12} style={styles.centerText}>
 					<strong>This is what we heard. You may edit for clarity</strong>
 				</Col>
-				<Col xs={12} className="subtitles" style={styles.subtitlesContainer}>
+				<Col xs={12} lg={8} lgOffset={2} className="subtitles" style={styles.subtitlesContainer}>
 					<hr/>
 					{this.renderSubtitles()}
 					<RaisedButton
@@ -244,7 +247,7 @@ class SubtitlesEditer extends React.Component {
 						fullWidth={true}
 					/>
 				</Col>
-				<Col xs={3} xsOffset={9} md={2} mdOffset={10} lg={2} lgOffset={10}>
+				<Col xs={3} xsOffset={9} md={1} mdOffset={8} lg={1} lgOffset={8} style={{ marginTop: '5px' }}>
 					<RaisedButton
 						icon={this.saveIcon()}
 						backgroundColor="#2ab27b"

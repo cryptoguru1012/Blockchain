@@ -29,6 +29,7 @@ class VideoRecord extends React.Component {
 
     this.intervalTrigger;
     this.localStream = null;
+    this.audio;
     this.video;
     this.state = {
       counter: 0,
@@ -38,13 +39,11 @@ class VideoRecord extends React.Component {
         video: true,
       },
       videoOptions: {
-        mimeType: 'video/mp4',
-        audioBitsPerSecond: 128000,
-        videoBitsPerSecond: 128000,
+        mimeType: 'video/webm',
         bitsPerSecond: 128000,
       },
     };
-
+   
     this.startRecord = this.startRecord.bind(this);
     this.saveRecord = this.saveRecord.bind(this);
   }
@@ -67,7 +66,7 @@ class VideoRecord extends React.Component {
   successCallback(stream) {
     const video = this.video;
     this.localStream = stream;
-
+    
     window.Video = RecordRTC(this.localStream, this.state.videoOptions);
     video.src = window.URL.createObjectURL(this.localStream);
     video.muted = true;
@@ -95,24 +94,27 @@ class VideoRecord extends React.Component {
       );
     }
   }
-
+    
   saveRecord() {
     const self = this;
-
+    let formData = new FormData();
+    let data= new FormData();
+    
     if (window.Video !== undefined && self.state.isRecording) {
       self.video.pause();
       window.clearInterval(self.intervalTrigger);
       self.setState({ isRecording: false });
       window.Video.stopRecording((url) => {
-        let data = new FormData(),
-          blob = window.Video.blob;
-        data.append('video', blob, 'videoRecorded.mp4');
-        self.props.onRecorded(data, url);
+          let blob = window.Video.blob;
+          data.append('video', blob, 'videoRecorded.webm');
+          self.props.onRecorded(data, url);
       });
 
       this.localStream.stop();
     }
   }
+
+  
 
   stopIcon() {
     return <Glyphicon glyph="stop" style={styles.white} />;
@@ -159,3 +161,4 @@ class VideoRecord extends React.Component {
 }
 
 export default VideoRecord;
+

@@ -1,230 +1,286 @@
 import React from 'react';
-import Time from './Time';
-
 import { Row, Col, Grid, Glyphicon } from 'react-bootstrap';
 import { RaisedButton } from 'material-ui';
+import Time from './Time';
+
 
 const styles = {
-  white: {
-    color: '#fff',
-  },
-  videoContainer: {
-    display: 'relative',
-    marginTop: '5px',
-  },
-  video: {
-    width: '100%',
-    display: 'block',
-  },
-  videoBar: {
-    position: 'relative',
-    display: 'inline-block',
-    width: '100%',
-    height: '30px',
-    backgroundColor: '#e0e0e0',
-  },
-  statusBar: {
-    position: 'absolute',
-    top: '0px',
-    left: '0px',
-    backgroundColor: '#ff6d00',
-    width: '0%',
-    height: '100%',
-  },
-  centerRow: {
-    margin: 'auto',
-    display: 'table',
-  },
-  colTime: {
-    margin: 0,
-    padding: 0,
-  },
+	white: {
+		color: '#fff',
+	},
+	videoContainer: {
+		display: 'relative',
+		//marginTop: '5px',
+	},
+	video: {
+		width: '100%',
+		display: 'block',
+	},
+	videoBar: {
+		position: 'relative',
+		display: 'inline-block',
+		width: '100%',
+		height: '30px',
+		backgroundColor: '#e0e0e0',
+	},
+	statusBar: {
+		position: 'absolute',
+		top: '0px',
+		left: '0px',
+		backgroundColor: '#263238',
+		width: '0%',
+		height: '100%',
+	},
+	centerRow: {
+		margin: 'auto',
+		display: 'table',
+	},
+	colTime: {
+		margin: 0,
+		padding: 0,
+	},
 };
 
 class VideoPlayer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      play: false,
-      duration: 0,
-      counter: 0
-    };
+	constructor(props) {
+		super(props);
+		this.state = {
+			play: false,
+			duration: 0,
+			counter: 0
+		};
 
-    this.player;
-    this.track;
-    this.handleVideoPlay = this.handleVideoPlay.bind(this);
-    this.handleVideoPause = this.handleVideoPause.bind(this);
-    this.handleVideoStop = this.handleVideoStop.bind(this);
-    this.updateStatusBar = this.updateStatusBar.bind(this);
-    this.setSubtitles = this.setSubtitles.bind(this);
-    this.removeSubtitles = this.removeSubtitles.bind(this);
-  }
+		this.player;
+		this.track;
+		this.handleVideoPlay = this.handleVideoPlay.bind(this);
+		this.handleVideoPause = this.handleVideoPause.bind(this);
+		this.handleVideoStop = this.handleVideoStop.bind(this);
+		this.updateStatusBar = this.updateStatusBar.bind(this);
+		this.setSubtitles = this.setSubtitles.bind(this);
+		this.removeSubtitles = this.removeSubtitles.bind(this);
+	}
 
-  componentDidMount() {
-    let self = this;
-    this.player = this.refs.player;
-    this.player.src = this.props.url;
-    this.player.muted = false;
-    this.player.controls = false;
-    this.player.addEventListener('ended', (e) => {
-      this.setState({ play: false });
-    });
-    this.player.addEventListener('loadedmetadata', (e) => {
-      // add subtitles
-      self.setSubtitles();
+	componentWillUnmount() {
+		this.player = false;
+	}
 
-      // showing real video duration
-      self.setState({ duration: self.player.duration });
-    });
-    this.player.addEventListener('timeupdate', (e) => {
-      this.setState({ counter: this.player.currentTime });
-      let percent = this.player.currentTime / this.player.duration,
-        barPercent = this.refs.statusBar.offsetParent.offsetWidth * percent;
+	componentDidMount() {
+		let self = this
+			, duration = 0;
+		this.player = this.refs.player;
+		this.player.src = this.props.url;
+		this.player.type= "video/mp4";
+		this.player.muted = (this.props.muted) ? true: false;
 
-      this.refs.statusBar.style.width = `${barPercent}px`;
-      self.setState({ duration: this.player.duration });
-      this.props.setDuration(this.player.duration);
-    });
-  }
+		this.player.controls = false;
+		this.player.addEventListener('ended', (e) => {
+			self.player && self.setState({ play: false });
+		});
+		this.player.addEventListener('loadedmetadata', (e) => {
+			self.setSubtitles();
+			self.player && self.setState({ duration: self.player.duration });
+		});
+		this.player.addEventListener('timeupdate', (e) => {
+			self.player && self.setState({
+				counter: self.player.currentTime,
+				duration: self.player.duration
+			});
+			if (self.refs.statusBar) {
+				let percent = self.player.currentTime / self.player.duration;
+					// barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
 
-  setSubtitles() {
-    let self = this;
-    // settings subtitles
-    self.player.track = self.player.addTextTrack("captions", "English", "en");
-    self.player.track.mode = "showing";
+				self.refs.statusBar.style.width = `${percent * 100}%`;
+			}
+		});
+	}
 
-    // load subtitles
-    self.props.subtitles.map(subtitle => {
-      let start = subtitle.startTime
-        , end = subtitle.endTime
-        , newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
+	setSubtitles() {
+		let self = this;
+		// settings subtitles
 
-        newCue.line = -1;
-      self.player.track.addCue(newCue); 
-    });
-  }
+		if (self.player) {
+			self.player.track = self.player.addTextTrack("captions", "English", "en");
+			self.player.track.mode = "showing";
 
-  removeSubtitles() {
-    let self = this
-      , cues = self.player.track.cues
-      , dataCues = [];
+			// load subtitles
+			console.log(self.props.subtitles);
+			self.props.subtitles.map(subtitle => {
+				let start = this.setTimetoSeconds(subtitle.startTime)
+					, end = this.setTimetoSeconds(subtitle.endTime)
+					, newCue = new VTTCue(start, end, subtitle.text, subtitle.id);
 
-    for (var i = 0; i < cues.length; i++)
-      dataCues.push(cues[i]);
-    for (var i = 0; i < dataCues.length; i++)
-      self.player.track.removeCue(dataCues[i]);
-  }
+					newCue.line = -1;
+				self.player.track.addCue(newCue); 
+			});
+		}
+	}
 
-  updateStatusBar(event) {
-    let offsetLeft = event.target.offsetLeft,
-      clientX = event.clientX;
+	removeSubtitles() {
+		let self = this
+			, cues = self.player.track.cues
+			, dataCues = [];
 
-    this.player.currentTime = this.player.duration *
-      ((clientX - offsetLeft) / this.refs.statusBar.offsetParent.offsetWidth);
-  }
+		for (var i = 0; i < cues.length; i++)
+			dataCues.push(cues[i]);
+		for (var i = 0; i < dataCues.length; i++)
+			self.player.track.removeCue(dataCues[i]);
+	}
 
-  componentWillReceiveProps(nextProps) {
-    let self = this;
+	setTimetoSeconds(value) {
+		let matchValue = /([0-9]{2}\:[0-9]{2}\:[0-9]{2}\,[0-9]{3})/;
 
-    if (!self.player.track)
-      return false;
+		if (String(value).match(matchValue)) {
+			value = value.split(':');
+			let h = parseInt(value[0]) * 3600
+			, m = parseInt(value[1]) * 60
+			, s = parseFloat(value[2].replace(',', '.'));
 
-    console.log('will remove', self.player.track.cues);
-    self.removeSubtitles();
-    console.log('revoved cues');
+			return h + m + s;
+		}
 
-    self.setSubtitles();
-    console.log('added', self.player.track.cues);
-  }
+		return value;
+	}
 
-  handleVideoPlay() {
-    if (this.player) {
-      this.setState({ play: true });
-      this.player.play();
-    }
-  }
+	updateStatusBar(event) {
+		let offsetLeft = event.target.offsetLeft,
+			clientX = event.clientX;
 
-  handleVideoPause() {
-    if (this.player) {
-      this.setState({ play: false });
-      this.player.pause();
-    }
-  }
+		this.player.currentTime = this.player.duration *
+			((clientX - offsetLeft) / this.refs.statusBar.offsetParent.offsetWidth);
+	}
 
-  handleVideoStop(e) {
-    this.setState({ counter: 0 });
-    this.player.currentTime = 0;
-    e.preventDefault();
-  }
+	componentWillReceiveProps(nextProps) {
+		let self = this;
 
-  playIcon() {
-    return <Glyphicon glyph="play" style={styles.white} />;
-  }
+		if (!self.player.track)
+			return false;
 
-  pauseIcon() {
-    return <Glyphicon glyph="pause" style={styles.white} />;
-  }
+		console.log('will remove', self.player.track.cues);
+		self.removeSubtitles();
+		console.log('revoved cues');
 
-  deleteIcon() {
-    return (
-      <i className="material-icons" style={styles.white}>&#xE15E;</i>
-    );
-  }
+		self.setSubtitles();
+		console.log('added', self.player.track.cues);
+	}
 
-  renderControls() {
-    if (!this.state.play) {
-      return (
-        <RaisedButton
-          icon={this.playIcon()}
-          backgroundColor="#000"
-          labelColor="#fff"
-          onClick={this.handleVideoPlay}
-          fullWidth
-        />
-      );
-    }
-    return (
-      <RaisedButton
-        icon={this.pauseIcon()}
-        backgroundColor="#000"
-        labelColor="#fff"
-        onClick={this.handleVideoPause}
-        onContextMenu={e => this.handleVideoStop(e)}
-        fullWidth
-      />
-    );
-  }
+	handleVideoPlay() {
+		if (this.player) {
+			this.setState({ play: true });
+			this.player.play();
+		}
+	}
 
-  render() {
-    return (
-      <Row style={styles.videoContainer}>
-        <Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-          <video preload="metadata" ref="player" style={styles.video}>
-          </video>
-          <div style={styles.videoBar} onClick={e => this.updateStatusBar(e)}>
-            <div style={styles.statusBar} ref="statusBar" />
-          </div>
-        </Col>
-        <Col xs={3} md={2} mdOffset={3} lg={2} lgOffset={3}>
-          {this.renderControls()}
-        </Col>
-        <Col xs={6} md={2} lg={2} style={styles.colTime}>
-          <Row style={styles.centerRow}>
-            <Time value={this.state.counter} />/<Time value={this.state.duration} />
-          </Row>
-        </Col>
-        <Col xs={3} md={2} lg={2}>
-          {this.props.onDelete && <RaisedButton
-            icon={this.deleteIcon()}
-            backgroundColor="#eb4d5c"
-            labelColor="#fff"
-            onClick={this.props.onDelete}
-            fullWidth
-          />}
-        </Col>
-      </Row>
-    );
-  }
+	handleVideoPause() {
+		if (this.player) {
+			this.setState({ play: false });
+			this.player.pause();
+		}
+	}
+
+	handleVideoStop(e) {
+		e.preventDefault();
+		if (this.player) {
+			this.setState({ 
+				play: false,
+				counter: 0
+			});
+			this.player.pause();
+			this.player.currentTime = 0;
+		}
+	}
+
+	playIcon() {
+		return <Glyphicon glyph="play" style={styles.white} />;
+	}
+
+	pauseIcon() {
+		return <Glyphicon glyph="pause" style={styles.white} />;
+	}
+
+	deleteIcon() {
+		return <Glyphicon glyph="trash" style={styles.white} />;
+	}
+
+	renderActionButton() {
+		if (!this.state.play) {
+			return (
+				<RaisedButton
+					icon={this.playIcon()}
+					backgroundColor="#000"
+					labelColor="#fff"
+					onClick={this.handleVideoPlay}
+					fullWidth
+				/>
+			);
+		}
+		return (
+			<RaisedButton
+				icon={this.pauseIcon()}
+				backgroundColor="#000"
+				labelColor="#fff"
+				onClick={this.handleVideoPause}
+				onContextMenu={e => this.handleVideoStop(e)}
+				fullWidth
+			/>
+		);
+	}
+
+	renderTime() {
+		if (this.state.duration !== Infinity)
+			return (
+				<Row style={styles.centerRow}>
+					<Time value={this.state.counter} />/<Time value={this.state.duration} />
+				</Row>
+			)
+	}
+
+	renderControls() {
+		if (this.props.hideControls === undefined)
+			return (
+				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
+					<div style={styles.videoBar} onClick={e => this.updateStatusBar(e)}>
+						<div style={styles.statusBar} ref="statusBar" />
+					</div>
+					<Row>
+						<Col xs={3} md={2} lg={2}>
+							{this.renderActionButton()}
+						</Col>
+						<Col xs={6} md={8} lg={8} style={styles.colTime}>
+							{this.renderTime()}
+						</Col>
+						<Col xs={3} md={2} lg={2}>
+							{this.props.onDelete && <RaisedButton
+								icon={this.deleteIcon()}
+								backgroundColor="#eb4d5c"
+								labelColor="#fff"
+								onClick={this.props.onDelete}
+								fullWidth
+							/>}
+						</Col>
+					</Row>
+				</Col>
+			);
+	}
+
+	render() {
+		let handleMouseOver = () => false
+			, handleMouseLeave = () => false;
+
+		if (this.props.playOnHover) {
+			handleMouseLeave = this.handleVideoPause;
+			handleMouseOver = this.handleVideoPlay;
+		}
+		return (
+			<Row className="video-component" style={styles.videoContainer}>
+				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
+					<video preload="auto" ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
+
+					</video>
+				</Col>
+				{this.renderControls()}
+			</Row>
+		);
+	}
 }
 
 export default VideoPlayer;

@@ -2,7 +2,7 @@ import React, { Component, PropTypes }      from 'react';
 import { connect }                          from 'react-redux';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {orangeA700, grey900, grey800, grey300} from 'material-ui/styles/colors';
+import {grey600, grey900, grey800, grey300} from 'material-ui/styles/colors';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Menu from '../Menu';
@@ -25,10 +25,10 @@ class App extends Component {
 	render() {
 		const muiTheme = getMuiTheme({
 			palette: {
-					primary1Color: orangeA700,
-					primary2Color: grey900,
+					primary1Color: grey900,
+					primary2Color: grey600,
 					primary3Color: grey300,
-					canvasColor: grey300
+					canvasColor: grey300,
 			},
 			appBar: {
 				height: 70,

@@ -4,6 +4,7 @@ import { showItems }                        from './items';
 import registerReducer                      from './register';
 import storeReducers                        from './store';
 import videoReducers						from './video';
+import browserReducers						from './browser';
 import offerReducers						from './offer';
 
 export default combineReducers({
@@ -14,5 +15,6 @@ export default combineReducers({
     currencies: storeReducers.currencyReducer,
     newItem: storeReducers.newItemReducer,
     video: videoReducers,
+    browser: browserReducers,
     offer: offerReducers
 });

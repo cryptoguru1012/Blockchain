@@ -40,7 +40,7 @@ const register_title = {
 	height: 64,
 	padding: "0 16px",
 	color: "#fff",
-	background: "rgb(255, 109, 0)",
+	background: "#263238",
   textAlign:"center"
 }
 
@@ -167,7 +167,7 @@ class Register extends React.Component {
               type="submit"
               primary={false}
               buttonStyle={btn_boder_radius.borderRadius}
-              backgroundColor="rgb(255, 109, 0)"
+              backgroundColor="#263238"
               labelColor="#fff"
               fullWidth
               disabled={!this.state.canSubmit}

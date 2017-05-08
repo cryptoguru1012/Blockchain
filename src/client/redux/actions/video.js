@@ -59,10 +59,12 @@ export function updateSubtitles(subtitles) {
 	}
 }
 
+// https://d3j22jloo6hpq6.cloudfront.net/API/parse
+
 export function setRecord(data, url) {
 	return (dispatch, getState) => {
 		dispatch(uploadStart(url));
-		fetch('https://d3j22jloo6hpq6.cloudfront.net/API/parse', {
+		fetch('https://shopshots-argvil19.c9users.io/API/parse', {
 			method: "POST",
 			mode: 'cors',
 			body: data

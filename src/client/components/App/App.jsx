@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {grey600, grey900, grey800, grey300} from 'material-ui/styles/colors';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import Menu from '../Menu';
+import { Menu, MenuBrowser } from '../Menu';
 import Frontpage from '../Frontpage';
 
 const propTypes = {
@@ -20,6 +20,25 @@ class App extends Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			viewBrowser: false
+		}
+	}
+
+	componentWillMount() {
+		if (this.props.router.location.pathname === '/') {
+			this.setState({viewBrowser: true});
+		} else {
+			this.setState({viewBrowser: false});
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.router.location.pathname === '/') {
+			this.setState({viewBrowser: true});
+		} else {
+			this.setState({viewBrowser: false});
+		}
 	}
 
 	render() {
@@ -38,14 +57,15 @@ class App extends Component {
 		return (
 			<MuiThemeProvider muiTheme={muiTheme}>
 				<div style={{ position:"relative" }}>
-					<Menu/>
+					{!this.state.viewBrowser && <Menu/>}
+					{this.state.viewBrowser && <MenuBrowser/>}
 					<div style={{marginTop:muiTheme.appBar.height}}>
 						{this.props.children}
 					</div>
 				</div>
 			</MuiThemeProvider>
 		);
-		}
+	}
 
 }
 

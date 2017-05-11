@@ -12,35 +12,71 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import ActionSearch from 'material-ui/svg-icons/action/search';
+
 
 require('./styles/menu.scss');
 
 class MenuBrowser extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { open: false };
+		this.state = {
+			open: false,
+			activeSearch: false,
+			phraseSearch: '' 
+		};
+
+		this.handleToggle = this.handleToggle.bind(this);
+		this.handleToggleSerch = this.handleToggleSerch.bind(this);
+		this.renderTitle = this.renderTitle.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	handleToggle() {
 		this.setState({ open: !this.state.open });
 	}
 
-	cerrar() {
-		this.setState({ open: false });
+	handleToggleSerch() {
+		if (this.state.activeSearch)
+			console.log('phraseSearch: ', this.state.phraseSearch);
+
+		this.setState({ activeSearch: !this.state.activeSearch });
+	}
+
+	handleChange(e) {
+		this.setState({phraseSearch: e.target.value});
+	}
+
+	renderTitle() {
+		if (!this.state.activeSearch) {
+			return (
+				<p>Shopshot</p>
+			);
+		} else {
+			return (
+				<TextField
+					onChange={e => this.handleChange(e)}
+					value={this.state.phraseSearch}
+					hintText="Search"
+					fullWidth={true}
+					underlineShow={false}
+					inputStyle={{color: '#fff'}}
+				/>
+			);
+		}
 	}
 
 	render() {
 		return (
-			<div>
-				<Navbar fixedTop fluid staticTop className="navegador">
-					<AppBar
-						title="Browser"
-						iconClassNameRight="muidocs-icon-navigation-expand-more"
-						className="appbar-color"
-						onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
-						onTouchTap={this.handleToggle.bind(this)}
-					/>
-				</Navbar>
+			<AppBar
+				title={this.renderTitle()}
+				className="appbar-color"
+				onLeftIconButtonTouchTap={this.handleToggle}
+				onRightIconButtonTouchTap={this.handleToggleSerch}
+          		iconElementRight={<IconButton><ActionSearch /></IconButton>}
+			>
 				<Drawer
 					open={this.state.open}
 					docked={false}
@@ -48,28 +84,40 @@ class MenuBrowser extends Component {
 				>
 					<AppBar showMenuIconButton={false} title="Menu" />
 					<Link to="/">
-						<MenuItem onTouchTap={this.cerrar.bind(this)} primaryText="Home" />
+						<MenuItem
+							onTouchTap={this.handleToggle}
+							primaryText="Home"
+						/>
 					</Link>
 					<Link to="/store/newItem">
-						<MenuItem onTouchTap={this.cerrar.bind(this)} primaryText="Sell" />
+						<MenuItem
+							onTouchTap={this.handleToggle}
+							primaryText="Sell"
+						/>
 					</Link>
-					<MenuItem
-						disabled
-						onTouchTap={this.cerrar.bind(this)}
-						primaryText="About"
-					/>
-					<MenuItem
-						disabled
-						onTouchTap={this.cerrar.bind(this)}
-						primaryText="Register"
-					/>
-					<MenuItem
-						disabled
-						onTouchTap={this.cerrar.bind(this)}
-						primaryText="Profile"
-					/>
+					<Link to="">
+						<MenuItem
+							disabled
+							onTouchTap={this.handleToggle}
+							primaryText="About"
+						/>
+					</Link>
+					<Link to="">
+						<MenuItem
+							disabled
+							onTouchTap={this.handleToggle}
+							primaryText="Register"
+						/>
+					</Link>
+					<Link to="">
+						<MenuItem
+							disabled
+							onTouchTap={this.handleToggle}
+							primaryText="Profile"
+						/>
+					</Link>
 				</Drawer>
-			</div>
+			</AppBar>
 		);
 	}
 }

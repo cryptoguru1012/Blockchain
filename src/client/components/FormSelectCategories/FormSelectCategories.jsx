@@ -28,7 +28,7 @@ class Browser extends React.Component {
 	render() {
 		let required = (this.props.required) ? true: false;
 		return (
-			<FormsySelect name={this.props.name} floatingLabelText={this.props.label} required={required} fullWidth={this.props.fullWidth}>
+			<FormsySelect {...this.props} name={this.props.name} floatingLabelText={this.props.label} required={required} fullWidth={this.props.fullWidth}>
 				{this.renderCategories()}
 			</FormsySelect>
 		);

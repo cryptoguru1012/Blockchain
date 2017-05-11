@@ -15,6 +15,8 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+import Formsy from 'formsy-react';
+import FormSelectCategories from '../FormSelectCategories';
 
 
 require('./styles/menu.scss');
@@ -56,14 +58,34 @@ class MenuBrowser extends Component {
 			);
 		} else {
 			return (
-				<TextField
-					onChange={e => this.handleChange(e)}
-					value={this.state.phraseSearch}
-					hintText="Search"
-					fullWidth={true}
-					underlineShow={false}
-					inputStyle={{color: '#fff'}}
-				/>
+				
+				<Formsy.Form style={{marginTop: '10px'}}>
+					<Row>
+						<Col xs={6}>
+							<TextField
+								name="search"
+								onChange={e => this.handleChange(e)}
+								value={this.state.phraseSearch}
+								hintText="Search"
+								inputStyle={{color: '#fff'}}
+								hintStyle={{color: '#fff'}}
+								style={{display:'block'}}
+								fullWidth={true}
+							/>
+						</Col>
+						<Col xs={6}>
+							<FormSelectCategories
+								name="category"
+								fullWidth={true}
+								hintText="Category"
+								labelStyle={{color: '#fff'}}
+								menuStyle={{color: '#fff'}}
+								hintStyle={{color: '#fff'}}
+								style={{display:'block'}}
+							/>
+						</Col>
+					</Row>
+				</Formsy.Form>
 			);
 		}
 	}

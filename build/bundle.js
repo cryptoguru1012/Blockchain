@@ -71114,6 +71114,14 @@
 
 	var _search2 = _interopRequireDefault(_search);
 
+	var _formsyReact = __webpack_require__(1091);
+
+	var _formsyReact2 = _interopRequireDefault(_formsyReact);
+
+	var _FormSelectCategories = __webpack_require__(1147);
+
+	var _FormSelectCategories2 = _interopRequireDefault(_FormSelectCategories);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71174,16 +71182,43 @@
 						'Shopshot'
 					);
 				} else {
-					return _react2.default.createElement(_TextField2.default, {
-						onChange: function onChange(e) {
-							return _this2.handleChange(e);
-						},
-						value: this.state.phraseSearch,
-						hintText: 'Search',
-						fullWidth: true,
-						underlineShow: false,
-						inputStyle: { color: '#fff' }
-					});
+					return _react2.default.createElement(
+						_formsyReact2.default.Form,
+						{ style: { marginTop: '10px' } },
+						_react2.default.createElement(
+							_reactBootstrap.Row,
+							null,
+							_react2.default.createElement(
+								_reactBootstrap.Col,
+								{ xs: 6 },
+								_react2.default.createElement(_TextField2.default, {
+									name: 'search',
+									onChange: function onChange(e) {
+										return _this2.handleChange(e);
+									},
+									value: this.state.phraseSearch,
+									hintText: 'Search',
+									inputStyle: { color: '#fff' },
+									hintStyle: { color: '#fff' },
+									style: { display: 'block' },
+									fullWidth: true
+								})
+							),
+							_react2.default.createElement(
+								_reactBootstrap.Col,
+								{ xs: 6 },
+								_react2.default.createElement(_FormSelectCategories2.default, {
+									name: 'category',
+									fullWidth: true,
+									hintText: 'Category',
+									labelStyle: { color: '#fff' },
+									menuStyle: { color: '#fff' },
+									hintStyle: { color: '#fff' },
+									style: { display: 'block' }
+								})
+							)
+						)
+					);
 				}
 			}
 		}, {
@@ -106162,6 +106197,8 @@
 		value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(2);
@@ -106215,7 +106252,7 @@
 				var required = this.props.required ? true : false;
 				return _react2.default.createElement(
 					_lib.FormsySelect,
-					{ name: this.props.name, floatingLabelText: this.props.label, required: required, fullWidth: this.props.fullWidth },
+					_extends({}, this.props, { name: this.props.name, floatingLabelText: this.props.label, required: required, fullWidth: this.props.fullWidth }),
 					this.renderCategories()
 				);
 			}

@@ -8,7 +8,8 @@ let styles = {
 		padding: '5px 10px',
 		color: 'rgba(0, 0, 0, 0.298039)',
 		fontSize: '16px',
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		display: 'inline-block'
 	}
 }
 

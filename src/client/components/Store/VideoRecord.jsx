@@ -130,7 +130,7 @@ class VideoRecord extends React.Component {
      ) {
       this.setState({open: true});
     } else{
-        alert('uplaoded'); //self.props.onRecorded( formData, url);
+        self.props.imageUploaded( formData );
     }
   }
     
@@ -183,7 +183,7 @@ class VideoRecord extends React.Component {
             </RaisedButton>
           </Col>
           <Col xs={3} md={2} lg={2}>
-             <button class="mui-btn mui-btn--fab">+</button>
+             <Button class="mui-btn mui-btn--fab">?</Button>
           </Col>
         </Row>
       </div>

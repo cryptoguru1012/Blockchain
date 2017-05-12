@@ -8,6 +8,7 @@ import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
 import BrowserCarousel from './BrowserCarousel';
 import FilterBrowser from './FilterBrowser';
+import OrderByBrowser from './OrderByBrowser';
 
 let filterItems = [
 	{
@@ -28,6 +29,30 @@ let filterItems = [
 	}
 ];
 
+
+let orderItems = [
+	{
+		value: 'currency',
+		name: 'Currency',
+	},
+	{
+		value: 'title',
+		name: 'Name',
+	},
+	{
+		value: 'geolocation',
+		name: 'Geolocation',
+	},
+	{
+		value: 'paymentoptions_display',
+		name: 'Payment options',
+	},
+	{
+		value: 'category',
+		name: 'Category',
+	}
+];
+
 class Browser extends React.Component {
 	constructor(props) {
 		super(props);
@@ -45,12 +70,16 @@ class Browser extends React.Component {
 
 	render() {
 		return (
-			<div width="100%">	
+			<div width="100%">
+				<Grid>
+					<FilterBrowser items={filterItems} />
+				</Grid>	
 				<BrowserCarousel />		
 				<Grid>
 					<Col xs={12}>
-						<FormBrowser onSearch={this.props.onSearch} 	browser={this.props.browser} />
-						<FilterBrowser items={filterItems} />
+						<Row>
+							<OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />
+						</Row>
 						<ListBrowser items={this.props.browser.items}/>
 					</Col>
 				</Grid>
@@ -70,6 +99,9 @@ function mapDispatchToProps(dispatch) {
 		onSearch: (data) => {
 			dispatch(search(data));
 		},
+		onOrder: (order) => {
+			dispatch(setOrder(order));
+		}
 	};
 }
 

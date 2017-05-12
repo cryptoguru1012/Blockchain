@@ -5,7 +5,7 @@ import { MenuItem } from 'material-ui';
 
 import { doCategoryReq } from '../../redux/actions/store/category';
 
-class Browser extends React.Component {
+class FormSelectCategories extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -26,9 +26,8 @@ class Browser extends React.Component {
 	}
 
 	render() {
-		let required = (this.props.required) ? true: false;
 		return (
-			<FormsySelect {...this.props} name={this.props.name} floatingLabelText={this.props.label} required={required} fullWidth={this.props.fullWidth}>
+			<FormsySelect {...this.props} floatingLabelText={this.props.label}>
 				{this.renderCategories()}
 			</FormsySelect>
 		);
@@ -49,4 +48,4 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Browser);
+export default connect(mapStateToProps, mapDispatchToProps)(FormSelectCategories);

@@ -4,6 +4,7 @@ import Time from './Time';
 
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import { RaisedButton } from 'material-ui';
+import Dropzone from 'react-dropzone';
 
 const styles = {
   white: {
@@ -32,6 +33,7 @@ class VideoRecord extends React.Component {
     this.audio;
     this.video;
     this.state = {
+      open: false,
       counter: 0,
       isRecording: false,
       permissions: {
@@ -114,8 +116,24 @@ class VideoRecord extends React.Component {
     }
   }
 
+  openFileDialog() {
+    var fileUploadDom = React.findDOMNode(this.refs.fileUpload);
+    fileUploadDom.click();
+  }
   
+  onDrop(file) {
+   
+    var formData = new FormData();
+        formData.append('photo', file[0]);
 
+    if( formData.get('photo')['type'].includes("image/") === false
+     ) {
+      this.setState({open: true});
+    } else{
+        alert('uplaoded'); //self.props.onRecorded( formData, url);
+    }
+  }
+    
   stopIcon() {
     return <Glyphicon glyph="stop" style={styles.white} />;
   }
@@ -153,6 +171,19 @@ class VideoRecord extends React.Component {
               onClick={this.saveRecord}
               fullWidth
             />
+          </Col>
+          <Col xs={3} md={2} lg={2}>
+            <RaisedButton 
+              containerElement='label'
+              label="Attach file"
+              onClick={ (e) => this.openFileDialog}>
+              <Dropzone 
+                style={{"display" : "none"}}
+                onDrop={ (file) => this.onDrop(file)} />
+            </RaisedButton>
+          </Col>
+          <Col xs={3} md={2} lg={2}>
+             <button class="mui-btn mui-btn--fab">+</button>
           </Col>
         </Row>
       </div>

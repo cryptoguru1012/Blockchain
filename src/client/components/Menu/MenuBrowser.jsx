@@ -1,39 +1,30 @@
-import React, { Component, PropTypes } from 'react';
-import {
-	Row,
-	Col,
-	Grid,
-	Nav,
-	Navbar,
-	NavItem,
-	NavDropdown,
-} from 'react-bootstrap';
+import React from 'react';
+import { connect } from 'react-redux';
+import { search, setRegexp } from '../../redux/actions/browser';
+
 import { Router, Route, Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
+import SearchBrowser from '../Browser/SearchBrowser';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
-import Formsy from 'formsy-react';
-import FormSelectCategories from '../FormSelectCategories';
-
 
 require('./styles/menu.scss');
 
-class MenuBrowser extends Component {
+class MenuBrowser extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			open: false,
 			activeSearch: false,
-			phraseSearch: '' 
+			regexp: '',
+			category: null,
 		};
 
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleToggleSerch = this.handleToggleSerch.bind(this);
-		this.renderTitle = this.renderTitle.bind(this);
-		this.handleChange = this.handleChange.bind(this);
+		this.handleChangeData = this.handleChangeData.bind(this);
 	}
 
 	handleToggle() {
@@ -41,63 +32,35 @@ class MenuBrowser extends Component {
 	}
 
 	handleToggleSerch() {
-		if (this.state.activeSearch)
-			console.log('phraseSearch: ', this.state.phraseSearch);
+
+		if (this.state.activeSearch) {
+			let data = {};
+			data.regexp = this.state.regexp;
+			if (this.state.category !== null) data.category = this.state.category;
+
+			console.log('data ->', data);
+			this.props.onSearch(data);
+		}
 
 		this.setState({ activeSearch: !this.state.activeSearch });
 	}
 
-	handleChange(e) {
-		this.setState({phraseSearch: e.target.value});
-	}
+	handleChangeData(data) {
+		if (data.type === 'text')
+			this.setState({regexp: data.value});
 
-	renderTitle() {
-		if (!this.state.activeSearch) {
-			return (
-				<p>Shopshot</p>
-			);
-		} else {
-			return (
-				
-				<Formsy.Form style={{marginTop: '10px'}}>
-					<Row>
-						<Col xs={6}>
-							<TextField
-								name="search"
-								onChange={e => this.handleChange(e)}
-								value={this.state.phraseSearch}
-								hintText="Search"
-								inputStyle={{color: '#fff'}}
-								hintStyle={{color: '#fff'}}
-								style={{display:'block'}}
-								fullWidth={true}
-							/>
-						</Col>
-						<Col xs={6}>
-							<FormSelectCategories
-								name="category"
-								fullWidth={true}
-								hintText="Category"
-								labelStyle={{color: '#fff'}}
-								menuStyle={{color: '#fff'}}
-								hintStyle={{color: '#fff'}}
-								style={{display:'block'}}
-							/>
-						</Col>
-					</Row>
-				</Formsy.Form>
-			);
-		}
+		if (data.type === 'category')
+			this.setState({category: data.value});
 	}
 
 	render() {
 		return (
 			<AppBar
-				title={this.renderTitle()}
+				title={!this.state.activeSearch ? <p>Shopshot</p>: <SearchBrowser onChangeData={this.handleChangeData} category={this.state.category} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
 				onRightIconButtonTouchTap={this.handleToggleSerch}
-          		iconElementRight={<IconButton><ActionSearch /></IconButton>}
+				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
 				<Drawer
 					open={this.state.open}
@@ -144,4 +107,18 @@ class MenuBrowser extends Component {
 	}
 }
 
-export default MenuBrowser;
+function mapStateToProps(state) {
+	let browser = state.browser;
+
+	return { browser };
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		onSearch: (data) => {
+			dispatch(search(data));
+		},
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuBrowser);

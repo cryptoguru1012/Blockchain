@@ -103,12 +103,13 @@ class NewItem extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const image = state.image;
   const video = state.video;
   const categories = state.categories;
   const currencies = state.currencies;
   const newItem = state.newItem;
 
-  return { video, categories, currencies, newItem };
+  return { image, video, categories, currencies, newItem };
 }
 
 function mapDispatchToProps(dispatch) {

@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 // components
@@ -16,7 +17,7 @@ class BrowserCarousel extends React.Component {
   renderSlide() {
     return this.props.images.map((image, i) => (
       <img style={{ width: '100%' }} key={i} src={image} />
-    ));
+   ));
   }
 
   render() {
@@ -27,7 +28,7 @@ class BrowserCarousel extends React.Component {
       slidesToShow: 4,
       slidesToScroll: 1,
       autoplay: true,
-      autoplaySpeed: 2000,
+      autoplaySpeed: 1000,
       pauseOnHover: true,
       responsive: [
         {
@@ -58,8 +59,10 @@ class BrowserCarousel extends React.Component {
     };
     return (
       <Row className="slider-container">
-        <Col xs={6}>
+        <Col sm={12}>
+	  <h2>Featured</h2>   
           <Slider {...settings}>
+	  <a href="/">
             <div className="item-slider">
               <img alt="" src="http://lorempixel.com/300/300/technics/1" />
 			  <div className="content-slider">
@@ -68,7 +71,9 @@ class BrowserCarousel extends React.Component {
 				</div>
 			  </div>
             </div>
-            <div className="item-slider">
+	  </a>  
+	  <a href="/">
+	    <div className="item-slider">
               <img alt="" src="http://lorempixel.com/300/300/technics/2" />
 			  <div className="content-slider">
 			  	<div className="content-text">
@@ -76,6 +81,8 @@ class BrowserCarousel extends React.Component {
 				</div>
 			  </div>
             </div>
+	  </a>
+	  <a href="/">
             <div className="item-slider">
               <img alt="" src="http://lorempixel.com/300/300/technics/3" />
 			  <div className="content-slider">
@@ -84,6 +91,8 @@ class BrowserCarousel extends React.Component {
 				</div>
 			  </div>
             </div>
+	  </a>
+	  <a href="/">
             <div className="item-slider">
               <img alt="" src="http://lorempixel.com/300/300/technics/4" />
 			  <div className="content-slider">
@@ -92,6 +101,8 @@ class BrowserCarousel extends React.Component {
 				</div>
 			  </div>
             </div>
+	  </a>
+	  <a href="/">
             <div className="item-slider">
               <img alt="" src="http://lorempixel.com/300/300/technics/5" />
 			  <div className="content-slider">
@@ -100,6 +111,8 @@ class BrowserCarousel extends React.Component {
 				</div>
 			  </div>
             </div>
+	  </a>
+	  <a href="/">
             <div className="item-slider">
               <img alt="" src="http://lorempixel.com/300/300/technics/6" />
 			  <div className="content-slider">
@@ -108,6 +121,7 @@ class BrowserCarousel extends React.Component {
 				</div>
 			  </div>
             </div>
+	  </a>
           </Slider>
         </Col>
       </Row>

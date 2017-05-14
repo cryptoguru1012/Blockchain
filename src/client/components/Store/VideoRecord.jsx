@@ -133,7 +133,7 @@ class VideoRecord extends React.Component {
      ) {
       this.setState({open: true});
     } else{
-        self.props.imageUploaded( formData );
+        this.props.imageUploaded( formData );
     }
   }
     

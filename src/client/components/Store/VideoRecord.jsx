@@ -99,7 +99,6 @@ class VideoRecord extends React.Component {
     
   saveRecord() {
     const self = this;
-    let formData = new FormData();
     let data= new FormData();
     
     if (window.Video !== undefined && self.state.isRecording) {
@@ -123,8 +122,12 @@ class VideoRecord extends React.Component {
   
   onDrop(file) {
    
-    var formData = new FormData();
-        formData.append('photo', file[0]);
+    let reader, blob, formData = new FormData();
+    
+    //reader = new FileReader();
+    //reader.readAsDataURL(file[0]);
+    //blob = reader.result;
+    formData.append('photo', file[0] );
 
     if( formData.get('photo')['type'].includes("image/") === false
      ) {
@@ -183,7 +186,7 @@ class VideoRecord extends React.Component {
             </RaisedButton>
           </Col>
           <Col xs={3} md={2} lg={2}>
-             <Button class="mui-btn mui-btn--fab">?</Button>
+             <Button className="mui-btn mui-btn--fab">?</Button>
           </Col>
         </Row>
       </div>

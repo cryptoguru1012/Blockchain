@@ -6,7 +6,7 @@ const initialState = {
 	message: '',
 	dataItems: [],
 	items: [],
-	filter: 'SHOW_ALL'
+	filter: 'SHOW_VIDEOS'
 };
 
 const browserReducers = (state = initialState, action) => {

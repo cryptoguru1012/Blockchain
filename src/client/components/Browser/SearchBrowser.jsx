@@ -8,6 +8,7 @@ import FormSelectCategories from '../FormSelectCategories';
 class SearchBrowser extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.handleChangeText = this.handleChangeText.bind(this);
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 	}
@@ -28,11 +29,7 @@ class SearchBrowser extends React.Component {
 
 	render() {
 		return (
-			<Formsy.Form 
-				style={{marginTop: '10px'}}
-				onValid={this.enableButton}
-				onInvalid={this.disableButton}
-				onValidSubmit={this.handleSubmit}>
+			<Formsy.Form style={{marginTop: '10px'}}>
 				<Row>
 					<Col xs={6}>
 						<TextField
@@ -50,12 +47,14 @@ class SearchBrowser extends React.Component {
 						<FormSelectCategories
 							name="category"
 							onChange={this.handleChangeCategory}
+							value={this.props.category}
 							fullWidth={true}
 							hintText="Category"
 							labelStyle={{color: '#fff'}}
 							menuStyle={{color: '#fff'}}
 							hintStyle={{color: '#fff'}}
 							style={{display:'block'}}
+							required
 						/>
 					</Col>
 				</Row>

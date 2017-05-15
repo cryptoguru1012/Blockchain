@@ -104,7 +104,6 @@ class TableViewItemsBrowser extends React.Component {
 				</tr>
 			);
 		});
-		console.log(items);
 		return (
 			<table className="grids">
 				<thead>

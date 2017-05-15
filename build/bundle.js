@@ -127659,7 +127659,6 @@
 						)
 					);
 				});
-				console.log(items);
 				return _react2.default.createElement(
 					'table',
 					{ className: 'grids' },

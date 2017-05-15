@@ -88,7 +88,7 @@ class Browser extends React.Component {
 					<Col xs={12}>
 						<OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />
 						{this.props.browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
-						<ListBrowser items={this.props.browser.items}/>
+						<ListBrowser items={this.props.browser.items} filter={this.props.browser.filter} />
 					</Col>
 				</Grid>
 			</div>

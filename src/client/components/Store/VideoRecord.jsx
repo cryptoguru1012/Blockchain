@@ -127,9 +127,9 @@ class VideoRecord extends React.Component {
     //reader = new FileReader();
     //reader.readAsDataURL(file[0]);
     //blob = reader.result;
-    formData.append('photo', file[0] );
+    formData.append('photos', file[0] );
 
-    if( formData.get('photo')['type'].includes("image/") === false
+    if( formData.get('photos')['type'].includes("image/") === false
      ) {
       this.setState({open: true});
     } else{

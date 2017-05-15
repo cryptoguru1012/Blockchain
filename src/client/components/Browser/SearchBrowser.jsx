@@ -19,7 +19,7 @@ class SearchBrowser extends React.Component {
 		});
 	}
 
-	handleChangeCategory(e, index, value) {
+	handleChangeCategory(e, value) {
 		this.props.onChangeData({
 			type: 'category',
 			value: value

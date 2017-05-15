@@ -127645,7 +127645,7 @@
 						_react2.default.createElement(
 							'td',
 							null,
-							item.vendor
+							item.alias
 						),
 						_react2.default.createElement(
 							'td',
@@ -127659,6 +127659,7 @@
 						)
 					);
 				});
+				console.log(items);
 				return _react2.default.createElement(
 					'table',
 					{ className: 'grids' },

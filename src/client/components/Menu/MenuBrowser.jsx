@@ -38,8 +38,11 @@ class MenuBrowser extends React.Component {
 			data.regexp = this.state.regexp;
 			if (this.state.category !== null) data.category = this.state.category;
 
+			if (data.category !== null && data.regexp.length > 0)
+				this.props.onSearch(data);
+			else
+				console.log('no action');
 			console.log('data ->', data);
-			this.props.onSearch(data);
 		}
 
 		this.setState({ activeSearch: !this.state.activeSearch });

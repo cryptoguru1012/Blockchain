@@ -54,6 +54,9 @@ const orderItems = [
 ];
 
 const styles = {
+	background: {
+		backgroundColor: '#e2e2e2'
+	},
 	spinnerStyle: {
 		margin: 'auto',
 		display: 'block',
@@ -78,7 +81,7 @@ class Browser extends React.Component {
 
 	render() {
 		return (
-			<div width="100%">
+			<div style={styles.background}>
 				<BrowserCarousel />		
 				<Grid>
 					<FilterBrowser items={filterItems} />

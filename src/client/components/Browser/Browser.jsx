@@ -79,11 +79,9 @@ class Browser extends React.Component {
 	render() {
 		return (
 			<div width="100%">
-				<Grid>
-					<FilterBrowser items={filterItems} />
-				</Grid>	
 				<BrowserCarousel />		
 				<Grid>
+					<FilterBrowser items={filterItems} />
 					<Col xs={12}>
 						<OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />
 						{this.props.browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}

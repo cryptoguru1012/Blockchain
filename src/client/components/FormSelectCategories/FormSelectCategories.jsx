@@ -26,8 +26,11 @@ class FormSelectCategories extends React.Component {
 	}
 
 	render() {
+		const props = Object.assign({}, this.props);
+		delete props.categories;
+		delete props.getCategories;
 		return (
-			<FormsySelect {...this.props} floatingLabelText={this.props.label}>
+			<FormsySelect {...props} floatingLabelText={this.props.label}>
 				{this.renderCategories()}
 			</FormsySelect>
 		);

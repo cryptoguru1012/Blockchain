@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { search, setRegexp } from '../../redux/actions/browser';
+import { search } from '../../redux/actions/browser';
 
 import { Router, Route, Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
@@ -19,7 +19,7 @@ class MenuBrowser extends React.Component {
 			open: false,
 			activeSearch: false,
 			regexp: '',
-			category: null,
+			category: null
 		};
 
 		this.handleToggle = this.handleToggle.bind(this);
@@ -33,16 +33,14 @@ class MenuBrowser extends React.Component {
 
 	handleToggleSerch() {
 
-		if (this.state.activeSearch) {
+		if (this.state.activeSearch && this.state.category !== null) {
 			let data = {};
 			data.regexp = this.state.regexp;
 			if (this.state.category !== null) data.category = this.state.category;
 
-			if (data.category !== null && data.regexp.length > 0)
-				this.props.onSearch(data);
-			else
-				console.log('no action');
-			console.log('data ->', data);
+			this.props.onSearch(data);
+			console.log('data submited: ', data);
+
 		}
 
 		this.setState({ activeSearch: !this.state.activeSearch });

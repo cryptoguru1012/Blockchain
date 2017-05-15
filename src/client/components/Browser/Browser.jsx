@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import { search } from '../../redux/actions/browser';
 
@@ -10,7 +11,7 @@ import BrowserCarousel from './BrowserCarousel';
 import FilterBrowser from './FilterBrowser';
 import OrderByBrowser from './OrderByBrowser';
 
-let filterItems = [
+const filterItems = [
 	{
 		value: 'SHOW_ALL',
 		name: 'All',
@@ -29,8 +30,7 @@ let filterItems = [
 	}
 ];
 
-
-let orderItems = [
+const orderItems = [
 	{
 		value: 'currency',
 		name: 'Currency',
@@ -52,6 +52,14 @@ let orderItems = [
 		name: 'Category',
 	}
 ];
+
+const styles = {
+	spinnerStyle: {
+		margin: 'auto',
+		display: 'block',
+		padding: 5,
+	}
+}
 
 class Browser extends React.Component {
 	constructor(props) {
@@ -77,9 +85,8 @@ class Browser extends React.Component {
 				<BrowserCarousel />		
 				<Grid>
 					<Col xs={12}>
-						<Row>
-							<OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />
-						</Row>
+						<OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />
+						{this.props.browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
 						<ListBrowser items={this.props.browser.items}/>
 					</Col>
 				</Grid>

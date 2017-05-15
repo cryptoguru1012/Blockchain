@@ -39,14 +39,16 @@ class OrderByBrowser extends React.Component {
 
   render() {
     return (
-      <SelectField
-        floatingLabelText="Order by"
-        value={this.state.selected}
-        onChange={this.handleSubmit}
-        fullWidth
-      >
-        {this.renderItemsOption()}
-      </SelectField>
+      <Row>
+        <SelectField
+          floatingLabelText="Order by"
+          value={this.state.selected}
+          onChange={this.handleSubmit}
+          fullWidth
+        >
+          {this.renderItemsOption()}
+        </SelectField>
+      </Row>
     );
   }
 }

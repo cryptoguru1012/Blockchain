@@ -77,7 +77,8 @@ class NewItem extends React.Component {
       return (
         <Grid>
           {this.state.RecordRTC && <VideoRecord onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} />}
-          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded} 
+          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded}
+          imageUploaded={this.props.imageUploaded} 
           />}
         </Grid>
       );

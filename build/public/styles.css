@@ -121,7 +121,6 @@ button.slick-prev {
   z-index: 1; }
 
 div.slider-container {
-  height: 33vh;
   background: #bda869;
   padding: 0;
   margin: 0; }
@@ -131,7 +130,6 @@ div.slider-container {
     padding: 2px; }
     div.slider-container div.item-slider img {
       width: 100%;
-      height: 10vh;
       position: relative;
       top: 15px; }
     div.slider-container div.item-slider div.content-slider {

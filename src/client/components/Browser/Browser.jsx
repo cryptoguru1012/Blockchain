@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 
-import { search } from '../../redux/actions/browser';
+import { search, getFeatures } from '../../redux/actions/browser';
 
 import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
@@ -41,12 +41,13 @@ class Browser extends React.Component {
 			category: null
 		};
 		this.props.onSearch(data);
+		this.props.getFeatures();
 	}
 
 	render() {
 		return (
 			<div width="100%">	
-				<BrowserCarousel />		
+				{this.props.browser.features.length > 0 && <BrowserCarousel items={this.props.browser.features}/>}	
 				<Grid>
 					<Col xs={12}>
 						<FormBrowser onSearch={this.props.onSearch} 	browser={this.props.browser} />
@@ -70,6 +71,9 @@ function mapDispatchToProps(dispatch) {
 		onSearch: (data) => {
 			dispatch(search(data));
 		},
+		getFeatures: () => {
+			dispatch(getFeatures());
+		}
 	};
 }
 

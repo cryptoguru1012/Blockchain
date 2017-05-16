@@ -40,9 +40,9 @@ class VideoRecord2 extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-//	componentDidMount() {
-//		this.refs.newVideo.click();
-//	}
+	componentDidMount() {
+		this.refs.newVideo.click();
+	}
 
 	handleChange(event) {
 		let blob = event.target.files[0]
@@ -62,6 +62,7 @@ class VideoRecord2 extends React.Component {
 						<form encType="multipart/form-data">
 							<input onChange={this.handleChange} ref="newVideo" style={styles.input} type="file" id="file" accept="video/*;capture=camcorder"/>
 						</form>
+						<a href="/">Go Back</a>
 					</div>
 				</div>
 			</Row>

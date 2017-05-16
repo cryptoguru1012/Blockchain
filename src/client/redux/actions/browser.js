@@ -45,7 +45,7 @@ function getFeaturesError(payload) {
 function getFeaturesSuccess(payload) {
 	return {
 		type: FEATURE_SUCCESS,
-		items: payload
+		items: payload.data
 	}
 }
 
@@ -115,8 +115,9 @@ export function getFeatures() {
 	return (dispatch, getState) => {
 		dispatch(getFeaturesStart());
 
-		fetch("https://d3ocj7sd2go46j.cloudfront.net/API/featured")
-			.then(res => getFeaturesSuccess(res.data))
+		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:3110/API/featured")
+			.then(res => res.json())
+			.then(res => dispatch(getFeaturesSuccess(res)))
 			.catch(error => dispatch(getFeaturesError(error)));
 	}
 }

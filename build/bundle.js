@@ -105602,7 +105602,7 @@
 	function getFeaturesSuccess(payload) {
 		return {
 			type: FEATURE_SUCCESS,
-			items: payload
+			items: payload.data
 		};
 	}
 
@@ -105663,8 +105663,10 @@
 		return function (dispatch, getState) {
 			dispatch(getFeaturesStart());
 
-			fetch("https://d3ocj7sd2go46j.cloudfront.net/API/featured").then(function (res) {
-				return getFeaturesSuccess(res.data);
+			fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:3110/API/featured").then(function (res) {
+				return res.json();
+			}).then(function (res) {
+				return dispatch(getFeaturesSuccess(res));
 			}).catch(function (error) {
 				return dispatch(getFeaturesError(error));
 			});

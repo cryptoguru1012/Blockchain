@@ -7,16 +7,7 @@ const initialState = {
 	dataItems: [],
 	items: [],
 	filter: 'SHOW_ALL',
-	features: [
-{
-title: "Test1",
-linkMedia: {
-url: "http://res.cloudinary.com/argvil19/image/upload/v1494805813/jwrg0ydfn8zsfkrbkgvg.png",
-secureUrl: "https://res.cloudinary.com/argvil19/image/upload/v1494805813/jwrg0ydfn8zsfkrbkgvg.png"
-},
-linkRef: "http://google.com"
-}
-],
+	features: [],
 	loadingFeatures: false
 };
 

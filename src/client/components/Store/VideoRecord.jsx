@@ -122,7 +122,7 @@ class VideoRecord extends React.Component {
   
   onDrop(file) {
    
-    let reader, blob, formData = new FormData();
+    let formData = new FormData();
     
     //reader = new FileReader();
     //reader.readAsDataURL(file[0]);

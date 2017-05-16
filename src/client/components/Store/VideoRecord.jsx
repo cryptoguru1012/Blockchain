@@ -123,10 +123,7 @@ class VideoRecord extends React.Component {
   onDrop(file) {
    
     let formData = new FormData();
-    
-    //reader = new FileReader();
-    //reader.readAsDataURL(file[0]);
-    //blob = reader.result;
+  
     formData.append('photos', file[0] );
 
     if( formData.get('photos')['type'].includes("image/") === false

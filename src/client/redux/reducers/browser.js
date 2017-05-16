@@ -1,4 +1,4 @@
-import { SEARCH_START, SEARCH_ERROR, SEARCH_SUCCESS, ORDER_SEARCH, SET_VISIBILITY_FILTER } from '../actions/browser';
+import { SEARCH_START, SEARCH_ERROR, SEARCH_SUCCESS, FEATURE_START, FEATURE_ERROR, FEATURE_SUCCESS, ORDER_SEARCH, SET_VISIBILITY_FILTER } from '../actions/browser';
 
 const initialState = {
 	error: null,
@@ -6,7 +6,18 @@ const initialState = {
 	message: '',
 	dataItems: [],
 	items: [],
-	filter: 'SHOW_ALL'
+	filter: 'SHOW_ALL',
+	features: [
+{
+title: "Test1",
+linkMedia: {
+url: "http://res.cloudinary.com/argvil19/image/upload/v1494805813/jwrg0ydfn8zsfkrbkgvg.png",
+secureUrl: "https://res.cloudinary.com/argvil19/image/upload/v1494805813/jwrg0ydfn8zsfkrbkgvg.png"
+},
+linkRef: "http://google.com"
+}
+],
+	loadingFeatures: false
 };
 
 const browserReducers = (state = initialState, action) => {
@@ -19,6 +30,15 @@ const browserReducers = (state = initialState, action) => {
 
 		case SEARCH_SUCCESS:
 			return { ...state, error: false, loading: false, dataItems: action.dataItems, items: action.items };
+
+		case FEATURE_START:
+			return { ...state, loadingFeatures: true };
+
+		case FEATURE_ERROR:
+			return { ...state, error: true, loadingFeatures: false, message: action.message };
+
+		case FEATURE_SUCCESS:
+			return { ...state, error: false, loadingFeatures: false, features: action.items };
 
 		case ORDER_SEARCH:
 			return { ...state, items: action.items };

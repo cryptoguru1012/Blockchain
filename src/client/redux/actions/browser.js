@@ -115,7 +115,7 @@ export function getFeatures() {
 	return (dispatch, getState) => {
 		dispatch(getFeaturesStart());
 
-		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:3110/API/featured")
+		fetch("https://d3ocj7sd2go46j.cloudfront.net/API/featured")
 			.then(res => res.json())
 			.then(res => dispatch(getFeaturesSuccess(res)))
 			.catch(error => dispatch(getFeaturesError(error)));

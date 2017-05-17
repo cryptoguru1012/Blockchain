@@ -57,7 +57,7 @@ class MenuBrowser extends React.Component {
 	render() {
 		return (
 			<AppBar
-				title={!this.state.activeSearch ? <p>Shopshot</p>: <SearchBrowser onChangeData={this.handleChangeData} category={this.state.category} regexp={this.state.regexp} />}
+				title={!this.state.activeSearch ? <p style={{fontFamily:'verdana', fontWeight:'bold'}}>Moovr</p>: <SearchBrowser onChangeData={this.handleChangeData} category={this.state.category} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
 				onRightIconButtonTouchTap={this.handleToggleSerch}

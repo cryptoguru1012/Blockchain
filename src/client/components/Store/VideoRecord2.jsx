@@ -40,19 +40,25 @@ class VideoRecord2 extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-//	componentDidMount() {
-//		this.refs.newVideo.click();
-//	}
+	componentDidMount() {
+		this.refs.newVideo.click();
+	}
 
 	handleChange(event) {
 		let blob = event.target.files[0]
 			, url = URL.createObjectURL(blob)
 			, data = new FormData();
 
-		data.append('video', blob, 'videoRecorded.mp4');
-		this.props.onRecorded(data, url);
-	}
+    	data.append('photos', blob );
 
+    	if( data.get('photos')['type'].includes("image/") === false) {
+     		data.delete('photos');
+        	data.append('video', blob, 'videoRecorded.mp4');
+			this.props.onRecorded(data, url);
+    	} else {
+    		this.props.imageUploaded(data);
+    	}	
+	}
 
 	render() {
 		return (

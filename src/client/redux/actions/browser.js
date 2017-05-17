@@ -2,6 +2,9 @@ import 'whatwg-fetch';
 export const SEARCH_START = 'SEARCH_START';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
 export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
+export const FEATURE_START = 'FEATURE_START';
+export const FEATURE_ERROR = 'FEATURE_ERROR';
+export const FEATURE_SUCCESS = 'FEATURE_SUCCESS';
 export const ORDER_SEARCH = 'ORDER_SEARCH';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 
@@ -25,6 +28,27 @@ function searchSuccess(raw, filtered) {
 		items: filtered
 	};
 }
+
+function getFeaturesStart() {
+	return {
+		type: FEATURE_START
+	}
+}
+
+function getFeaturesError(payload) {
+	return {
+		type: FEATURE_ERROR,
+		message: payload
+	}
+}
+
+function getFeaturesSuccess(payload) {
+	return {
+		type: FEATURE_SUCCESS,
+		items: payload.data
+	}
+}
+
 
 function isJson(str) {
     try {
@@ -84,6 +108,17 @@ export function setOrder(order) {
 			type: ORDER_SEARCH,
 			items: items
 		});
+	}
+}
+
+export function getFeatures() {
+	return (dispatch, getState) => {
+		dispatch(getFeaturesStart());
+
+		fetch("http://ec2-35-167-150-241.us-west-2.compute.amazonaws.com:3110/API/featured")
+			.then(res => res.json())
+			.then(res => dispatch(getFeaturesSuccess(res)))
+			.catch(error => dispatch(getFeaturesError(error)));
 	}
 }
 

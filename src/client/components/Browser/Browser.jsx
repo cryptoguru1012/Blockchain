@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { search } from '../../redux/actions/browser';
+import { search, getFeatures } from '../../redux/actions/browser';
 
 import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
@@ -77,12 +77,13 @@ class Browser extends React.Component {
 			category: null
 		};
 		this.props.onSearch(data);
+		this.props.getFeatures();
 	}
 
 	render() {
 		return (
-			<div style={styles.background}>
-				<BrowserCarousel />		
+			<div width="100%">	
+				{this.props.browser.features.length > 0 && <BrowserCarousel items={this.props.browser.features}/>}	
 				<Grid>
 					<FilterBrowser items={filterItems} />
 					<Col xs={12}>
@@ -107,8 +108,8 @@ function mapDispatchToProps(dispatch) {
 		onSearch: (data) => {
 			dispatch(search(data));
 		},
-		onOrder: (order) => {
-			dispatch(setOrder(order));
+		getFeatures: () => {
+			dispatch(getFeatures());
 		}
 	};
 }

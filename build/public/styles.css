@@ -128,10 +128,14 @@ div.slider-container {
   background: #bda869;
   padding: 0;
   margin: 0; }
+  div.slider-container h2 {
+    text-align: center; }
   div.slider-container div.item-slider {
-    padding: 10px; }
+    padding: 2px; }
     div.slider-container div.item-slider img {
-      width: 100%; }
+      width: 100%;
+      position: relative;
+      top: 15px; }
     div.slider-container div.item-slider div.content-slider {
       position: relative;
       left: 0px;

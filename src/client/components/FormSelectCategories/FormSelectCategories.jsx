@@ -13,8 +13,8 @@ class FormSelectCategories extends React.Component {
 	}
 
 	renderCategories() {
-		if (this.props.categories.length > 0) {
-			return this.props.categories.map((category, i) => {
+		if (this.props.categories.categories.length > 0) {
+			return this.props.categories.categories.map((category, i) => {
 				if(i == 0){
 					return (<MenuItem required key={i} value={category.cat} primaryText={category.cat} />);
 				}else{
@@ -26,6 +26,8 @@ class FormSelectCategories extends React.Component {
 	}
 
 	render() {
+		if (this.props.categories.error)
+			alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
 		const props = Object.assign({}, this.props);
 		delete props.categories;
 		delete props.getCategories;
@@ -38,7 +40,8 @@ class FormSelectCategories extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const categories = state.categories.categories;
+  const categories = state.categories;
+  console.log(categories);
 
   return { categories };
 }

@@ -8,6 +8,7 @@ const initialState = {
     loading: false,
     error: null,
     success: false,
+    message: '',
     categories: []
 };
 
@@ -16,7 +17,7 @@ export default function categoryReducer(state = initialState, action) {
         case CATEGORY_REQ_START:
             return { ...state, loading: true };
         case CATEGORY_REQ_ERR:
-            return { ...state, error: true };
+            return { ...state, error: true, message: action.message };
         case CATEGORY_REQ_SUCCESS:
             return { ...state, success: true, categories: action.payload };
             

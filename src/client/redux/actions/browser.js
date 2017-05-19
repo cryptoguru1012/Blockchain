@@ -102,7 +102,7 @@ export function search(data) {
 
 		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				var token = res.token;
 				return fetch("https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?" + query, {
 					"headers": {
@@ -114,10 +114,14 @@ export function search(data) {
 			})
 			.then(res => res.json())
 			.then(res => {
-				let filter = getState().browser.filter
-					, filtered = clusterItems(res)[filter];
+				if (typeof res === 'object') {
+					let filter = getState().browser.filter
+						, filtered = clusterItems(res)[filter];
 
-				return dispatch(searchSuccess(res, filtered))
+					return dispatch(searchSuccess(res, filtered));
+				} else {
+					return dispatch(searchError(res));
+				}
 			})
 			.catch(error => dispatch(searchError(error)));
 	};

@@ -84,11 +84,12 @@ class Browser extends React.Component {
 			<div style={styles.background}>
 				<BrowserCarousel />		
 				<Grid>
-					<FilterBrowser items={filterItems} />
+					{!this.props.browser.error && <FilterBrowser items={filterItems} />}
 					<Col xs={12}>
-						<OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />
+						{!this.props.browser.error && <OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />}
 						{this.props.browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
-						<ListBrowser items={this.props.browser.items} filter={this.props.browser.filter} />
+						{this.props.browser.error && <Row><h3>{this.props.browser.message}</h3></Row>}
+						{!this.props.browser.error && <ListBrowser items={this.props.browser.items} filter={this.props.browser.filter} />}
 					</Col>
 				</Grid>
 			</div>

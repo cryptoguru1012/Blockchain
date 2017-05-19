@@ -6,6 +6,7 @@ import storeReducers                        from './store';
 import videoReducers						from './video';
 import browserReducers						from './browser';
 import offerReducers						from './offer';
+import imageReducers						from './image';
 
 export default combineReducers({
     reduxAsyncConnect,
@@ -16,5 +17,6 @@ export default combineReducers({
     newItem: storeReducers.newItemReducer,
     video: videoReducers,
     browser: browserReducers,
-    offer: offerReducers
+    offer: offerReducers,
+    image: imageReducers
 });

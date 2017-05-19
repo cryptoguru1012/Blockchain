@@ -1,11 +1,9 @@
-import { LOAD_START, LOAD_ERROR, LOAD_SUCCESS, SET_OFFER } from '../actions/image';
+import { LOAD_START, LOAD_ERROR, LOAD_SUCCESS } from '../actions/image';
 
 const initialState = {
 	error: false,
-	success: false,
 	loading: false,
 	message: null,
-	imageUploaded: false,
 	data: {}
 };
 
@@ -18,10 +16,7 @@ const imageReducers = (state = initialState, action) => {
 			return { ...state, error: true, loading: false, message: action.message };
 
 		case LOAD_SUCCESS:
-			return { ...state, success: true, loading: false, data: action.data };
-
-		case SET_OFFER:
-			return { ...state, imageUploaded: true };
+			return { ...state, error: false, loading: false, data: action.data };
 
 		default:
 			return state;

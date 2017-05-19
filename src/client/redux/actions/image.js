@@ -2,18 +2,15 @@ import 'whatwg-fetch';
 export const LOAD_START = 'LOAD_START';
 export const LOAD_ERROR = 'LOAD_ERROR';
 export const LOAD_SUCCESS = 'LOAD_SUCCESS';
-export const SET_OFFER = 'SET_OFFER';
 
 
 function loadStart(payload) {
-	console.log('loadStart');
 	return {
 		type: LOAD_START
 	};
 }
 
 function loadError(payload) {
-	console.log('loadError');
 	return {
 		type: LOAD_ERROR,
 		message: payload
@@ -21,19 +18,10 @@ function loadError(payload) {
 }
 
 function loadSuccess(payload) {
-	console.log('loadSuccess');
 	return { 
 		type: LOAD_SUCCESS,
 		data: payload
 	};
-}
-
-export function setOfferForm() {
-	return (dispatch, getState) => {
-		dispatch({
-			type: SET_OFFER
-		});
-	}
 }
 
 export function setImage(data) {
@@ -46,14 +34,12 @@ export function setImage(data) {
 		})
 		.then(res => res.json())
 		.then(res => {
-			if (!res.files) {
-				dispatch(loadError(null));
+			if (typeof res !== 'object') {
+				return dispatch(loadError(res));
 			} else {
-				dispatch(loadSuccess(res));
+				return dispatch(loadSuccess(res[0]));
 			}
 		})
-		.catch(error => {
-			dispatch(loadError(null));
-		});
+		.catch(error => dispatch(loadError(error)));
 	};
 }

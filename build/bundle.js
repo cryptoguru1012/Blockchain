@@ -97893,6 +97893,9 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      if (!this.props.image.error) {
+	        console.log('data image: ', this.props.image.data);
+	      }
 	      if (this.props.video.loading) {
 	        return _react2.default.createElement(
 	          _reactBootstrap.Grid,
@@ -97931,7 +97934,7 @@
 	        return _react2.default.createElement(
 	          _reactBootstrap.Grid,
 	          null,
-	          this.state.RecordRTC && _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded, imageUploaded: this.props.imageUploaded }),
+	          this.state.RecordRTC && _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded, imageUploaded: this.props.imageUploaded, image: this.props.image }),
 	          !this.state.RecordRTC && _react2.default.createElement(_VideoRecord4.default, { onRecorded: this.props.onRecorded,
 	            imageUploaded: this.props.imageUploaded
 	          })
@@ -98281,6 +98284,10 @@
 
 	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 
+	var _CircularProgress = __webpack_require__(1059);
+
+	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -98481,7 +98488,7 @@
 	          _react2.default.createElement(
 	            _reactBootstrap.Col,
 	            { xs: 3, md: 2, lg: 2 },
-	            _react2.default.createElement(
+	            !this.props.image.loading && _react2.default.createElement(
 	              _materialUi.RaisedButton,
 	              {
 	                containerElement: 'label',
@@ -98494,7 +98501,8 @@
 	                onDrop: function onDrop(file) {
 	                  return _this2.onDrop(file);
 	                } })
-	            )
+	            ),
+	            this.props.image.loading && _react2.default.createElement(_CircularProgress2.default, { size: 100, thickness: 6 })
 	          ),
 	          _react2.default.createElement(
 	            _reactBootstrap.Col,
@@ -127386,6 +127394,10 @@
 
 	var _offer2 = _interopRequireDefault(_offer);
 
+	var _image = __webpack_require__(1661);
+
+	var _image2 = _interopRequireDefault(_image);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = (0, _redux.combineReducers)({
@@ -127397,7 +127409,8 @@
 	    newItem: _store2.default.newItemReducer,
 	    video: _video2.default,
 	    browser: _browser2.default,
-	    offer: _offer2.default
+	    offer: _offer2.default,
+	    image: _image2.default
 	});
 
 /***/ },
@@ -127861,8 +127874,10 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.SET_OFFER = exports.LOAD_SUCCESS = exports.LOAD_ERROR = exports.LOAD_START = undefined;
-	exports.setOfferForm = setOfferForm;
+	exports.LOAD_SUCCESS = exports.LOAD_ERROR = exports.LOAD_START = undefined;
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 	exports.setImage = setImage;
 
 	__webpack_require__(945);
@@ -127870,17 +127885,14 @@
 	var LOAD_START = exports.LOAD_START = 'LOAD_START';
 	var LOAD_ERROR = exports.LOAD_ERROR = 'LOAD_ERROR';
 	var LOAD_SUCCESS = exports.LOAD_SUCCESS = 'LOAD_SUCCESS';
-	var SET_OFFER = exports.SET_OFFER = 'SET_OFFER';
 
 	function loadStart(payload) {
-		console.log('loadStart');
 		return {
 			type: LOAD_START
 		};
 	}
 
 	function loadError(payload) {
-		console.log('loadError');
 		return {
 			type: LOAD_ERROR,
 			message: payload
@@ -127888,18 +127900,9 @@
 	}
 
 	function loadSuccess(payload) {
-		console.log('loadSuccess');
 		return {
 			type: LOAD_SUCCESS,
 			data: payload
-		};
-	}
-
-	function setOfferForm() {
-		return function (dispatch, getState) {
-			dispatch({
-				type: SET_OFFER
-			});
 		};
 	}
 
@@ -127913,13 +127916,13 @@
 			}).then(function (res) {
 				return res.json();
 			}).then(function (res) {
-				if (!res.files) {
-					dispatch(loadError(null));
+				if ((typeof res === 'undefined' ? 'undefined' : _typeof(res)) !== 'object') {
+					return dispatch(loadError(res));
 				} else {
-					dispatch(loadSuccess(res));
+					return dispatch(loadSuccess(res[0]));
 				}
 			}).catch(function (error) {
-				dispatch(loadError(null));
+				return dispatch(loadError(error));
 			});
 		};
 	}
@@ -129620,6 +129623,48 @@
 
 	module.exports = checkPropTypes;
 
+
+/***/ },
+/* 1661 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _image = __webpack_require__(1652);
+
+	var initialState = {
+		error: false,
+		loading: false,
+		message: null,
+		data: {}
+	};
+
+	var imageReducers = function imageReducers() {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+		var action = arguments[1];
+
+		switch (action.type) {
+			case _image.LOAD_START:
+				return _extends({}, state, { loading: true });
+
+			case _image.LOAD_ERROR:
+				return _extends({}, state, { error: true, loading: false, message: action.message });
+
+			case _image.LOAD_SUCCESS:
+				return _extends({}, state, { error: false, loading: false, data: action.data });
+
+			default:
+				return state;
+		}
+	};
+
+	exports.default = imageReducers;
 
 /***/ }
 /******/ ]);

@@ -5,6 +5,7 @@ import Time from './Time';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import { RaisedButton } from 'material-ui';
 import Dropzone from 'react-dropzone';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const styles = {
   white: {
@@ -173,14 +174,15 @@ class VideoRecord extends React.Component {
             />
           </Col>
           <Col xs={3} md={2} lg={2}>
-            <RaisedButton 
+            {!this.props.image.loading && <RaisedButton 
               containerElement='label'
               label="Attach file"
               onClick={ (e) => this.openFileDialog}>
               <Dropzone 
                 style={{"display" : "none"}}
                 onDrop={ (file) => this.onDrop(file)} />
-            </RaisedButton>
+            </RaisedButton>}
+            {this.props.image.loading && <CircularProgress size={100} thickness={6} />}
           </Col>
           <Col xs={3} md={2} lg={2}>
              <Button className="mui-btn mui-btn--fab">?</Button>

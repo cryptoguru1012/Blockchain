@@ -126,7 +126,8 @@ class VideoRecord extends React.Component {
     let formData = new FormData();
   
     formData.append('photos', file[0] );
-
+    window.clearInterval(self.intervalTrigger);
+     
     if( formData.get('photos')['type'].includes("image/") === false
      ) {
       this.setState({open: true});

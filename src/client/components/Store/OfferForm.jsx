@@ -72,6 +72,7 @@ class OfferForm extends React.Component {
 		let description = {
 			text: data.description,
 			urlVideo: this.props.urlVideo,
+			urlImage: this.props.urlImage,
 			subtitlesVideo: this.props.subtitlesVideo
 		};
 		let payload = {

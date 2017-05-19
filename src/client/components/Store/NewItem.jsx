@@ -48,7 +48,7 @@ class NewItem extends React.Component {
     if (!this.props.image.error) {
       console.log('data image: ', this.props.image.data);
     }
-    if (this.props.video.loading) {
+    if (this.props.video.loading || this.props.image.loading) {
       return (
         <Grid>
           <Row>
@@ -61,7 +61,7 @@ class NewItem extends React.Component {
         </Grid>
       );
     }
-    if (this.props.video.videoUploaded) {
+    if (this.props.video.videoUploaded || this.props.image.uploaded) {
       return (
         <Grid>
           <OfferForm
@@ -71,6 +71,7 @@ class NewItem extends React.Component {
             onCreate={this.props.onCreate}
             showSnackbar={this.props.showSnackbar}
             urlVideo={this.props.video.url}
+            urlImage={this.props.image.data.location}
             subtitlesVideo={this.props.video.subtitles}
           />
         </Grid>
@@ -90,6 +91,7 @@ class NewItem extends React.Component {
       <Grid>
         <VideoPlayer
           url={this.props.video.localUrl}
+          image={this.props.image.data}
           onDelete={this.props.onDelete}
           subtitles={this.props.video.subtitles}
           setDuration={this.props.setDuration}

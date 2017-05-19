@@ -6,6 +6,7 @@ import { doCategoryReq } from '../../redux/actions/store/category';
 import { doCurrencyReq } from '../../redux/actions/store/currency';
 import { doItemCreate, showSnackbar } from '../../redux/actions/store/new_item';
 import { setRecord, deleteRecord, setOfferForm, updateSubtitles, setDuration } from '../../redux/actions/video';
+import { setImage } from '../../redux/actions/image';
 
 // components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
@@ -75,8 +76,9 @@ class NewItem extends React.Component {
     if (!this.props.video.recorded || this.props.video.error) {
       return (
         <Grid>
-          {this.state.RecordRTC && <VideoRecord onRecorded={this.props.onRecorded} />}
-          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded} 
+          {this.state.RecordRTC && <VideoRecord onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} />}
+          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded}
+          imageUploaded={this.props.imageUploaded} 
           />}
         </Grid>
       );
@@ -102,16 +104,20 @@ class NewItem extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const image = state.image;
   const video = state.video;
   const categories = state.categories;
   const currencies = state.currencies;
   const newItem = state.newItem;
 
-  return { video, categories, currencies, newItem };
+  return { image, video, categories, currencies, newItem };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    imageUploaded: (data) => {
+      dispatch(setImage(data));
+    },
     onRecorded: (data, url) => {
       dispatch(setRecord(data, url));
     },

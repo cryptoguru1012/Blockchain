@@ -20,7 +20,7 @@ const Footer = React.createClass({
         <div className={fonts.alfaSlabOne} style={{position:"absolute", left:0, right:0, bottom:0 }}>
         {/*  <Row>
             <Col md={12}>*/}
-                <div className={footerStyle.footerContent}> © 2002 - 2017 Shopshot. All rights reserved. </div>
+                <div className={footerStyle.footerContent}> © 2002 - 2017 Moovr. All rights reserved. </div>
             {/*</Col>
           </Row>*/}
         </div>

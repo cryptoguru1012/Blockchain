@@ -64,6 +64,7 @@ class VideoRecord2 extends React.Component {
 
 	render() {
 		return (
+		<Col>
 			<Row>
 				<div style={styles.centerStyle}>
          			<div style={styles.wellStyles}>
@@ -84,6 +85,7 @@ class VideoRecord2 extends React.Component {
 					</div>
 				</div>
 			</Row>
+		</Col>	
 		);
 	}
 }

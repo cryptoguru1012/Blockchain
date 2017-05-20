@@ -51,7 +51,7 @@ class VideoRecord2 extends React.Component {
 			, imageData = new FormData();
 
     	imageData.append('photos', blob );
-
+    	alert(imageData.get('photos')['type']);
     	if( imageData.get('photos')['type'].includes("image/") === true) {
      		this.props.imageUploaded(data);
     	} else {

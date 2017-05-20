@@ -67,9 +67,8 @@ class BrowserCarousel extends React.Component {
 
 	render() {
 		return (
-			<Row className="slider-container">
-				<Col sm={12}>
-					<h2>Featured</h2>   
+			<Row className="slider-container" >
+				<Col>
 					<Slider {...carouselSettings}>
 						{this.renderItem()}
 					</Slider>

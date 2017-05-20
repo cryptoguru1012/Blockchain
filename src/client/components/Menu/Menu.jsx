@@ -34,7 +34,7 @@ class Menu extends Component {
       <div>
         <Navbar fixedTop fluid staticTop className="navegador">
           <AppBar
-            title="Moovr"
+            title="moovr"
             titleStyle= {{ fontFamily:'verdana', fontWeight:'bold'}}
             iconClassNameRight="muidocs-icon-navigation-expand-more"
             className="appbar-color"

@@ -40,23 +40,26 @@ class VideoRecord2 extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	componentDidMount() {
+	videoUpload() {
 		this.refs.newVideo.click();
 	}
 
-	handleChange(event) {
+	handleChangeImage(event) {
 		let blob = event.target.files[0]
 			, url = URL.createObjectURL(blob)
-			, videoData = new FormData()
-			, imageData = new FormData();
+			, data = new FormData();
 
-//    	imageData.append('photos', blob );
-//    	if( imageData.get('photos')['type'].includes("image/") === false) {
+    	imageData.append('photos', blob );
+        	this.props.imageUploaded(data);
+	}
+
+	handleChangeVideo(event) {
+		let blob = event.target.files[0]
+			, url = URL.createObjectURL(blob)
+			, videoData = new FormData();
+
      		videoData.append('video', blob, 'videoRecorded.mp4');
 			this.props.onRecorded(videoData, url);
-//    	} else {
-//        	this.props.imageUploaded(data);
-//    	}	
 	}
 
 	render() {
@@ -64,8 +67,19 @@ class VideoRecord2 extends React.Component {
 			<Row>
 				<div style={styles.centerStyle}>
          			<div style={styles.wellStyles}>
+         			<Button onClick={this.videoUpload}> Upload Video</Button>
 						<form encType="multipart/form-data">
-							<input onChange={this.handleChange} ref="newVideo" style={styles.input} type="file" id="file" accept="video/*;capture=camcorder"/>
+							<input onChange={this.handleChangeVideo} ref="newVideo" style={styles.input} type="file" id="file" accept="video/*;capture=camcorder"/>
+						</form>
+					</div>
+				</div>
+			</Row>
+			<Row>
+				<div style={styles.centerStyle}>
+         			<div style={styles.wellStyles}>
+         			<Button onClick={this.imageUpload}> Upload Image</Button>
+						<form encType="multipart/form-data">
+							<input onChange={this.handleChangeImage} ref="newImage" style={styles.input} type="file" id="file" accept="image/*;capture=camcorder"/>
 						</form>
 					</div>
 				</div>

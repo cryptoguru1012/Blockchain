@@ -174,20 +174,22 @@ class VideoRecord extends React.Component {
               fullWidth
             />
           </Col>
-          <Col xs={3} md={2} lg={2}>
-            {!this.props.image.loading && <RaisedButton 
-              containerElement='label'
-              label="Attach file"
-              onClick={ (e) => this.openFileDialog}>
-              <Dropzone 
-                style={{"display" : "none"}}
-                onDrop={ (file) => this.onDrop(file)} />
-            </RaisedButton>}
-            {this.props.image.loading && <CircularProgress size={100} thickness={6} />}
-          </Col>
-          <Col xs={3} md={2} lg={2}>
-             <Button className="mui-btn mui-btn--fab">?</Button>
-          </Col>
+          <Row>
+            <Col xs={3} md={2} lg={2}>
+              {!this.props.image.loading && <RaisedButton 
+                containerElement='label'
+                label="Upload Image"
+                onClick={ (e) => this.openFileDialog}>
+                <Dropzone 
+                  style={{"display" : "none"}}
+                  onDrop={ (file) => this.onDrop(file)} />
+              </RaisedButton>}
+              {this.props.image.loading && <CircularProgress size={100} thickness={6} />}
+            </Col>
+            <Col xs={3} md={2} lg={2}>
+              <Button className="mui-btn mui-btn--fab">?</Button>
+            </Col>
+          </Row>
         </Row>
       </div>
     );

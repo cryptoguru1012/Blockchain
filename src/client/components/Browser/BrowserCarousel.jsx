@@ -13,13 +13,14 @@ const carouselSettings = {
 	slidesToShow: 4,
 	slidesToScroll: 1,
 	autoplay: true,
+	adaptiveHeight: true,
 	autoplaySpeed: 3000,
 	pauseOnHover: true,
 	responsive: [
 		{
 			breakpoint: 426,
 			settings: {
-				slidesToShow: 1,
+				slidesToShow: 2,
 			},
 		},
 		{
@@ -31,7 +32,7 @@ const carouselSettings = {
 		{
 			breakpoint: 1024,
 			settings: {
-				slidesToShow: 3,
+				slidesToShow: 4,
 			},
 		},
 		{
@@ -66,9 +67,8 @@ class BrowserCarousel extends React.Component {
 
 	render() {
 		return (
-			<Row className="slider-container">
-				<Col sm={12}>
-					<h2>Featured</h2>   
+			<Row className="slider-container" >
+				<Col>
 					<Slider {...carouselSettings}>
 						{this.renderItem()}
 					</Slider>

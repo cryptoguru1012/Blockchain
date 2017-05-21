@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { search } from '../../redux/actions/browser';
+import { doCategoryReq } from '../../redux/actions/store/category';
 
 import { Router, Route, Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
@@ -10,6 +11,7 @@ import SearchBrowser from '../Browser/SearchBrowser';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import { setVisibilityFilter } from '../../redux/actions/browser';
+import  SSIcon from "./icon"
 
 require('./styles/menu.scss');
 
@@ -23,6 +25,8 @@ class MenuBrowser extends React.Component {
 			category: null
 		};
 
+		this.props.getCategories();
+		this.handleCategory=this.handleCategory.bind(this);
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleToggleSerch = this.handleToggleSerch.bind(this);
 		this.handleChangeData = this.handleChangeData.bind(this);
@@ -34,10 +38,10 @@ class MenuBrowser extends React.Component {
 
 	handleToggleSerch() {
 
-		if (this.state.activeSearch && this.state.category !== null) {
+		if (this.state.activeSearch !== null) {
 			let data = {};
 			data.regexp = this.state.regexp;
-			if (this.state.category !== null) data.category = this.state.category;
+			data.category = this.state.category;
 
 			this.props.onSearch(data);
 			console.log('data submited: ', data);
@@ -47,21 +51,62 @@ class MenuBrowser extends React.Component {
 		this.setState({ activeSearch: !this.state.activeSearch });
 	}
 
+	handleCategory(value) {
+			console.log(value);
+			let data = {};
+			this.setState({ 
+				regexp: '',
+				category: value
+			});
+
+			data.regexp = this.state.regexp;
+			data.category = this.state.category;
+
+			this.props.onSearch(data);
+			console.log('data submited: ', data);
+	}
+
 	handleChangeData(data) {
 		if (data.type === 'text')
 			this.setState({regexp: data.value});
 
 		if (data.type === 'category')
 			this.setState({category: data.value});
+			console.log(category);
+	}
+
+	renderCategories() {
+		if (this.props.categories.categories.length > 0) {
+			return this.props.categories.categories.map((category, i) => {
+				if(i == 0){
+					return (<MenuItem required key={i} value={category.cat} 
+					onTouchTap={() => {this.handleCategory(category.cat);}}
+					primaryText={category.cat} />);
+				}else{
+					return (<MenuItem key={i} value={category.cat}
+					onTouchTap={() => {this.handleCategory(category.cat);}}
+					primaryText={category.cat} />);
+				}
+				
+			})
+		}
 	}
 
 	render() {
+		if (this.props.categories.error)
+			alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
+		const props = Object.assign({}, this.props);
+		delete props.categories;
+		delete props.getCategories;
+		let categories = this.renderCategories();
+		
 		return (
 			<AppBar
-				title={!this.state.activeSearch ? <p style={{fontFamily:'verdana', fontWeight:'bold'}}>Moovr</p>: <SearchBrowser onChangeData={this.handleChangeData} category={this.state.category} regexp={this.state.regexp} />}
+				title={!this.state.activeSearch ? <p style={{fontFamily:'verdana', fontWeight:'bold'}}>moovr</p>: <SearchBrowser onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
 				onRightIconButtonTouchTap={this.handleToggleSerch}
+				iconElementLeft={<IconButton><SSIcon /></IconButton>}
 				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
 				<Drawer
@@ -82,6 +127,7 @@ class MenuBrowser extends React.Component {
 							primaryText="Sell"
 						/>
 					</Link>
+					{this.renderCategories()}
 					<Link to="">
 						<MenuItem
 							disabled
@@ -120,8 +166,8 @@ class MenuBrowser extends React.Component {
 
 function mapStateToProps(state) {
 	let browser = state.browser;
-
-	return { browser };
+	const categories = state.categories;
+  	return { categories, browser };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -131,6 +177,9 @@ function mapDispatchToProps(dispatch) {
 		},
 		onClick: () => {
 			dispatch(setVisibilityFilter('SHOW_ALL'))
+		},
+		getCategories: () => {
+		  dispatch(doCategoryReq());
 		}
 	};
 }

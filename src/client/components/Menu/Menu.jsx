@@ -12,6 +12,7 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import  SSIcon from "./icon"
 
 require('./styles/menu.scss');
 
@@ -34,11 +35,12 @@ class Menu extends Component {
       <div>
         <Navbar fixedTop fluid staticTop className="navegador">
           <AppBar
-            title="Moovr"
+            title="moovr"
             titleStyle= {{ fontFamily:'verdana', fontWeight:'bold'}}
             iconClassNameRight="muidocs-icon-navigation-expand-more"
             className="appbar-color"
             onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
+            iconElementLeft={<IconButton><SSIcon /></IconButton>}
             onTouchTap={this.handleToggle.bind(this)}
           />
         </Navbar>

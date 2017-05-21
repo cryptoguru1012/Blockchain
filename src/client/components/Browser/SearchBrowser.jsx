@@ -3,14 +3,12 @@ import React from 'react';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import TextField from 'material-ui/TextField';
-import FormSelectCategories from '../FormSelectCategories';
 
 class SearchBrowser extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.handleChangeText = this.handleChangeText.bind(this);
-		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 	}
 
 	handleChangeText(e) {
@@ -20,18 +18,11 @@ class SearchBrowser extends React.Component {
 		});
 	}
 
-	handleChangeCategory(e, value) {
-		this.props.onChangeData({
-			type: 'category',
-			value: value
-		});
-	}
-
 	render() {
 		return (
 			<Formsy.Form style={{marginTop: '10px'}}>
 				<Row>
-					<Col xs={6}>
+					<Col xs={8}>
 						<TextField
 							name="search"
 							onChange={this.handleChangeText}
@@ -41,20 +32,6 @@ class SearchBrowser extends React.Component {
 							hintStyle={{color: '#fff'}}
 							style={{display:'block'}}
 							fullWidth={true}
-						/>
-					</Col>
-					<Col xs={6}>
-						<FormSelectCategories
-							name="category"
-							onChange={this.handleChangeCategory}
-							value={this.props.category}
-							fullWidth={true}
-							hintText="Category"
-							labelStyle={{color: '#fff'}}
-							menuStyle={{color: '#fff'}}
-							hintStyle={{color: '#fff'}}
-							style={{display:'block'}}
-							required
 						/>
 					</Col>
 				</Row>

@@ -61,7 +61,7 @@ class NewItem extends React.Component {
         </Grid>
       );
     }
-    if (this.props.video.videoUploaded || this.props.image.uploaded) {
+    if (this.props.video.videoUploaded ) {
       return (
         <Grid>
           <OfferForm

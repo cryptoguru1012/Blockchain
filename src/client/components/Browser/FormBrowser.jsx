@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import CircularProgress from 'material-ui/CircularProgress';
-import { IconButton } from 'material-ui';
+import { IconButton } from 'material-ui/IconButton';
 import { FormsyText } from 'formsy-material-ui/lib';
 import Search from 'material-ui/svg-icons/action/search';
 

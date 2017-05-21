@@ -76,10 +76,7 @@ class VideoPlayer extends React.Component {
 		this.player.addEventListener('ended', (e) => {
 			self.player && self.setState({ play: false });
 		});
-		this.player.addEventListener('seeked', function() {
-			self.generateThumbnail();
-		}, false);
-
+		
 		this.player.addEventListener('loadeddata', () =>{
 			this.player.currentTime = 1
 		})

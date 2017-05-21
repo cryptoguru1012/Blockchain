@@ -10,6 +10,7 @@ import MenuItem from 'material-ui/MenuItem';
 import SearchBrowser from '../Browser/SearchBrowser';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+import { setVisibilityFilter } from '../../redux/actions/browser';
 import  SSIcon from "./icon"
 
 require('./styles/menu.scss');
@@ -126,6 +127,15 @@ class MenuBrowser extends React.Component {
 							primaryText="Sell"
 						/>
 					</Link>
+					<Link to="">
+						<MenuItem
+							onTouchTap={()=> {
+								this.setState({ open: !this.state.open });
+								this.props.onClick()}
+							}
+							primaryText="All"
+						/>
+					</Link>
 					{this.renderCategories()}
 					<Link to="">
 						<MenuItem
@@ -164,6 +174,9 @@ function mapDispatchToProps(dispatch) {
 	return {
 		onSearch: (data) => {
 			dispatch(search(data));
+		},
+		onClick: () => {
+			dispatch(setVisibilityFilter('SHOW_ALL'))
 		},
 		getCategories: () => {
 		  dispatch(doCategoryReq());

@@ -127,6 +127,15 @@ class MenuBrowser extends React.Component {
 							primaryText="Sell"
 						/>
 					</Link>
+					<Link to="">
+						<MenuItem
+							onTouchTap={()=> {
+								this.setState({ open: !this.state.open });
+								this.props.onClick()}
+							}
+							primaryText="All"
+						/>
+					</Link>
 					{this.renderCategories()}
 					<Link to="">
 						<MenuItem
@@ -147,15 +156,6 @@ class MenuBrowser extends React.Component {
 							disabled
 							onTouchTap={this.handleToggle}
 							primaryText="Profile"
-						/>
-					</Link>
-					<Link to="">
-						<MenuItem
-							onTouchTap={()=> {
-								this.setState({ open: !this.state.open });
-								this.props.onClick()}
-							}
-							primaryText="All"
 						/>
 					</Link>
 				</Drawer>

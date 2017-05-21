@@ -15,7 +15,6 @@ const styles = {
 	video: {
 		width: '100%',
 		display: 'block',
-		opacity: 0
 	},
 	videoBar: {
 		position: 'relative',
@@ -63,16 +62,6 @@ class VideoPlayer extends React.Component {
 
 	componentWillUnmount() {
 		this.player = false;
-	}
-
-	generateThumbnail() {
-		const c = document.createElement("canvas");
-		const ctx = c.getContext("2d");
-		c.width = 160;
-		c.height = 90;
-		ctx.drawImage(this.player, 0, 0, 160, 90);
-		document.getElementById('poster').appendChild(c)
-		console.log(c)
 	}
 
 	componentDidMount() {
@@ -293,9 +282,7 @@ class VideoPlayer extends React.Component {
 		return (
 			<Row className="video-component" style={styles.videoContainer}>
 				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-					<video preload="metadata" ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
-
-
+					<video preload="auto" ref="player" 	style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
 					</video>
 				</Col>
 				{this.renderControls()}

@@ -15,6 +15,7 @@ const styles = {
 	video: {
 		width: '100%',
 		display: 'block',
+		opacity: 0
 	},
 	videoBar: {
 		position: 'relative',
@@ -64,6 +65,16 @@ class VideoPlayer extends React.Component {
 		this.player = false;
 	}
 
+	generateThumbnail() {
+		const c = document.createElement("canvas");
+		const ctx = c.getContext("2d");
+		c.width = 160;
+		c.height = 90;
+		ctx.drawImage(this.player, 0, 0, 160, 90);
+		document.getElementById('poster').appendChild(c)
+		console.log(c)
+	}
+
 	componentDidMount() {
 		let self = this
 			, duration = 0;
@@ -76,6 +87,14 @@ class VideoPlayer extends React.Component {
 		this.player.addEventListener('ended', (e) => {
 			self.player && self.setState({ play: false });
 		});
+		this.player.addEventListener('seeked', function() {
+			self.generateThumbnail();
+		}, false);
+
+		this.player.addEventListener('loadeddata', () =>{
+			this.player.currentTime = 1
+		})
+
 		this.player.addEventListener('loadedmetadata', (e) => {
 			self.setSubtitles();
 			self.player && self.setState({ duration: self.player.duration });
@@ -165,6 +184,7 @@ class VideoPlayer extends React.Component {
 
 	handleVideoPlay() {
 		if (this.player) {
+			styles.video.opacity = 1
 			this.setState({ play: true });
 			this.player.play();
 		}
@@ -273,7 +293,9 @@ class VideoPlayer extends React.Component {
 		return (
 			<Row className="video-component" style={styles.videoContainer}>
 				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-					<video preload="auto" ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
+					<div id="poster"/>
+					<video preload="auto" poster={this.state.poster}ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
+
 
 					</video>
 				</Col>

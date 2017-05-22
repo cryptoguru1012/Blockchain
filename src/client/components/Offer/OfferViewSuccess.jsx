@@ -29,6 +29,8 @@ class OfferViewSuccess extends React.Component {
 
 	render() {
 		
+		let hasImages = this.state.description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
+		
 		return (
 			<Col xs={12}>
 				<h2>{'Title: ' + this.props.data.title}</h2>
@@ -40,7 +42,7 @@ class OfferViewSuccess extends React.Component {
 				{ this.state.description.urlImage && isJson(this.props.data.description) && 	<img height="400" width="400"
 					src={this.state.description.urlImage}
 				/> }
-				{ !isJson(this.props.data.description) && this.rendeDescription()}
+				{ !isJson(this.props.data.description) && this.rendeDescription() && <img height="400" width="400" src={hasImages}/> }
 			</Col>
 		);
 	}

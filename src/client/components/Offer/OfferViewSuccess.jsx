@@ -24,13 +24,20 @@ class OfferViewSuccess extends React.Component {
 	}
 
 	rendeDescription() {
+		console.log("redenr fn");
 		return <p>{this.state.description}</p>
 	}
 
+	imageGet() {
+			return this.state.description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
+	}
 	render() {
 		
-		let hasImages = this.state.description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
-		
+		let hasImages=''; 
+		if( isJson(this.props.data.description) === false ) {
+			hasImages = this.imageGet();
+		}
+		console.log(this.state.description);
 		return (
 			<Col xs={12}>
 				<h2>{'Title: ' + this.props.data.title}</h2>

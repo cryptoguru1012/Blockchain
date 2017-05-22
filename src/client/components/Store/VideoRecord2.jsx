@@ -78,16 +78,6 @@ class VideoRecord2 extends React.Component {
 					</div>
 				</div>
 			</Row>
-			<Row>
-				<div style={styles.centerStyle}>
-         			<div style={styles.wellStyles}>
-         			<Button onClick={this.imageUpload}> Upload Image</Button>
-						<form encType="multipart/form-data">
-							<input onChange={this.handleChangeImage} ref="newImage" style={styles.input} type="file" id="file" accept="image/*;capture=camcorder"/>
-						</form>
-					</div>
-				</div>
-			</Row>
 		</Col>	
 		);
 	}

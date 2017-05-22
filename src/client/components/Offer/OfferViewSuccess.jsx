@@ -19,7 +19,7 @@ class OfferViewSuccess extends React.Component {
 
 		let description = this.props.data.description;
 		this.state = {
-			description: (isJson(description)) ? JSON.parse(description) : description
+			description: (isJson(description)) ? JSON.parse(description) : description,
 		}
 	}
 
@@ -28,6 +28,7 @@ class OfferViewSuccess extends React.Component {
 	}
 
 	render() {
+		
 		return (
 			<Col xs={12}>
 				<h2>{'Title: ' + this.props.data.title}</h2>

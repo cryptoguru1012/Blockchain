@@ -79,9 +79,13 @@ class MenuBrowser extends React.Component {
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {
 				if(i == 0){
-					return (<MenuItem required key={i} value={category.cat} 
-					onTouchTap={() => {this.handleCategory(category.cat);}}
-					primaryText={category.cat} />);
+					return (<div>
+							<MenuItem required key={i} value={category.cat} 
+							primaryText={category.cat} />
+							<MenuItem required key={i} value={category.cat} 
+							onTouchTap={() => {this.handleCategory(category.cat);}}
+							primaryText={category.cat} />);
+							</div>
 				}else{
 					return (<MenuItem key={i} value={category.cat}
 					onTouchTap={() => {this.handleCategory(category.cat);}}
@@ -127,6 +131,9 @@ class MenuBrowser extends React.Component {
 							primaryText="Sell"
 						/>
 					</Link>
+					<MenuItem
+						primaryText="Categories"
+					/>
 					<Link to="">
 						<MenuItem
 							onTouchTap={()=> {

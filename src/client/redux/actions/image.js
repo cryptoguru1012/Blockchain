@@ -27,10 +27,15 @@ function loadSuccess(payload) {
 export function setImage(data) {
 	return (dispatch, getState) => {
 		dispatch(loadStart());
+
+    // This is a hack to check if data is the FormData which composed from formdata-polyfill
+    // If yes, convert it to native FormData
+    const nativeData = data._asNative ? data._asNative() : data
+		
 		fetch('https://d3j22jloo6hpq6.cloudfront.net/API/upload', {
 			method: "POST",
 			mode: 'cors',
-			body: data
+			body: nativeData
 		})
 		.then(res => res.json())
 		.then(res => {

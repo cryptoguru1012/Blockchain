@@ -61,7 +61,7 @@ class NewItem extends React.Component {
         </Grid>
       );
     }
-    if (this.props.video.videoUploaded ) {
+    if (this.props.video.videoUploaded || this.props.image.uploaded) {
       return (
         <Grid>
           <OfferForm
@@ -83,7 +83,7 @@ class NewItem extends React.Component {
           {this.state.RecordRTC && <VideoRecord onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>}
           {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded}
           imageUploaded={this.props.imageUploaded} 
-          image={this.props.image}/>}
+          image={this.props.image}image={this.props.image}/>}
         </Grid>
       );
     }

@@ -23,6 +23,9 @@ const styles = {
 		height: '30px',
 		backgroundColor: '#e0e0e0',
 	},
+	poster: {
+		lineHeight: '0px'
+	},
 	statusBar: {
 		position: 'absolute',
 		top: '0px',
@@ -47,7 +50,8 @@ class VideoPlayer extends React.Component {
 		this.state = {
 			play: false,
 			duration: 0,
-			counter: 0
+			counter: 0,
+			showPoster: true
 		};
 
 		this.player;
@@ -64,6 +68,20 @@ class VideoPlayer extends React.Component {
 		this.player = false;
 	}
 
+	generateThumbnail() {
+		if(this.player.currentTime == 1){
+			const c = document.createElement("canvas");
+			const ctx = c.getContext("2d");
+			c.width = 160;
+			c.style.width = "100%"
+			c.style.height = "330px"
+			ctx.drawImage(this.player, 0, 0);
+			document.getElementById('poster').appendChild(c)
+			this.player.currentTime = 0
+		}
+		
+	}
+
 	componentDidMount() {
 		let self = this
 			, duration = 0;
@@ -76,10 +94,19 @@ class VideoPlayer extends React.Component {
 		this.player.addEventListener('ended', (e) => {
 			self.player && self.setState({ play: false });
 		});
+
+		this.player.addEventListener('seeked', function() {
+			self.generateThumbnail();
+		}, false);
+
 		this.player.addEventListener('loadedmetadata', (e) => {
 			self.setSubtitles();
 			self.player && self.setState({ duration: self.player.duration });
+			this.player.currentTime = 1
+			console.log('loaded meta data')
+
 		});
+
 		this.player.addEventListener('timeupdate', (e) => {
 			self.player && self.setState({
 				counter: self.player.currentTime,
@@ -165,6 +192,9 @@ class VideoPlayer extends React.Component {
 
 	handleVideoPlay() {
 		if (this.player) {
+			if(this.state.showPoster){
+				this.setState({showPoster: false})
+			}
 			this.setState({ play: true });
 			this.player.play();
 		}
@@ -263,6 +293,7 @@ class VideoPlayer extends React.Component {
 	}
 
 	render() {
+		let videoStyle = Object.assign(styles.video, {display: this.state.showPoster ? 'none' : 'block'})
 		let handleMouseOver = () => false
 			, handleMouseLeave = () => false;
 
@@ -273,8 +304,22 @@ class VideoPlayer extends React.Component {
 		return (
 			<Row className="video-component" style={styles.videoContainer}>
 				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-					<video preload="auto" ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
-
+					{this.state.showPoster && 
+						<div id="poster" style={styles.poster}
+						onMouseOver={
+							() => {
+									this.setState({showPoster: false}); 
+									this.handleVideoPlay()
+							}
+						} 
+						onClick={
+							() => {
+									this.setState({showPoster: false}); 
+									this.handleVideoPlay()
+								}	
+						}/>
+					}
+					<video preload="auto" ref="player" style={videoStyle} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
 					</video>
 				</Col>
 				{this.renderControls()}

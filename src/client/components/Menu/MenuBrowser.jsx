@@ -63,6 +63,7 @@ class MenuBrowser extends React.Component {
 
 			this.props.onSearch(data);
 			console.log('data submited: ', data);
+			this.handleToggle();
 	}
 
 	handleChangeData(data) {
@@ -126,6 +127,20 @@ class MenuBrowser extends React.Component {
 							primaryText="Sell"
 						/>
 					</Link>
+					<MenuItem
+						disabled
+						primaryText="Categories"
+					/>
+					<Link to="">
+						<MenuItem
+							onTouchTap={this.handleToggle}
+							primaryText="All"
+						/>
+					</Link>
+					<MenuItem
+						disabled
+						primaryText="For Sale"
+					/>
 					{this.renderCategories()}
 					<Link to="">
 						<MenuItem

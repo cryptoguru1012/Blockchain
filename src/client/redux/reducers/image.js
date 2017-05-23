@@ -4,7 +4,7 @@ const initialState = {
 	error: false,
 	loading: false,
 	message: null,
-	uploaded: false,
+	loaded: false,
 	data: {}
 };
 
@@ -14,10 +14,10 @@ const imageReducers = (state = initialState, action) => {
 			return { ...state, loading: true };
 
 		case LOAD_ERROR:
-			return { ...state, uploaded:false, error: true, loading: false, message: action.message };
+			return { ...state, loaded:false, error: true, loading: false, message: action.message };
 
 		case LOAD_SUCCESS:
-			return { ...state, uploaded:true, error: false, loading: false, data: action.data };
+			return { ...state, loaded:true, error: false, loading: false, data: action.data };
 
 		default:
 			return state;

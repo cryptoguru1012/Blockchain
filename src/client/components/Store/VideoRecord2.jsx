@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Row, Col, Grid, Button } from 'react-bootstrap';
 
+import FormData from 'formdata-polyfill';
+
 const styles = {
 	wellStyles: {
 		width: '330px',
@@ -13,12 +15,12 @@ const styles = {
 		alignItems: 'center',
 	},
 	input: {
-		width: '0.1px',
-		height: '0.1px',
-		opacity: '0',
+		width: '100px',
+		height: '30px',
+//		opacity: '0',
 		overflow: 'hidden',
-		position: 'absolute',
-		zIndex: '-1'
+//		position: 'absolute',
+//		zIndex: '-1'
 	},
 	label: {
 		width: '100%',
@@ -49,8 +51,14 @@ class VideoRecord2 extends React.Component {
 			, url = URL.createObjectURL(blob)
 			, data = new FormData();
 
+		let type = blob.type || "";
+		let isVideo = type.startsWith('video/');
+		let isImage = type.startsWith('image/');
+
 		data.append('video', blob, 'videoRecorded.mp4');
-		this.props.onRecorded(data, url);
+
+    isVideo && this.props.onRecorded(data, url);
+    isImage && this.props.imageUploaded(data);
 	}
 
 

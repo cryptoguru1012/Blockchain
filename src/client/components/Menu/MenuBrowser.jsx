@@ -7,10 +7,12 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import {List, ListItem} from 'material-ui/List';
 import SearchBrowser from '../Browser/SearchBrowser';
 import IconButton from 'material-ui/IconButton';
+import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
-import  SSIcon from "./icon"
+import  SSIcon from "./icon";
 
 require('./styles/menu.scss');
 
@@ -21,6 +23,8 @@ class MenuBrowser extends React.Component {
 			open: false,
 			activeSearch: false,
 			regexp: '',
+			safesearch: 'no',
+			from: 8,
 			category: ''
 		};
 
@@ -53,10 +57,7 @@ class MenuBrowser extends React.Component {
 	handleCategory(value) {
 			console.log(value);
 			let data = {};
-			this.setState({ 
-				regexp: '',
-				category: value
-			});
+						
 
 			data.regexp = this.state.regexp;
 			data.category = this.state.category;
@@ -72,22 +73,22 @@ class MenuBrowser extends React.Component {
 
 		if (data.type === 'category')
 			this.setState({category: data.value});
-			console.log(category);
 	}
 
-	renderCategories() {
+	renderCategories( start, stop) {
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {
-				if(i == 0){
-					return (<MenuItem required key={i} value={category.cat} 
-					onTouchTap={() => {this.handleCategory(category.cat);}}
-					primaryText={category.cat} />);
-				}else{
-					return (<MenuItem key={i} value={category.cat}
-					onTouchTap={() => {this.handleCategory(category.cat);}}
-					primaryText={category.cat} />);
+				if( i >= start && i < stop) {
+					if(i == 0){
+						return (<MenuItem required key={i} value={category.cat} 
+						onTouchTap={() => {this.handleCategory(category.cat);}}
+						primaryText={category.cat} />);
+					}else{
+						return (<MenuItem key={i} value={category.cat}
+						onTouchTap={() => {this.handleCategory(category.cat);}}
+						primaryText={category.cat} />);
+					}
 				}
-				
 			})
 		}
 	}
@@ -117,7 +118,10 @@ class MenuBrowser extends React.Component {
 					<AppBar showMenuIconButton={false} title="Menu" />
 					<Link to="/">
 						<MenuItem
-							onTouchTap={this.handleToggle}
+							onTouchTap={ (e) => 
+								{this.setState({regexp: null,
+												category:null});
+									this.handleToggle}}
 							primaryText="Home"
 						/>
 					</Link>
@@ -127,21 +131,30 @@ class MenuBrowser extends React.Component {
 							primaryText="Sell"
 						/>
 					</Link>
-					<MenuItem
-						disabled
+					<ListItem
 						primaryText="Categories"
-					/>
-					<Link to="">
-						<MenuItem
-							onTouchTap={this.handleToggle}
-							primaryText="All"
-						/>
-					</Link>
-					<MenuItem
-						disabled
-						primaryText="For Sale"
-					/>
-					{this.renderCategories()}
+						nestedItems={[
+							<MenuItem
+								onTouchTap={this.handleToggle}
+								primaryText="All"
+								containerElement={<Link to=""/>}
+							/>,
+						<ListItem
+							primaryText="For Sale"
+							nestedItems={this.renderCategories(0,27)}
+						/>,
+						<ListItem
+							primaryText="Services"
+							nestedItems={this.renderCategories(27,36)}
+						/>,
+						<ListItem
+							primaryText="Wanted"
+							nestedItems={this.renderCategories(36,37)}
+						/>,
+						<ListItem
+							primaryText="Certificates"
+							nestedItems={this.renderCategories(37,42)}
+						/>]} />
 					<Link to="">
 						<MenuItem
 							disabled
@@ -153,7 +166,7 @@ class MenuBrowser extends React.Component {
 						<MenuItem
 							disabled
 							onTouchTap={this.handleToggle}
-							primaryText="Register"
+								primaryText="Register"
 						/>
 					</Link>
 					<Link to="">

@@ -38,24 +38,10 @@ class VideoRecord2 extends React.Component {
 		super(props);
 
 		this.handleChange = this.handleChange.bind(this);
-		this.handleChangeImage = this.handleChangeImage.bind(this);
-		this.handleChangeVideo = this.handleChangeVideo.bind(this);
 	}
 
-	videoUpload() {
+	componentDidMount() {
 		this.refs.newVideo.click();
-	}
-	imageUpload() {
-		this.refs.newImage.click();
-	}
-
-	handleChangeImage(event) {
-		let blob = event.target.files[0]
-			, url = URL.createObjectURL(blob)
-			, data = new FormData();
-
-    	imageData.append('photos', blob );
-        	this.props.imageUploaded(data);
 	}
 
 	handleChangeVideo(event) {
@@ -73,19 +59,8 @@ class VideoRecord2 extends React.Component {
 			<Row>
 				<div style={styles.centerStyle}>
          			<div style={styles.wellStyles}>
-         			<Button onClick={this.videoUpload}> Upload Video</Button>
-						<form encType="multipart/form-data">
+ 						<form encType="multipart/form-data">
 							<input onChange={this.handleChangeVideo} ref="newVideo" type="file" id="file" accept="video/*;capture=camcorder"/>
-						</form>
-					</div>
-				</div>
-			</Row>
-			<Row>
-				<div style={styles.centerStyle}>
-         			<div style={styles.wellStyles}>
-         			<Button onClick={this.imageUpload}> Upload Image</Button>
-						<form encType="multipart/form-data">
-							<input onChange={this.handleChangeImage} ref="newImage" type="file" id="file" accept="image/*;capture=camcorder"/>
 						</form>
 					</div>
 				</div>

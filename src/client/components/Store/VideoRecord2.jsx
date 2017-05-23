@@ -38,6 +38,8 @@ class VideoRecord2 extends React.Component {
 		super(props);
 
 		this.handleChange = this.handleChange.bind(this);
+		this.handleChangeImage = this.handleChangeImage.bind(this);
+		this.handleChangeVideo = this.handleChangeVideo.bind(this);
 	}
 
 	videoUpload() {

@@ -21,7 +21,7 @@ class MenuBrowser extends React.Component {
 			open: false,
 			activeSearch: false,
 			regexp: '',
-			category: null
+			category: ''
 		};
 
 		this.props.getCategories();

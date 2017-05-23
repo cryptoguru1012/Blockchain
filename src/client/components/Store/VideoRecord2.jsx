@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Row, Col, Grid, Button } from 'react-bootstrap';
 
-import FormData from 'formdata-polyfill';
-
 const styles = {
 	wellStyles: {
 		width: '330px',
@@ -61,7 +59,7 @@ class VideoRecord2 extends React.Component {
 		}
 		if(isImage) {
 			data.append('photos', blob);
-			isImage && this.props.imageUploaded(data);
+			this.props.imageUploaded(data);
 		}
     }
 
@@ -72,7 +70,7 @@ class VideoRecord2 extends React.Component {
 				<div style={styles.centerStyle}>
          			<div style={styles.wellStyles}>
 						<form encType="multipart/form-data">
-							<input onChange={this.handleChange} ref="newVideo" style={styles.input} type="file" id="file" accept="video/mp4;image/*;capture=camcorder"/>
+							<input onChange={this.handleChange} ref="newVideo" style={styles.input} type="file" id="file" accept="video/*;image/*;capture=camcorder"/>
 						</form>
 					</div>
 				</div>

@@ -197,4 +197,3 @@ class VideoRecord extends React.Component {
 }
 
 export default VideoRecord;
-

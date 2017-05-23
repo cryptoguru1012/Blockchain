@@ -100,7 +100,6 @@ class MenuBrowser extends React.Component {
 		const props = Object.assign({}, this.props);
 		delete props.categories;
 		delete props.getCategories;
-		let categories = this.renderCategories();
 		
 		return (
 			<AppBar

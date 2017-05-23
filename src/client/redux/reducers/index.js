@@ -3,10 +3,10 @@ import { reducer as reduxAsyncConnect }     from 'redux-connect';
 import { showItems }                        from './items';
 import registerReducer                      from './register';
 import storeReducers                        from './store';
-import videoReducers						from './video';
-import browserReducers						from './browser';
-import offerReducers						from './offer';
-import imageReducers						from './image';
+import videoReducers                        from './video';
+import browserReducers                      from './browser';
+import offerReducers                        from './offer';
+import imageReducers                        from './image';
 
 export default combineReducers({
     reduxAsyncConnect,

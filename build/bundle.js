@@ -41873,10 +41873,11 @@
 				    data = new _formdataPolyfill2.default();
 	
 				var type = blob.type || "";
-				var isVideo = type.startsWith('video/');
-				var isImage = type.startsWith('image/');
+				var isVideo = type.includes('video/');
+				var isImage = type.includes('image/');
 	
-				if (isVideo) data.append('video', blob, 'videoRecorded.mp4');else data.append('photos', blob);
+				if (isVideo) data.append('video', blob, 'videoRecorded.mp4');
+				if (isImage) data.append('photos', blob);
 	
 				isVideo && this.props.onRecorded(data, url);
 				isImage && this.props.imageUploaded(data);

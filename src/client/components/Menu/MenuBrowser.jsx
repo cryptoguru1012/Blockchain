@@ -10,7 +10,6 @@ import MenuItem from 'material-ui/MenuItem';
 import SearchBrowser from '../Browser/SearchBrowser';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
-import { setVisibilityFilter } from '../../redux/actions/browser';
 import  SSIcon from "./icon"
 
 require('./styles/menu.scss');
@@ -22,8 +21,7 @@ class MenuBrowser extends React.Component {
 			open: false,
 			activeSearch: false,
 			regexp: '',
-			category: null,
-			title: null
+			category: null
 		};
 
 		this.props.getCategories();
@@ -80,7 +78,6 @@ class MenuBrowser extends React.Component {
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {
 				if(i == 0){
-					
 					return (<MenuItem required key={i} value={category.cat} 
 					onTouchTap={() => {this.handleCategory(category.cat);}}
 					primaryText={category.cat} />);
@@ -100,6 +97,7 @@ class MenuBrowser extends React.Component {
 		const props = Object.assign({}, this.props);
 		delete props.categories;
 		delete props.getCategories;
+		let categories = this.renderCategories();
 		
 		return (
 			<AppBar
@@ -126,18 +124,6 @@ class MenuBrowser extends React.Component {
 						<MenuItem
 							onTouchTap={this.handleToggle}
 							primaryText="Sell"
-						/>
-					</Link>
-					<MenuItem
-						primaryText="Categories"
-					/>
-					<Link to="">
-						<MenuItem
-							onTouchTap={()=> {
-								this.setState({ open: !this.state.open });
-								this.props.onClick()}
-							}
-							primaryText="All"
 						/>
 					</Link>
 					{this.renderCategories()}
@@ -178,9 +164,6 @@ function mapDispatchToProps(dispatch) {
 	return {
 		onSearch: (data) => {
 			dispatch(search(data));
-		},
-		onClick: () => {
-			dispatch(setVisibilityFilter('SHOW_ALL'))
 		},
 		getCategories: () => {
 		  dispatch(doCategoryReq());

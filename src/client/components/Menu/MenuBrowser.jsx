@@ -24,8 +24,7 @@ class MenuBrowser extends React.Component {
 			activeSearch: false,
 			regexp: '',
 			safesearch: 'no',
-			from: 8,
-			category: ''
+			from: parseInt("226a4f45f3393f22"),
 		};
 
 		this.props.getCategories();

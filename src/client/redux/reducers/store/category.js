@@ -17,9 +17,9 @@ export default function categoryReducer(state = initialState, action) {
         case CATEGORY_REQ_START:
             return { ...state, loading: true };
         case CATEGORY_REQ_ERR:
-            return { ...state, error: true, message: action.message };
+            return { ...state, loading: false, error: true, message: action.message };
         case CATEGORY_REQ_SUCCESS:
-            return { ...state, success: true, categories: action.payload };
+            return { ...state, loading: false, success: true, categories: action.payload };
             
         default:
             return state;

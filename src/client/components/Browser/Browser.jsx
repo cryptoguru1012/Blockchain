@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { search, getFeatures } from '../../redux/actions/browser';
+import { search, getFeatures, setOrder } from '../../redux/actions/browser';
 
 import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
@@ -111,6 +111,9 @@ function mapDispatchToProps(dispatch) {
 		},
 		getFeatures: () => {
 			dispatch(getFeatures());
+		},
+		onOrder: (data) => {
+			dispatch(setOrder(data));
 		}
 	};
 }

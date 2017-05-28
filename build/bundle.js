@@ -108455,15 +108455,45 @@
 		function ListBrowser(props) {
 			_classCallCheck(this, ListBrowser);
 
-			return _possibleConstructorReturn(this, (ListBrowser.__proto__ || Object.getPrototypeOf(ListBrowser)).call(this, props));
+			var _this = _possibleConstructorReturn(this, (ListBrowser.__proto__ || Object.getPrototypeOf(ListBrowser)).call(this, props));
+
+			_this.getErrorHeader = _this.getErrorHeader.bind(_this);
+			return _this;
 		}
 
 		_createClass(ListBrowser, [{
+			key: 'getErrorHeader',
+			value: function getErrorHeader() {
+				var key = this.props.filter;
+				var text = void 0;
+
+				switch (key) {
+					case 'SHOW_TEXT':
+						text = 'Text';
+						break;
+					case 'SHOW_PHOTOS':
+						text = 'Images';
+						break;
+					case 'SHOW_VIDEOS':
+						text = 'Videos';
+						break;
+					default:
+						text = 'items';
+						break;
+				}
+				return _react2.default.createElement(
+					'h3',
+					null,
+					'No ' + text + ' to display, you have to perform a new search or just change the filter'
+				);
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
 					null,
+					this.props.items.length < 1 && this.getErrorHeader(),
 					this.props.filter === 'SHOW_TEXT' && _react2.default.createElement(_TableViewItemsBrowser2.default, { items: this.props.items }),
 					this.props.filter === 'SHOW_ALL' && _react2.default.createElement(_TableViewItemsBrowser2.default, { items: this.props.items, media: true }),
 					this.props.filter !== 'SHOW_TEXT' && this.props.filter !== 'SHOW_ALL' && _react2.default.createElement(_GridsViewItemsBrowser2.default, { items: this.props.items })

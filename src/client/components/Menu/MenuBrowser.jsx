@@ -134,23 +134,28 @@ class MenuBrowser extends React.Component {
 						primaryText="Categories"
 						nestedItems={[
 							<MenuItem
+								key={0}
 								onTouchTap={this.handleToggle}
 								primaryText="All"
 								containerElement={<Link to=""/>}
 							/>,
 						<ListItem
+							key={1}
 							primaryText="For Sale"
 							nestedItems={this.renderCategories(0,27)}
 						/>,
 						<ListItem
+							key={2}
 							primaryText="Services"
 							nestedItems={this.renderCategories(27,36)}
 						/>,
 						<ListItem
+							key={3}
 							primaryText="Wanted"
 							nestedItems={this.renderCategories(36,37)}
 						/>,
 						<ListItem
+							key={4}
 							primaryText="Certificates"
 							nestedItems={this.renderCategories(37,42)}
 						/>]} />

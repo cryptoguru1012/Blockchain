@@ -157,7 +157,7 @@ class OfferForm extends React.Component {
 							value={this.state.autoDescription}
 							floatingLabelText="Description"
 							hintText="Item description"
-							validations="isWords"
+							validations="isAlphaNumeric"
 							validationError="This field cannot be empty."
 							required
 							fullWidth

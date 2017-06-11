@@ -74,6 +74,7 @@ class Browser extends React.Component {
 			regexp: null,
 			safesearch: 'No',
 			category: null,
+			from: '19f5d9ef37b30311'
 		};
 		this.props.onSearch(data);
 		this.props.getFeatures();

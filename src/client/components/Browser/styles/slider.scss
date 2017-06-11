@@ -13,9 +13,9 @@ div.slider-container{
 	margin: 0;
 	height: 30%;
 	h2 {
-		padding: 0;
-		margin: 0;
-	   text-align: center;	   
+		text-indent: 50px;
+	   	text-align: left;
+	   	color: white;	   
 	}
 	div.item-slider {
 
@@ -40,7 +40,7 @@ div.slider-container{
 						margin-right: 0px;
 						color: rgb(255, 255, 255);
 						overflow: hidden;
-
+						text-align: center;
 							span.comment {
 								font-size: 16px;
 								text-overflow: ellipsis;

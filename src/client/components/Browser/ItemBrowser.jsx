@@ -9,7 +9,7 @@ import { Link } from 'react-router';
 require('./styles/item-browser.scss');
 
 let styles = {
-	
+
 	infoContainer: {
 		position: 'absolute',
 		zIndex: '1',
@@ -49,7 +49,6 @@ class ItemBrowser extends React.Component {
 			if (hasImages)
 				images = hasImages;
 		}
-
 		this.state = {
 			description: description,
 			images: images,

@@ -19,7 +19,7 @@ function searchError(payload) {
 }
 
 function searchSuccess(raw, filtered) {
-	return { 
+	return {
 		type: SEARCH_SUCCESS,
 		dataItems: raw,
 		items: filtered
@@ -42,7 +42,7 @@ function clusterItems(items) {
 
 	items.map(item => {
 		let description = item.description;
-		
+
 		if (isJson(description))
 			hasVideo.push(item);
 		else
@@ -54,8 +54,8 @@ function clusterItems(items) {
 
 	return ({
 		SHOW_ALL: items,
-		SHOW_VIDEOS: hasVideo, 
-		SHOW_PHOTOS: hasPhoto, 
+		SHOW_VIDEOS: hasVideo,
+		SHOW_PHOTOS: hasPhoto,
 		SHOW_TEXT: hasOnlyText
 	})
 }
@@ -96,10 +96,10 @@ export function search(data) {
 			.map(k => {
 				let a = esc(k)
 					, b = (data[k]) ? '=' + esc(data[k]) : '';
-				return a + b 
+				return a + b
 			})
-			.join('&');
-
+			.join(esc('&'));
+			
 		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
 			.then(res => res.json())
 			.then((res) => {

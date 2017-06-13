@@ -41,7 +41,10 @@ class Browser extends React.Component {
 
 	componentDidMount() {
 		let data = {
-			from: 8
+			regexp: "",
+			from: 8,
+			safesearch: 'Yes',
+			category: ""
 		};
 		this.props.onSearch(data);
 	}
@@ -50,13 +53,9 @@ class Browser extends React.Component {
 		// go next
 		const item_guid = this.props.browser.dataItems.pop();
 		 let params = {
-			regexp: null,
-			from: item_guid["offer"],
-			safesearch: 'Yes',
-			category: null
+			from: item_guid["offer"]
 		};
 
-		console.log(params, this.props.getNextOffers);
 		this.props.getNextOffers(params);
 		this.setState({ current: this.state.current + 1})
 	}
@@ -71,7 +70,6 @@ class Browser extends React.Component {
 			category: null
 		};
 
-		console.log(params, this.props.getNextOffers);
 		this.props.getNextOffers(params);
 		this.state.current === 0 && this.setState({ current: 0});
 		this.state.current > 0 && this.setState({ current: this.state.current - 1});

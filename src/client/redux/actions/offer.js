@@ -20,7 +20,7 @@ function loadError(payload) {
 
 function loadSuccess(payload) {
 	console.log('loadSuccess');
-	return { 
+	return {
 		type: LOAD_SUCCESS,
 		data: payload
 	};
@@ -42,6 +42,7 @@ export function getOfferData(guid) {
 			})
 			.then(res => res.json())
 			.then(res => {
+				console.log(res);
 				if (typeof res === 'string')
 					dispatch(loadError(res))
 				else

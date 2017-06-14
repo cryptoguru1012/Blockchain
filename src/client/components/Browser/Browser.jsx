@@ -77,7 +77,7 @@ class Browser extends React.Component {
 
 	componentDidMount() {
 		let data = {
-			from: '19f5d9ef37b30311',
+			from: "",
 			regexp: "",
 			safesearch: 'Yes',
 			category: ""

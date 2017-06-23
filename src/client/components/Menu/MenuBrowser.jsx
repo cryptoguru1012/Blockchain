@@ -15,6 +15,7 @@ import ActionSearch from 'material-ui/svg-icons/action/search';
 import  SSIcon from "./icon";
 
 require('./styles/menu.scss');
+require('./styles/style.css');
 
 class MenuBrowser extends React.Component {
 	constructor(props) {
@@ -94,6 +95,7 @@ class MenuBrowser extends React.Component {
 	}
 
 	render() {
+		
 		if (this.props.categories.error)
 			alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
 		const props = Object.assign({}, this.props);
@@ -102,6 +104,7 @@ class MenuBrowser extends React.Component {
 		let categories = this.renderCategories();
 		
 		return (
+			
 			<AppBar
 				title={!this.state.activeSearch ? <p style={{fontFamily:'verdana', fontWeight:'bold'}}>moovr</p>: <SearchBrowser onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
@@ -110,7 +113,7 @@ class MenuBrowser extends React.Component {
 				iconElementLeft={<IconButton><SSIcon /></IconButton>}
 				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
-				<Drawer
+				<Drawer className="setStyle" 
 					open={this.state.open}
 					docked={false}
 					onRequestChange={open => this.setState({ open })}
@@ -150,7 +153,7 @@ class MenuBrowser extends React.Component {
 							primaryText="Services"
 							nestedItems={this.renderCategories(27,36)}
 						/>,
-						<ListItem
+						<ListItem className="aaa"
 							key={3}
 							primaryText="Wanted"
 							nestedItems={this.renderCategories(36,37)}

@@ -37,11 +37,13 @@ class OfferViewSuccess extends React.Component {
 		if( isJson(this.props.data.description) === false ) {
 			hasImages = this.imageGet();
 		}
-		console.log(this.state.description);
+		console.log(this.state.description.urlImage);
+		debugger;
 		return (
 			<Col xs={12}>
 				<h2>{'Title: ' + this.props.data.title}</h2>
 				<h3>{'Price: ' + this.props.data.price + ' ' + this.props.data.currency}</h3>
+				
 				{ this.state.description.urlVideo && isJson(this.props.data.description) && <VideoPlayer
 					url={this.state.description.urlVideo}
 					subtitles={this.state.description.subtitlesVideo}
@@ -50,6 +52,9 @@ class OfferViewSuccess extends React.Component {
 					src={this.state.description.urlImage}
 				/> }
 				{ !isJson(this.props.data.description) && this.rendeDescription() && <img height="400" width="400" src={hasImages}/> }
+				<br />
+				<label>Description</label> 
+				<p> {this.state.description}</p>
 			</Col>
 		);
 	}

@@ -96,7 +96,7 @@ class TableViewItemsBrowser extends React.Component {
 			const mediaData = this.getMedia(item.description);
 			return (
 				<tr key={item.txid}>
-					{this.props.media && <th>{this.renderMedia(mediaData)}</th>}
+
 					<td><Link to={'/offer/' + item.offer}>{item.title}</Link></td>
 					<td>{item.alias}</td> 
 					<td>{item.price}</td>
@@ -108,7 +108,7 @@ class TableViewItemsBrowser extends React.Component {
 			<table className="grids">
 				<thead>
 					<tr>
-						{this.props.media && <th>Media</th>}
+
 						<th>Title</th>
 						<th>Vendor</th> 
 						<th>Price</th>

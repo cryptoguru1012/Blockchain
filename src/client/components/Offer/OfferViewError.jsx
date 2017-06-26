@@ -12,7 +12,8 @@ class OfferViewError extends React.Component {
 	render() {
 		return (
 			<Col xs={12}>
-				<h2>Offer not found. :(</h2>
+				<h2>New offers typically appear in 1-2 minutes.
+				<br/> Please wait or <a href="/">GO BACK</a> or <a href="/store/newItem">SUBMIT NEW OFFER</a></h2>
 			</Col>
 		);
 	}

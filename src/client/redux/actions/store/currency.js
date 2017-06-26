@@ -40,6 +40,9 @@ export function doCurrencyReq() {
 			.then(res => res.json())
 			.then(res => {
 				let data = JSON.parse(res.value);
+				data.rates = data.rates.filter(function(rate){ 
+					return ["SYS", "BTC", "ZEC"].indexOf(rate.currency) !== -1 
+				})
 				dispatch(currencyReqSuccess(data))
 			})
 			.catch(error => {

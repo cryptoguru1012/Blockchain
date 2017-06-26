@@ -32,12 +32,19 @@ class MenuBrowser extends React.Component {
 		this.props.getCategories();
 		this.handleCategory=this.handleCategory.bind(this);
 		this.handleToggle = this.handleToggle.bind(this);
+		this.handleHomeTap = this.handleHomeTap.bind(this);
 		this.handleToggleSerch = this.handleToggleSerch.bind(this);
 		this.handleChangeData = this.handleChangeData.bind(this);
 	}
 
 	handleToggle() {
 		this.setState({ open: !this.state.open });
+	}
+
+	handleHomeTap() {
+		this.setState({regexp: null, 
+			category:null,
+			open: !this.state.open});
 	}
 
 	handleToggleSerch() {
@@ -121,10 +128,7 @@ class MenuBrowser extends React.Component {
 					<AppBar showMenuIconButton={false} title="Menu" />
 					<Link to="/">
 						<MenuItem
-							onTouchTap={ (e) => 
-								{this.setState({regexp: null,
-												category:null});
-									this.handleToggle}}
+							onTouchTap={this.handleHomeTap}
 							primaryText="Home"
 						/>
 					</Link>

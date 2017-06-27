@@ -22,7 +22,7 @@ class SearchBrowser extends React.Component {
 		return (
 			<Formsy.Form style={{marginTop: '10px'}}>
 				<Row>
-					<Col xs={10}>
+					<Col xs={12} sm={12} md={8} md={8}>
 						<TextField
 							name="search"
 							onChange={this.handleChangeText}

@@ -60,7 +60,7 @@ class App extends Component {
 					// {!this.state.viewBrowser && <Menu/>}
 					// {this.state.viewBrowser && <MenuBrowser/>}
 					<MenuBrowser/>
-					<div style={{marginTop:muiTheme.appBar.height}}>
+					<div style={{marginTop:muiTheme.appBar.height - 20 }}>
 						{this.props.children}
 					</div>
 				</div>

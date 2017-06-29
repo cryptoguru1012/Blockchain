@@ -132,7 +132,7 @@ class MenuBrowser extends React.Component {
 		let categories = this.renderCategories();
 
 		return (
-			<AppBar
+			<AppBar 
 				title={!this.state.activeSearch ? <p style={{fontWeight:'bold'}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
@@ -140,7 +140,7 @@ class MenuBrowser extends React.Component {
 				iconElementLeft={<IconButton><SSIcon /></IconButton>}
 				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
-				<Drawer
+				<Drawer className="setStyle"
 					open={this.state.open}
 					docked={false}
 					onRequestChange={open => this.setState({ open })}

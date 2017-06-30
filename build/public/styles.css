@@ -130,22 +130,26 @@ button.slick-prev {
 div.slider-container {
   background: #bda869;
   padding: 0;
-  margin: 0;
-  height: 30%; }
+  margin: 0; }
   div.slider-container h3 {
     text-indent: 50px;
     text-align: left;
-    color: white; }
+    color: white;
+    margin-top: 10px; }
   div.slider-container div.item-slider img {
     width: 100%;
     position: relative;
     padding: 2px;
-    top: 10px; }
+    top: -10px;
+    max-width: 134px;
+    left: 54px; }
+    @media screen and (min-width: 1100px) {
+      div.slider-container div.item-slider img {
+        max-width: 230px; } }
   div.slider-container div.item-slider div.content-slider {
     position: relative;
     left: 0px;
     right: 0px;
-    height: 40px;
     background: rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center; }

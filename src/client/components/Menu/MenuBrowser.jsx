@@ -62,25 +62,30 @@ class MenuBrowser extends React.Component {
 		this.setState({ activeSearch: !this.state.activeSearch });
 	}
 
-	handleCategory(value) {
-			
-			let data = {};
-
-			data.regexp = this.state.regexp;
-			data.category = this.state.category;
-
-			this.props.onSearch(data);
-			console.log('data submited: ', data);
-			this.handleToggle();
-	}
-
 	handleChangeData(data) {
 		if (data.type === 'text')
 			this.setState({regexp: data.value});
 
 		if (data.type === 'category')
-			this.setState({category: });
+			this.setState({category: data.value});
 	}
+
+	handleCategory(e) {
+	
+		this.handleChangeData({
+			type: 'category',
+			value : e.value
+		});
+
+		let data = {};
+
+		data.regexp = '';
+		data.category = this.state.category;
+
+		this.props.onSearch(data);
+		this.handleToggle();
+	}
+
 	// a function for capetalizing first letter of sub categories
 	firstToUpperCase(category) {
 		// adding space before and after /
@@ -108,14 +113,14 @@ class MenuBrowser extends React.Component {
 					// passing category.cat, it will return only the name of sub category
 					var NewCatItem = this.splitCategory(category.cat);
 					// capetalizing first letter of sub categories
-				  NewCatItem = this.firstToUpperCase(NewCatItem)
+					NewCatItem = this.firstToUpperCase(NewCatItem)
 					if(i == 0){
 						return (<MenuItem required key={i} value={category.cat}
-						onTouchTap={() => {this.handleCategory(NewCatItem);}}
+						onTouchTap={this.handleCategory}
 						primaryText={NewCatItem} />);
-					}else{
+					} else{
 						return (<MenuItem key={i} value={category.cat}
-						onTouchTap={() => {this.handleCategory(NewCatItem);}}
+						onTouchTap={this.handleCategory}
 						primaryText={NewCatItem} />);
 					}
 				}
@@ -132,7 +137,7 @@ class MenuBrowser extends React.Component {
 		let categories = this.renderCategories();
 
 		return (
-			<AppBar
+			<AppBar 
 				title={!this.state.activeSearch ? <p style={{fontWeight:'bold'}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
@@ -140,7 +145,7 @@ class MenuBrowser extends React.Component {
 				iconElementLeft={<IconButton><SSIcon /></IconButton>}
 				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
-				<Drawer
+				<Drawer className="setStyle"
 					open={this.state.open}
 					docked={false}
 					onRequestChange={open => this.setState({ open })}

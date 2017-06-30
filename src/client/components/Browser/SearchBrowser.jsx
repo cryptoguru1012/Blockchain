@@ -9,7 +9,6 @@ class SearchBrowser extends React.Component {
 		super(props);
 
 		this.handleChangeText = this.handleChangeText.bind(this);
-		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 	}
 
 	handleChangeText(e) {
@@ -19,19 +18,11 @@ class SearchBrowser extends React.Component {
 		});
 	}
 
-	handleChangeCategory(e, value) {
-		this.props.onChangeData({
-			type: 'category',
-			value: value
-		});
-	}
-
-
 	render() {
 		return (
 			<Formsy.Form style={{marginTop: '10px'}}>
 				<Row>
-					<Col xs={12} sm={12} md={8} md={8}>
+					<Col xs={12} sm={12} mdOffset={4} md={8} md={8}>
 						<TextField
 							name="search"
 							onChange={this.handleChangeText}

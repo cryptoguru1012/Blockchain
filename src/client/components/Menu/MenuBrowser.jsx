@@ -22,7 +22,7 @@ class MenuBrowser extends React.Component {
 		this.state = {
 			open: false,
 			activeSearch: false,
-			regexp: null,
+			regexp: '',
 			safesearch: 'no',
 			category: null
 			//from: parseInt("226a4f45f3393f22"),
@@ -51,20 +51,20 @@ class MenuBrowser extends React.Component {
 		if (this.state.activeSearch !== null) {
 			let data = {};
 			data.regexp = this.state.regexp;
-			data.category = this.state.category;
+			if (this.state.category !== null) data.category = this.state.category;
 
-			this.props.onSearch(data);
-			console.log('data submited: ', data);
-
+			if (data.category !== null && data.regexp.length > 0)
+				this.props.onSearch(data);
+			else
+				console.log('no action');
 		}
 
 		this.setState({ activeSearch: !this.state.activeSearch });
 	}
 
 	handleCategory(value) {
-			console.log(value);
+			
 			let data = {};
-
 
 			data.regexp = this.state.regexp;
 			data.category = this.state.category;
@@ -79,7 +79,7 @@ class MenuBrowser extends React.Component {
 			this.setState({regexp: data.value});
 
 		if (data.type === 'category')
-			this.setState({category: data.value});
+			this.setState({category: });
 	}
 	// a function for capetalizing first letter of sub categories
 	firstToUpperCase(category) {
@@ -110,11 +110,11 @@ class MenuBrowser extends React.Component {
 					// capetalizing first letter of sub categories
 				  NewCatItem = this.firstToUpperCase(NewCatItem)
 					if(i == 0){
-						return (<MenuItem required key={i} value={NewCatItem}
+						return (<MenuItem required key={i} value={category.cat}
 						onTouchTap={() => {this.handleCategory(NewCatItem);}}
 						primaryText={NewCatItem} />);
 					}else{
-						return (<MenuItem key={i} value={NewCatItem}
+						return (<MenuItem key={i} value={category.cat}
 						onTouchTap={() => {this.handleCategory(NewCatItem);}}
 						primaryText={NewCatItem} />);
 					}
@@ -126,7 +126,7 @@ class MenuBrowser extends React.Component {
 	render() {
 		if (this.props.categories.error)
 			alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
-		const props = Object.assign({}, this.props);
+		const props = Object.assign({}, this.props)
 		delete props.categories;
 		delete props.getCategories;
 		let categories = this.renderCategories();

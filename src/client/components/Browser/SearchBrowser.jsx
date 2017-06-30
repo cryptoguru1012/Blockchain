@@ -9,6 +9,7 @@ class SearchBrowser extends React.Component {
 		super(props);
 
 		this.handleChangeText = this.handleChangeText.bind(this);
+		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 	}
 
 	handleChangeText(e) {
@@ -17,6 +18,14 @@ class SearchBrowser extends React.Component {
 			value: e.target.value
 		});
 	}
+
+	handleChangeCategory(e, value) {
+		this.props.onChangeData({
+			type: 'category',
+			value: value
+		});
+	}
+
 
 	render() {
 		return (

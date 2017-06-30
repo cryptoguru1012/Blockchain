@@ -26,6 +26,9 @@ div.slider-container{
 				top: -10px;
 				max-width: 134px;
     			left: 54px;
+    			@media screen and (min-width: 1100px) {
+					    max-width:230px;
+					  }
 			}
 			div.content-slider {
 					position: relative;

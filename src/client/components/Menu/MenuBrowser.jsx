@@ -41,8 +41,8 @@ class MenuBrowser extends React.Component {
 	}
 
 	handleHomeTap() {
-		this.setState({regexp: null, 
-			category:null,
+		this.setState({regexp: null,
+			category: null,
 			open: !this.state.open});
 	}
 
@@ -62,13 +62,9 @@ class MenuBrowser extends React.Component {
 	}
 
 	handleCategory(value) {
-			console.log(value);
-			let data = {};
-
-
-			data.regexp = this.state.regexp;
-			data.category = this.state.category;
-
+			let data = {
+				category: value.trim()
+			};
 			this.props.onSearch(data);
 			console.log('data submited: ', data);
 			this.handleToggle();
@@ -111,11 +107,11 @@ class MenuBrowser extends React.Component {
 				  NewCatItem = this.firstToUpperCase(NewCatItem)
 					if(i == 0){
 						return (<MenuItem required key={i} value={NewCatItem}
-						onTouchTap={() => {this.handleCategory(NewCatItem);}}
+						onTouchTap={() => {this.handleCategory(category.cat);}}
 						primaryText={NewCatItem} />);
 					}else{
 						return (<MenuItem key={i} value={NewCatItem}
-						onTouchTap={() => {this.handleCategory(NewCatItem);}}
+						onTouchTap={() => {this.handleCategory(category.cat);}}
 						primaryText={NewCatItem} />);
 					}
 				}

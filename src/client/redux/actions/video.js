@@ -21,7 +21,7 @@ function uploadError(payload) {
 }
 
 function uploadSuccess(payload) {
-	return { 
+	return {
 		type: UPLOAD_SUCCESS,
 		payload: payload.data
 	};
@@ -34,10 +34,11 @@ export function setDuration(payload) {
 	}
 }
 
-export function deleteRecord() {
+export function deleteRecord(payload) {
 	return (dispatch, getState) => {
 		dispatch({
-			type: DELETE_RECORD
+			type: DELETE_RECORD,
+			deleted: payload
 		});
 	}
 }

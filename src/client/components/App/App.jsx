@@ -42,6 +42,7 @@ class App extends Component {
 	}
 
 	render() {
+
 		const muiTheme = getMuiTheme({
 			palette: {
 					primary1Color: grey900,
@@ -59,7 +60,7 @@ class App extends Component {
 				<div style={{ position:"relative" }}>
 					// {!this.state.viewBrowser && <Menu/>}
 					// {this.state.viewBrowser && <MenuBrowser/>}
-					<MenuBrowser/>
+					<MenuBrowser stateUrl={this.props.location.pathname} />
 					<div style={{marginTop:muiTheme.appBar.height - 20 }}>
 						{this.props.children}
 					</div>

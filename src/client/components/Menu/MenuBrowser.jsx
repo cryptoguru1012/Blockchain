@@ -14,6 +14,7 @@ import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import  SSIcon from "./icon";
 
+
 require('./styles/menu.scss');
 
 class MenuBrowser extends React.Component {
@@ -71,7 +72,10 @@ class MenuBrowser extends React.Component {
 	}
 
 	handleCategory(e) {
-	
+		if (this.props.stateUrl !== "/"){
+
+			  browserHistory.push('/');
+		}
 		this.handleChangeData({
 			type: 'category',
 			value : e.value
@@ -107,6 +111,7 @@ class MenuBrowser extends React.Component {
 		return NewCatItem
 	}
 	renderCategories( start, stop) {
+
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {
 				if( i >= start && i < stop) {
@@ -129,6 +134,7 @@ class MenuBrowser extends React.Component {
 	}
 
 	render() {
+
 		if (this.props.categories.error)
 			alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
 		const props = Object.assign({}, this.props)

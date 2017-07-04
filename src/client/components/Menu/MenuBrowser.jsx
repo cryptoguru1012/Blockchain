@@ -14,7 +14,6 @@ import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import  SSIcon from "./icon";
 
-
 require('./styles/menu.scss');
 
 class MenuBrowser extends React.Component {
@@ -23,7 +22,7 @@ class MenuBrowser extends React.Component {
 		this.state = {
 			open: false,
 			activeSearch: false,
-			regexp: '',
+			regexp: null,
 			safesearch: 'no',
 			category: null
 			//from: parseInt("226a4f45f3393f22"),
@@ -42,8 +41,8 @@ class MenuBrowser extends React.Component {
 	}
 
 	handleHomeTap() {
-		this.setState({regexp: null, 
-			category:null,
+		this.setState({regexp: null,
+			category: null,
 			open: !this.state.open});
 	}
 
@@ -52,15 +51,38 @@ class MenuBrowser extends React.Component {
 		if (this.state.activeSearch !== null) {
 			let data = {};
 			data.regexp = this.state.regexp;
-			if (this.state.category !== null) data.category = this.state.category;
+			data.category = this.state.category;
 
-			if (data.category !== null && data.regexp.length > 0)
-				this.props.onSearch(data);
-			else
-				console.log('no action');
+			this.props.onSearch(data);
+			console.log('data submited: ', data);
+
 		}
 
 		this.setState({ activeSearch: !this.state.activeSearch });
+	}
+
+	handleCategory(value) {
+		console.log(value)
+		if (this.props.stateUrl !== "/")
+		{
+		if (typeof(Storage) !== "undefined") {
+    			// Code for localStorage/sessionStorage.
+    			localStorage.setItem("catagory",value);
+
+			} else {
+			    // Sorry! No Web Storage support..
+		    	alert("you are running older version of browser We are going to redirect you on home page please refine catagory there ");
+			}
+			browserHistory.push('/');
+
+			
+		}
+			let data = {
+				category: value.trim()
+			};
+			this.props.onSearch(data);
+			console.log('data submited: ', data);
+			this.handleToggle();
 	}
 
 	handleChangeData(data) {
@@ -70,26 +92,6 @@ class MenuBrowser extends React.Component {
 		if (data.type === 'category')
 			this.setState({category: data.value});
 	}
-
-	handleCategory(e) {
-		if (this.props.stateUrl !== "/"){
-
-			  browserHistory.push('/');
-		}
-		this.handleChangeData({
-			type: 'category',
-			value : e.value
-		});
-
-		let data = {};
-
-		data.regexp = '';
-		data.category = this.state.category;
-
-		this.props.onSearch(data);
-		this.handleToggle();
-	}
-
 	// a function for capetalizing first letter of sub categories
 	firstToUpperCase(category) {
 		// adding space before and after /
@@ -111,21 +113,20 @@ class MenuBrowser extends React.Component {
 		return NewCatItem
 	}
 	renderCategories( start, stop) {
-
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {
 				if( i >= start && i < stop) {
 					// passing category.cat, it will return only the name of sub category
 					var NewCatItem = this.splitCategory(category.cat);
 					// capetalizing first letter of sub categories
-					NewCatItem = this.firstToUpperCase(NewCatItem)
+				  NewCatItem = this.firstToUpperCase(NewCatItem)
 					if(i == 0){
-						return (<MenuItem required key={i} value={category.cat}
-						onTouchTap={this.handleCategory}
+						return (<MenuItem required key={i} value={NewCatItem}
+						onTouchTap={() => {this.handleCategory(category.cat);}}
 						primaryText={NewCatItem} />);
-					} else{
-						return (<MenuItem key={i} value={category.cat}
-						onTouchTap={this.handleCategory}
+					}else{
+						return (<MenuItem key={i} value={NewCatItem}
+						onTouchTap={() => {this.handleCategory(category.cat);}}
 						primaryText={NewCatItem} />);
 					}
 				}
@@ -134,16 +135,15 @@ class MenuBrowser extends React.Component {
 	}
 
 	render() {
-
 		if (this.props.categories.error)
 			alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
-		const props = Object.assign({}, this.props)
+		const props = Object.assign({}, this.props);
 		delete props.categories;
 		delete props.getCategories;
 		let categories = this.renderCategories();
 
 		return (
-			<AppBar 
+			<AppBar
 				title={!this.state.activeSearch ? <p style={{fontWeight:'bold'}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
@@ -151,7 +151,7 @@ class MenuBrowser extends React.Component {
 				iconElementLeft={<IconButton><SSIcon /></IconButton>}
 				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
-				<Drawer className="setStyle"
+				<Drawer
 					open={this.state.open}
 					docked={false}
 					onRequestChange={open => this.setState({ open })}

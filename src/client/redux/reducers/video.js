@@ -6,6 +6,7 @@ const initialState = {
 	error: null,
 	recorded: false,
 	loading: false,
+	deleted: false,
 	subtitles: [],
 	videoDuration: 0,
 	videoUploaded: false
@@ -37,7 +38,7 @@ function setTimetoSeconds(value) {
 
 const videoReducers = (state = initialState, action) => {
 	switch (action.type) {
-		case SET_VIDEO_DURATION: 
+		case SET_VIDEO_DURATION:
 			return { ...state, videoDuration: action.duration }
 
 		case DELETE_RECORD:

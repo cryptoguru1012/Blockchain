@@ -27,7 +27,7 @@ Works
 ### File upload server
 * Running on an EC2 instance
 * API to upload images to S3 
-* API to convert uploaded videos to mp4 format, extract transcription and upload to S3
+* API to convert uploaded videos to mp4 format, extract transcription with timestamp and upload to S3
 
 ### Syscoin Core
 * Running on an EC2 instance

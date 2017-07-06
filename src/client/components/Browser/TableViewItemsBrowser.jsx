@@ -108,6 +108,7 @@ class TableViewItemsBrowser extends React.Component {
             let data = {
                 category: localStorage.getItem("catagory").trim()
             };
+            this.props.onSearch(data);
             console.log('data submited: ', data);
             //this.handleToggle();
             localStorage.removeItem("catagory");

@@ -144,11 +144,11 @@ class MenuBrowser extends React.Component {
 
 		return (
 			<AppBar
-				title={!this.state.activeSearch ? <p style={{fontWeight:'bold'}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
+				title={!this.state.activeSearch ? <p style={{marginLeft:'20px',fontWeight:'bold',fontSize:'32px',textTransform:"capitalize"}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
 				onRightIconButtonTouchTap={this.handleToggleSerch}
-				iconElementLeft={<IconButton><SSIcon /></IconButton>}
+				iconElementLeft={<IconButton className="btnStyle"><SSIcon /></IconButton>}
 				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
 				<Drawer

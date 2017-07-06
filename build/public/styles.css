@@ -8,6 +8,9 @@
 
 .setStyle button {
   padding: 12px 30px 12px 220px !important; }
+
+.btnStyle {
+  margin-top: -13px !important; }
 .containerItemBrowser .contentItemBrowser .bgContainer {
   position: absolute;
   top: 0;

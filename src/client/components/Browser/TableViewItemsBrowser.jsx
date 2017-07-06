@@ -46,24 +46,36 @@ class TableViewItemsBrowser extends React.Component {
         
         if (isJson(description)) {
             description = JSON.parse(description);
-            return {
-                type: 'video',
-                value: description
+            if (description.urlVideo){
+                return {
+                    type: 'video',
+                    value: description
+                }
+                }
+            else if (description.urlImage){
+                return {
+                    type: 'image',
+                    value: description
+                }
             }
         } else {
             let hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
             if (hasImages) {
                 return {
-                    type: 'image',
+                    type: 'images',
                     value: hasImages[0]
                 }
             } else {
                 return false;
             }
+            return false;
         }
     }
     renderMedia(data) {
+        console.log(data);
+        
         if (data.type === 'video') {
+
             return (
                 <div style={styles.videoContainer}>
                     <VideoPlayer 
@@ -76,7 +88,14 @@ class TableViewItemsBrowser extends React.Component {
                 </div>
             )
         }
-        else {
+        else if(data.type === 'image') {
+            const url = `url(${data.value.urlImage})`
+            return (
+                <div style={styles.imageContainer(url)}>
+                </div>    
+            )
+        }
+        else if(data.type === 'images') {
             const url = `url(${data.value})`
             return (
                 <div style={styles.imageContainer(url)}>
@@ -89,7 +108,6 @@ class TableViewItemsBrowser extends React.Component {
             let data = {
                 category: localStorage.getItem("catagory").trim()
             };
-            this.props.onSearch(data);
             console.log('data submited: ', data);
             //this.handleToggle();
             localStorage.removeItem("catagory");
@@ -99,6 +117,8 @@ class TableViewItemsBrowser extends React.Component {
     render() {
         const items = this.props.items.map((item) => {
             const mediaData = this.getMedia(item.description);
+            console.log("Media ",this.props.media);
+            console.log(item.description);
             return (
                 <tr key={item.txid}>
                     {this.props.media && <th>{this.renderMedia(mediaData)}</th>}

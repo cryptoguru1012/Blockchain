@@ -68930,7 +68930,7 @@
 				if (this.props.stateUrl !== "/") {
 					if (typeof Storage !== "undefined") {
 						// Code for localStorage/sessionStorage.
-						localStorage.setItem("catagory", value);
+						sessionStorage.setItem("catagory", value);
 					} else {
 						// Sorry! No Web Storage support..
 						alert("you are running older version of browser We are going to redirect you on home page please refine catagory there ");
@@ -106078,8 +106078,6 @@
 	    }, {
 	        key: 'renderMedia',
 	        value: function renderMedia(data) {
-	            console.log(data);
-
 	            if (data.type === 'video') {
 
 	                return _react2.default.createElement(
@@ -106104,14 +106102,16 @@
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            if (localStorage.getItem("catagory")) {
+	            console.log(sessionStorage.getItem("catagory"));
+	            if (sessionStorage.getItem("catagory")) {
 	                var data = {
-	                    category: localStorage.getItem("catagory").trim()
+	                    category: sessionStorage.getItem("catagory").trim()
 	                };
+	                console.log(this.props);
 	                this.props.onSearch(data);
-	                console.log('data submited: ', data);
+
 	                //this.handleToggle();
-	                localStorage.removeItem("catagory");
+	                sessionStorage.removeItem("catagory");
 	            }
 	        }
 	    }, {
@@ -106121,8 +106121,7 @@
 
 	            var items = this.props.items.map(function (item) {
 	                var mediaData = _this2.getMedia(item.description);
-	                console.log("Media ", _this2.props.media);
-	                console.log(item.description);
+
 	                return _react2.default.createElement(
 	                    'tr',
 	                    { key: item.txid },

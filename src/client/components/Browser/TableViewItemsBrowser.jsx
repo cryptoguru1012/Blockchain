@@ -72,9 +72,7 @@ class TableViewItemsBrowser extends React.Component {
         }
     }
     renderMedia(data) {
-        console.log(data);
-        
-        if (data.type === 'video') {
+       if (data.type === 'video') {
 
             return (
                 <div style={styles.videoContainer}>
@@ -104,22 +102,23 @@ class TableViewItemsBrowser extends React.Component {
         }
     }
     componentDidMount() {
-        if(localStorage.getItem("catagory")){
+        console.log(sessionStorage.getItem("catagory"));
+        if(sessionStorage.getItem("catagory")){
             let data = {
-                category: localStorage.getItem("catagory").trim()
+                category: sessionStorage.getItem("catagory").trim()
             };
+            console.log(this.props);
             this.props.onSearch(data);
-            console.log('data submited: ', data);
+         
             //this.handleToggle();
-            localStorage.removeItem("catagory");
+            sessionStorage.removeItem("catagory");
         }
     }
     
     render() {
         const items = this.props.items.map((item) => {
             const mediaData = this.getMedia(item.description);
-            console.log("Media ",this.props.media);
-            console.log(item.description);
+           
             return (
                 <tr key={item.txid}>
                     {this.props.media && <th>{this.renderMedia(mediaData)}</th>}

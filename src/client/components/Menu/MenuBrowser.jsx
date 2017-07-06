@@ -67,7 +67,7 @@ class MenuBrowser extends React.Component {
 		{
 		if (typeof(Storage) !== "undefined") {
     			// Code for localStorage/sessionStorage.
-    			localStorage.setItem("catagory",value);
+    			sessionStorage.setItem("catagory",value);
 
 			} else {
 			    // Sorry! No Web Storage support..

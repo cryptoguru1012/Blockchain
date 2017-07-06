@@ -23,3 +23,18 @@ Works
 * `npm run wds` Webpack watchs for changes in your React files.
 * `npm start` Production mode.
 * `npm run dev` Run server. Dev mode.
+
+### File upload server
+* Running on an EC2 instance
+* API to upload images to S3 
+* API to convert uploaded videos to mp4 format, extract transcription with timestamp and upload to S3
+
+### Syscoin Core
+* Running on an EC2 instance
+* Currently running version 2.1.4 
+* https://github.com/syscoin/syscoin2/releases
+
+### Syscoin API
+* Running on an EC2 instance
+* Currenty running dev 1.0.2
+* https://github.com/syscoin/syscoin-api/tree/dev_1.0.2

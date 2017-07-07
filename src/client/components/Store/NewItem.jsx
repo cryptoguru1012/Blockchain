@@ -6,7 +6,7 @@ import { doCategoryReq } from '../../redux/actions/store/category';
 import { doCurrencyReq } from '../../redux/actions/store/currency';
 import { doItemCreate, showSnackbar } from '../../redux/actions/store/new_item';
 import { setRecord, deleteRecord, setOfferForm, updateSubtitles, setDuration } from '../../redux/actions/video';
-import { setImage } from '../../redux/actions/image';
+import { setImage, deleteImage, proceed } from '../../redux/actions/image';
 
 // components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
@@ -14,6 +14,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import VideoRecord from './VideoRecord';
 import VideoRecord2 from './VideoRecord2';
 import VideoPlayer from './VideoPlayer';
+import ImageEdit from './ImageEdit';
 import SubtitlesEditer from './SubtitlesEditer';
 import OfferForm from './OfferForm';
 
@@ -31,6 +32,7 @@ class NewItem extends React.Component {
     this.state = {
       RecordRTC: false
     }
+    this.showOfferForm = this.showOfferForm.bind(this);
   }
 
   componentWillMount() {
@@ -44,25 +46,9 @@ class NewItem extends React.Component {
     }
   }
 
-  render() {
-    if (!this.props.image.error) {
-      console.log('data image: ', this.props.image.data);
-    }
-    if (this.props.video.loading || this.props.image.loading) {
-      return (
-        <Grid>
-          <Row>
-            <Col xs={12} style={newItemStyle.loadingDiv}>
-              <center>
-                <CircularProgress size={100} thickness={6} />
-              </center>
-            </Col>
-          </Row>
-        </Grid>
-      );
-    }
-    if (this.props.video.videoUploaded || this.props.image.loaded) {
-      return (
+  showOfferForm(){
+      console.log("called");
+    return (
         <Grid>
           <OfferForm
             categories={this.props.categories}
@@ -75,14 +61,51 @@ class NewItem extends React.Component {
             subtitlesVideo={this.props.video.subtitles}
           />
         </Grid>
-      );
+    );
+  }
+  render() {
+    if (!this.props.image.error) {
+        console.log("data image", this.props.image.data)
+    }
+    if (this.props.video.loading || this.props.image.loading) {
+        return (
+            <Grid>
+              <Row>
+                <Col xs={12} style={newItemStyle.loadingDiv}>
+                  <center>
+                    <CircularProgress size={100} thickness={6} />
+                  </center>
+                </Col>
+              </Row>
+            </Grid>
+        );
+    }
+    if (this.props.video.videoUploaded){
+        return this.showOfferForm();
+    }
+    if (this.props.image.proceed && this.props.image.loaded) {
+        return this.showOfferForm();
+    }
+    if(this.props.image.loaded && !this.props.image.proceed) {
+        return(
+            <Grid>
+                <center>
+                    <ImageEdit
+                        image_url={this.props.image.data.location}
+                        onDelete={this.props.onDeleteImage}
+                        onProceed={this.props.onProceed}
+                    />
+                </center>
+            </Grid>
+        )
     }
     if (!this.props.video.recorded || this.props.video.error) {
       return (
         <Grid>
-          {this.state.RecordRTC && <VideoRecord onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>}
+          {this.state.RecordRTC &&
+               <VideoRecord onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>}
           {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded}
-          imageUploaded={this.props.imageUploaded} 
+          imageUploaded={this.props.imageUploaded}
           />}
         </Grid>
       );
@@ -129,11 +152,17 @@ function mapDispatchToProps(dispatch) {
     onDelete: () => {
       dispatch(deleteRecord());
     },
+    onDeleteImage: () => {
+        dispatch(deleteImage());
+    },
     onSave: () => {
       dispatch(setOfferForm());
     },
     onCreate: (data) => {
       dispatch(doItemCreate(data));
+    },
+    onProceed: () => {
+      dispatch(proceed())
     },
     showSnackbar: () => {
       dispatch(showSnackbar());

@@ -43,6 +43,7 @@ class TableViewItemsBrowser extends React.Component {
         this.getMedia = this.getMedia.bind(this);
     }
     getMedia(description) {
+        
         if (isJson(description)) {
             description = JSON.parse(description);
             return {
@@ -83,6 +84,18 @@ class TableViewItemsBrowser extends React.Component {
             )
         }
     }
+    componentDidMount() {
+        if(localStorage.getItem("catagory")){
+            let data = {
+                category: localStorage.getItem("catagory").trim()
+            };
+            this.props.onSearch(data);
+            console.log('data submited: ', data);
+            //this.handleToggle();
+            localStorage.removeItem("catagory");
+        }
+    }
+    
     render() {
         const items = this.props.items.map((item) => {
             const mediaData = this.getMedia(item.description);

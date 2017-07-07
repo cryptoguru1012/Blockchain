@@ -84,7 +84,9 @@ class Browser extends React.Component {
 		};
 		this.props.onSearch(data);
 		this.props.getFeatures();
+	
 	}
+	
 
 	showNextPage(){
 		// go next

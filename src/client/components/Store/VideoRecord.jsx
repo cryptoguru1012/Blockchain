@@ -124,7 +124,7 @@ class VideoRecord extends React.Component {
   
   onDrop(file) {
     const media = file.length > 0 ? file[0] : file
-    let formData = new FormData();
+    const formData = new FormData();
     window.clearInterval(self.intervalTrigger);
 
     if(media.type.includes("image/")){
@@ -135,7 +135,6 @@ class VideoRecord extends React.Component {
       const url = media.preview
       formData.append('video', media, 'videoRecorded.webm');
       this.props.onRecorded(formData, url);
-      console.log("wtf", media)
       }
       else
          this.setState({open: true});
@@ -192,14 +191,14 @@ class VideoRecord extends React.Component {
               {this.props.image.loading && <CircularProgress size={100} thickness={6} />}
             </Col>
             <Col xs={3} md={2} lg={2}>
-              <RaisedButton 
+              { !this.props.image.loading && !this.state.isRecording && <RaisedButton 
                 containerElement='label'
                 label="Upload Video"
                 onClick={ (e) => this.openFileDialog}>
                 <Dropzone 
                   style={{"display" : "none"}}
                   onDrop={ (file) => this.onDrop(file)} />
-              </RaisedButton>
+              </RaisedButton> }
               
             </Col>
             <Col xs={3} md={2} lg={2}>

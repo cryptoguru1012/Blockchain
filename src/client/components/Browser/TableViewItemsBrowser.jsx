@@ -35,12 +35,20 @@ const styles = {
         left: '50%',
         width: '100%',
         height: '100%'
+    },
+    txtHeader:{
+        color: 'red'
     }
 }
 class TableViewItemsBrowser extends React.Component {
     constructor(props) {
         super(props);
         this.getMedia = this.getMedia.bind(this);
+        this.sortItems = this.sortItems.bind(this);
+        this.state = {
+            thSortBy: '',
+            thSortAZ: true
+        }
     }
     getMedia(description) {
         if (isJson(description)) {
@@ -83,8 +91,32 @@ class TableViewItemsBrowser extends React.Component {
             )
         }
     }
+    sortItems(items) {
+        let field = this.state.thSortBy;
+        let order = this.state.thSortAZ;
+        let sortedItems;
+        if (order){
+            sortedItems = field !== '' ? items.slice(0).sort((a, b)=> a[field].localeCompare(b[field])) : items;
+        }else{
+            sortedItems = field !== '' ? items.slice(0).sort((b, a)=> a[field].localeCompare(b[field])) : items;
+        }
+        
+        console.log("items: ", items[0].title);
+        console.log("Ordenado por: ", field);
+        console.log("sortedItems: ", sortedItems[0].title);
+        console.log("orderAZ: ", this.state.thSortAZ);
+        return sortedItems
+    }
+    thClick(field){
+        if (field === this.state.thSortBy) {
+            this.setState({'thSortAZ': !this.state.thSortAZ,'thSortBy': field})
+        }else{
+            this.setState({'thSortAZ': true,'thSortBy': field});
+        }
+    }
     render() {
-        const items = this.props.items.map((item) => {
+        //const itemsOutput = this.props.items.map((item) => {
+        const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
             return (
                 <tr key={item.txid}>
@@ -98,17 +130,17 @@ class TableViewItemsBrowser extends React.Component {
         });
         return (
             <table className="grids">
-                <thead>
+                <thead style={styles.txtHeader}>
                     <tr>
                         {this.props.media && <th>Media</th>}
-                        <th>Title</th>
-                        <th>Vendor</th> 
+                        <th><a href="#" onClick={() => {this.thClick('title')}}>Title</a></th>
+                        <th><a href="#" onClick={() => {this.thClick('alias')}}>Vendor</a></th> 
                         <th>Price</th>
-                        <th>Currency</th>
+                        <th><a href="#" onClick={() => {this.thClick('currency')}}>Currency</a></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {items}
+                    {itemsOutput}
                 </tbody>
             </table>
         );

@@ -36,6 +36,9 @@ const styles = {
         left: '50%',
         width: '100%',
         height: '100%'
+    },
+    txtHeader: {
+        cursor: 'row-resize'
     }
 }
 class TableViewItemsBrowser extends React.Component {
@@ -123,13 +126,13 @@ class TableViewItemsBrowser extends React.Component {
         });
         return (
             <table className="grids">
-                <thead style={styles.txtHeader}>
+                <thead>
                     <tr>
                         {this.props.media && <th>Media</th>}
-                        <th><a onClick={() => {this.thClick('title')}}>Title</a></th>
-                        <th><a href="#" onClick={() => {this.thClick('alias')}}>Vendor</a></th> 
-                        <th><a href="#" onClick={() => {this.thClick('price')}}>Price</a></th>
-                        <th><a href="#" onClick={() => {this.thClick('currency')}}>Currency</a></th>
+                        <th><a style={styles.txtHeader} onClick={() => {this.thClick('alias')}}>Vendor</a></th> 
+                        <th><a style={styles.txtHeader} onClick={() => {this.thClick('title')}}>Title</a></th>
+                        <th><a style={styles.txtHeader} onClick={() => {this.thClick('price')}}>Price</a></th>
+                        <th><a style={styles.txtHeader} onClick={() => {this.thClick('currency')}}>Currency</a></th>
                     </tr>
                 </thead>
                 <tbody>

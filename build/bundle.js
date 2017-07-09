@@ -105537,6 +105537,9 @@
 	        left: '50%',
 	        width: '100%',
 	        height: '100%'
+	    },
+	    txtHeader: {
+	        cursor: 'row-resize'
 	    }
 	};
 
@@ -105677,7 +105680,7 @@
 	                { className: 'grids' },
 	                _react2.default.createElement(
 	                    'thead',
-	                    { style: styles.txtHeader },
+	                    null,
 	                    _react2.default.createElement(
 	                        'tr',
 	                        null,
@@ -105691,18 +105694,7 @@
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { onClick: function onClick() {
-	                                        _this2.thClick('title');
-	                                    } },
-	                                'Title'
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'th',
-	                            null,
-	                            _react2.default.createElement(
-	                                'a',
-	                                { href: '#', onClick: function onClick() {
+	                                { style: styles.txtHeader, onClick: function onClick() {
 	                                        _this2.thClick('alias');
 	                                    } },
 	                                'Vendor'
@@ -105713,7 +105705,18 @@
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { href: '#', onClick: function onClick() {
+	                                { style: styles.txtHeader, onClick: function onClick() {
+	                                        _this2.thClick('title');
+	                                    } },
+	                                'Title'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'th',
+	                            null,
+	                            _react2.default.createElement(
+	                                'a',
+	                                { style: styles.txtHeader, onClick: function onClick() {
 	                                        _this2.thClick('price');
 	                                    } },
 	                                'Price'
@@ -105724,7 +105727,7 @@
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { href: '#', onClick: function onClick() {
+	                                { style: styles.txtHeader, onClick: function onClick() {
 	                                        _this2.thClick('currency');
 	                                    } },
 	                                'Currency'

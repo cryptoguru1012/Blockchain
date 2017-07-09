@@ -36,9 +36,6 @@ const styles = {
         left: '50%',
         width: '100%',
         height: '100%'
-    },
-    txtHeader: {
-        color: 'red'
     }
 }
 class TableViewItemsBrowser extends React.Component {
@@ -97,7 +94,6 @@ class TableViewItemsBrowser extends React.Component {
         let sortAZ = this.state.thSortAZ;
         let sortedItems;
         if (field === '') {return items};
-        console.log(isNaN(parseFloat(items[0][field])));
         if (isNaN(parseFloat(items[0][field]))){
             sortedItems = items.slice(0).sort((a, b)=> a[field].localeCompare(b[field], {numeric: true}));
         }else {
@@ -113,7 +109,6 @@ class TableViewItemsBrowser extends React.Component {
         }
     }
     render() {
-        //const itemsOutput = this.props.items.map((item) => {
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
             return (

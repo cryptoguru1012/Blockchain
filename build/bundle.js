@@ -105537,9 +105537,6 @@
 	        left: '50%',
 	        width: '100%',
 	        height: '100%'
-	    },
-	    txtHeader: {
-	        color: 'red'
 	    }
 	};
 
@@ -105610,7 +105607,6 @@
 	            if (field === '') {
 	                return items;
 	            };
-	            console.log(isNaN(parseFloat(items[0][field])));
 	            if (isNaN(parseFloat(items[0][field]))) {
 	                sortedItems = items.slice(0).sort(function (a, b) {
 	                    return a[field].localeCompare(b[field], { numeric: true });
@@ -105640,7 +105636,6 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            //const itemsOutput = this.props.items.map((item) => {
 	            var itemsOutput = this.sortItems(this.props.items).map(function (item) {
 	                var mediaData = _this2.getMedia(item.description);
 	                return _react2.default.createElement(

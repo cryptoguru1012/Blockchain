@@ -105605,23 +105605,26 @@
 	        key: 'sortItems',
 	        value: function sortItems(items) {
 	            var field = this.state.thSortBy;
-	            var order = this.state.thSortAZ;
+	            var sortAZ = this.state.thSortAZ;
 	            var sortedItems = void 0;
-	            if (order) {
-	                sortedItems = field !== '' ? items.slice(0).sort(function (a, b) {
-	                    return a[field].localeCompare(b[field]);
-	                }) : items;
+	            if (field === '') {
+	                return items;
+	            };
+	            console.log(isNaN(parseFloat(items[0][field])));
+	            if (isNaN(parseFloat(items[0][field]))) {
+	                sortedItems = items.slice(0).sort(function (a, b) {
+	                    return a[field].localeCompare(b[field], { numeric: true });
+	                });
 	            } else {
-	                sortedItems = field !== '' ? items.slice(0).sort(function (b, a) {
-	                    return a[field].localeCompare(b[field]);
-	                }) : items;
+	                sortedItems = items.slice(0).sort(function (a, b) {
+	                    return parseFloat(a[field]) - parseFloat(b[field]);
+	                });
 	            }
-
-	            console.log("items: ", items[0].title);
-	            console.log("Ordenado por: ", field);
-	            console.log("sortedItems: ", sortedItems[0].title);
-	            console.log("orderAZ: ", this.state.thSortAZ);
-	            return sortedItems;
+	            if (sortAZ) {
+	                return sortedItems;
+	            } else {
+	                return sortedItems.reverse();
+	            }
 	        }
 	    }, {
 	        key: 'thClick',
@@ -105693,7 +105696,7 @@
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { href: '#', onClick: function onClick() {
+	                                { onClick: function onClick() {
 	                                        _this2.thClick('title');
 	                                    } },
 	                                'Title'
@@ -105713,7 +105716,13 @@
 	                        _react2.default.createElement(
 	                            'th',
 	                            null,
-	                            'Price'
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: '#', onClick: function onClick() {
+	                                        _this2.thClick('price');
+	                                    } },
+	                                'Price'
+	                            )
 	                        ),
 	                        _react2.default.createElement(
 	                            'th',

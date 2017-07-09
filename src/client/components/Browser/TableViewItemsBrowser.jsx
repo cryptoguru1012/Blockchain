@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-import VideoPlayer from '../Store/VideoPlayer'
+import VideoPlayer from '../Store/VideoPlayer';
+
 function isJson(str) {
     try {
         JSON.parse(str);
@@ -36,7 +37,7 @@ const styles = {
         width: '100%',
         height: '100%'
     },
-    txtHeader:{
+    txtHeader: {
         color: 'red'
     }
 }
@@ -93,19 +94,16 @@ class TableViewItemsBrowser extends React.Component {
     }
     sortItems(items) {
         let field = this.state.thSortBy;
-        let order = this.state.thSortAZ;
+        let sortAZ = this.state.thSortAZ;
         let sortedItems;
-        if (order){
-            sortedItems = field !== '' ? items.slice(0).sort((a, b)=> a[field].localeCompare(b[field])) : items;
-        }else{
-            sortedItems = field !== '' ? items.slice(0).sort((b, a)=> a[field].localeCompare(b[field])) : items;
+        if (field === '') {return items};
+        console.log(isNaN(parseFloat(items[0][field])));
+        if (isNaN(parseFloat(items[0][field]))){
+            sortedItems = items.slice(0).sort((a, b)=> a[field].localeCompare(b[field], {numeric: true}));
+        }else {
+            sortedItems = items.slice(0).sort(function(a, b) {return parseFloat(a[field]) - parseFloat(b[field])});
         }
-        
-        console.log("items: ", items[0].title);
-        console.log("Ordenado por: ", field);
-        console.log("sortedItems: ", sortedItems[0].title);
-        console.log("orderAZ: ", this.state.thSortAZ);
-        return sortedItems
+        if (sortAZ) {return sortedItems;} else {return sortedItems.reverse();}
     }
     thClick(field){
         if (field === this.state.thSortBy) {
@@ -133,9 +131,9 @@ class TableViewItemsBrowser extends React.Component {
                 <thead style={styles.txtHeader}>
                     <tr>
                         {this.props.media && <th>Media</th>}
-                        <th><a href="#" onClick={() => {this.thClick('title')}}>Title</a></th>
+                        <th><a onClick={() => {this.thClick('title')}}>Title</a></th>
                         <th><a href="#" onClick={() => {this.thClick('alias')}}>Vendor</a></th> 
-                        <th>Price</th>
+                        <th><a href="#" onClick={() => {this.thClick('price')}}>Price</a></th>
                         <th><a href="#" onClick={() => {this.thClick('currency')}}>Currency</a></th>
                     </tr>
                 </thead>

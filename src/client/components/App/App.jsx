@@ -21,7 +21,8 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			viewBrowser: false
+			viewBrowser: false,
+			dataToSearch: null
 		}
 	}
 
@@ -42,7 +43,6 @@ class App extends Component {
 	}
 
 	render() {
-
 		const muiTheme = getMuiTheme({
 			palette: {
 					primary1Color: grey900,
@@ -58,10 +58,17 @@ class App extends Component {
 		return (
 			<MuiThemeProvider muiTheme={muiTheme}>
 				<div style={{ position:"relative" }}>
-					// {!this.state.viewBrowser && <Menu/>}
-					// {this.state.viewBrowser && <MenuBrowser/>}
-					<MenuBrowser stateUrl={this.props.location.pathname} />
-					<div style={{marginTop:muiTheme.appBar.height - 20 }}>
+					{/*
+					----------------------------------------------
+						These lines was commented by Andrés Cortés
+						When developing Issue #38
+					----------------------------------------------
+					
+					{!this.state.viewBrowser && <Menu/>}
+					{this.state.viewBrowser && <MenuBrowser/>}
+					*/}
+					<MenuBrowser searchData={this.state.dataToSearch} />
+					<div style={{marginTop:muiTheme.appBar.height}}>
 						{this.props.children}
 					</div>
 				</div>

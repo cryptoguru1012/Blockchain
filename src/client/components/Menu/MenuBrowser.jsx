@@ -36,33 +36,53 @@ class MenuBrowser extends React.Component {
 		this.handleChangeData = this.handleChangeData.bind(this);
 	}
 
-	handleToggle() {
-		this.setState({ open: !this.state.open });
+	componentDidMount() {
+			let data = {
+			regexp: this.props.searchData,
+			from: '',
+			safesearch: 'No',
+			category: null
+		};
+		this.props.onSearch(data);
 	}
-
+	currentLocation() {
+		return browserHistory.getCurrentLocation().pathname;
+	}
+	handleToggle() {
+		this.setState({regexp: null,
+			category: null,
+			activeSearch: false,
+			open: !this.state.open });
+	}
 	handleHomeTap() {
 		this.setState({regexp: null,
 			category: null,
+			activeSearch: false,
 			open: !this.state.open});
+		this.props.onSearch({regexp: null});
 	}
 
 	handleToggleSerch() {
-
-		if (this.state.activeSearch !== null) {
+		if (this.state.activeSearch){
 			let data = {};
 			data.regexp = this.state.regexp;
 			if(this.state.category) {
 				data.category = this.state.category;
 			}
-
 			this.props.onSearch(data);
+			if (this.currentLocation() !== "/" && this.state.regexp) {
+				browserHistory.push('/');
+				//return
+			}
+		}else{
+			/*acz --> this ELSE is for do something when search input will appear */
+			console.log("Search input will appear");
 		}
-
 		this.setState({ activeSearch: !this.state.activeSearch });
 	}
 
 	handleCategory(value) {
-		console.log(value)
+		//console.log(value)
 		if (this.props.stateUrl !== "/")
 		{
 		if (typeof(Storage) !== "undefined") {
@@ -84,7 +104,7 @@ class MenuBrowser extends React.Component {
 			this.setState({category: value.trim() });
 
 			this.props.onSearch(data);
-			console.log('data submited: ', data);
+			//console.log('data submited: ', data);
 			this.handleToggle();
 	}
 

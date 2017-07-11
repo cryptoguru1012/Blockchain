@@ -22,8 +22,8 @@ class MenuBrowser extends React.Component {
 		this.state = {
 			open: false,
 			activeSearch: false,
-			regexp: null,
-			safesearch: 'no',
+			regexp: '',
+			safesearch: 'No',
 			category: null
 			//from: parseInt("226a4f45f3393f22"),
 		};
@@ -51,11 +51,11 @@ class MenuBrowser extends React.Component {
 		if (this.state.activeSearch !== null) {
 			let data = {};
 			data.regexp = this.state.regexp;
-			data.category = this.state.category;
+			if(this.state.category) {
+				data.category = this.state.category;
+			}
 
 			this.props.onSearch(data);
-			console.log('data submited: ', data);
-
 		}
 
 		this.setState({ activeSearch: !this.state.activeSearch });
@@ -80,6 +80,9 @@ class MenuBrowser extends React.Component {
 			let data = {
 				category: value.trim()
 			};
+
+			this.setState({category: value.trim() });
+
 			this.props.onSearch(data);
 			console.log('data submited: ', data);
 			this.handleToggle();

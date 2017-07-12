@@ -68295,7 +68295,6 @@
 					this.props.onSearch(data);
 					if (this.currentLocation() !== "/" && this.state.regexp) {
 						_reactRouter.browserHistory.push('/');
-						//return
 					}
 				} else {
 					/*acz --> this ELSE is for do something when search input will appear */

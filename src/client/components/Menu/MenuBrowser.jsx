@@ -15,7 +15,6 @@ import ActionSearch from 'material-ui/svg-icons/action/search';
 import  SSIcon from "./icon";
 
 require('./styles/menu.scss');
-require('./styles/style.css');
 
 class MenuBrowser extends React.Component {
 	constructor(props) {
@@ -23,8 +22,8 @@ class MenuBrowser extends React.Component {
 		this.state = {
 			open: false,
 			activeSearch: false,
-			regexp: null,
-			safesearch: 'no',
+			regexp: '',
+			safesearch: 'No',
 			category: null
 			//from: parseInt("226a4f45f3393f22"),
 		};
@@ -32,6 +31,7 @@ class MenuBrowser extends React.Component {
 		this.props.getCategories();
 		this.handleCategory=this.handleCategory.bind(this);
 		this.handleToggle = this.handleToggle.bind(this);
+		this.handleHomeTap = this.handleHomeTap.bind(this);
 		this.handleToggleSerch = this.handleToggleSerch.bind(this);
 		this.handleChangeData = this.handleChangeData.bind(this);
 	}
@@ -40,28 +40,48 @@ class MenuBrowser extends React.Component {
 		this.setState({ open: !this.state.open });
 	}
 
+	handleHomeTap() {
+		this.setState({regexp: null,
+			category: null,
+			open: !this.state.open});
+	}
+
 	handleToggleSerch() {
 
 		if (this.state.activeSearch !== null) {
 			let data = {};
 			data.regexp = this.state.regexp;
-			data.category = this.state.category;
+			if(this.state.category) {
+				data.category = this.state.category;
+			}
 
 			this.props.onSearch(data);
-			console.log('data submited: ', data);
-
 		}
 
 		this.setState({ activeSearch: !this.state.activeSearch });
 	}
 
 	handleCategory(value) {
-			console.log(value);
-			let data = {};
-						
+		console.log(value)
+		if (this.props.stateUrl !== "/")
+		{
+		if (typeof(Storage) !== "undefined") {
+    			// Code for localStorage/sessionStorage.
+    			sessionStorage.setItem("catagory",value);
 
-			data.regexp = this.state.regexp;
-			data.category = this.state.category;
+			} else {
+			    // Sorry! No Web Storage support..
+		    	alert("you are running older version of browser We are going to redirect you on home page please refine catagory there ");
+			}
+			browserHistory.push('/');
+
+			
+		}
+			let data = {
+				category: value.trim()
+			};
+
+			this.setState({category: value.trim() });
 
 			this.props.onSearch(data);
 			console.log('data submited: ', data);
@@ -75,19 +95,42 @@ class MenuBrowser extends React.Component {
 		if (data.type === 'category')
 			this.setState({category: data.value});
 	}
+	// a function for capetalizing first letter of sub categories
+	firstToUpperCase(category) {
+		// adding space before and after /
+		var Category = category.replace(/\//g," / ");
+		// adding space before and after +
+			Category = Category.replace(/\+/g," + ");
+		// capetalizing first character of every word of the string
+			Category = category.toLowerCase().replace(/(\?:^|\s)\S/g, function(letter) {
+					return letter.toUpperCase()});
 
+		return Category;
+	}
+	/* a function for split category
+	 * for example instead of 'some-word > another-word' it will be 'another-word'
+	 */
+	splitCategory(category){
+		var OldCatItem = category
+		var NewCatItem = OldCatItem.split(">").pop()
+		return NewCatItem
+	}
 	renderCategories( start, stop) {
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {
 				if( i >= start && i < stop) {
+					// passing category.cat, it will return only the name of sub category
+					var NewCatItem = this.splitCategory(category.cat);
+					// capetalizing first letter of sub categories
+				  NewCatItem = this.firstToUpperCase(NewCatItem)
 					if(i == 0){
-						return (<MenuItem required key={i} value={category.cat} 
+						return (<MenuItem required key={i} value={NewCatItem}
 						onTouchTap={() => {this.handleCategory(category.cat);}}
-						primaryText={category.cat} />);
+						primaryText={NewCatItem} />);
 					}else{
-						return (<MenuItem key={i} value={category.cat}
+						return (<MenuItem key={i} value={NewCatItem}
 						onTouchTap={() => {this.handleCategory(category.cat);}}
-						primaryText={category.cat} />);
+						primaryText={NewCatItem} />);
 					}
 				}
 			})
@@ -95,25 +138,23 @@ class MenuBrowser extends React.Component {
 	}
 
 	render() {
-		
 		if (this.props.categories.error)
 			alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
 		const props = Object.assign({}, this.props);
 		delete props.categories;
 		delete props.getCategories;
 		let categories = this.renderCategories();
-		
+
 		return (
-			
 			<AppBar
-				title={!this.state.activeSearch ? <p style={{fontFamily:'verdana', fontWeight:'bold'}}>moovr</p>: <SearchBrowser onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
+				title={!this.state.activeSearch ? <p style={{marginLeft:'20px',fontWeight:'bold',fontSize:'32px',textTransform:"capitalize"}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
 				onRightIconButtonTouchTap={this.handleToggleSerch}
-				iconElementLeft={<IconButton><SSIcon /></IconButton>}
+				iconElementLeft={<IconButton className="btnStyle"><SSIcon /></IconButton>}
 				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
-				<Drawer className="setStyle" 
+				<Drawer
 					open={this.state.open}
 					docked={false}
 					onRequestChange={open => this.setState({ open })}
@@ -121,10 +162,7 @@ class MenuBrowser extends React.Component {
 					<AppBar showMenuIconButton={false} title="Menu" />
 					<Link to="/">
 						<MenuItem
-							onTouchTap={ (e) => 
-								{this.setState({regexp: null,
-												category:null});
-									this.handleToggle}}
+							onTouchTap={this.handleHomeTap}
 							primaryText="Home"
 						/>
 					</Link>
@@ -153,7 +191,7 @@ class MenuBrowser extends React.Component {
 							primaryText="Services"
 							nestedItems={this.renderCategories(27,36)}
 						/>,
-						<ListItem className="aaa"
+						<ListItem
 							key={3}
 							primaryText="Wanted"
 							nestedItems={this.renderCategories(36,37)}

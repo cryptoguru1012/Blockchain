@@ -52,26 +52,37 @@ class TableViewItemsBrowser extends React.Component {
         }
     }
     getMedia(description) {
+        
         if (isJson(description)) {
             description = JSON.parse(description);
-            return {
-                type: 'video',
-                value: description
+            if (description.urlVideo){
+                return {
+                    type: 'video',
+                    value: description
+                }
+                }
+            else if (description.urlImage){
+                return {
+                    type: 'image',
+                    value: description
+                }
             }
         } else {
             let hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
             if (hasImages) {
                 return {
-                    type: 'image',
+                    type: 'images',
                     value: hasImages[0]
                 }
             } else {
                 return false;
             }
+            return false;
         }
     }
     renderMedia(data) {
-        if (data.type === 'video') {
+       if (data.type === 'video') {
+
             return (
                 <div style={styles.videoContainer}>
                     <VideoPlayer 
@@ -84,7 +95,14 @@ class TableViewItemsBrowser extends React.Component {
                 </div>
             )
         }
-        else {
+        else if(data.type === 'image') {
+            const url = `url(${data.value.urlImage})`
+            return (
+                <div style={styles.imageContainer(url)}>
+                </div>    
+            )
+        }
+        else if(data.type === 'images') {
             const url = `url(${data.value})`
             return (
                 <div style={styles.imageContainer(url)}>
@@ -92,6 +110,20 @@ class TableViewItemsBrowser extends React.Component {
             )
         }
     }
+    componentDidMount() {
+        console.log(sessionStorage.getItem("catagory"));
+        if(sessionStorage.getItem("catagory")){
+            let data = {
+                category: sessionStorage.getItem("catagory").trim()
+            };
+            console.log(this.props);
+            this.props.onSearch(data);
+         
+            //this.handleToggle();
+            sessionStorage.removeItem("catagory");
+        }
+    }
+    
     sortItems(items) {
         let field = this.state.thSortBy;
         let sortAZ = this.state.thSortAZ;
@@ -114,6 +146,7 @@ class TableViewItemsBrowser extends React.Component {
     render() {
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
+           
             return (
                 <tr key={item.txid}>
                     {this.props.media && <th>{this.renderMedia(mediaData)}</th>}

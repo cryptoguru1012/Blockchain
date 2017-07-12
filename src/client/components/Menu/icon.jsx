@@ -6,7 +6,7 @@ import React from "react"
 export default class SSIcon extends React.Component {
     render(){
       return (
-      <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" width="28px" height="28px" version="1.1" viewBox="0 0 68 68" xmlnsXlink="http://www.w3.org/1999/xlink">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" width="50px" height="50px" version="1.1" viewBox="0 0 68 68" xmlnsXlink="http://www.w3.org/1999/xlink">
       <g id="Layer_x0020_1">
         <metadata id="CorelCorpID_0Corel-Layer"/>
         <rect style={{fill: '#64F000'}} transform="matrix(0.402255 0.402255 -0.402255 0.402255 34.1118 -5.95524)" width="99.6065" height="99.6065" rx="25" ry="25"/>

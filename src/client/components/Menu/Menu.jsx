@@ -37,7 +37,7 @@ class Menu extends Component {
         <Navbar fixedTop fluid staticTop className="navegador">
           <AppBar
             title="moovr"
-            titleStyle= {{ fontFamily:'verdana', fontWeight:'bold'}}
+            titleStyle= {{fontWeight:'bold'}}
             iconClassNameRight="muidocs-icon-navigation-expand-more"
             className="appbar-color"
             onLeftIconButtonTouchTap={this.handleToggle.bind(this)}

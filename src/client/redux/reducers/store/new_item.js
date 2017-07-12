@@ -13,7 +13,9 @@ const initialState = {
 	message: '',
 	showSnackbar: false,
 	payments: [
-		{id: 1, value: 'SYS', text: 'SYS'}
+		{id: 1, value: 'SYS', text: 'SYS'},
+		{id: 2, value: 'BTC', text: 'BTC'},
+		{id: 3, value: 'ZEC', text: 'ZEC'}
 	]
 };
 

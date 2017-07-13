@@ -105354,6 +105354,8 @@
 
 	var _FontIcon2 = _interopRequireDefault(_FontIcon);
 
+	var _colors = __webpack_require__(466);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -105402,9 +105404,8 @@
 
 	    },
 	    sortIconStyles: {
-	        color: 'red',
-	        marginTop: '24',
-	        marginRight: '24'
+	        color: _colors.grey500,
+	        verticalAlign: 'middle'
 
 	    }
 	};
@@ -105529,16 +105530,6 @@
 	            }
 	        }
 	    }, {
-	        key: 'thArrow',
-	        value: function thArrow() {
-	            var icon = this.state.thSortAZ ? arrow_drop_down : arrow_drop_up;
-	            return _react2.default.createElement(
-	                _FontIcon2.default,
-	                { className: 'material-icons', style: styles.sortIconStyles },
-	                'icon'
-	            );
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
@@ -105580,6 +105571,21 @@
 	                    )
 	                );
 	            });
+
+	            var thSortIcon = function thSortIcon(field) {
+	                var icon = _this2.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
+	                console.log('title Icon: ', icon);
+	                return _react2.default.createElement(
+	                    _FontIcon2.default,
+	                    {
+	                        className: 'material-icons',
+	                        style: styles.sortIconStyles },
+	                    _this2.state.thSortBy === field && icon,
+	                    _this2.state.thSortBy !== field && 'sort_by_alpha'
+	                );
+	            };
+
+	            var icon = this.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
 	            return _react2.default.createElement(
 	                'table',
 	                { className: 'grids' },
@@ -105605,11 +105611,7 @@
 	                                        _this2.thClick('title');
 	                                    } },
 	                                'Title',
-	                                _react2.default.createElement(
-	                                    _FontIcon2.default,
-	                                    { className: 'material-icons', style: styles.sortIconStyles },
-	                                    this.thArrow()
-	                                )
+	                                thSortIcon('title')
 	                            )
 	                        ),
 	                        _react2.default.createElement(
@@ -105623,11 +105625,7 @@
 	                                        _this2.thClick('alias');
 	                                    } },
 	                                'Vendor',
-	                                _react2.default.createElement(
-	                                    _FontIcon2.default,
-	                                    { className: 'material-icons', style: styles.sortIconStyles },
-	                                    'arrow_drop_up'
-	                                )
+	                                thSortIcon('alias')
 	                            )
 	                        ),
 	                        _react2.default.createElement(
@@ -105635,10 +105633,13 @@
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { style: styles.txtHeader, onClick: function onClick() {
+	                                {
+	                                    style: styles.txtHeader,
+	                                    onClick: function onClick() {
 	                                        _this2.thClick('price');
 	                                    } },
-	                                'Price'
+	                                'Price',
+	                                thSortIcon('price')
 	                            )
 	                        ),
 	                        _react2.default.createElement(
@@ -105646,10 +105647,13 @@
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { style: styles.txtHeader, onClick: function onClick() {
+	                                {
+	                                    style: styles.txtHeader,
+	                                    onClick: function onClick() {
 	                                        _this2.thClick('currency');
 	                                    } },
-	                                'Currency'
+	                                'Currency',
+	                                thSortIcon('currency')
 	                            )
 	                        )
 	                    )

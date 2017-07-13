@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import VideoPlayer from '../Store/VideoPlayer';
 import FontIcon from 'material-ui/FontIcon';
+import {grey500} from 'material-ui/styles/colors';
 
 function isJson(str) {
     try {
@@ -43,9 +44,9 @@ const styles = {
 
     },
     sortIconStyles:{
-        color:'red',
-        marginTop: '24',
-        marginRight: '24'
+        color: grey500,
+        verticalAlign: 'middle'
+ 
 
     }
 }
@@ -157,11 +158,6 @@ class TableViewItemsBrowser extends React.Component {
         }
     }
 
-    thArrow(){
-        let icon = this.state.thSortAZ? arrow_drop_down:arrow_drop_up;
-        return (<FontIcon className="material-icons" style={styles.sortIconStyles}>icon</FontIcon>)
-    }
-
     render() {
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
@@ -176,6 +172,21 @@ class TableViewItemsBrowser extends React.Component {
                 </tr>
             );
         });
+
+        const thSortIcon = (field) => {
+            let icon = this.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
+            console.log ('title Icon: ', icon)    ;
+            return (
+                <FontIcon
+                    className="material-icons"
+                    style={styles.sortIconStyles}>
+                    {this.state.thSortBy === field && icon}
+                    {this.state.thSortBy !== field && 'sort_by_alpha'}
+                </FontIcon>
+            )
+        };
+
+        let icon = this.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
         return (
             <table className="grids">
                 <thead>
@@ -186,7 +197,7 @@ class TableViewItemsBrowser extends React.Component {
                                 style={styles.txtHeader}
                                 onClick={() => {this.thClick('title')}}>
                                 Title
-                                <FontIcon className="material-icons" style={styles.sortIconStyles}>{this.thArrow()}</FontIcon>
+                                {thSortIcon('title')}
                             </a>
                         </th>
                         <th>
@@ -194,12 +205,26 @@ class TableViewItemsBrowser extends React.Component {
                                 style={styles.txtHeader}
                                 onClick={() => {this.thClick('alias')}}>
                                 Vendor
-                                <FontIcon className="material-icons" style={styles.sortIconStyles}>arrow_drop_up</FontIcon>
+                                {thSortIcon('alias')}
                             </a>
                             
                         </th> 
-                        <th><a style={styles.txtHeader} onClick={() => {this.thClick('price')}}>Price</a></th>
-                        <th><a style={styles.txtHeader} onClick={() => {this.thClick('currency')}}>Currency</a></th>
+                        <th>
+                            <a
+                            style={styles.txtHeader}
+                            onClick={() => {this.thClick('price')}}>
+                            Price
+                            {thSortIcon('price')}
+                            </a>
+                        </th>
+                        <th>
+                            <a
+                            style={styles.txtHeader}
+                            onClick={() => {this.thClick('currency')}}>
+                            Currency
+                            {thSortIcon('currency')}
+                            </a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

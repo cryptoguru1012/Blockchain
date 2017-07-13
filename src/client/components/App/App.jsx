@@ -58,8 +58,6 @@ class App extends Component {
 		return (
 			<MuiThemeProvider muiTheme={muiTheme}>
 				<div style={{ position:"relative" }}>
-					// {!this.state.viewBrowser && <Menu/>}
-					// {this.state.viewBrowser && <MenuBrowser/>}
 					<MenuBrowser stateUrl={this.props.location.pathname} />
 					<div style={{marginTop:muiTheme.appBar.height - 20 }}>
 						{this.props.children}

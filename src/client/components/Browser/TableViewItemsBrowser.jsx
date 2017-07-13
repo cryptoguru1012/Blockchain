@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
-import VideoPlayer from '../Store/VideoPlayer'
+import VideoPlayer from '../Store/VideoPlayer';
+import FontIcon from 'material-ui/FontIcon';
+import {grey500, grey600} from 'material-ui/styles/colors';
+
 function isJson(str) {
     try {
         JSON.parse(str);
@@ -35,13 +38,37 @@ const styles = {
         left: '50%',
         width: '100%',
         height: '100%'
-    }
+    },
+    txtHeader: {
+        cursor: 'pointer',
+
+    },
+    sortIconStyles:{
+        marginLeft: '2px',
+        color: grey500,
+        verticalAlign: 'middle',
+        fontSize: 'x-large'
+    },
+
+    trSeparator: function(color) {
+        return {
+            borderBottom: '1px solid ' + color,
+        }
+    },
+
 }
+
 class TableViewItemsBrowser extends React.Component {
     constructor(props) {
         super(props);
         this.getMedia = this.getMedia.bind(this);
+        this.sortItems = this.sortItems.bind(this);
+        this.state = {
+            thSortBy: '',
+            thSortAZ: true
+        }
     }
+
     getMedia(description) {
         
         if (isJson(description)) {
@@ -71,6 +98,7 @@ class TableViewItemsBrowser extends React.Component {
             return false;
         }
     }
+
     renderMedia(data) {
        if (data.type === 'video') {
 
@@ -101,6 +129,7 @@ class TableViewItemsBrowser extends React.Component {
             )
         }
     }
+
     componentDidMount() {
         console.log(sessionStorage.getItem("catagory"));
         if(sessionStorage.getItem("catagory")){
@@ -115,12 +144,33 @@ class TableViewItemsBrowser extends React.Component {
         }
     }
     
+    sortItems(items) {
+        let field = this.state.thSortBy;
+        let sortAZ = this.state.thSortAZ;
+        let sortedItems;
+        if (field === '') {return items};
+        if (isNaN(parseFloat(items[0][field]))){
+            sortedItems = items.slice(0).sort((a, b) => a[field].localeCompare(b[field], {numeric: true}));
+        }else {
+            sortedItems = items.slice(0).sort((a, b) => {return parseFloat(a[field]) - parseFloat(b[field])});
+        }
+        if (sortAZ) {return sortedItems;} else {return sortedItems.reverse();}
+    }
+
+    thClick(field){
+        if (field === this.state.thSortBy) {
+            this.setState({'thSortAZ': !this.state.thSortAZ,'thSortBy': field})
+        }else{
+            this.setState({'thSortAZ': true,'thSortBy': field});
+        }
+    }
+
     render() {
-        const items = this.props.items.map((item) => {
+        const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
            
             return (
-                <tr key={item.txid}>
+                <tr key={item.txid} style={styles.trSeparator(grey500)}>
                     {this.props.media && <th>{this.renderMedia(mediaData)}</th>}
                     <td><Link to={'/offer/' + item.offer}>{item.title}</Link></td>
                     <td>{item.alias}</td> 
@@ -129,19 +179,62 @@ class TableViewItemsBrowser extends React.Component {
                 </tr>
             );
         });
+
+        const thSortIcon = (field) => {
+            let icon = this.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
+            return (
+                <FontIcon
+                    className="material-icons"
+                    style={styles.sortIconStyles}>
+                    {(this.state.thSortBy === field && icon) || ' '}
+                    
+                </FontIcon>
+            )
+        };
+
+        let icon = this.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
         return (
             <table className="grids">
                 <thead>
-                    <tr>
+                    <tr style={styles.trSeparator(grey600)}>
                         {this.props.media && <th>Media</th>}
-                        <th>Title</th>
-                        <th>Vendor</th> 
-                        <th>Price</th>
-                        <th>Currency</th>
+                        <th>
+                            <a
+                                style={styles.txtHeader}
+                                onClick={() => {this.thClick('title')}}>
+                                Title
+                                {thSortIcon('title')}
+                            </a>
+                        </th>
+                        <th>
+                            <a
+                                style={styles.txtHeader}
+                                onClick={() => {this.thClick('alias')}}>
+                                Vendor
+                                {thSortIcon('alias')}
+                            </a>
+                            
+                        </th> 
+                        <th>
+                            <a
+                            style={styles.txtHeader}
+                            onClick={() => {this.thClick('price')}}>
+                            Price
+                            {thSortIcon('price')}
+                            </a>
+                        </th>
+                        <th>
+                            <a
+                            style={styles.txtHeader}
+                            onClick={() => {this.thClick('currency')}}>
+                            Currency
+                            {thSortIcon('currency')}
+                            </a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {items}
+                    {itemsOutput}
                 </tbody>
             </table>
         );

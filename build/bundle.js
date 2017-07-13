@@ -105404,10 +105404,18 @@
 
 	    },
 	    sortIconStyles: {
+	        marginLeft: '2px',
 	        color: _colors.grey500,
-	        verticalAlign: 'middle'
+	        verticalAlign: 'middle',
+	        fontSize: 'x-large'
+	    },
 
+	    trSeparator: function trSeparator(color) {
+	        return {
+	            borderBottom: '1px solid ' + color
+	        };
 	    }
+
 	};
 
 	var TableViewItemsBrowser = function (_React$Component) {
@@ -105539,7 +105547,7 @@
 
 	                return _react2.default.createElement(
 	                    'tr',
-	                    { key: item.txid },
+	                    { key: item.txid, style: styles.trSeparator(_colors.grey500) },
 	                    _this2.props.media && _react2.default.createElement(
 	                        'th',
 	                        null,
@@ -105580,8 +105588,7 @@
 	                    {
 	                        className: 'material-icons',
 	                        style: styles.sortIconStyles },
-	                    _this2.state.thSortBy === field && icon,
-	                    _this2.state.thSortBy !== field && 'sort_by_alpha'
+	                    _this2.state.thSortBy === field && icon || ' '
 	                );
 	            };
 
@@ -105594,7 +105601,7 @@
 	                    null,
 	                    _react2.default.createElement(
 	                        'tr',
-	                        null,
+	                        { style: styles.trSeparator(_colors.grey600) },
 	                        this.props.media && _react2.default.createElement(
 	                            'th',
 	                            null,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import VideoPlayer from '../Store/VideoPlayer';
 import FontIcon from 'material-ui/FontIcon';
-import {grey500} from 'material-ui/styles/colors';
+import {grey500, grey600} from 'material-ui/styles/colors';
 
 function isJson(str) {
     try {
@@ -44,11 +44,18 @@ const styles = {
 
     },
     sortIconStyles:{
+        marginLeft: '2px',
         color: grey500,
-        verticalAlign: 'middle'
- 
+        verticalAlign: 'middle',
+        fontSize: 'x-large'
+    },
 
-    }
+    trSeparator: function(color) {
+        return {
+            borderBottom: '1px solid ' + color,
+        }
+    },
+
 }
 
 class TableViewItemsBrowser extends React.Component {
@@ -163,7 +170,7 @@ class TableViewItemsBrowser extends React.Component {
             const mediaData = this.getMedia(item.description);
            
             return (
-                <tr key={item.txid}>
+                <tr key={item.txid} style={styles.trSeparator(grey500)}>
                     {this.props.media && <th>{this.renderMedia(mediaData)}</th>}
                     <td><Link to={'/offer/' + item.offer}>{item.title}</Link></td>
                     <td>{item.alias}</td> 
@@ -180,8 +187,8 @@ class TableViewItemsBrowser extends React.Component {
                 <FontIcon
                     className="material-icons"
                     style={styles.sortIconStyles}>
-                    {this.state.thSortBy === field && icon}
-                    {this.state.thSortBy !== field && 'sort_by_alpha'}
+                    {(this.state.thSortBy === field && icon) || ' '}
+                    
                 </FontIcon>
             )
         };
@@ -190,7 +197,7 @@ class TableViewItemsBrowser extends React.Component {
         return (
             <table className="grids">
                 <thead>
-                    <tr>
+                    <tr style={styles.trSeparator(grey600)}>
                         {this.props.media && <th>Media</th>}
                         <th>
                             <a

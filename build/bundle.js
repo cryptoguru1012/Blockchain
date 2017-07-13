@@ -34940,10 +34940,6 @@
 					_react2.default.createElement(
 						'div',
 						{ style: { position: "relative" } },
-						'// ',
-						!this.state.viewBrowser && _react2.default.createElement(_Menu.Menu, null),
-						'// ',
-						this.state.viewBrowser && _react2.default.createElement(_Menu.MenuBrowser, null),
 						_react2.default.createElement(_Menu.MenuBrowser, { stateUrl: this.props.location.pathname }),
 						_react2.default.createElement(
 							'div',
@@ -105582,7 +105578,6 @@
 
 	            var thSortIcon = function thSortIcon(field) {
 	                var icon = _this2.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
-	                console.log('title Icon: ', icon);
 	                return _react2.default.createElement(
 	                    _FontIcon2.default,
 	                    {

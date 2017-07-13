@@ -182,7 +182,6 @@ class TableViewItemsBrowser extends React.Component {
 
         const thSortIcon = (field) => {
             let icon = this.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
-            console.log ('title Icon: ', icon)    ;
             return (
                 <FontIcon
                     className="material-icons"

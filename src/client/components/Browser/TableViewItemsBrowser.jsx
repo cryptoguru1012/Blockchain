@@ -40,8 +40,7 @@ const styles = {
         height: '100%'
     },
     txtHeader: {
-        cursor: 'pointer',
-
+        cursor: 'pointer'
     },
     sortIconStyles:{
         marginLeft: '2px',
@@ -49,7 +48,6 @@ const styles = {
         verticalAlign: 'middle',
         fontSize: 'x-large'
     },
-
     trSeparator: function(color) {
         return {
             borderBottom: '1px solid ' + color,
@@ -70,7 +68,6 @@ class TableViewItemsBrowser extends React.Component {
     }
 
     getMedia(description) {
-        
         if (isJson(description)) {
             description = JSON.parse(description);
             if (description.urlVideo){
@@ -78,8 +75,7 @@ class TableViewItemsBrowser extends React.Component {
                     type: 'video',
                     value: description
                 }
-                }
-            else if (description.urlImage){
+            } else if (description.urlImage){
                 return {
                     type: 'image',
                     value: description
@@ -101,7 +97,6 @@ class TableViewItemsBrowser extends React.Component {
 
     renderMedia(data) {
        if (data.type === 'video') {
-
             return (
                 <div style={styles.videoContainer}>
                     <VideoPlayer 
@@ -138,7 +133,6 @@ class TableViewItemsBrowser extends React.Component {
             };
             console.log(this.props);
             this.props.onSearch(data);
-         
             //this.handleToggle();
             sessionStorage.removeItem("catagory");
         }
@@ -168,7 +162,6 @@ class TableViewItemsBrowser extends React.Component {
     render() {
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
-           
             return (
                 <tr key={item.txid} style={styles.trSeparator(grey500)}>
                     {this.props.media && <th>{this.renderMedia(mediaData)}</th>}
@@ -217,18 +210,18 @@ class TableViewItemsBrowser extends React.Component {
                         </th> 
                         <th>
                             <a
-                            style={styles.txtHeader}
-                            onClick={() => {this.thClick('price')}}>
-                            Price
-                            {thSortIcon('price')}
+                                style={styles.txtHeader}
+                                onClick={() => {this.thClick('price')}}>
+                                Price
+                                {thSortIcon('price')}
                             </a>
                         </th>
                         <th>
                             <a
-                            style={styles.txtHeader}
-                            onClick={() => {this.thClick('currency')}}>
-                            Currency
-                            {thSortIcon('currency')}
+                                style={styles.txtHeader}
+                                onClick={() => {this.thClick('currency')}}>
+                                Currency
+                                {thSortIcon('currency')}
                             </a>
                         </th>
                     </tr>

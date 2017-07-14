@@ -148,7 +148,7 @@ class MenuBrowser extends React.Component {
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
 				onRightIconButtonTouchTap={this.handleToggleSerch}
-				iconElementLeft={<IconButton><SSIcon /></IconButton>}
+				iconElementLeft={<IconButton  className="btnStyle"><SSIcon /></IconButton>}
 				iconElementRight={<IconButton><ActionSearch /></IconButton>}
 			>
 				<Drawer

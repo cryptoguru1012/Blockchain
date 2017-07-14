@@ -67,8 +67,8 @@ class App extends Component {
 					{!this.state.viewBrowser && <Menu/>}
 					{this.state.viewBrowser && <MenuBrowser/>}
 					*/}
-					<MenuBrowser searchData={this.state.dataToSearch} />
-					<div style={{marginTop:muiTheme.appBar.height}}>
+					<MenuBrowser searchData={this.state.dataToSearch} stateUrl={this.props.location.pathname}/>
+					<div style={{marginTop:muiTheme.appBar.height - 20}}>
 						{this.props.children}
 					</div>
 				</div>

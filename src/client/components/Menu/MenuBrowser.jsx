@@ -45,9 +45,7 @@ class MenuBrowser extends React.Component {
 		};
 		this.props.onSearch(data);
 	}
-	currentLocation() {
-		return browserHistory.getCurrentLocation().pathname;
-	}
+
 	handleToggle() {
 		this.setState({regexp: null,
 			category: null,
@@ -70,7 +68,7 @@ class MenuBrowser extends React.Component {
 				data.category = this.state.category;
 			}
 			this.props.onSearch(data);
-			if (this.currentLocation() !== "/" && this.state.regexp) {
+			if (this.props.stateUrl !== "/" && this.state.regexp) {
 				browserHistory.push('/');
 			}
 		}else{
@@ -81,7 +79,7 @@ class MenuBrowser extends React.Component {
 	}
 
 	handleCategory(value) {
-		//console.log(value)
+		console.log(value)
 		if (this.props.stateUrl !== "/")
 		{
 		if (typeof(Storage) !== "undefined") {

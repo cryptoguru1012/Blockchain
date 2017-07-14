@@ -34940,10 +34940,10 @@
 					_react2.default.createElement(
 						'div',
 						{ style: { position: "relative" } },
-						_react2.default.createElement(_Menu.MenuBrowser, { searchData: this.state.dataToSearch }),
+						_react2.default.createElement(_Menu.MenuBrowser, { searchData: this.state.dataToSearch, stateUrl: this.props.location.pathname }),
 						_react2.default.createElement(
 							'div',
-							{ style: { marginTop: muiTheme.appBar.height } },
+							{ style: { marginTop: muiTheme.appBar.height - 20 } },
 							this.props.children
 						)
 					)
@@ -68262,11 +68262,6 @@
 				this.props.onSearch(data);
 			}
 		}, {
-			key: 'currentLocation',
-			value: function currentLocation() {
-				return _reactRouter.browserHistory.getCurrentLocation().pathname;
-			}
-		}, {
 			key: 'handleToggle',
 			value: function handleToggle() {
 				this.setState({ regexp: null,
@@ -68293,7 +68288,7 @@
 						data.category = this.state.category;
 					}
 					this.props.onSearch(data);
-					if (this.currentLocation() !== "/" && this.state.regexp) {
+					if (this.props.stateUrl !== "/" && this.state.regexp) {
 						_reactRouter.browserHistory.push('/');
 					}
 				} else {
@@ -68305,7 +68300,7 @@
 		}, {
 			key: 'handleCategory',
 			value: function handleCategory(value) {
-				//console.log(value)
+				console.log(value);
 				if (this.props.stateUrl !== "/") {
 					if (typeof Storage !== "undefined") {
 						// Code for localStorage/sessionStorage.

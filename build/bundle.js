@@ -105358,6 +105358,12 @@
 
 	var _VideoPlayer2 = _interopRequireDefault(_VideoPlayer);
 
+	var _FontIcon = __webpack_require__(707);
+
+	var _FontIcon2 = _interopRequireDefault(_FontIcon);
+
+	var _colors = __webpack_require__(466);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -105400,7 +105406,22 @@
 	        left: '50%',
 	        width: '100%',
 	        height: '100%'
+	    },
+	    txtHeader: {
+	        cursor: 'pointer'
+	    },
+	    sortIconStyles: {
+	        marginLeft: '2px',
+	        color: _colors.grey500,
+	        verticalAlign: 'middle',
+	        fontSize: 'x-large'
+	    },
+	    trSeparator: function trSeparator(color) {
+	        return {
+	            borderBottom: '1px solid ' + color
+	        };
 	    }
+
 	};
 
 	var TableViewItemsBrowser = function (_React$Component) {
@@ -105412,13 +105433,17 @@
 	        var _this = _possibleConstructorReturn(this, (TableViewItemsBrowser.__proto__ || Object.getPrototypeOf(TableViewItemsBrowser)).call(this, props));
 
 	        _this.getMedia = _this.getMedia.bind(_this);
+	        _this.sortItems = _this.sortItems.bind(_this);
+	        _this.state = {
+	            thSortBy: '',
+	            thSortAZ: true
+	        };
 	        return _this;
 	    }
 
 	    _createClass(TableViewItemsBrowser, [{
 	        key: 'getMedia',
 	        value: function getMedia(description) {
-
 	            if (isJson(description)) {
 	                description = JSON.parse(description);
 	                if (description.urlVideo) {
@@ -105449,7 +105474,6 @@
 	        key: 'renderMedia',
 	        value: function renderMedia(data) {
 	            if (data.type === 'video') {
-
 	                return _react2.default.createElement(
 	                    'div',
 	                    { style: styles.videoContainer },
@@ -105479,9 +105503,41 @@
 	                };
 	                console.log(this.props);
 	                this.props.onSearch(data);
-
 	                //this.handleToggle();
 	                sessionStorage.removeItem("catagory");
+	            }
+	        }
+	    }, {
+	        key: 'sortItems',
+	        value: function sortItems(items) {
+	            var field = this.state.thSortBy;
+	            var sortAZ = this.state.thSortAZ;
+	            var sortedItems = void 0;
+	            if (field === '') {
+	                return items;
+	            };
+	            if (isNaN(parseFloat(items[0][field]))) {
+	                sortedItems = items.slice(0).sort(function (a, b) {
+	                    return a[field].localeCompare(b[field], { numeric: true });
+	                });
+	            } else {
+	                sortedItems = items.slice(0).sort(function (a, b) {
+	                    return parseFloat(a[field]) - parseFloat(b[field]);
+	                });
+	            }
+	            if (sortAZ) {
+	                return sortedItems;
+	            } else {
+	                return sortedItems.reverse();
+	            }
+	        }
+	    }, {
+	        key: 'thClick',
+	        value: function thClick(field) {
+	            if (field === this.state.thSortBy) {
+	                this.setState({ 'thSortAZ': !this.state.thSortAZ, 'thSortBy': field });
+	            } else {
+	                this.setState({ 'thSortAZ': true, 'thSortBy': field });
 	            }
 	        }
 	    }, {
@@ -105489,12 +105545,11 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            var items = this.props.items.map(function (item) {
+	            var itemsOutput = this.sortItems(this.props.items).map(function (item) {
 	                var mediaData = _this2.getMedia(item.description);
-
 	                return _react2.default.createElement(
 	                    'tr',
-	                    { key: item.txid },
+	                    { key: item.txid, style: styles.trSeparator(_colors.grey500) },
 	                    _this2.props.media && _react2.default.createElement(
 	                        'th',
 	                        null,
@@ -105526,6 +105581,19 @@
 	                    )
 	                );
 	            });
+
+	            var thSortIcon = function thSortIcon(field) {
+	                var icon = _this2.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
+	                return _react2.default.createElement(
+	                    _FontIcon2.default,
+	                    {
+	                        className: 'material-icons',
+	                        style: styles.sortIconStyles },
+	                    _this2.state.thSortBy === field && icon || ' '
+	                );
+	            };
+
+	            var icon = this.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
 	            return _react2.default.createElement(
 	                'table',
 	                { className: 'grids' },
@@ -105534,7 +105602,7 @@
 	                    null,
 	                    _react2.default.createElement(
 	                        'tr',
-	                        null,
+	                        { style: styles.trSeparator(_colors.grey600) },
 	                        this.props.media && _react2.default.createElement(
 	                            'th',
 	                            null,
@@ -105543,29 +105611,65 @@
 	                        _react2.default.createElement(
 	                            'th',
 	                            null,
-	                            'Title'
+	                            _react2.default.createElement(
+	                                'a',
+	                                {
+	                                    style: styles.txtHeader,
+	                                    onClick: function onClick() {
+	                                        _this2.thClick('title');
+	                                    } },
+	                                'Title',
+	                                thSortIcon('title')
+	                            )
 	                        ),
 	                        _react2.default.createElement(
 	                            'th',
 	                            null,
-	                            'Vendor'
+	                            _react2.default.createElement(
+	                                'a',
+	                                {
+	                                    style: styles.txtHeader,
+	                                    onClick: function onClick() {
+	                                        _this2.thClick('alias');
+	                                    } },
+	                                'Vendor',
+	                                thSortIcon('alias')
+	                            )
 	                        ),
 	                        _react2.default.createElement(
 	                            'th',
 	                            null,
-	                            'Price'
+	                            _react2.default.createElement(
+	                                'a',
+	                                {
+	                                    style: styles.txtHeader,
+	                                    onClick: function onClick() {
+	                                        _this2.thClick('price');
+	                                    } },
+	                                'Price',
+	                                thSortIcon('price')
+	                            )
 	                        ),
 	                        _react2.default.createElement(
 	                            'th',
 	                            null,
-	                            'Currency'
+	                            _react2.default.createElement(
+	                                'a',
+	                                {
+	                                    style: styles.txtHeader,
+	                                    onClick: function onClick() {
+	                                        _this2.thClick('currency');
+	                                    } },
+	                                'Currency',
+	                                thSortIcon('currency')
+	                            )
 	                        )
 	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'tbody',
 	                    null,
-	                    items
+	                    itemsOutput
 	                )
 	            );
 	        }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { search } from '../../redux/actions/browser';
+import { search , searchCat} from '../../redux/actions/browser';
 import { doCategoryReq } from '../../redux/actions/store/category';
 
 import { Router, Route, Link, browserHistory } from 'react-router';
@@ -34,9 +34,25 @@ class MenuBrowser extends React.Component {
 		this.handleHomeTap = this.handleHomeTap.bind(this);
 		this.handleToggleSerch = this.handleToggleSerch.bind(this);
 		this.handleChangeData = this.handleChangeData.bind(this);
+		this.renderCatagoryPrimary=this.renderCatagoryPrimary.bind(this);
 	}
+renderCatagoryPrimary(min,max) {
+	let arr=[];
+	this.props.categories.categories.map((category, i) => {
+				if( i >= min && i < max) {
 
+				arr.push({category:category.cat});
+				}
+
+					
+
+})
+	console.log(arr);
+	this.props.oncatSearch(arr);
+	//console.log(this.props);
+}
 	handleToggle() {
+		
 		this.setState({ open: !this.state.open });
 	}
 
@@ -62,7 +78,7 @@ class MenuBrowser extends React.Component {
 	}
 
 	handleCategory(value) {
-		console.log(value)
+		
 		if (this.props.stateUrl !== "/")
 		{
 		if (typeof(Storage) !== "undefined") {
@@ -77,6 +93,7 @@ class MenuBrowser extends React.Component {
 
 			
 		}
+
 			let data = {
 				category: value.trim()
 			};
@@ -110,12 +127,14 @@ class MenuBrowser extends React.Component {
 	splitCategory(category){
 		var OldCatItem = category
 		var NewCatItem = OldCatItem.split(">").pop()
+		debugger;
 		return NewCatItem
 	}
 	renderCategories( start, stop) {
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {
 				if( i >= start && i < stop) {
+
 					// passing category.cat, it will return only the name of sub category
 					var NewCatItem = this.splitCategory(category.cat);
 					// capetalizing first letter of sub categories
@@ -144,7 +163,7 @@ class MenuBrowser extends React.Component {
 
 		return (
 			<AppBar
-				title={!this.state.activeSearch ? <p style={{marginLeft:'20px',fontWeight:'bold',fontSize:'32px',textTransform:"capitalize"}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
+				title={!this.state.activeSearch ? <p style={{fontWeight:'bold',fontSize:'32px'}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
 				onRightIconButtonTouchTap={this.handleToggleSerch}
@@ -180,22 +199,22 @@ class MenuBrowser extends React.Component {
 							/>,
 						<ListItem
 							key={1}
-							primaryText="For Sale"
+							primaryText="For Sale" onTouchTap={() => {this.renderCatagoryPrimary(0,27);}}
 							nestedItems={this.renderCategories(0,27)}
 						/>,
 						<ListItem
 							key={2}
-							primaryText="Services"
+							primaryText="Services" onTouchTap={() => {this.renderCatagoryPrimary(27,36);}}
 							nestedItems={this.renderCategories(27,36)}
 						/>,
 						<ListItem
 							key={3}
-							primaryText="Wanted"
+							primaryText="Wanted" onTouchTap={() => {this.renderCatagoryPrimary(36,37);}}
 							nestedItems={this.renderCategories(36,37)}
 						/>,
 						<ListItem
 							key={4}
-							primaryText="Certificates"
+							primaryText="Certificates" onTouchTap={() => {this.renderCatagoryPrimary(37,42);}}
 							nestedItems={this.renderCategories(37,42)}
 						/>]} />
 					<Link to="">
@@ -238,6 +257,9 @@ function mapDispatchToProps(dispatch) {
 		},
 		getCategories: () => {
 		  dispatch(doCategoryReq());
+		},
+		oncatSearch:(arr)=>{
+			dispatch(searchCat(arr));
 		}
 	};
 }

@@ -37,7 +37,7 @@ class MenuBrowser extends React.Component {
 	}
 
 	componentDidMount() {
-			let data = {
+		let data = {
 			regexp: this.props.searchData,
 			from: '',
 			safesearch: 'No',
@@ -79,7 +79,7 @@ class MenuBrowser extends React.Component {
 	}
 
 	handleCategory(value) {
-		console.log(value)
+		console.log(value);
 		if (this.props.stateUrl !== "/")
 		{
 		if (typeof(Storage) !== "undefined") {

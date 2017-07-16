@@ -21,7 +21,8 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			viewBrowser: false
+			viewBrowser: false,
+			dataToSearch: null
 		}
 	}
 
@@ -42,7 +43,6 @@ class App extends Component {
 	}
 
 	render() {
-
 		const muiTheme = getMuiTheme({
 			palette: {
 					primary1Color: grey900,
@@ -58,8 +58,8 @@ class App extends Component {
 		return (
 			<MuiThemeProvider muiTheme={muiTheme}>
 				<div style={{ position:"relative" }}>
-					<MenuBrowser stateUrl={this.props.location.pathname} />
-					<div style={{marginTop:muiTheme.appBar.height - 20 }}>
+					<MenuBrowser searchData={this.state.dataToSearch} stateUrl={this.props.location.pathname}/>
+					<div style={{marginTop:muiTheme.appBar.height - 20}}>
 						{this.props.children}
 					</div>
 				</div>

@@ -13,7 +13,7 @@ const Routes = (
         <Route path='/' component={App}>
             <IndexRoute component={Browser}/>
             <Route path='/register' component={Register}/>
-            <Route path='/store/newItem' component={Store.NewItem}/>
+            <Route path='/store/newItem' component={Store.NewItemSelector}/>
             <Route path='/offer' component={Offer}>
                 <Route path=':id' component={Offer}/>
             </Route>

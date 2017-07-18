@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { search , searchCat} from '../../redux/actions/browser';
+import { search } from '../../redux/actions/browser';
 import { doCategoryReq } from '../../redux/actions/store/category';
 
 import { Router, Route, Link, browserHistory } from 'react-router';

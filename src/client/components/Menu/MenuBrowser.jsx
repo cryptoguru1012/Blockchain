@@ -38,23 +38,25 @@ class MenuBrowser extends React.Component {
 	}
 renderCatagoryPrimary(min) {
 				var serchParam={},serchString;
+				debugger;
 				this.props.categories.categories.map((cat, i) => {
 				if( i === min) {
 					serchString=cat.cat;
-					serchString=serchString.substring(0,serchString.indexOf('>'))
-					if (serchString =" "){
+					debugger;
+					if (serchString.indexOf('>') ==-1){
 						serchString=cat.cat;
+					}
+					else if(serchString.indexOf('>') !=-1){
+						serchString=serchString.substring(0,serchString.indexOf('>'))
+
 					}
 					serchParam = {
 					category: serchString.trim()}
 					this.props.onSearch(serchParam);
 					this.handleToggle();
 					
-			}
-
-
 					
-				
+			}
 
 })
 	

@@ -13,20 +13,24 @@ import { Row, Col, Grid, Button } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
+import SvgIcon from 'material-ui/SvgIcon';
 import VideoRecord from './VideoRecord';
 import VideoRecord2 from './VideoRecord2';
 import VideoPlayer from './VideoPlayer';
 import ImageEdit from './ImageEdit';
 import SubtitlesEditer from './SubtitlesEditer';
 import OfferForm from './OfferForm';
+import {grey500, grey600} from 'material-ui/styles/colors';
 
 // Icons
 import VIcon from "./VIcon";
+import PIcon from "./PIcon";
 
 const newItemStyle = {
-  loadingDiv: {
-    marginTop: '20vh',
+  caption: {
+    marginTop: '15vh',
     textAlign: 'center',
+    marginBottom:'5vh'
   },
   icon:{
     textAlign: 'center',
@@ -34,17 +38,27 @@ const newItemStyle = {
   },
   vcenter:{
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom:'40px'
   },
-  myButton:{
+  buttonUp:{
     borderRadius: '5px',
-    margin:'0 0 5px 5%',
-    width:'95%'
+    margin: '0 0 5px 5%',
+    width: '95%',
+    color: 'white'
   },
-  FirstCol:{
-    textAlign: 'center',
-    border: '1px solid red'
+  buttonDown:{
+    borderRadius: '5px',
+    margin: '5px 0 0 5%',
+    width: '95%',
+    color: 'white'
   },
+  buttonNoMedia:{
+    borderRadius: '5px',
+    margin: '30px 0 50px 0',
+    color: 'white'
+  },
+
 };
 
 class NewItemSelector extends React.Component {
@@ -59,70 +73,104 @@ class NewItemSelector extends React.Component {
   componentWillMount() {
     this.props.getCategories();
     this.props.getCurrencies();
-  }
-
+  } 
+ 
   render() {
+    
     return (
         <Grid>
-          <Row style={newItemStyle.loadingDiv}><h2>Create an Offer</h2></Row>
+          <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
           <Row>
-            <Col md={1} style={newItemStyle.FirstCol}></Col>
-            <Col md={5} style={newItemStyle.FirstCol}>
+            <Col md={1}/>
+            <Col md={5}>
               <Row style={newItemStyle.vcenter}>
-                <Col xs={1} style={newItemStyle.icon}></Col>
-                <Col xs={3} style={newItemStyle.icon}>
+                <Col xs={1}></Col>
+                <Col xs={4}>
                   <VIcon />
-                  <CircularProgress size={50} thickness={6} />
                 </Col>
-                <Col xs={7}  style={newItemStyle.icon}>
-                  <Row xs={12} style={newItemStyle.ThirdCol}>
+                <Col xs={7}>
+                  <Row>
                     <FlatButton
                       href="https://github.com/callemall/material-ui"
                       target="_blank"
-                      style={newItemStyle.myButton}
-                      label="Record Live Video"
+                      style={newItemStyle.buttonUp}
+                      label="Record Video"
                       labelPosition="before"
                       backgroundColor="rgb(78,172,233)"
-                      fullWidth={true}
+                      hoverColor={grey600}
                       primary={true}
                       icon={<FontIcon className="material-icons">theaters</FontIcon>}
                     />
                   </Row>
-                  <Row style={newItemStyle.ThirdCol}>
+                  <Row>
                     <FlatButton
                       href="https://github.com/callemall/material-ui"
                       target="_blank"
                       label="Upload Video"
                       labelPosition="before"
-                      style={newItemStyle.myButton}
+                      style={newItemStyle.buttonDown}
                       backgroundColor="rgb(153,211,243)"
-                      fullWidth={true}
+                      hoverColor={grey600}
                       primary={true}
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
                     />
                   </Row>
                 </Col>
-                <Col xs={1} style={newItemStyle.icon}></Col>
+                <Col xs={1} ></Col>
               </Row>
             </Col>
-            <Col md={5} style={newItemStyle.FirstCol}>
+            <Col md={5}>
               <Row style={newItemStyle.vcenter}>
-                <Col xs={1} style={newItemStyle.icon}></Col>
-                <Col xs={3} style={newItemStyle.icon}>
-                  <CircularProgress size={50} thickness={6} />
+                <Col xs={1}></Col>
+                <Col xs={4}>
+                  <PIcon />
                 </Col>
-                <Col xs={7}  style={newItemStyle.icon}>
-                  <Row style={newItemStyle.ThirdCol}>
-                    <h3>Video</h3>
+                <Col xs={7}>
+                  <Row>
+                    <FlatButton
+                      href="https://github.com/callemall/material-ui"
+                      target="_blank"
+                      style={newItemStyle.buttonUp}
+                      label=" Take A Photo "
+                      labelPosition="before"
+                      backgroundColor="rgb(75, 165, 97)"
+                      hoverColor={grey600}
+                      primary={true}
+                      icon={<FontIcon className="material-icons">photo_camera</FontIcon>}
+                    />
                   </Row>
-                  <Row style={newItemStyle.ThirdCol}>
-                    <h3>Image</h3>
+                  <Row>
+                    <FlatButton
+                      href="https://github.com/callemall/material-ui"
+                      target="_blank"
+                      label="Upload Photo"
+                      labelPosition="before"
+                      style={newItemStyle.buttonDown}
+                      backgroundColor="rgb(153, 202, 165)"
+                      hoverColor={grey600}
+                      primary={true}
+                      icon={<FontIcon className="material-icons">file_upload</FontIcon>}
+                    />
                   </Row>
                 </Col>
-                <Col xs={1} style={newItemStyle.icon}></Col>
+                <Col xs={1} ></Col>
               </Row>
             </Col>
-            <Col md={1} style={newItemStyle.FirstCol}></Col>
+            <Col md={1}/>
+          </Row>
+          <Row style={{textAlign: 'center'}}>
+            <Col xs={12}>
+            <FlatButton
+              href="https://github.com/callemall/material-ui"
+              target="_blank"
+              label="Continue with no media"
+              style={newItemStyle.buttonNoMedia}
+              backgroundColor={grey600}
+              hoverColor={grey500}
+              primary={true}
+              icon={<FontIcon className="material-icons">close</FontIcon>}
+            />
+            </Col>
           </Row>
         </Grid>
     );

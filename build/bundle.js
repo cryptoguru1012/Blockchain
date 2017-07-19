@@ -104712,10 +104712,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SvgIcon = __webpack_require__(720);
-
-	var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -122386,10 +122382,6 @@
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
-
-	var _SvgIcon = __webpack_require__(720);
-
-	var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

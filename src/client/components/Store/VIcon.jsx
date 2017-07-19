@@ -1,8 +1,6 @@
 "use strict";
 
 import React from "react"
-import SvgIcon from 'material-ui/SvgIcon';
-
 
 export default class VIcon extends React.Component {
     render(){

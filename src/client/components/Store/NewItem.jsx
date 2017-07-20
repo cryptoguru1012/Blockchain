@@ -102,11 +102,8 @@ class NewItem extends React.Component {
     if (!this.props.video.recorded || this.props.video.error) {
       return (
         <Grid>
-          {this.state.RecordRTC &&
-               <VideoRecord onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>}
-          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded}
-          imageUploaded={this.props.imageUploaded}
-          />}
+          {this.state.RecordRTC &&  <VideoRecord  onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>}
+          {!this.state.RecordRTC && <VideoRecord2 onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded}/>}
         </Grid>
       );
     }

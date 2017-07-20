@@ -14,13 +14,13 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import SvgIcon from 'material-ui/SvgIcon';
+import {grey500, grey600} from 'material-ui/styles/colors';
 import VideoRecord from './VideoRecord';
 import VideoRecord2 from './VideoRecord2';
 import VideoPlayer from './VideoPlayer';
 import ImageEdit from './ImageEdit';
 import SubtitlesEditer from './SubtitlesEditer';
 import OfferForm from './OfferForm';
-import {grey500, grey600} from 'material-ui/styles/colors';
 
 // Icons
 import VIcon from "./VIcon";
@@ -58,26 +58,55 @@ const newItemStyle = {
     margin: '30px 0 50px 0',
     color: 'white'
   },
-
+  uploadInput: {
+    cursor: 'pointer',
+    position: 'absolute',
+    top: '0',
+    bottom: '0',
+    right: '0',
+    left: '0',
+    width: '100%',
+    opacity: '0'
+  }
 };
 
 class NewItemSelector extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      RecordRTC: false
-    }
+      nextStp: 'selector'
+    };
   }
 
   componentWillMount() {
     this.props.getCategories();
     this.props.getCurrencies();
-  } 
+  }
+  
+  changeStep(step) {
+    this.setState({'nextStp': step});
+  }
+
+  showOfferForm(){
+    return (
+      <Grid>
+        <OfferForm
+          categories={this.props.categories}
+          currencies={this.props.currencies}
+          newItem={this.props.newItem}
+          onCreate={this.props.onCreate}
+          showSnackbar={this.props.showSnackbar}
+          urlVideo={this.props.video.url}
+          urlImage={this.props.image.data.location}
+          subtitlesVideo={this.props.video.subtitles}
+        />
+      </Grid>
+    )
+  }
  
   render() {
-    
-    return (
+    if (this.state.nextStp === 'selector') {
+      return(
         <Grid>
           <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
           <Row>
@@ -91,21 +120,18 @@ class NewItemSelector extends React.Component {
                 <Col xs={7}>
                   <Row>
                     <FlatButton
-                      href="https://github.com/callemall/material-ui"
-                      target="_blank"
                       style={newItemStyle.buttonUp}
                       label="Record Video"
                       labelPosition="before"
                       backgroundColor="rgb(78,172,233)"
                       hoverColor={grey600}
                       primary={true}
-                      icon={<FontIcon className="material-icons">theaters</FontIcon>}
+                      icon={<FontIcon className="material-icons">videocam</FontIcon>}
+                      onClick={() => {this.changeStep('liveVideo')}}
                     />
                   </Row>
                   <Row>
                     <FlatButton
-                      href="https://github.com/callemall/material-ui"
-                      target="_blank"
                       label="Upload Video"
                       labelPosition="before"
                       style={newItemStyle.buttonDown}
@@ -113,7 +139,10 @@ class NewItemSelector extends React.Component {
                       hoverColor={grey600}
                       primary={true}
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
-                    />
+                      containerElement="label"
+                    >
+                      <input type="file" style={newItemStyle.uploadInput} />
+                    </FlatButton>
                   </Row>
                 </Col>
                 <Col xs={1} ></Col>
@@ -128,8 +157,6 @@ class NewItemSelector extends React.Component {
                 <Col xs={7}>
                   <Row>
                     <FlatButton
-                      href="https://github.com/callemall/material-ui"
-                      target="_blank"
                       style={newItemStyle.buttonUp}
                       label=" Take A Photo "
                       labelPosition="before"
@@ -137,12 +164,11 @@ class NewItemSelector extends React.Component {
                       hoverColor={grey600}
                       primary={true}
                       icon={<FontIcon className="material-icons">photo_camera</FontIcon>}
+                      onClick={() => {this.changeStep('takePhoto')}}
                     />
                   </Row>
                   <Row>
                     <FlatButton
-                      href="https://github.com/callemall/material-ui"
-                      target="_blank"
                       label="Upload Photo"
                       labelPosition="before"
                       style={newItemStyle.buttonDown}
@@ -150,7 +176,10 @@ class NewItemSelector extends React.Component {
                       hoverColor={grey600}
                       primary={true}
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
-                    />
+                      containerElement="label"
+                    >
+                      <input type="file" style={newItemStyle.uploadInput} />
+                    </FlatButton>
                   </Row>
                 </Col>
                 <Col xs={1} ></Col>
@@ -161,19 +190,28 @@ class NewItemSelector extends React.Component {
           <Row style={{textAlign: 'center'}}>
             <Col xs={12}>
             <FlatButton
-              href="https://github.com/callemall/material-ui"
-              target="_blank"
               label="Continue with no media"
               style={newItemStyle.buttonNoMedia}
               backgroundColor={grey600}
               hoverColor={grey500}
               primary={true}
               icon={<FontIcon className="material-icons">close</FontIcon>}
+              onClick={() => {this.changeStep('finalForm')}}
             />
             </Col>
           </Row>
         </Grid>
-    );
+      )
+    };
+    if (this.state.nextStp === 'liveVideo') {
+      return(<VideoRecord  onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>)
+    };
+    if (this.state.nextStp === 'takePhoto') {
+      return(<VideoRecord  onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>)
+    };
+    if (this.state.nextStp === 'finalForm') {
+      return this.showOfferForm();
+    };
   }
 }
 

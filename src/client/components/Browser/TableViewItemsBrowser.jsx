@@ -64,7 +64,7 @@ class TableViewItemsBrowser extends React.Component {
         this.state = {
             thSortBy: '',
             thSortAZ: true
-        }
+        };
     }
 
     getMedia(description) {

@@ -117,29 +117,6 @@ class VideoRecord extends React.Component {
     }
   }
 
-  openFileDialog() {
-    var fileUploadDom = React.findDOMNode(this.refs.fileUpload);
-    fileUploadDom.click();
-  }
-  
-  onDrop(file) {
-    const media = file.length > 0 ? file[0] : file
-    const formData = new FormData();
-    window.clearInterval(self.intervalTrigger);
-
-    if(media.type.includes("image/")){
-      formData.append('photos', media );
-      this.props.imageUploaded( formData );
-    }
-    else if(media.type.includes("video/")){
-      const url = media.preview
-      formData.append('video', media, 'videoRecorded.webm');
-      this.props.onRecorded(formData, url);
-      }
-      else
-         this.setState({open: true});
-  }
-    
   stopIcon() {
     return <Glyphicon glyph="stop" style={styles.white} />;
   }
@@ -179,28 +156,6 @@ class VideoRecord extends React.Component {
             />
           </Col>
           <Row>
-            <Col xs={3} md={2} lg={2}>
-              {!this.props.image.loading && <RaisedButton 
-                containerElement='label'
-                label="Upload Image"
-                onClick={ (e) => this.openFileDialog}>
-                <Dropzone 
-                  style={{"display" : "none"}}
-                  onDrop={ (file) => this.onDrop(file)} />
-              </RaisedButton>}
-              {this.props.image.loading && <CircularProgress size={100} thickness={6} />}
-            </Col>
-            <Col xs={3} md={2} lg={2}>
-              { !this.props.image.loading && !this.state.isRecording && <RaisedButton 
-                containerElement='label'
-                label="Upload Video"
-                onClick={ (e) => this.openFileDialog}>
-                <Dropzone 
-                  style={{"display" : "none"}}
-                  onDrop={ (file) => this.onDrop(file)} />
-              </RaisedButton> }
-              
-            </Col>
             <Col xs={3} md={2} lg={2}>
               <Button className="mui-btn mui-btn--fab">?</Button>
             </Col>

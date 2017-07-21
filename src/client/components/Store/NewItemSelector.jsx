@@ -10,6 +10,7 @@ import { setImage, deleteImage, proceed } from '../../redux/actions/image';
 
 // components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -67,6 +68,25 @@ const newItemStyle = {
     left: '0',
     width: '100%',
     opacity: '0'
+  },
+  overlay: {
+      position: 'fixed', 
+      display: 'block',
+      width: '100%', 
+      height: '100%', 
+      top: '0', 
+      left: '0',
+      right:'0',
+      bottom:'0',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      zIndex: '99',
+      cursor: 'pointer'
+  },
+  loading: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%,-50%)'
   }
 };
 
@@ -103,10 +123,34 @@ class NewItemSelector extends React.Component {
       </Grid>
     )
   }
+
+  openFileDialog() {
+    var fileUploadDom = React.findDOMNode(this.refs.fileUpload);
+    fileUploadDom.click();
+  }
+  
+  onDrop(file) {
+    const media = file.length > 0 ? file[0] : file
+    const formData = new FormData();
+    window.clearInterval(self.intervalTrigger);
+
+    if(media.type.includes("image/")){
+      formData.append('photos', media );
+      this.props.imageUploaded( formData );
+    }
+    else if(media.type.includes("video/")){
+      const url = media.preview
+      formData.append('video', media, 'videoRecorded.webm');
+      this.props.onRecorded(formData, url);
+      }
+      else
+         this.setState({open: true});
+  }
  
   render() {
+    let output;
     if (this.state.nextStp === 'selector') {
-      return(
+      output = (
         <Grid>
           <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
           <Row>
@@ -131,6 +175,7 @@ class NewItemSelector extends React.Component {
                     />
                   </Row>
                   <Row>
+                    {console.log('loading: ', this.props.image.loading)}
                     <FlatButton
                       label="Upload Video"
                       labelPosition="before"
@@ -140,8 +185,10 @@ class NewItemSelector extends React.Component {
                       primary={true}
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
                       containerElement="label"
-                    >
-                      <input type="file" style={newItemStyle.uploadInput} />
+                      onClick={ (e) => this.openFileDialog}>
+                      <Dropzone 
+                        style={{"display" : "none"}}
+                        onDrop={ (file) => this.onDrop(file)} />
                     </FlatButton>
                   </Row>
                 </Col>
@@ -177,8 +224,10 @@ class NewItemSelector extends React.Component {
                       primary={true}
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
                       containerElement="label"
-                    >
-                      <input type="file" style={newItemStyle.uploadInput} />
+                      onClick={ (e) => this.openFileDialog}>
+                      <Dropzone 
+                        style={{"display" : "none"}}
+                        onDrop={ (file) => this.onDrop(file)} />
                     </FlatButton>
                   </Row>
                 </Col>
@@ -201,17 +250,26 @@ class NewItemSelector extends React.Component {
             </Col>
           </Row>
         </Grid>
-      )
+      );
     };
     if (this.state.nextStp === 'liveVideo') {
-      return(<VideoRecord  onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>)
+      output = (<VideoRecord  onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>);
     };
     if (this.state.nextStp === 'takePhoto') {
-      return(<VideoRecord  onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>)
+      output = (<h1><br/>--> Take A Photo</h1>);
     };
     if (this.state.nextStp === 'finalForm') {
-      return this.showOfferForm();
+      output = this.showOfferForm();
     };
+    return(
+      <div>
+        {this.props.image.loading && 
+          <div style={newItemStyle.overlay} >
+              <CircularProgress style={newItemStyle.loading} size={80} thickness={6} />
+          </div>
+        }
+        {output}
+      </div>)
   }
 }
 

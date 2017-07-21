@@ -94737,15 +94737,10 @@
 
 	var _NewItemSelector2 = _interopRequireDefault(_NewItemSelector);
 
-	var _NewItem = __webpack_require__(954);
-
-	var _NewItem2 = _interopRequireDefault(_NewItem);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Store = {
-	    NewItemSelector: _NewItemSelector2.default,
-	    NewItem: _NewItem2.default
+	    NewItemSelector: _NewItemSelector2.default
 	};
 
 	exports.default = Store;
@@ -94780,6 +94775,10 @@
 
 	var _reactBootstrap = __webpack_require__(525);
 
+	var _reactDropzone = __webpack_require__(930);
+
+	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
+
 	var _CircularProgress = __webpack_require__(805);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
@@ -94798,7 +94797,7 @@
 
 	var _colors = __webpack_require__(466);
 
-	var _VideoRecord = __webpack_require__(930);
+	var _VideoRecord = __webpack_require__(931);
 
 	var _VideoRecord2 = _interopRequireDefault(_VideoRecord);
 
@@ -94888,6 +94887,25 @@
 	    left: '0',
 	    width: '100%',
 	    opacity: '0'
+	  },
+	  overlay: {
+	    position: 'fixed',
+	    display: 'block',
+	    width: '100%',
+	    height: '100%',
+	    top: '0',
+	    left: '0',
+	    right: '0',
+	    bottom: '0',
+	    backgroundColor: 'rgba(0,0,0,0.5)',
+	    zIndex: '99',
+	    cursor: 'pointer'
+	  },
+	  loading: {
+	    position: 'absolute',
+	    top: '50%',
+	    left: '50%',
+	    transform: 'translate(-50%,-50%)'
 	  }
 	};
 
@@ -94935,12 +94953,35 @@
 	      );
 	    }
 	  }, {
+	    key: 'openFileDialog',
+	    value: function openFileDialog() {
+	      var fileUploadDom = _react2.default.findDOMNode(this.refs.fileUpload);
+	      fileUploadDom.click();
+	    }
+	  }, {
+	    key: 'onDrop',
+	    value: function onDrop(file) {
+	      var media = file.length > 0 ? file[0] : file;
+	      var formData = new FormData();
+	      window.clearInterval(self.intervalTrigger);
+
+	      if (media.type.includes("image/")) {
+	        formData.append('photos', media);
+	        this.props.imageUploaded(formData);
+	      } else if (media.type.includes("video/")) {
+	        var url = media.preview;
+	        formData.append('video', media, 'videoRecorded.webm');
+	        this.props.onRecorded(formData, url);
+	      } else this.setState({ open: true });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
+	      var output = void 0;
 	      if (this.state.nextStp === 'selector') {
-	        return _react2.default.createElement(
+	        output = _react2.default.createElement(
 	          _reactBootstrap.Grid,
 	          null,
 	          _react2.default.createElement(
@@ -94994,6 +95035,7 @@
 	                  _react2.default.createElement(
 	                    _reactBootstrap.Row,
 	                    null,
+	                    console.log('loading: ', this.props.image.loading),
 	                    _react2.default.createElement(
 	                      _FlatButton2.default,
 	                      {
@@ -95008,9 +95050,15 @@
 	                          { className: 'material-icons' },
 	                          'file_upload'
 	                        ),
-	                        containerElement: 'label'
-	                      },
-	                      _react2.default.createElement('input', { type: 'file', style: newItemStyle.uploadInput })
+	                        containerElement: 'label',
+	                        onClick: function onClick(e) {
+	                          return _this2.openFileDialog;
+	                        } },
+	                      _react2.default.createElement(_reactDropzone2.default, {
+	                        style: { "display": "none" },
+	                        onDrop: function onDrop(file) {
+	                          return _this2.onDrop(file);
+	                        } })
 	                    )
 	                  )
 	                ),
@@ -95069,9 +95117,15 @@
 	                          { className: 'material-icons' },
 	                          'file_upload'
 	                        ),
-	                        containerElement: 'label'
-	                      },
-	                      _react2.default.createElement('input', { type: 'file', style: newItemStyle.uploadInput })
+	                        containerElement: 'label',
+	                        onClick: function onClick(e) {
+	                          return _this2.openFileDialog;
+	                        } },
+	                      _react2.default.createElement(_reactDropzone2.default, {
+	                        style: { "display": "none" },
+	                        onDrop: function onDrop(file) {
+	                          return _this2.onDrop(file);
+	                        } })
 	                    )
 	                  )
 	                ),
@@ -95106,14 +95160,29 @@
 	        );
 	      };
 	      if (this.state.nextStp === 'liveVideo') {
-	        return _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded, imageUploaded: this.props.imageUploaded, image: this.props.image });
+	        output = _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded, imageUploaded: this.props.imageUploaded, image: this.props.image });
 	      };
 	      if (this.state.nextStp === 'takePhoto') {
-	        return _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded, imageUploaded: this.props.imageUploaded, image: this.props.image });
+	        output = _react2.default.createElement(
+	          'h1',
+	          null,
+	          _react2.default.createElement('br', null),
+	          '--> Take A Photo'
+	        );
 	      };
 	      if (this.state.nextStp === 'finalForm') {
-	        return this.showOfferForm();
+	        output = this.showOfferForm();
 	      };
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        this.props.image.loading && _react2.default.createElement(
+	          'div',
+	          { style: newItemStyle.overlay },
+	          _react2.default.createElement(_CircularProgress2.default, { style: newItemStyle.loading, size: 80, thickness: 6 })
+	        ),
+	        output
+	      );
 	    }
 	  }]);
 
@@ -95515,6 +95584,903 @@
 /* 930 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	(function webpackUniversalModuleDefinition(root, factory) {
+		if(true)
+			module.exports = factory(__webpack_require__(2), __webpack_require__(188));
+		else if(typeof define === 'function' && define.amd)
+			define(["react", "prop-types"], factory);
+		else if(typeof exports === 'object')
+			exports["Dropzone"] = factory(require("react"), require("prop-types"));
+		else
+			root["Dropzone"] = factory(root["react"], root["prop-types"]);
+	})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
+	return /******/ (function(modules) { // webpackBootstrap
+	/******/ 	// The module cache
+	/******/ 	var installedModules = {};
+	/******/
+	/******/ 	// The require function
+	/******/ 	function __webpack_require__(moduleId) {
+	/******/
+	/******/ 		// Check if module is in cache
+	/******/ 		if(installedModules[moduleId])
+	/******/ 			return installedModules[moduleId].exports;
+	/******/
+	/******/ 		// Create a new module (and put it into the cache)
+	/******/ 		var module = installedModules[moduleId] = {
+	/******/ 			exports: {},
+	/******/ 			id: moduleId,
+	/******/ 			loaded: false
+	/******/ 		};
+	/******/
+	/******/ 		// Execute the module function
+	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+	/******/
+	/******/ 		// Flag the module as loaded
+	/******/ 		module.loaded = true;
+	/******/
+	/******/ 		// Return the exports of the module
+	/******/ 		return module.exports;
+	/******/ 	}
+	/******/
+	/******/
+	/******/ 	// expose the modules object (__webpack_modules__)
+	/******/ 	__webpack_require__.m = modules;
+	/******/
+	/******/ 	// expose the module cache
+	/******/ 	__webpack_require__.c = installedModules;
+	/******/
+	/******/ 	// __webpack_public_path__
+	/******/ 	__webpack_require__.p = "";
+	/******/
+	/******/ 	// Load entry module and return exports
+	/******/ 	return __webpack_require__(0);
+	/******/ })
+	/************************************************************************/
+	/******/ ([
+	/* 0 */
+	/***/ (function(module, exports, __webpack_require__) {
+
+		/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		
+		var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+		
+		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+		
+		var _react = __webpack_require__(2);
+		
+		var _react2 = _interopRequireDefault(_react);
+		
+		var _propTypes = __webpack_require__(3);
+		
+		var _propTypes2 = _interopRequireDefault(_propTypes);
+		
+		var _attrAccept = __webpack_require__(4);
+		
+		var _attrAccept2 = _interopRequireDefault(_attrAccept);
+		
+		var _getDataTransferItems = __webpack_require__(5);
+		
+		var _getDataTransferItems2 = _interopRequireDefault(_getDataTransferItems);
+		
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+		
+		function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+		
+		function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+		
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+		
+		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+		
+		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint prefer-template: 0 */
+		
+		var supportMultiple = typeof document !== 'undefined' && document && document.createElement ? 'multiple' in document.createElement('input') : true;
+		
+		function fileAccepted(file, accept) {
+		  // Firefox versions prior to 53 return a bogus MIME type for every file drag, so dragovers with
+		  // that MIME type will always be accepted
+		  return file.type === 'application/x-moz-file' || (0, _attrAccept2.default)(file, accept);
+		}
+		
+		var Dropzone = function (_React$Component) {
+		  _inherits(Dropzone, _React$Component);
+		
+		  _createClass(Dropzone, null, [{
+		    key: 'onDocumentDragOver',
+		    value: function onDocumentDragOver(evt) {
+		      // allow the entire document to be a drag target
+		      evt.preventDefault();
+		    }
+		  }]);
+		
+		  function Dropzone(props, context) {
+		    _classCallCheck(this, Dropzone);
+		
+		    var _this = _possibleConstructorReturn(this, (Dropzone.__proto__ || Object.getPrototypeOf(Dropzone)).call(this, props, context));
+		
+		    _this.renderChildren = function (children, isDragActive, isDragReject) {
+		      if (typeof children === 'function') {
+		        return children(_extends({}, _this.state, { isDragActive: isDragActive, isDragReject: isDragReject }));
+		      }
+		      return children;
+		    };
+		
+		    _this.onClick = _this.onClick.bind(_this);
+		    _this.onDocumentDrop = _this.onDocumentDrop.bind(_this);
+		    _this.onDragStart = _this.onDragStart.bind(_this);
+		    _this.onDragEnter = _this.onDragEnter.bind(_this);
+		    _this.onDragLeave = _this.onDragLeave.bind(_this);
+		    _this.onDragOver = _this.onDragOver.bind(_this);
+		    _this.onDrop = _this.onDrop.bind(_this);
+		    _this.onFileDialogCancel = _this.onFileDialogCancel.bind(_this);
+		    _this.setRef = _this.setRef.bind(_this);
+		    _this.setRefs = _this.setRefs.bind(_this);
+		    _this.onInputElementClick = _this.onInputElementClick.bind(_this);
+		    _this.isFileDialogActive = false;
+		    _this.state = {
+		      draggedFiles: [],
+		      acceptedFiles: [],
+		      rejectedFiles: []
+		    };
+		    return _this;
+		  }
+		
+		  _createClass(Dropzone, [{
+		    key: 'componentDidMount',
+		    value: function componentDidMount() {
+		      var preventDropOnDocument = this.props.preventDropOnDocument;
+		
+		      this.dragTargets = [];
+		
+		      if (preventDropOnDocument) {
+		        document.addEventListener('dragover', Dropzone.onDocumentDragOver, false);
+		        document.addEventListener('drop', this.onDocumentDrop, false);
+		      }
+		      this.fileInputEl.addEventListener('click', this.onInputElementClick, false);
+		      // Tried implementing addEventListener, but didn't work out
+		      document.body.onfocus = this.onFileDialogCancel;
+		    }
+		  }, {
+		    key: 'componentWillUnmount',
+		    value: function componentWillUnmount() {
+		      var preventDropOnDocument = this.props.preventDropOnDocument;
+		
+		      if (preventDropOnDocument) {
+		        document.removeEventListener('dragover', Dropzone.onDocumentDragOver);
+		        document.removeEventListener('drop', this.onDocumentDrop);
+		      }
+		      this.fileInputEl.removeEventListener('click', this.onInputElementClick, false);
+		      // Can be replaced with removeEventListener, if addEventListener works
+		      document.body.onfocus = null;
+		    }
+		  }, {
+		    key: 'onDocumentDrop',
+		    value: function onDocumentDrop(evt) {
+		      if (this.node.contains(evt.target)) {
+		        // if we intercepted an event for our instance, let it propagate down to the instance's onDrop handler
+		        return;
+		      }
+		      evt.preventDefault();
+		      this.dragTargets = [];
+		    }
+		  }, {
+		    key: 'onDragStart',
+		    value: function onDragStart(evt) {
+		      if (this.props.onDragStart) {
+		        this.props.onDragStart.call(this, evt);
+		      }
+		    }
+		  }, {
+		    key: 'onDragEnter',
+		    value: function onDragEnter(evt) {
+		      evt.preventDefault();
+		
+		      // Count the dropzone and any children that are entered.
+		      if (this.dragTargets.indexOf(evt.target) === -1) {
+		        this.dragTargets.push(evt.target);
+		      }
+		
+		      this.setState({ draggedFiles: (0, _getDataTransferItems2.default)(evt) });
+		
+		      if (this.props.onDragEnter) {
+		        this.props.onDragEnter.call(this, evt);
+		      }
+		    }
+		  }, {
+		    key: 'onDragOver',
+		    value: function onDragOver(evt) {
+		      // eslint-disable-line class-methods-use-this
+		      evt.preventDefault();
+		      evt.stopPropagation();
+		      try {
+		        evt.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
+		      } catch (err) {
+		        // continue regardless of error
+		      }
+		
+		      if (this.props.onDragOver) {
+		        this.props.onDragOver.call(this, evt);
+		      }
+		      return false;
+		    }
+		  }, {
+		    key: 'onDragLeave',
+		    value: function onDragLeave(evt) {
+		      var _this2 = this;
+		
+		      evt.preventDefault();
+		
+		      // Only deactivate once the dropzone and all children have been left.
+		      this.dragTargets = this.dragTargets.filter(function (el) {
+		        return el !== evt.target && _this2.node.contains(el);
+		      });
+		      if (this.dragTargets.length > 0) {
+		        return;
+		      }
+		
+		      // Clear dragging files state
+		      this.setState({ draggedFiles: [] });
+		
+		      if (this.props.onDragLeave) {
+		        this.props.onDragLeave.call(this, evt);
+		      }
+		    }
+		  }, {
+		    key: 'onDrop',
+		    value: function onDrop(evt) {
+		      var _this3 = this;
+		
+		      var _props = this.props,
+		          onDrop = _props.onDrop,
+		          onDropAccepted = _props.onDropAccepted,
+		          onDropRejected = _props.onDropRejected,
+		          multiple = _props.multiple,
+		          disablePreview = _props.disablePreview,
+		          accept = _props.accept;
+		
+		      var fileList = (0, _getDataTransferItems2.default)(evt);
+		      var acceptedFiles = [];
+		      var rejectedFiles = [];
+		
+		      // Stop default browser behavior
+		      evt.preventDefault();
+		
+		      // Reset the counter along with the drag on a drop.
+		      this.dragTargets = [];
+		      this.isFileDialogActive = false;
+		
+		      fileList.forEach(function (file) {
+		        if (!disablePreview) {
+		          try {
+		            file.preview = window.URL.createObjectURL(file); // eslint-disable-line no-param-reassign
+		          } catch (err) {
+		            if (process.env.NODE_ENV !== 'production') {
+		              console.error('Failed to generate preview for file', file, err); // eslint-disable-line no-console
+		            }
+		          }
+		        }
+		
+		        if (fileAccepted(file, accept) && _this3.fileMatchSize(file)) {
+		          acceptedFiles.push(file);
+		        } else {
+		          rejectedFiles.push(file);
+		        }
+		      });
+		
+		      if (!multiple) {
+		        // if not in multi mode add any extra accepted files to rejected.
+		        // This will allow end users to easily ignore a multi file drop in "single" mode.
+		        rejectedFiles.push.apply(rejectedFiles, _toConsumableArray(acceptedFiles.splice(1)));
+		      }
+		
+		      if (onDrop) {
+		        onDrop.call(this, acceptedFiles, rejectedFiles, evt);
+		      }
+		
+		      if (rejectedFiles.length > 0 && onDropRejected) {
+		        onDropRejected.call(this, rejectedFiles, evt);
+		      }
+		
+		      if (acceptedFiles.length > 0 && onDropAccepted) {
+		        onDropAccepted.call(this, acceptedFiles, evt);
+		      }
+		
+		      // Clear files value
+		      this.draggedFiles = null;
+		
+		      // Reset drag state
+		      this.setState({
+		        draggedFiles: [],
+		        acceptedFiles: acceptedFiles,
+		        rejectedFiles: rejectedFiles
+		      });
+		    }
+		  }, {
+		    key: 'onClick',
+		    value: function onClick(evt) {
+		      var _props2 = this.props,
+		          onClick = _props2.onClick,
+		          disableClick = _props2.disableClick;
+		
+		      if (!disableClick) {
+		        evt.stopPropagation();
+		        this.open();
+		        if (onClick) {
+		          onClick.call(this, evt);
+		        }
+		      }
+		    }
+		  }, {
+		    key: 'onInputElementClick',
+		    value: function onInputElementClick(evt) {
+		      evt.stopPropagation();
+		      if (this.props.inputProps && this.props.inputProps.onClick) {
+		        this.props.inputProps.onClick();
+		      }
+		    }
+		  }, {
+		    key: 'onFileDialogCancel',
+		    value: function onFileDialogCancel() {
+		      // timeout will not recognize context of this method
+		      var onFileDialogCancel = this.props.onFileDialogCancel;
+		      var fileInputEl = this.fileInputEl;
+		      var isFileDialogActive = this.isFileDialogActive;
+		      // execute the timeout only if the onFileDialogCancel is defined and FileDialog
+		      // is opened in the browser
+		
+		      if (onFileDialogCancel && isFileDialogActive) {
+		        setTimeout(function () {
+		          // Returns an object as FileList
+		          var FileList = fileInputEl.files;
+		          if (!FileList.length) {
+		            isFileDialogActive = false;
+		            onFileDialogCancel();
+		          }
+		        }, 300);
+		      }
+		    }
+		  }, {
+		    key: 'setRef',
+		    value: function setRef(ref) {
+		      this.node = ref;
+		    }
+		  }, {
+		    key: 'setRefs',
+		    value: function setRefs(ref) {
+		      this.fileInputEl = ref;
+		    }
+		  }, {
+		    key: 'fileMatchSize',
+		    value: function fileMatchSize(file) {
+		      return file.size <= this.props.maxSize && file.size >= this.props.minSize;
+		    }
+		  }, {
+		    key: 'allFilesAccepted',
+		    value: function allFilesAccepted(files) {
+		      var _this4 = this;
+		
+		      return files.every(function (file) {
+		        return fileAccepted(file, _this4.props.accept);
+		      });
+		    }
+		
+		    /**
+		     * Open system file upload dialog.
+		     *
+		     * @public
+		     */
+		
+		  }, {
+		    key: 'open',
+		    value: function open() {
+		      this.isFileDialogActive = true;
+		      this.fileInputEl.value = null;
+		      this.fileInputEl.click();
+		    }
+		  }, {
+		    key: 'render',
+		    value: function render() {
+		      var _props3 = this.props,
+		          accept = _props3.accept,
+		          activeClassName = _props3.activeClassName,
+		          inputProps = _props3.inputProps,
+		          multiple = _props3.multiple,
+		          name = _props3.name,
+		          rejectClassName = _props3.rejectClassName,
+		          children = _props3.children,
+		          rest = _objectWithoutProperties(_props3, ['accept', 'activeClassName', 'inputProps', 'multiple', 'name', 'rejectClassName', 'children']);
+		
+		      var activeStyle = rest.activeStyle,
+		          className = rest.className,
+		          rejectStyle = rest.rejectStyle,
+		          style = rest.style,
+		          props = _objectWithoutProperties(rest, ['activeStyle', 'className', 'rejectStyle', 'style']);
+		
+		      var draggedFiles = this.state.draggedFiles;
+		
+		      var filesCount = draggedFiles.length;
+		      var isMultipleAllowed = multiple || filesCount <= 1;
+		      var isDragActive = filesCount > 0 && this.allFilesAccepted(draggedFiles);
+		      var isDragReject = filesCount > 0 && (!isDragActive || !isMultipleAllowed);
+		
+		      className = className || '';
+		
+		      if (isDragActive && activeClassName) {
+		        className += ' ' + activeClassName;
+		      }
+		      if (isDragReject && rejectClassName) {
+		        className += ' ' + rejectClassName;
+		      }
+		
+		      if (!className && !style && !activeStyle && !rejectStyle) {
+		        style = {
+		          width: 200,
+		          height: 200,
+		          borderWidth: 2,
+		          borderColor: '#666',
+		          borderStyle: 'dashed',
+		          borderRadius: 5
+		        };
+		        activeStyle = {
+		          borderStyle: 'solid',
+		          borderColor: '#6c6',
+		          backgroundColor: '#eee'
+		        };
+		        rejectStyle = {
+		          borderStyle: 'solid',
+		          borderColor: '#c66',
+		          backgroundColor: '#eee'
+		        };
+		      }
+		
+		      var appliedStyle = void 0;
+		      if (activeStyle && isDragActive) {
+		        appliedStyle = _extends({}, style, activeStyle);
+		      } else if (rejectStyle && isDragReject) {
+		        appliedStyle = _extends({}, style, rejectStyle);
+		      } else {
+		        appliedStyle = _extends({}, style);
+		      }
+		
+		      var inputAttributes = {
+		        accept: accept,
+		        type: 'file',
+		        style: { display: 'none' },
+		        multiple: supportMultiple && multiple,
+		        ref: this.setRefs,
+		        onChange: this.onDrop
+		      };
+		
+		      if (name && name.length) {
+		        inputAttributes.name = name;
+		      }
+		
+		      // Remove custom properties before passing them to the wrapper div element
+		      var customProps = ['acceptedFiles', 'preventDropOnDocument', 'disablePreview', 'disableClick', 'onDropAccepted', 'onDropRejected', 'onFileDialogCancel', 'maxSize', 'minSize'];
+		      var divProps = _extends({}, props);
+		      customProps.forEach(function (prop) {
+		        return delete divProps[prop];
+		      });
+		
+		      return _react2.default.createElement(
+		        'div',
+		        _extends({
+		          className: className,
+		          style: appliedStyle
+		        }, divProps /* expand user provided props first so event handlers are never overridden */, {
+		          onClick: this.onClick,
+		          onDragStart: this.onDragStart,
+		          onDragEnter: this.onDragEnter,
+		          onDragOver: this.onDragOver,
+		          onDragLeave: this.onDragLeave,
+		          onDrop: this.onDrop,
+		          ref: this.setRef
+		        }),
+		        this.renderChildren(children, isDragActive, isDragReject),
+		        _react2.default.createElement('input', _extends({}, inputProps /* expand user provided inputProps first so inputAttributes override them */, inputAttributes))
+		      );
+		    }
+		  }]);
+		
+		  return Dropzone;
+		}(_react2.default.Component);
+		
+		Dropzone.propTypes = {
+		  /**
+		   * Allow specific types of files. See https://github.com/okonet/attr-accept for more information.
+		   * Keep in mind that mime type determination is not reliable accross platforms. CSV files,
+		   * for example, are reported as text/plain under macOS but as application/vnd.ms-excel under
+		   * Windows. In some cases there might not be a mime type set at all.
+		   * See: https://github.com/okonet/react-dropzone/issues/276
+		   */
+		  accept: _propTypes2.default.string,
+		
+		  /**
+		   * Contents of the dropzone
+		   */
+		  children: _propTypes2.default.oneOfType([_propTypes2.default.node, _propTypes2.default.func]),
+		
+		  /**
+		   * Disallow clicking on the dropzone container to open file dialog
+		   */
+		  disableClick: _propTypes2.default.bool,
+		
+		  /**
+		   * Enable/disable preview generation
+		   */
+		  disablePreview: _propTypes2.default.bool,
+		
+		  /**
+		   * If false, allow dropped items to take over the current browser window
+		   */
+		  preventDropOnDocument: _propTypes2.default.bool,
+		
+		  /**
+		   * Pass additional attributes to the `<input type="file"/>` tag
+		   */
+		  inputProps: _propTypes2.default.object,
+		
+		  /**
+		   * Allow dropping multiple files
+		   */
+		  multiple: _propTypes2.default.bool,
+		
+		  /**
+		   * `name` attribute for the input tag
+		   */
+		  name: _propTypes2.default.string,
+		
+		  /**
+		   * Maximum file size
+		   */
+		  maxSize: _propTypes2.default.number,
+		
+		  /**
+		   * Minimum file size
+		   */
+		  minSize: _propTypes2.default.number,
+		
+		  /**
+		   * className
+		   */
+		  className: _propTypes2.default.string,
+		
+		  /**
+		   * className for accepted state
+		   */
+		  activeClassName: _propTypes2.default.string,
+		
+		  /**
+		   * className for rejected state
+		   */
+		  rejectClassName: _propTypes2.default.string,
+		
+		  /**
+		   * CSS styles to apply
+		   */
+		  style: _propTypes2.default.object,
+		
+		  /**
+		   * CSS styles to apply when drop will be accepted
+		   */
+		  activeStyle: _propTypes2.default.object,
+		
+		  /**
+		   * CSS styles to apply when drop will be rejected
+		   */
+		  rejectStyle: _propTypes2.default.object,
+		
+		  /**
+		   * onClick callback
+		   * @param {Event} event
+		   */
+		  onClick: _propTypes2.default.func,
+		
+		  /**
+		   * onDrop callback
+		   */
+		  onDrop: _propTypes2.default.func,
+		
+		  /**
+		   * onDropAccepted callback
+		   */
+		  onDropAccepted: _propTypes2.default.func,
+		
+		  /**
+		   * onDropRejected callback
+		   */
+		  onDropRejected: _propTypes2.default.func,
+		
+		  /**
+		   * onDragStart callback
+		   */
+		  onDragStart: _propTypes2.default.func,
+		
+		  /**
+		   * onDragEnter callback
+		   */
+		  onDragEnter: _propTypes2.default.func,
+		
+		  /**
+		   * onDragOver callback
+		   */
+		  onDragOver: _propTypes2.default.func,
+		
+		  /**
+		   * onDragLeave callback
+		   */
+		  onDragLeave: _propTypes2.default.func,
+		
+		  /**
+		   * Provide a callback on clicking the cancel button of the file dialog
+		   */
+		  onFileDialogCancel: _propTypes2.default.func
+		};
+		
+		Dropzone.defaultProps = {
+		  preventDropOnDocument: true,
+		  disablePreview: false,
+		  disableClick: false,
+		  multiple: true,
+		  maxSize: Infinity,
+		  minSize: 0
+		};
+		
+		exports.default = Dropzone;
+		module.exports = exports['default'];
+		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+	/***/ }),
+	/* 1 */
+	/***/ (function(module, exports) {
+
+		// shim for using process in browser
+		var process = module.exports = {};
+		
+		// cached from whatever global is present so that test runners that stub it
+		// don't break things.  But we need to wrap it in a try catch in case it is
+		// wrapped in strict mode code which doesn't define any globals.  It's inside a
+		// function because try/catches deoptimize in certain engines.
+		
+		var cachedSetTimeout;
+		var cachedClearTimeout;
+		
+		function defaultSetTimout() {
+		    throw new Error('setTimeout has not been defined');
+		}
+		function defaultClearTimeout () {
+		    throw new Error('clearTimeout has not been defined');
+		}
+		(function () {
+		    try {
+		        if (typeof setTimeout === 'function') {
+		            cachedSetTimeout = setTimeout;
+		        } else {
+		            cachedSetTimeout = defaultSetTimout;
+		        }
+		    } catch (e) {
+		        cachedSetTimeout = defaultSetTimout;
+		    }
+		    try {
+		        if (typeof clearTimeout === 'function') {
+		            cachedClearTimeout = clearTimeout;
+		        } else {
+		            cachedClearTimeout = defaultClearTimeout;
+		        }
+		    } catch (e) {
+		        cachedClearTimeout = defaultClearTimeout;
+		    }
+		} ())
+		function runTimeout(fun) {
+		    if (cachedSetTimeout === setTimeout) {
+		        //normal enviroments in sane situations
+		        return setTimeout(fun, 0);
+		    }
+		    // if setTimeout wasn't available but was latter defined
+		    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+		        cachedSetTimeout = setTimeout;
+		        return setTimeout(fun, 0);
+		    }
+		    try {
+		        // when when somebody has screwed with setTimeout but no I.E. maddness
+		        return cachedSetTimeout(fun, 0);
+		    } catch(e){
+		        try {
+		            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+		            return cachedSetTimeout.call(null, fun, 0);
+		        } catch(e){
+		            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+		            return cachedSetTimeout.call(this, fun, 0);
+		        }
+		    }
+		
+		
+		}
+		function runClearTimeout(marker) {
+		    if (cachedClearTimeout === clearTimeout) {
+		        //normal enviroments in sane situations
+		        return clearTimeout(marker);
+		    }
+		    // if clearTimeout wasn't available but was latter defined
+		    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+		        cachedClearTimeout = clearTimeout;
+		        return clearTimeout(marker);
+		    }
+		    try {
+		        // when when somebody has screwed with setTimeout but no I.E. maddness
+		        return cachedClearTimeout(marker);
+		    } catch (e){
+		        try {
+		            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+		            return cachedClearTimeout.call(null, marker);
+		        } catch (e){
+		            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+		            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+		            return cachedClearTimeout.call(this, marker);
+		        }
+		    }
+		
+		
+		
+		}
+		var queue = [];
+		var draining = false;
+		var currentQueue;
+		var queueIndex = -1;
+		
+		function cleanUpNextTick() {
+		    if (!draining || !currentQueue) {
+		        return;
+		    }
+		    draining = false;
+		    if (currentQueue.length) {
+		        queue = currentQueue.concat(queue);
+		    } else {
+		        queueIndex = -1;
+		    }
+		    if (queue.length) {
+		        drainQueue();
+		    }
+		}
+		
+		function drainQueue() {
+		    if (draining) {
+		        return;
+		    }
+		    var timeout = runTimeout(cleanUpNextTick);
+		    draining = true;
+		
+		    var len = queue.length;
+		    while(len) {
+		        currentQueue = queue;
+		        queue = [];
+		        while (++queueIndex < len) {
+		            if (currentQueue) {
+		                currentQueue[queueIndex].run();
+		            }
+		        }
+		        queueIndex = -1;
+		        len = queue.length;
+		    }
+		    currentQueue = null;
+		    draining = false;
+		    runClearTimeout(timeout);
+		}
+		
+		process.nextTick = function (fun) {
+		    var args = new Array(arguments.length - 1);
+		    if (arguments.length > 1) {
+		        for (var i = 1; i < arguments.length; i++) {
+		            args[i - 1] = arguments[i];
+		        }
+		    }
+		    queue.push(new Item(fun, args));
+		    if (queue.length === 1 && !draining) {
+		        runTimeout(drainQueue);
+		    }
+		};
+		
+		// v8 likes predictible objects
+		function Item(fun, array) {
+		    this.fun = fun;
+		    this.array = array;
+		}
+		Item.prototype.run = function () {
+		    this.fun.apply(null, this.array);
+		};
+		process.title = 'browser';
+		process.browser = true;
+		process.env = {};
+		process.argv = [];
+		process.version = ''; // empty string to avoid regexp issues
+		process.versions = {};
+		
+		function noop() {}
+		
+		process.on = noop;
+		process.addListener = noop;
+		process.once = noop;
+		process.off = noop;
+		process.removeListener = noop;
+		process.removeAllListeners = noop;
+		process.emit = noop;
+		process.prependListener = noop;
+		process.prependOnceListener = noop;
+		
+		process.listeners = function (name) { return [] }
+		
+		process.binding = function (name) {
+		    throw new Error('process.binding is not supported');
+		};
+		
+		process.cwd = function () { return '/' };
+		process.chdir = function (dir) {
+		    throw new Error('process.chdir is not supported');
+		};
+		process.umask = function() { return 0; };
+
+
+	/***/ }),
+	/* 2 */
+	/***/ (function(module, exports) {
+
+		module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+	/***/ }),
+	/* 3 */
+	/***/ (function(module, exports) {
+
+		module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+
+	/***/ }),
+	/* 4 */
+	/***/ (function(module, exports) {
+
+		module.exports=function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]={exports:{},id:e,loaded:!1};return t[e].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var r={};return n.m=t,n.c=r,n.p="",n(0)}([function(t,n,r){"use strict";n.__esModule=!0,r(8),r(9),n["default"]=function(t,n){if(t&&n){var r=function(){var r=Array.isArray(n)?n:n.split(","),e=t.name||"",o=t.type||"",i=o.replace(/\/.*$/,"");return{v:r.some(function(t){var n=t.trim();return"."===n.charAt(0)?e.toLowerCase().endsWith(n.toLowerCase()):/\/\*$/.test(n)?i===n.replace(/\/.*$/,""):o===n})}}();if("object"==typeof r)return r.v}return!0},t.exports=n["default"]},function(t,n){var r=t.exports={version:"1.2.2"};"number"==typeof __e&&(__e=r)},function(t,n){var r=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=r)},function(t,n,r){var e=r(2),o=r(1),i=r(4),u=r(19),c="prototype",f=function(t,n){return function(){return t.apply(n,arguments)}},s=function(t,n,r){var a,p,l,y,d=t&s.G,h=t&s.P,v=d?e:t&s.S?e[n]||(e[n]={}):(e[n]||{})[c],x=d?o:o[n]||(o[n]={});d&&(r=n);for(a in r)p=!(t&s.F)&&v&&a in v,l=(p?v:r)[a],y=t&s.B&&p?f(l,e):h&&"function"==typeof l?f(Function.call,l):l,v&&!p&&u(v,a,l),x[a]!=l&&i(x,a,y),h&&((x[c]||(x[c]={}))[a]=l)};e.core=o,s.F=1,s.G=2,s.S=4,s.P=8,s.B=16,s.W=32,t.exports=s},function(t,n,r){var e=r(5),o=r(18);t.exports=r(22)?function(t,n,r){return e.setDesc(t,n,o(1,r))}:function(t,n,r){return t[n]=r,t}},function(t,n){var r=Object;t.exports={create:r.create,getProto:r.getPrototypeOf,isEnum:{}.propertyIsEnumerable,getDesc:r.getOwnPropertyDescriptor,setDesc:r.defineProperty,setDescs:r.defineProperties,getKeys:r.keys,getNames:r.getOwnPropertyNames,getSymbols:r.getOwnPropertySymbols,each:[].forEach}},function(t,n){var r=0,e=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++r+e).toString(36))}},function(t,n,r){var e=r(20)("wks"),o=r(2).Symbol;t.exports=function(t){return e[t]||(e[t]=o&&o[t]||(o||r(6))("Symbol."+t))}},function(t,n,r){r(26),t.exports=r(1).Array.some},function(t,n,r){r(25),t.exports=r(1).String.endsWith},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n){var r={}.toString;t.exports=function(t){return r.call(t).slice(8,-1)}},function(t,n,r){var e=r(10);t.exports=function(t,n,r){if(e(t),void 0===n)return t;switch(r){case 1:return function(r){return t.call(n,r)};case 2:return function(r,e){return t.call(n,r,e)};case 3:return function(r,e,o){return t.call(n,r,e,o)}}return function(){return t.apply(n,arguments)}}},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n,r){t.exports=function(t){var n=/./;try{"/./"[t](n)}catch(e){try{return n[r(7)("match")]=!1,!"/./"[t](n)}catch(o){}}return!0}},function(t,n){t.exports=function(t){try{return!!t()}catch(n){return!0}}},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n,r){var e=r(16),o=r(11),i=r(7)("match");t.exports=function(t){var n;return e(t)&&(void 0!==(n=t[i])?!!n:"RegExp"==o(t))}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n,r){var e=r(2),o=r(4),i=r(6)("src"),u="toString",c=Function[u],f=(""+c).split(u);r(1).inspectSource=function(t){return c.call(t)},(t.exports=function(t,n,r,u){"function"==typeof r&&(o(r,i,t[n]?""+t[n]:f.join(String(n))),"name"in r||(r.name=n)),t===e?t[n]=r:(u||delete t[n],o(t,n,r))})(Function.prototype,u,function(){return"function"==typeof this&&this[i]||c.call(this)})},function(t,n,r){var e=r(2),o="__core-js_shared__",i=e[o]||(e[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n,r){var e=r(17),o=r(13);t.exports=function(t,n,r){if(e(n))throw TypeError("String#"+r+" doesn't accept regex!");return String(o(t))}},function(t,n,r){t.exports=!r(15)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n){var r=Math.ceil,e=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?e:r)(t)}},function(t,n,r){var e=r(23),o=Math.min;t.exports=function(t){return t>0?o(e(t),9007199254740991):0}},function(t,n,r){"use strict";var e=r(3),o=r(24),i=r(21),u="endsWith",c=""[u];e(e.P+e.F*r(14)(u),"String",{endsWith:function(t){var n=i(this,t,u),r=arguments,e=r.length>1?r[1]:void 0,f=o(n.length),s=void 0===e?f:Math.min(o(e),f),a=String(t);return c?c.call(n,a,s):n.slice(s-a.length,s)===a}})},function(t,n,r){var e=r(5),o=r(3),i=r(1).Array||Array,u={},c=function(t,n){e.each.call(t.split(","),function(t){void 0==n&&t in i?u[t]=i[t]:t in[]&&(u[t]=r(12)(Function.call,[][t],n))})};c("pop,reverse,shift,keys,values,entries",1),c("indexOf,every,some,forEach,map,filter,find,findIndex,includes",3),c("join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill"),o(o.S,"Array",u)}]);
+
+	/***/ }),
+	/* 5 */
+	/***/ (function(module, exports) {
+
+		"use strict";
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.default = getDataTransferFiles;
+		function getDataTransferFiles(event) {
+		  var dataTransferItemsList = [];
+		  if (event.dataTransfer) {
+		    var dt = event.dataTransfer;
+		    if (dt.files && dt.files.length) {
+		      dataTransferItemsList = dt.files;
+		    } else if (dt.items && dt.items.length) {
+		      // During the drag even the dataTransfer.files is null
+		      // but Chrome implements some drag store, which is accesible via dataTransfer.items
+		      dataTransferItemsList = dt.items;
+		    }
+		  } else if (event.target && event.target.files) {
+		    dataTransferItemsList = event.target.files;
+		  }
+		  // Convert from DataTransferItemsList to the native Array
+		  return Array.prototype.slice.call(dataTransferItemsList);
+		}
+		module.exports = exports["default"];
+
+	/***/ })
+	/******/ ])
+	});
+	;
+	//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 931 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -95527,11 +96493,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _recordrtc = __webpack_require__(931);
+	var _recordrtc = __webpack_require__(932);
 
 	var _recordrtc2 = _interopRequireDefault(_recordrtc);
 
-	var _Time = __webpack_require__(932);
+	var _Time = __webpack_require__(933);
 
 	var _Time2 = _interopRequireDefault(_Time);
 
@@ -95539,7 +96505,7 @@
 
 	var _materialUi = __webpack_require__(774);
 
-	var _reactDropzone = __webpack_require__(933);
+	var _reactDropzone = __webpack_require__(930);
 
 	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 
@@ -95660,31 +96626,11 @@
 	        window.Video.stopRecording(function (url) {
 	          var blob = window.Video.blob;
 	          data.append('video', blob, 'videoRecorded.webm');
+	          console.log(blob);
 	          self.props.onRecorded(data, url);
 	        });
 
 	        this.localStream.stop();
-	      }
-	    }
-	  }, {
-	    key: 'openFileDialog',
-	    value: function openFileDialog() {
-	      var fileUploadDom = _react2.default.findDOMNode(this.refs.fileUpload);
-	      fileUploadDom.click();
-	    }
-	  }, {
-	    key: 'onDrop',
-	    value: function onDrop(file) {
-
-	      var formData = new FormData();
-
-	      formData.append('photos', file[0]);
-	      window.clearInterval(self.intervalTrigger);
-
-	      if (formData.get('photos')['type'].includes("image/") === false) {
-	        this.setState({ open: true });
-	      } else {
-	        this.props.imageUploaded(formData);
 	      }
 	    }
 	  }, {
@@ -95695,8 +96641,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
-
 	      return _react2.default.createElement(
 	        'div',
 	        { style: styles.marginTopVideo },
@@ -95751,25 +96695,6 @@
 	            _react2.default.createElement(
 	              _reactBootstrap.Col,
 	              { xs: 3, md: 2, lg: 2 },
-	              !this.props.image.loading && _react2.default.createElement(
-	                _materialUi.RaisedButton,
-	                {
-	                  containerElement: 'label',
-	                  label: 'Upload Image',
-	                  onClick: function onClick(e) {
-	                    return _this2.openFileDialog;
-	                  } },
-	                _react2.default.createElement(_reactDropzone2.default, {
-	                  style: { "display": "none" },
-	                  onDrop: function onDrop(file) {
-	                    return _this2.onDrop(file);
-	                  } })
-	              ),
-	              this.props.image.loading && _react2.default.createElement(_CircularProgress2.default, { size: 100, thickness: 6 })
-	            ),
-	            _react2.default.createElement(
-	              _reactBootstrap.Col,
-	              { xs: 3, md: 2, lg: 2 },
 	              _react2.default.createElement(
 	                _reactBootstrap.Button,
 	                { className: 'mui-btn mui-btn--fab' },
@@ -95788,7 +96713,7 @@
 	exports.default = VideoRecord;
 
 /***/ }),
-/* 931 */
+/* 932 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -100732,7 +101657,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 932 */
+/* 933 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -100796,903 +101721,6 @@
 	}(_react2.default.Component);
 
 	exports.default = Time;
-
-/***/ }),
-/* 933 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	(function webpackUniversalModuleDefinition(root, factory) {
-		if(true)
-			module.exports = factory(__webpack_require__(2), __webpack_require__(188));
-		else if(typeof define === 'function' && define.amd)
-			define(["react", "prop-types"], factory);
-		else if(typeof exports === 'object')
-			exports["Dropzone"] = factory(require("react"), require("prop-types"));
-		else
-			root["Dropzone"] = factory(root["react"], root["prop-types"]);
-	})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
-	return /******/ (function(modules) { // webpackBootstrap
-	/******/ 	// The module cache
-	/******/ 	var installedModules = {};
-	/******/
-	/******/ 	// The require function
-	/******/ 	function __webpack_require__(moduleId) {
-	/******/
-	/******/ 		// Check if module is in cache
-	/******/ 		if(installedModules[moduleId])
-	/******/ 			return installedModules[moduleId].exports;
-	/******/
-	/******/ 		// Create a new module (and put it into the cache)
-	/******/ 		var module = installedModules[moduleId] = {
-	/******/ 			exports: {},
-	/******/ 			id: moduleId,
-	/******/ 			loaded: false
-	/******/ 		};
-	/******/
-	/******/ 		// Execute the module function
-	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-	/******/
-	/******/ 		// Flag the module as loaded
-	/******/ 		module.loaded = true;
-	/******/
-	/******/ 		// Return the exports of the module
-	/******/ 		return module.exports;
-	/******/ 	}
-	/******/
-	/******/
-	/******/ 	// expose the modules object (__webpack_modules__)
-	/******/ 	__webpack_require__.m = modules;
-	/******/
-	/******/ 	// expose the module cache
-	/******/ 	__webpack_require__.c = installedModules;
-	/******/
-	/******/ 	// __webpack_public_path__
-	/******/ 	__webpack_require__.p = "";
-	/******/
-	/******/ 	// Load entry module and return exports
-	/******/ 	return __webpack_require__(0);
-	/******/ })
-	/************************************************************************/
-	/******/ ([
-	/* 0 */
-	/***/ (function(module, exports, __webpack_require__) {
-
-		/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-		
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-		
-		var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-		
-		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-		
-		var _react = __webpack_require__(2);
-		
-		var _react2 = _interopRequireDefault(_react);
-		
-		var _propTypes = __webpack_require__(3);
-		
-		var _propTypes2 = _interopRequireDefault(_propTypes);
-		
-		var _attrAccept = __webpack_require__(4);
-		
-		var _attrAccept2 = _interopRequireDefault(_attrAccept);
-		
-		var _getDataTransferItems = __webpack_require__(5);
-		
-		var _getDataTransferItems2 = _interopRequireDefault(_getDataTransferItems);
-		
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-		
-		function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-		
-		function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-		
-		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-		
-		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-		
-		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint prefer-template: 0 */
-		
-		var supportMultiple = typeof document !== 'undefined' && document && document.createElement ? 'multiple' in document.createElement('input') : true;
-		
-		function fileAccepted(file, accept) {
-		  // Firefox versions prior to 53 return a bogus MIME type for every file drag, so dragovers with
-		  // that MIME type will always be accepted
-		  return file.type === 'application/x-moz-file' || (0, _attrAccept2.default)(file, accept);
-		}
-		
-		var Dropzone = function (_React$Component) {
-		  _inherits(Dropzone, _React$Component);
-		
-		  _createClass(Dropzone, null, [{
-		    key: 'onDocumentDragOver',
-		    value: function onDocumentDragOver(evt) {
-		      // allow the entire document to be a drag target
-		      evt.preventDefault();
-		    }
-		  }]);
-		
-		  function Dropzone(props, context) {
-		    _classCallCheck(this, Dropzone);
-		
-		    var _this = _possibleConstructorReturn(this, (Dropzone.__proto__ || Object.getPrototypeOf(Dropzone)).call(this, props, context));
-		
-		    _this.renderChildren = function (children, isDragActive, isDragReject) {
-		      if (typeof children === 'function') {
-		        return children(_extends({}, _this.state, { isDragActive: isDragActive, isDragReject: isDragReject }));
-		      }
-		      return children;
-		    };
-		
-		    _this.onClick = _this.onClick.bind(_this);
-		    _this.onDocumentDrop = _this.onDocumentDrop.bind(_this);
-		    _this.onDragStart = _this.onDragStart.bind(_this);
-		    _this.onDragEnter = _this.onDragEnter.bind(_this);
-		    _this.onDragLeave = _this.onDragLeave.bind(_this);
-		    _this.onDragOver = _this.onDragOver.bind(_this);
-		    _this.onDrop = _this.onDrop.bind(_this);
-		    _this.onFileDialogCancel = _this.onFileDialogCancel.bind(_this);
-		    _this.setRef = _this.setRef.bind(_this);
-		    _this.setRefs = _this.setRefs.bind(_this);
-		    _this.onInputElementClick = _this.onInputElementClick.bind(_this);
-		    _this.isFileDialogActive = false;
-		    _this.state = {
-		      draggedFiles: [],
-		      acceptedFiles: [],
-		      rejectedFiles: []
-		    };
-		    return _this;
-		  }
-		
-		  _createClass(Dropzone, [{
-		    key: 'componentDidMount',
-		    value: function componentDidMount() {
-		      var preventDropOnDocument = this.props.preventDropOnDocument;
-		
-		      this.dragTargets = [];
-		
-		      if (preventDropOnDocument) {
-		        document.addEventListener('dragover', Dropzone.onDocumentDragOver, false);
-		        document.addEventListener('drop', this.onDocumentDrop, false);
-		      }
-		      this.fileInputEl.addEventListener('click', this.onInputElementClick, false);
-		      // Tried implementing addEventListener, but didn't work out
-		      document.body.onfocus = this.onFileDialogCancel;
-		    }
-		  }, {
-		    key: 'componentWillUnmount',
-		    value: function componentWillUnmount() {
-		      var preventDropOnDocument = this.props.preventDropOnDocument;
-		
-		      if (preventDropOnDocument) {
-		        document.removeEventListener('dragover', Dropzone.onDocumentDragOver);
-		        document.removeEventListener('drop', this.onDocumentDrop);
-		      }
-		      this.fileInputEl.removeEventListener('click', this.onInputElementClick, false);
-		      // Can be replaced with removeEventListener, if addEventListener works
-		      document.body.onfocus = null;
-		    }
-		  }, {
-		    key: 'onDocumentDrop',
-		    value: function onDocumentDrop(evt) {
-		      if (this.node.contains(evt.target)) {
-		        // if we intercepted an event for our instance, let it propagate down to the instance's onDrop handler
-		        return;
-		      }
-		      evt.preventDefault();
-		      this.dragTargets = [];
-		    }
-		  }, {
-		    key: 'onDragStart',
-		    value: function onDragStart(evt) {
-		      if (this.props.onDragStart) {
-		        this.props.onDragStart.call(this, evt);
-		      }
-		    }
-		  }, {
-		    key: 'onDragEnter',
-		    value: function onDragEnter(evt) {
-		      evt.preventDefault();
-		
-		      // Count the dropzone and any children that are entered.
-		      if (this.dragTargets.indexOf(evt.target) === -1) {
-		        this.dragTargets.push(evt.target);
-		      }
-		
-		      this.setState({ draggedFiles: (0, _getDataTransferItems2.default)(evt) });
-		
-		      if (this.props.onDragEnter) {
-		        this.props.onDragEnter.call(this, evt);
-		      }
-		    }
-		  }, {
-		    key: 'onDragOver',
-		    value: function onDragOver(evt) {
-		      // eslint-disable-line class-methods-use-this
-		      evt.preventDefault();
-		      evt.stopPropagation();
-		      try {
-		        evt.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
-		      } catch (err) {
-		        // continue regardless of error
-		      }
-		
-		      if (this.props.onDragOver) {
-		        this.props.onDragOver.call(this, evt);
-		      }
-		      return false;
-		    }
-		  }, {
-		    key: 'onDragLeave',
-		    value: function onDragLeave(evt) {
-		      var _this2 = this;
-		
-		      evt.preventDefault();
-		
-		      // Only deactivate once the dropzone and all children have been left.
-		      this.dragTargets = this.dragTargets.filter(function (el) {
-		        return el !== evt.target && _this2.node.contains(el);
-		      });
-		      if (this.dragTargets.length > 0) {
-		        return;
-		      }
-		
-		      // Clear dragging files state
-		      this.setState({ draggedFiles: [] });
-		
-		      if (this.props.onDragLeave) {
-		        this.props.onDragLeave.call(this, evt);
-		      }
-		    }
-		  }, {
-		    key: 'onDrop',
-		    value: function onDrop(evt) {
-		      var _this3 = this;
-		
-		      var _props = this.props,
-		          onDrop = _props.onDrop,
-		          onDropAccepted = _props.onDropAccepted,
-		          onDropRejected = _props.onDropRejected,
-		          multiple = _props.multiple,
-		          disablePreview = _props.disablePreview,
-		          accept = _props.accept;
-		
-		      var fileList = (0, _getDataTransferItems2.default)(evt);
-		      var acceptedFiles = [];
-		      var rejectedFiles = [];
-		
-		      // Stop default browser behavior
-		      evt.preventDefault();
-		
-		      // Reset the counter along with the drag on a drop.
-		      this.dragTargets = [];
-		      this.isFileDialogActive = false;
-		
-		      fileList.forEach(function (file) {
-		        if (!disablePreview) {
-		          try {
-		            file.preview = window.URL.createObjectURL(file); // eslint-disable-line no-param-reassign
-		          } catch (err) {
-		            if (process.env.NODE_ENV !== 'production') {
-		              console.error('Failed to generate preview for file', file, err); // eslint-disable-line no-console
-		            }
-		          }
-		        }
-		
-		        if (fileAccepted(file, accept) && _this3.fileMatchSize(file)) {
-		          acceptedFiles.push(file);
-		        } else {
-		          rejectedFiles.push(file);
-		        }
-		      });
-		
-		      if (!multiple) {
-		        // if not in multi mode add any extra accepted files to rejected.
-		        // This will allow end users to easily ignore a multi file drop in "single" mode.
-		        rejectedFiles.push.apply(rejectedFiles, _toConsumableArray(acceptedFiles.splice(1)));
-		      }
-		
-		      if (onDrop) {
-		        onDrop.call(this, acceptedFiles, rejectedFiles, evt);
-		      }
-		
-		      if (rejectedFiles.length > 0 && onDropRejected) {
-		        onDropRejected.call(this, rejectedFiles, evt);
-		      }
-		
-		      if (acceptedFiles.length > 0 && onDropAccepted) {
-		        onDropAccepted.call(this, acceptedFiles, evt);
-		      }
-		
-		      // Clear files value
-		      this.draggedFiles = null;
-		
-		      // Reset drag state
-		      this.setState({
-		        draggedFiles: [],
-		        acceptedFiles: acceptedFiles,
-		        rejectedFiles: rejectedFiles
-		      });
-		    }
-		  }, {
-		    key: 'onClick',
-		    value: function onClick(evt) {
-		      var _props2 = this.props,
-		          onClick = _props2.onClick,
-		          disableClick = _props2.disableClick;
-		
-		      if (!disableClick) {
-		        evt.stopPropagation();
-		        this.open();
-		        if (onClick) {
-		          onClick.call(this, evt);
-		        }
-		      }
-		    }
-		  }, {
-		    key: 'onInputElementClick',
-		    value: function onInputElementClick(evt) {
-		      evt.stopPropagation();
-		      if (this.props.inputProps && this.props.inputProps.onClick) {
-		        this.props.inputProps.onClick();
-		      }
-		    }
-		  }, {
-		    key: 'onFileDialogCancel',
-		    value: function onFileDialogCancel() {
-		      // timeout will not recognize context of this method
-		      var onFileDialogCancel = this.props.onFileDialogCancel;
-		      var fileInputEl = this.fileInputEl;
-		      var isFileDialogActive = this.isFileDialogActive;
-		      // execute the timeout only if the onFileDialogCancel is defined and FileDialog
-		      // is opened in the browser
-		
-		      if (onFileDialogCancel && isFileDialogActive) {
-		        setTimeout(function () {
-		          // Returns an object as FileList
-		          var FileList = fileInputEl.files;
-		          if (!FileList.length) {
-		            isFileDialogActive = false;
-		            onFileDialogCancel();
-		          }
-		        }, 300);
-		      }
-		    }
-		  }, {
-		    key: 'setRef',
-		    value: function setRef(ref) {
-		      this.node = ref;
-		    }
-		  }, {
-		    key: 'setRefs',
-		    value: function setRefs(ref) {
-		      this.fileInputEl = ref;
-		    }
-		  }, {
-		    key: 'fileMatchSize',
-		    value: function fileMatchSize(file) {
-		      return file.size <= this.props.maxSize && file.size >= this.props.minSize;
-		    }
-		  }, {
-		    key: 'allFilesAccepted',
-		    value: function allFilesAccepted(files) {
-		      var _this4 = this;
-		
-		      return files.every(function (file) {
-		        return fileAccepted(file, _this4.props.accept);
-		      });
-		    }
-		
-		    /**
-		     * Open system file upload dialog.
-		     *
-		     * @public
-		     */
-		
-		  }, {
-		    key: 'open',
-		    value: function open() {
-		      this.isFileDialogActive = true;
-		      this.fileInputEl.value = null;
-		      this.fileInputEl.click();
-		    }
-		  }, {
-		    key: 'render',
-		    value: function render() {
-		      var _props3 = this.props,
-		          accept = _props3.accept,
-		          activeClassName = _props3.activeClassName,
-		          inputProps = _props3.inputProps,
-		          multiple = _props3.multiple,
-		          name = _props3.name,
-		          rejectClassName = _props3.rejectClassName,
-		          children = _props3.children,
-		          rest = _objectWithoutProperties(_props3, ['accept', 'activeClassName', 'inputProps', 'multiple', 'name', 'rejectClassName', 'children']);
-		
-		      var activeStyle = rest.activeStyle,
-		          className = rest.className,
-		          rejectStyle = rest.rejectStyle,
-		          style = rest.style,
-		          props = _objectWithoutProperties(rest, ['activeStyle', 'className', 'rejectStyle', 'style']);
-		
-		      var draggedFiles = this.state.draggedFiles;
-		
-		      var filesCount = draggedFiles.length;
-		      var isMultipleAllowed = multiple || filesCount <= 1;
-		      var isDragActive = filesCount > 0 && this.allFilesAccepted(draggedFiles);
-		      var isDragReject = filesCount > 0 && (!isDragActive || !isMultipleAllowed);
-		
-		      className = className || '';
-		
-		      if (isDragActive && activeClassName) {
-		        className += ' ' + activeClassName;
-		      }
-		      if (isDragReject && rejectClassName) {
-		        className += ' ' + rejectClassName;
-		      }
-		
-		      if (!className && !style && !activeStyle && !rejectStyle) {
-		        style = {
-		          width: 200,
-		          height: 200,
-		          borderWidth: 2,
-		          borderColor: '#666',
-		          borderStyle: 'dashed',
-		          borderRadius: 5
-		        };
-		        activeStyle = {
-		          borderStyle: 'solid',
-		          borderColor: '#6c6',
-		          backgroundColor: '#eee'
-		        };
-		        rejectStyle = {
-		          borderStyle: 'solid',
-		          borderColor: '#c66',
-		          backgroundColor: '#eee'
-		        };
-		      }
-		
-		      var appliedStyle = void 0;
-		      if (activeStyle && isDragActive) {
-		        appliedStyle = _extends({}, style, activeStyle);
-		      } else if (rejectStyle && isDragReject) {
-		        appliedStyle = _extends({}, style, rejectStyle);
-		      } else {
-		        appliedStyle = _extends({}, style);
-		      }
-		
-		      var inputAttributes = {
-		        accept: accept,
-		        type: 'file',
-		        style: { display: 'none' },
-		        multiple: supportMultiple && multiple,
-		        ref: this.setRefs,
-		        onChange: this.onDrop
-		      };
-		
-		      if (name && name.length) {
-		        inputAttributes.name = name;
-		      }
-		
-		      // Remove custom properties before passing them to the wrapper div element
-		      var customProps = ['acceptedFiles', 'preventDropOnDocument', 'disablePreview', 'disableClick', 'onDropAccepted', 'onDropRejected', 'onFileDialogCancel', 'maxSize', 'minSize'];
-		      var divProps = _extends({}, props);
-		      customProps.forEach(function (prop) {
-		        return delete divProps[prop];
-		      });
-		
-		      return _react2.default.createElement(
-		        'div',
-		        _extends({
-		          className: className,
-		          style: appliedStyle
-		        }, divProps /* expand user provided props first so event handlers are never overridden */, {
-		          onClick: this.onClick,
-		          onDragStart: this.onDragStart,
-		          onDragEnter: this.onDragEnter,
-		          onDragOver: this.onDragOver,
-		          onDragLeave: this.onDragLeave,
-		          onDrop: this.onDrop,
-		          ref: this.setRef
-		        }),
-		        this.renderChildren(children, isDragActive, isDragReject),
-		        _react2.default.createElement('input', _extends({}, inputProps /* expand user provided inputProps first so inputAttributes override them */, inputAttributes))
-		      );
-		    }
-		  }]);
-		
-		  return Dropzone;
-		}(_react2.default.Component);
-		
-		Dropzone.propTypes = {
-		  /**
-		   * Allow specific types of files. See https://github.com/okonet/attr-accept for more information.
-		   * Keep in mind that mime type determination is not reliable accross platforms. CSV files,
-		   * for example, are reported as text/plain under macOS but as application/vnd.ms-excel under
-		   * Windows. In some cases there might not be a mime type set at all.
-		   * See: https://github.com/okonet/react-dropzone/issues/276
-		   */
-		  accept: _propTypes2.default.string,
-		
-		  /**
-		   * Contents of the dropzone
-		   */
-		  children: _propTypes2.default.oneOfType([_propTypes2.default.node, _propTypes2.default.func]),
-		
-		  /**
-		   * Disallow clicking on the dropzone container to open file dialog
-		   */
-		  disableClick: _propTypes2.default.bool,
-		
-		  /**
-		   * Enable/disable preview generation
-		   */
-		  disablePreview: _propTypes2.default.bool,
-		
-		  /**
-		   * If false, allow dropped items to take over the current browser window
-		   */
-		  preventDropOnDocument: _propTypes2.default.bool,
-		
-		  /**
-		   * Pass additional attributes to the `<input type="file"/>` tag
-		   */
-		  inputProps: _propTypes2.default.object,
-		
-		  /**
-		   * Allow dropping multiple files
-		   */
-		  multiple: _propTypes2.default.bool,
-		
-		  /**
-		   * `name` attribute for the input tag
-		   */
-		  name: _propTypes2.default.string,
-		
-		  /**
-		   * Maximum file size
-		   */
-		  maxSize: _propTypes2.default.number,
-		
-		  /**
-		   * Minimum file size
-		   */
-		  minSize: _propTypes2.default.number,
-		
-		  /**
-		   * className
-		   */
-		  className: _propTypes2.default.string,
-		
-		  /**
-		   * className for accepted state
-		   */
-		  activeClassName: _propTypes2.default.string,
-		
-		  /**
-		   * className for rejected state
-		   */
-		  rejectClassName: _propTypes2.default.string,
-		
-		  /**
-		   * CSS styles to apply
-		   */
-		  style: _propTypes2.default.object,
-		
-		  /**
-		   * CSS styles to apply when drop will be accepted
-		   */
-		  activeStyle: _propTypes2.default.object,
-		
-		  /**
-		   * CSS styles to apply when drop will be rejected
-		   */
-		  rejectStyle: _propTypes2.default.object,
-		
-		  /**
-		   * onClick callback
-		   * @param {Event} event
-		   */
-		  onClick: _propTypes2.default.func,
-		
-		  /**
-		   * onDrop callback
-		   */
-		  onDrop: _propTypes2.default.func,
-		
-		  /**
-		   * onDropAccepted callback
-		   */
-		  onDropAccepted: _propTypes2.default.func,
-		
-		  /**
-		   * onDropRejected callback
-		   */
-		  onDropRejected: _propTypes2.default.func,
-		
-		  /**
-		   * onDragStart callback
-		   */
-		  onDragStart: _propTypes2.default.func,
-		
-		  /**
-		   * onDragEnter callback
-		   */
-		  onDragEnter: _propTypes2.default.func,
-		
-		  /**
-		   * onDragOver callback
-		   */
-		  onDragOver: _propTypes2.default.func,
-		
-		  /**
-		   * onDragLeave callback
-		   */
-		  onDragLeave: _propTypes2.default.func,
-		
-		  /**
-		   * Provide a callback on clicking the cancel button of the file dialog
-		   */
-		  onFileDialogCancel: _propTypes2.default.func
-		};
-		
-		Dropzone.defaultProps = {
-		  preventDropOnDocument: true,
-		  disablePreview: false,
-		  disableClick: false,
-		  multiple: true,
-		  maxSize: Infinity,
-		  minSize: 0
-		};
-		
-		exports.default = Dropzone;
-		module.exports = exports['default'];
-		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-	/***/ }),
-	/* 1 */
-	/***/ (function(module, exports) {
-
-		// shim for using process in browser
-		var process = module.exports = {};
-		
-		// cached from whatever global is present so that test runners that stub it
-		// don't break things.  But we need to wrap it in a try catch in case it is
-		// wrapped in strict mode code which doesn't define any globals.  It's inside a
-		// function because try/catches deoptimize in certain engines.
-		
-		var cachedSetTimeout;
-		var cachedClearTimeout;
-		
-		function defaultSetTimout() {
-		    throw new Error('setTimeout has not been defined');
-		}
-		function defaultClearTimeout () {
-		    throw new Error('clearTimeout has not been defined');
-		}
-		(function () {
-		    try {
-		        if (typeof setTimeout === 'function') {
-		            cachedSetTimeout = setTimeout;
-		        } else {
-		            cachedSetTimeout = defaultSetTimout;
-		        }
-		    } catch (e) {
-		        cachedSetTimeout = defaultSetTimout;
-		    }
-		    try {
-		        if (typeof clearTimeout === 'function') {
-		            cachedClearTimeout = clearTimeout;
-		        } else {
-		            cachedClearTimeout = defaultClearTimeout;
-		        }
-		    } catch (e) {
-		        cachedClearTimeout = defaultClearTimeout;
-		    }
-		} ())
-		function runTimeout(fun) {
-		    if (cachedSetTimeout === setTimeout) {
-		        //normal enviroments in sane situations
-		        return setTimeout(fun, 0);
-		    }
-		    // if setTimeout wasn't available but was latter defined
-		    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-		        cachedSetTimeout = setTimeout;
-		        return setTimeout(fun, 0);
-		    }
-		    try {
-		        // when when somebody has screwed with setTimeout but no I.E. maddness
-		        return cachedSetTimeout(fun, 0);
-		    } catch(e){
-		        try {
-		            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-		            return cachedSetTimeout.call(null, fun, 0);
-		        } catch(e){
-		            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-		            return cachedSetTimeout.call(this, fun, 0);
-		        }
-		    }
-		
-		
-		}
-		function runClearTimeout(marker) {
-		    if (cachedClearTimeout === clearTimeout) {
-		        //normal enviroments in sane situations
-		        return clearTimeout(marker);
-		    }
-		    // if clearTimeout wasn't available but was latter defined
-		    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-		        cachedClearTimeout = clearTimeout;
-		        return clearTimeout(marker);
-		    }
-		    try {
-		        // when when somebody has screwed with setTimeout but no I.E. maddness
-		        return cachedClearTimeout(marker);
-		    } catch (e){
-		        try {
-		            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-		            return cachedClearTimeout.call(null, marker);
-		        } catch (e){
-		            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-		            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-		            return cachedClearTimeout.call(this, marker);
-		        }
-		    }
-		
-		
-		
-		}
-		var queue = [];
-		var draining = false;
-		var currentQueue;
-		var queueIndex = -1;
-		
-		function cleanUpNextTick() {
-		    if (!draining || !currentQueue) {
-		        return;
-		    }
-		    draining = false;
-		    if (currentQueue.length) {
-		        queue = currentQueue.concat(queue);
-		    } else {
-		        queueIndex = -1;
-		    }
-		    if (queue.length) {
-		        drainQueue();
-		    }
-		}
-		
-		function drainQueue() {
-		    if (draining) {
-		        return;
-		    }
-		    var timeout = runTimeout(cleanUpNextTick);
-		    draining = true;
-		
-		    var len = queue.length;
-		    while(len) {
-		        currentQueue = queue;
-		        queue = [];
-		        while (++queueIndex < len) {
-		            if (currentQueue) {
-		                currentQueue[queueIndex].run();
-		            }
-		        }
-		        queueIndex = -1;
-		        len = queue.length;
-		    }
-		    currentQueue = null;
-		    draining = false;
-		    runClearTimeout(timeout);
-		}
-		
-		process.nextTick = function (fun) {
-		    var args = new Array(arguments.length - 1);
-		    if (arguments.length > 1) {
-		        for (var i = 1; i < arguments.length; i++) {
-		            args[i - 1] = arguments[i];
-		        }
-		    }
-		    queue.push(new Item(fun, args));
-		    if (queue.length === 1 && !draining) {
-		        runTimeout(drainQueue);
-		    }
-		};
-		
-		// v8 likes predictible objects
-		function Item(fun, array) {
-		    this.fun = fun;
-		    this.array = array;
-		}
-		Item.prototype.run = function () {
-		    this.fun.apply(null, this.array);
-		};
-		process.title = 'browser';
-		process.browser = true;
-		process.env = {};
-		process.argv = [];
-		process.version = ''; // empty string to avoid regexp issues
-		process.versions = {};
-		
-		function noop() {}
-		
-		process.on = noop;
-		process.addListener = noop;
-		process.once = noop;
-		process.off = noop;
-		process.removeListener = noop;
-		process.removeAllListeners = noop;
-		process.emit = noop;
-		process.prependListener = noop;
-		process.prependOnceListener = noop;
-		
-		process.listeners = function (name) { return [] }
-		
-		process.binding = function (name) {
-		    throw new Error('process.binding is not supported');
-		};
-		
-		process.cwd = function () { return '/' };
-		process.chdir = function (dir) {
-		    throw new Error('process.chdir is not supported');
-		};
-		process.umask = function() { return 0; };
-
-
-	/***/ }),
-	/* 2 */
-	/***/ (function(module, exports) {
-
-		module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
-
-	/***/ }),
-	/* 3 */
-	/***/ (function(module, exports) {
-
-		module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
-
-	/***/ }),
-	/* 4 */
-	/***/ (function(module, exports) {
-
-		module.exports=function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]={exports:{},id:e,loaded:!1};return t[e].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var r={};return n.m=t,n.c=r,n.p="",n(0)}([function(t,n,r){"use strict";n.__esModule=!0,r(8),r(9),n["default"]=function(t,n){if(t&&n){var r=function(){var r=Array.isArray(n)?n:n.split(","),e=t.name||"",o=t.type||"",i=o.replace(/\/.*$/,"");return{v:r.some(function(t){var n=t.trim();return"."===n.charAt(0)?e.toLowerCase().endsWith(n.toLowerCase()):/\/\*$/.test(n)?i===n.replace(/\/.*$/,""):o===n})}}();if("object"==typeof r)return r.v}return!0},t.exports=n["default"]},function(t,n){var r=t.exports={version:"1.2.2"};"number"==typeof __e&&(__e=r)},function(t,n){var r=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=r)},function(t,n,r){var e=r(2),o=r(1),i=r(4),u=r(19),c="prototype",f=function(t,n){return function(){return t.apply(n,arguments)}},s=function(t,n,r){var a,p,l,y,d=t&s.G,h=t&s.P,v=d?e:t&s.S?e[n]||(e[n]={}):(e[n]||{})[c],x=d?o:o[n]||(o[n]={});d&&(r=n);for(a in r)p=!(t&s.F)&&v&&a in v,l=(p?v:r)[a],y=t&s.B&&p?f(l,e):h&&"function"==typeof l?f(Function.call,l):l,v&&!p&&u(v,a,l),x[a]!=l&&i(x,a,y),h&&((x[c]||(x[c]={}))[a]=l)};e.core=o,s.F=1,s.G=2,s.S=4,s.P=8,s.B=16,s.W=32,t.exports=s},function(t,n,r){var e=r(5),o=r(18);t.exports=r(22)?function(t,n,r){return e.setDesc(t,n,o(1,r))}:function(t,n,r){return t[n]=r,t}},function(t,n){var r=Object;t.exports={create:r.create,getProto:r.getPrototypeOf,isEnum:{}.propertyIsEnumerable,getDesc:r.getOwnPropertyDescriptor,setDesc:r.defineProperty,setDescs:r.defineProperties,getKeys:r.keys,getNames:r.getOwnPropertyNames,getSymbols:r.getOwnPropertySymbols,each:[].forEach}},function(t,n){var r=0,e=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++r+e).toString(36))}},function(t,n,r){var e=r(20)("wks"),o=r(2).Symbol;t.exports=function(t){return e[t]||(e[t]=o&&o[t]||(o||r(6))("Symbol."+t))}},function(t,n,r){r(26),t.exports=r(1).Array.some},function(t,n,r){r(25),t.exports=r(1).String.endsWith},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n){var r={}.toString;t.exports=function(t){return r.call(t).slice(8,-1)}},function(t,n,r){var e=r(10);t.exports=function(t,n,r){if(e(t),void 0===n)return t;switch(r){case 1:return function(r){return t.call(n,r)};case 2:return function(r,e){return t.call(n,r,e)};case 3:return function(r,e,o){return t.call(n,r,e,o)}}return function(){return t.apply(n,arguments)}}},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n,r){t.exports=function(t){var n=/./;try{"/./"[t](n)}catch(e){try{return n[r(7)("match")]=!1,!"/./"[t](n)}catch(o){}}return!0}},function(t,n){t.exports=function(t){try{return!!t()}catch(n){return!0}}},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n,r){var e=r(16),o=r(11),i=r(7)("match");t.exports=function(t){var n;return e(t)&&(void 0!==(n=t[i])?!!n:"RegExp"==o(t))}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n,r){var e=r(2),o=r(4),i=r(6)("src"),u="toString",c=Function[u],f=(""+c).split(u);r(1).inspectSource=function(t){return c.call(t)},(t.exports=function(t,n,r,u){"function"==typeof r&&(o(r,i,t[n]?""+t[n]:f.join(String(n))),"name"in r||(r.name=n)),t===e?t[n]=r:(u||delete t[n],o(t,n,r))})(Function.prototype,u,function(){return"function"==typeof this&&this[i]||c.call(this)})},function(t,n,r){var e=r(2),o="__core-js_shared__",i=e[o]||(e[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n,r){var e=r(17),o=r(13);t.exports=function(t,n,r){if(e(n))throw TypeError("String#"+r+" doesn't accept regex!");return String(o(t))}},function(t,n,r){t.exports=!r(15)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n){var r=Math.ceil,e=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?e:r)(t)}},function(t,n,r){var e=r(23),o=Math.min;t.exports=function(t){return t>0?o(e(t),9007199254740991):0}},function(t,n,r){"use strict";var e=r(3),o=r(24),i=r(21),u="endsWith",c=""[u];e(e.P+e.F*r(14)(u),"String",{endsWith:function(t){var n=i(this,t,u),r=arguments,e=r.length>1?r[1]:void 0,f=o(n.length),s=void 0===e?f:Math.min(o(e),f),a=String(t);return c?c.call(n,a,s):n.slice(s-a.length,s)===a}})},function(t,n,r){var e=r(5),o=r(3),i=r(1).Array||Array,u={},c=function(t,n){e.each.call(t.split(","),function(t){void 0==n&&t in i?u[t]=i[t]:t in[]&&(u[t]=r(12)(Function.call,[][t],n))})};c("pop,reverse,shift,keys,values,entries",1),c("indexOf,every,some,forEach,map,filter,find,findIndex,includes",3),c("join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill"),o(o.S,"Array",u)}]);
-
-	/***/ }),
-	/* 5 */
-	/***/ (function(module, exports) {
-
-		"use strict";
-		
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-		exports.default = getDataTransferFiles;
-		function getDataTransferFiles(event) {
-		  var dataTransferItemsList = [];
-		  if (event.dataTransfer) {
-		    var dt = event.dataTransfer;
-		    if (dt.files && dt.files.length) {
-		      dataTransferItemsList = dt.files;
-		    } else if (dt.items && dt.items.length) {
-		      // During the drag even the dataTransfer.files is null
-		      // but Chrome implements some drag store, which is accesible via dataTransfer.items
-		      dataTransferItemsList = dt.items;
-		    }
-		  } else if (event.target && event.target.files) {
-		    dataTransferItemsList = event.target.files;
-		  }
-		  // Convert from DataTransferItemsList to the native Array
-		  return Array.prototype.slice.call(dataTransferItemsList);
-		}
-		module.exports = exports["default"];
-
-	/***/ })
-	/******/ ])
-	});
-	;
-	//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 934 */
@@ -101836,7 +101864,7 @@
 
 	var _materialUi = __webpack_require__(774);
 
-	var _Time = __webpack_require__(932);
+	var _Time = __webpack_require__(933);
 
 	var _Time2 = _interopRequireDefault(_Time);
 
@@ -104765,6 +104793,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _CircularProgress = __webpack_require__(805);
+
+	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -104786,14 +104818,18 @@
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "svg",
-	        { xmlns: "http://www.w3.org/2000/svg", xmlSpace: "preserve", viewBox: "473 480 500 540", height: "100%", width: "100%", version: "1.1", xmlnsXlink: "http://www.w3.org/1999/xlink" },
+	        "div",
+	        null,
 	        _react2.default.createElement(
-	          "g",
-	          { id: "gVideo" },
-	          _react2.default.createElement("metadata", { id: "InkScape - Video" }),
-	          _react2.default.createElement("path", { d: "m 487.05439,984.16161 c -6.13757,-2.41929 -11.65728,-7.23665 -16.07636,-14.03075 l -2.88415,-4.43421 V 757.16331 548.62998 l 4.01376,-5.9978 c 4.42268,-6.60885 9.54246,-10.65411 16.65369,-13.15847 4.14826,-1.46089 30.08779,-1.64373 233.19773,-1.64373 h 228.53029 l 5.08554,2.24957 c 6.68994,2.95928 13.95222,9.76602 17.14778,16.07214 l 2.5712,5.07403 v 205.93759 205.9376 l -2.60767,5.14597 c -3.37659,6.6634 -11.66227,14.02163 -18.44804,16.3831 -5.04621,1.7561 -18.87709,1.86257 -233.48744,1.79749 -227.7199,-0.0691 -228.13336,-0.0731 -233.69633,-2.26586 z m 60.2679,-53.6585 c 0.26127,-15.10591 0.0852,-17.21368 -1.53721,-18.4 -2.53909,-1.85664 -43.09374,-1.91059 -44.94453,-0.0598 -1.3919,1.39189 -1.89801,34.01311 -0.54864,35.36247 0.40225,0.40225 11.08225,0.60225 23.73333,0.44445 l 23.00198,-0.28692 z m 98.13224,-0.45995 c 0.22321,-13.3021 -0.0336,-17.72807 -1.06667,-18.38367 -2.28351,-1.44918 -42.86555,-1.09793 -44.34731,0.38383 -1.39214,1.39213 -1.89789,34.01322 -0.54826,35.36285 0.40247,0.40247 10.84247,0.60247 23.2,0.44445 l 22.46826,-0.2873 z m 99.2,0 c 0.22321,-13.3021 -0.0336,-17.72807 -1.06667,-18.38367 -2.28351,-1.44918 -42.86555,-1.09793 -44.34731,0.38383 -1.39214,1.39213 -1.89789,34.01322 -0.54826,35.36285 0.40246,0.40247 10.84246,0.60247 23.2,0.44445 l 22.46825,-0.2873 z m 99.2,0 c 0.22321,-13.3021 -0.0336,-17.72807 -1.06667,-18.38367 -0.74836,-0.47493 -10.80637,-0.87086 -22.35112,-0.87984 -17.67499,-0.0138 -21.25524,0.24842 -22.66667,1.65986 -1.36803,1.36803 -1.67619,4.48961 -1.67619,16.97942 0,8.41678 0.29489,16.0717 0.6553,17.01095 0.57773,1.50553 3.3873,1.6737 23.73334,1.42056 l 23.07802,-0.28712 z m 99.19786,-0.34651 -0.29185,-18.4 -22.26415,-0.28871 c -15.52266,-0.20129 -22.70901,0.0805 -23.73333,0.93061 -1.13372,0.9409 -1.46919,5.04581 -1.46919,17.9776 0,9.21705 0.32,17.07828 0.71112,17.46938 0.3911,0.39112 11.20244,0.71112 24.02518,0.71112 h 23.31408 z m 0.24148,-172.41921 c 0,-111.74057 -0.16212,-123.68144 -1.68724,-124.26667 -2.2058,-0.84645 -438.15303,-0.84645 -440.35884,0 -1.52503,0.5852 -1.68724,12.46343 -1.68724,123.55555 0,67.59946 0.32,123.22811 0.71111,123.61921 0.39111,0.39112 100.23111,0.71112 221.86667,0.71112 h 221.15554 z m -236.26666,89.52463 c -22.35019,-2.52618 -47.13263,-18.37085 -60.9557,-38.97209 -5.10498,-7.60821 -10.9068,-19.66929 -11.72262,-24.36947 -0.32113,-1.85012 -1.29627,-5.63729 -2.16699,-8.41594 -1.91832,-6.12182 -1.44173,-31.66787 0.73162,-39.21459 9.74408,-33.83545 30.81649,-55.9506 63.11212,-66.23518 6.85899,-2.18425 9.92799,-2.48522 25.40157,-2.49103 18.84477,-0.007 23.15248,0.81816 37.51998,7.18773 25.28387,11.20918 45.71456,36.85351 51.57675,64.73848 6.27341,29.8411 -2.91067,60.01321 -25.03877,82.25878 -10.77215,10.82934 -21.26046,17.17138 -37.74371,22.82274 -8.31047,2.84928 -27.87257,4.14202 -40.71425,2.69057 z m 30.93333,-23.43923 c 10.09011,-2.72558 16.16518,-5.57826 23.60921,-11.08615 20.79794,-15.38857 30.34725,-38.14922 27.15073,-64.71338 -1.86161,-15.47062 -7.91684,-27.26763 -20.26164,-39.47442 -9.62921,-9.52156 -18.22695,-14.13015 -33.11888,-17.75252 -12.65748,-3.07886 -15.16801,-3.07886 -27.82549,0 -15.20301,3.69804 -23.46023,8.18703 -33.6278,18.28157 -12.77459,12.68283 -18.73033,24.97982 -20.16745,41.64034 -0.82812,9.6005 0.67114,23.02171 3.39278,30.3717 5.68287,15.34702 19.4521,30.73181 33.6516,37.6 4.54835,2.2 9.10835,4.03652 10.13333,4.08115 1.02499,0.0446 3.54362,0.72812 5.59695,1.51885 5.67937,2.18712 22.56884,1.93639 31.46666,-0.46714 z M 695.4606,796.48862 c -4.44814,-2.58566 -4.96672,-6.69168 -4.96672,-39.32531 0,-32.9345 0.51964,-36.89045 5.17291,-39.38081 3.95531,-2.11682 7.01224,-1.18778 19.36042,5.88381 6.74667,3.86371 14.42667,8.23737 17.06667,9.71923 15.21155,8.53846 25.41821,14.80674 28,17.19583 3.80718,3.52303 4.05113,9.42662 0.52638,12.73795 -4.32943,4.06729 -57.74684,34.37868 -60.52559,34.34489 -1.46711,-0.0178 -3.55243,-0.54686 -4.63407,-1.17559 z M 545.49734,602.45911 c 1.90728,-1.02074 2.06321,-2.38838 2.06321,-18.0958 0,-15.70742 -0.15593,-17.07506 -2.06321,-18.0958 -3.0424,-1.62825 -43.01009,-1.4709 -44.65679,0.1758 -1.7919,1.7919 -1.7919,34.0481 0,35.84 1.6467,1.6467 41.61439,1.80405 44.65679,0.1758 z m 98.5093,0.45675 c 1.44577,-0.5548 1.68724,-3.20853 1.68724,-18.54226 0,-17.6559 -0.032,-17.9034 -2.4,-18.53798 -4.15396,-1.11322 -40.2693,-0.74596 -42.47012,0.43189 -1.90589,1.02 -2.06321,2.38639 -2.06321,17.92 0,11.65673 0.3927,17.2085 1.28,18.0958 1.35169,1.35169 40.61977,1.91665 43.96609,0.63255 z m 99.2,0 c 1.44577,-0.5548 1.68724,-3.20853 1.68724,-18.54226 0,-17.6559 -0.032,-17.9034 -2.4,-18.53798 -3.95879,-1.06092 -38.84683,-0.75378 -41.79723,0.36796 l -2.7361,1.04026 v 16.87974 c 0,11.70646 0.39228,17.27202 1.28,18.15973 1.35169,1.35169 40.61977,1.91665 43.96609,0.63255 z m 99.19999,0 c 1.44583,-0.55482 1.68725,-3.20944 1.68725,-18.55255 0,-15.34311 -0.24142,-17.99773 -1.68725,-18.55254 -2.30167,-0.88324 -39.78822,-0.61748 -43.11275,0.30565 l -2.66667,0.74045 -0.30621,15.41989 c -0.34143,17.19394 0.007,19.846 2.70694,20.55141 2.85393,0.74589 41.46009,0.82393 43.37869,0.0877 z m 100.64721,-17.9398 c 0.22305,-13.72934 -0.0324,-18.26066 -1.06666,-18.917 -1.58899,-1.00842 -36.81575,-1.18261 -42.69331,-0.21111 l -4,0.66116 v 17.2471 c 0,12.14347 0.38485,17.63194 1.30054,18.54763 0.9595,0.9595 7.18297,1.22523 23.73333,1.01334 l 22.4328,-0.2872 z",
-	            fill: "rgb(78,172,233)" })
+	          "svg",
+	          { xmlns: "http://www.w3.org/2000/svg", xmlSpace: "preserve", viewBox: "473 480 500 540", height: "100%", width: "100%", version: "1.1", xmlnsXlink: "http://www.w3.org/1999/xlink" },
+	          _react2.default.createElement(
+	            "g",
+	            { id: "gVideo" },
+	            _react2.default.createElement("metadata", { id: "InkScape - Video" }),
+	            _react2.default.createElement("path", { d: "m 487.05439,984.16161 c -6.13757,-2.41929 -11.65728,-7.23665 -16.07636,-14.03075 l -2.88415,-4.43421 V 757.16331 548.62998 l 4.01376,-5.9978 c 4.42268,-6.60885 9.54246,-10.65411 16.65369,-13.15847 4.14826,-1.46089 30.08779,-1.64373 233.19773,-1.64373 h 228.53029 l 5.08554,2.24957 c 6.68994,2.95928 13.95222,9.76602 17.14778,16.07214 l 2.5712,5.07403 v 205.93759 205.9376 l -2.60767,5.14597 c -3.37659,6.6634 -11.66227,14.02163 -18.44804,16.3831 -5.04621,1.7561 -18.87709,1.86257 -233.48744,1.79749 -227.7199,-0.0691 -228.13336,-0.0731 -233.69633,-2.26586 z m 60.2679,-53.6585 c 0.26127,-15.10591 0.0852,-17.21368 -1.53721,-18.4 -2.53909,-1.85664 -43.09374,-1.91059 -44.94453,-0.0598 -1.3919,1.39189 -1.89801,34.01311 -0.54864,35.36247 0.40225,0.40225 11.08225,0.60225 23.73333,0.44445 l 23.00198,-0.28692 z m 98.13224,-0.45995 c 0.22321,-13.3021 -0.0336,-17.72807 -1.06667,-18.38367 -2.28351,-1.44918 -42.86555,-1.09793 -44.34731,0.38383 -1.39214,1.39213 -1.89789,34.01322 -0.54826,35.36285 0.40247,0.40247 10.84247,0.60247 23.2,0.44445 l 22.46826,-0.2873 z m 99.2,0 c 0.22321,-13.3021 -0.0336,-17.72807 -1.06667,-18.38367 -2.28351,-1.44918 -42.86555,-1.09793 -44.34731,0.38383 -1.39214,1.39213 -1.89789,34.01322 -0.54826,35.36285 0.40246,0.40247 10.84246,0.60247 23.2,0.44445 l 22.46825,-0.2873 z m 99.2,0 c 0.22321,-13.3021 -0.0336,-17.72807 -1.06667,-18.38367 -0.74836,-0.47493 -10.80637,-0.87086 -22.35112,-0.87984 -17.67499,-0.0138 -21.25524,0.24842 -22.66667,1.65986 -1.36803,1.36803 -1.67619,4.48961 -1.67619,16.97942 0,8.41678 0.29489,16.0717 0.6553,17.01095 0.57773,1.50553 3.3873,1.6737 23.73334,1.42056 l 23.07802,-0.28712 z m 99.19786,-0.34651 -0.29185,-18.4 -22.26415,-0.28871 c -15.52266,-0.20129 -22.70901,0.0805 -23.73333,0.93061 -1.13372,0.9409 -1.46919,5.04581 -1.46919,17.9776 0,9.21705 0.32,17.07828 0.71112,17.46938 0.3911,0.39112 11.20244,0.71112 24.02518,0.71112 h 23.31408 z m 0.24148,-172.41921 c 0,-111.74057 -0.16212,-123.68144 -1.68724,-124.26667 -2.2058,-0.84645 -438.15303,-0.84645 -440.35884,0 -1.52503,0.5852 -1.68724,12.46343 -1.68724,123.55555 0,67.59946 0.32,123.22811 0.71111,123.61921 0.39111,0.39112 100.23111,0.71112 221.86667,0.71112 h 221.15554 z m -236.26666,89.52463 c -22.35019,-2.52618 -47.13263,-18.37085 -60.9557,-38.97209 -5.10498,-7.60821 -10.9068,-19.66929 -11.72262,-24.36947 -0.32113,-1.85012 -1.29627,-5.63729 -2.16699,-8.41594 -1.91832,-6.12182 -1.44173,-31.66787 0.73162,-39.21459 9.74408,-33.83545 30.81649,-55.9506 63.11212,-66.23518 6.85899,-2.18425 9.92799,-2.48522 25.40157,-2.49103 18.84477,-0.007 23.15248,0.81816 37.51998,7.18773 25.28387,11.20918 45.71456,36.85351 51.57675,64.73848 6.27341,29.8411 -2.91067,60.01321 -25.03877,82.25878 -10.77215,10.82934 -21.26046,17.17138 -37.74371,22.82274 -8.31047,2.84928 -27.87257,4.14202 -40.71425,2.69057 z m 30.93333,-23.43923 c 10.09011,-2.72558 16.16518,-5.57826 23.60921,-11.08615 20.79794,-15.38857 30.34725,-38.14922 27.15073,-64.71338 -1.86161,-15.47062 -7.91684,-27.26763 -20.26164,-39.47442 -9.62921,-9.52156 -18.22695,-14.13015 -33.11888,-17.75252 -12.65748,-3.07886 -15.16801,-3.07886 -27.82549,0 -15.20301,3.69804 -23.46023,8.18703 -33.6278,18.28157 -12.77459,12.68283 -18.73033,24.97982 -20.16745,41.64034 -0.82812,9.6005 0.67114,23.02171 3.39278,30.3717 5.68287,15.34702 19.4521,30.73181 33.6516,37.6 4.54835,2.2 9.10835,4.03652 10.13333,4.08115 1.02499,0.0446 3.54362,0.72812 5.59695,1.51885 5.67937,2.18712 22.56884,1.93639 31.46666,-0.46714 z M 695.4606,796.48862 c -4.44814,-2.58566 -4.96672,-6.69168 -4.96672,-39.32531 0,-32.9345 0.51964,-36.89045 5.17291,-39.38081 3.95531,-2.11682 7.01224,-1.18778 19.36042,5.88381 6.74667,3.86371 14.42667,8.23737 17.06667,9.71923 15.21155,8.53846 25.41821,14.80674 28,17.19583 3.80718,3.52303 4.05113,9.42662 0.52638,12.73795 -4.32943,4.06729 -57.74684,34.37868 -60.52559,34.34489 -1.46711,-0.0178 -3.55243,-0.54686 -4.63407,-1.17559 z M 545.49734,602.45911 c 1.90728,-1.02074 2.06321,-2.38838 2.06321,-18.0958 0,-15.70742 -0.15593,-17.07506 -2.06321,-18.0958 -3.0424,-1.62825 -43.01009,-1.4709 -44.65679,0.1758 -1.7919,1.7919 -1.7919,34.0481 0,35.84 1.6467,1.6467 41.61439,1.80405 44.65679,0.1758 z m 98.5093,0.45675 c 1.44577,-0.5548 1.68724,-3.20853 1.68724,-18.54226 0,-17.6559 -0.032,-17.9034 -2.4,-18.53798 -4.15396,-1.11322 -40.2693,-0.74596 -42.47012,0.43189 -1.90589,1.02 -2.06321,2.38639 -2.06321,17.92 0,11.65673 0.3927,17.2085 1.28,18.0958 1.35169,1.35169 40.61977,1.91665 43.96609,0.63255 z m 99.2,0 c 1.44577,-0.5548 1.68724,-3.20853 1.68724,-18.54226 0,-17.6559 -0.032,-17.9034 -2.4,-18.53798 -3.95879,-1.06092 -38.84683,-0.75378 -41.79723,0.36796 l -2.7361,1.04026 v 16.87974 c 0,11.70646 0.39228,17.27202 1.28,18.15973 1.35169,1.35169 40.61977,1.91665 43.96609,0.63255 z m 99.19999,0 c 1.44583,-0.55482 1.68725,-3.20944 1.68725,-18.55255 0,-15.34311 -0.24142,-17.99773 -1.68725,-18.55254 -2.30167,-0.88324 -39.78822,-0.61748 -43.11275,0.30565 l -2.66667,0.74045 -0.30621,15.41989 c -0.34143,17.19394 0.007,19.846 2.70694,20.55141 2.85393,0.74589 41.46009,0.82393 43.37869,0.0877 z m 100.64721,-17.9398 c 0.22305,-13.72934 -0.0324,-18.26066 -1.06666,-18.917 -1.58899,-1.00842 -36.81575,-1.18261 -42.69331,-0.21111 l -4,0.66116 v 17.2471 c 0,12.14347 0.38485,17.63194 1.30054,18.54763 0.9595,0.9595 7.18297,1.22523 23.73333,1.01334 l 22.4328,-0.2872 z",
+	              fill: "rgb(78,172,233)" })
+	          )
 	        )
 	      );
 	    }
@@ -104860,262 +104896,7 @@
 	exports.default = PIcon;
 
 /***/ }),
-/* 954 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(283);
-
-	var _category = __webpack_require__(754);
-
-	var _currency = __webpack_require__(926);
-
-	var _new_item = __webpack_require__(927);
-
-	var _video = __webpack_require__(928);
-
-	var _image = __webpack_require__(929);
-
-	var _reactBootstrap = __webpack_require__(525);
-
-	var _CircularProgress = __webpack_require__(805);
-
-	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
-
-	var _VideoRecord = __webpack_require__(930);
-
-	var _VideoRecord2 = _interopRequireDefault(_VideoRecord);
-
-	var _VideoRecord3 = __webpack_require__(934);
-
-	var _VideoRecord4 = _interopRequireDefault(_VideoRecord3);
-
-	var _VideoPlayer = __webpack_require__(935);
-
-	var _VideoPlayer2 = _interopRequireDefault(_VideoPlayer);
-
-	var _ImageEdit = __webpack_require__(936);
-
-	var _ImageEdit2 = _interopRequireDefault(_ImageEdit);
-
-	var _SubtitlesEditer = __webpack_require__(937);
-
-	var _SubtitlesEditer2 = _interopRequireDefault(_SubtitlesEditer);
-
-	var _OfferForm = __webpack_require__(951);
-
-	var _OfferForm2 = _interopRequireDefault(_OfferForm);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// redux
-
-
-	// components
-
-
-	var newItemStyle = {
-	  loadingDiv: {
-	    marginTop: '30vh',
-	    textAlign: 'center'
-	  }
-	};
-
-	var NewItem = function (_React$Component) {
-	  _inherits(NewItem, _React$Component);
-
-	  function NewItem(props) {
-	    _classCallCheck(this, NewItem);
-
-	    var _this = _possibleConstructorReturn(this, (NewItem.__proto__ || Object.getPrototypeOf(NewItem)).call(this, props));
-
-	    _this.state = {
-	      RecordRTC: false
-	    };
-	    _this.showOfferForm = _this.showOfferForm.bind(_this);
-	    return _this;
-	  }
-
-	  _createClass(NewItem, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      this.props.getCategories();
-	      this.props.getCurrencies();
-
-	      if (navigator.mediaDevices) {
-	        this.setState({
-	          RecordRTC: true
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'showOfferForm',
-	    value: function showOfferForm() {
-	      console.log("called");
-	      return _react2.default.createElement(
-	        _reactBootstrap.Grid,
-	        null,
-	        _react2.default.createElement(_OfferForm2.default, {
-	          categories: this.props.categories,
-	          currencies: this.props.currencies,
-	          newItem: this.props.newItem,
-	          onCreate: this.props.onCreate,
-	          showSnackbar: this.props.showSnackbar,
-	          urlVideo: this.props.video.url,
-	          urlImage: this.props.image.data.location,
-	          subtitlesVideo: this.props.video.subtitles
-	        })
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      if (!this.props.image.error) {
-	        console.log("data image", this.props.image.data);
-	      }
-	      if (this.props.video.loading || this.props.image.loading) {
-	        return _react2.default.createElement(
-	          _reactBootstrap.Grid,
-	          null,
-	          _react2.default.createElement(
-	            _reactBootstrap.Row,
-	            null,
-	            _react2.default.createElement(
-	              _reactBootstrap.Col,
-	              { xs: 12, style: newItemStyle.loadingDiv },
-	              _react2.default.createElement(
-	                'center',
-	                null,
-	                _react2.default.createElement(_CircularProgress2.default, { size: 100, thickness: 6 })
-	              )
-	            )
-	          )
-	        );
-	      }
-	      if (this.props.video.videoUploaded) {
-	        return this.showOfferForm();
-	      }
-	      if (this.props.image.proceed && this.props.image.loaded) {
-	        return this.showOfferForm();
-	      }
-	      if (this.props.image.loaded && !this.props.image.proceed) {
-	        return _react2.default.createElement(
-	          _reactBootstrap.Grid,
-	          null,
-	          _react2.default.createElement(
-	            'center',
-	            null,
-	            _react2.default.createElement(_ImageEdit2.default, {
-	              image_url: this.props.image.data.location,
-	              onDelete: this.props.onDeleteImage,
-	              onProceed: this.props.onProceed
-	            })
-	          )
-	        );
-	      }
-	      if (!this.props.video.recorded || this.props.video.error) {
-	        return _react2.default.createElement(
-	          _reactBootstrap.Grid,
-	          null,
-	          this.state.RecordRTC && _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded, imageUploaded: this.props.imageUploaded, image: this.props.image }),
-	          !this.state.RecordRTC && _react2.default.createElement(_VideoRecord4.default, { onRecorded: this.props.onRecorded, imageUploaded: this.props.imageUploaded })
-	        );
-	      }
-	      return _react2.default.createElement(
-	        _reactBootstrap.Grid,
-	        null,
-	        _react2.default.createElement(_VideoPlayer2.default, {
-	          url: this.props.video.localUrl,
-	          image: this.props.image.data,
-	          onDelete: this.props.onDelete,
-	          subtitles: this.props.video.subtitles,
-	          setDuration: this.props.setDuration
-	        }),
-	        _react2.default.createElement(_SubtitlesEditer2.default, {
-	          subtitles: this.props.video.subtitles,
-	          onSave: this.props.onSave,
-	          onCancel: this.props.onDelete,
-	          updateSubtitles: this.props.updateSubtitles,
-	          videoDuration: this.props.video.videoDuration
-	        })
-	      );
-	    }
-	  }]);
-
-	  return NewItem;
-	}(_react2.default.Component);
-
-	function mapStateToProps(state) {
-	  var image = state.image;
-	  var video = state.video;
-	  var categories = state.categories;
-	  var currencies = state.currencies;
-	  var newItem = state.newItem;
-
-	  return { image: image, video: video, categories: categories, currencies: currencies, newItem: newItem };
-	}
-
-	function mapDispatchToProps(dispatch) {
-	  return {
-	    imageUploaded: function imageUploaded(data) {
-	      dispatch((0, _image.setImage)(data));
-	    },
-	    onRecorded: function onRecorded(data, url) {
-	      dispatch((0, _video.setRecord)(data, url));
-	    },
-	    onDelete: function onDelete() {
-	      dispatch((0, _video.deleteRecord)());
-	    },
-	    onDeleteImage: function onDeleteImage() {
-	      dispatch((0, _image.deleteImage)());
-	    },
-	    onSave: function onSave() {
-	      dispatch((0, _video.setOfferForm)());
-	    },
-	    onCreate: function onCreate(data) {
-	      dispatch((0, _new_item.doItemCreate)(data));
-	    },
-	    onProceed: function onProceed() {
-	      dispatch((0, _image.proceed)());
-	    },
-	    showSnackbar: function showSnackbar() {
-	      dispatch((0, _new_item.showSnackbar)());
-	    },
-	    getCategories: function getCategories() {
-	      dispatch((0, _category.doCategoryReq)());
-	    },
-	    getCurrencies: function getCurrencies() {
-	      dispatch((0, _currency.doCurrencyReq)());
-	    },
-	    updateSubtitles: function updateSubtitles(subtitle) {
-	      dispatch((0, _video.updateSubtitles)(subtitle));
-	    },
-	    setDuration: function setDuration(duration) {
-	      dispatch((0, _video.setDuration)(duration));
-	    }
-	  };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewItem);
-
-/***/ }),
+/* 954 */,
 /* 955 */
 /***/ (function(module, exports, __webpack_require__) {
 

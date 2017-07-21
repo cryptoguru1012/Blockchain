@@ -105,6 +105,7 @@ class TableViewItemsBrowser extends React.Component {
                     subtitles={data.value.subtitlesVideo}
                     playOnHover
                     hideControls
+                    fullView
                     muted/>
                 </div>
             )
@@ -162,15 +163,18 @@ class TableViewItemsBrowser extends React.Component {
     render() {
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
-            return (
-                <tr key={item.txid} style={styles.trSeparator(grey500)}>
-                    {this.props.media && <th>{this.renderMedia(mediaData)}</th>}
-                    <td><Link to={'/offer/' + item.offer}>{item.title}</Link></td>
-                    <td>{item.alias}</td> 
-                    <td>{item.price}</td>
-                    <td>{item.currency}</td>
-                </tr>
-            );
+            if(mediaData)
+                return (
+                    <tr key={item.txid} style={styles.trSeparator(grey500)}>
+                        {this.props.media && <th>{this.renderMedia(mediaData)}</th>}
+                        <td><Link to={'/offer/' + item.offer}>{item.title}</Link></td>
+                        <td>{item.alias}</td> 
+                        <td>{item.price}</td>
+                        <td>{item.currency}</td>
+                    </tr>
+                );
+            else
+                return null
         });
 
         const thSortIcon = (field) => {

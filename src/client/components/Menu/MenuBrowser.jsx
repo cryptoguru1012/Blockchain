@@ -34,8 +34,31 @@ class MenuBrowser extends React.Component {
 		this.handleHomeTap = this.handleHomeTap.bind(this);
 		this.handleToggleSerch = this.handleToggleSerch.bind(this);
 		this.handleChangeData = this.handleChangeData.bind(this);
+		this.renderCatagoryPrimary=this.renderCatagoryPrimary.bind(this);
 	}
+	renderCatagoryPrimary(min) {
+		var serchParam={},serchString;
+		this.props.categories.categories.map((cat, i) => {
+		if( i === min) {
+			serchString=cat.cat;
+			if (serchString.indexOf('>') ==-1){
+				serchString=cat.cat;
+			}
+			else if(serchString.indexOf('>') !=-1){
+				serchString=serchString.substring(0,serchString.indexOf('>'))
 
+			}
+			serchParam = {
+				category: serchString.trim()}
+				this.props.onSearch(serchParam);
+				this.handleToggle();
+			}
+
+		})
+
+	//console.log(this.props);
+	
+}
 	componentDidMount() {
 		let data = {
 			regexp: this.props.searchData,
@@ -45,7 +68,6 @@ class MenuBrowser extends React.Component {
 		};
 		this.props.onSearch(data);
 	}
-
 	handleToggle() {
 		this.setState({regexp: null,
 			category: null,
@@ -94,6 +116,7 @@ class MenuBrowser extends React.Component {
 
 			
 		}
+
 			let data = {
 				category: value.trim()
 			};
@@ -130,12 +153,14 @@ class MenuBrowser extends React.Component {
 	splitCategory(category){
 		var OldCatItem = category
 		var NewCatItem = OldCatItem.split(">").pop()
+		
 		return NewCatItem
 	}
 	renderCategories( start, stop) {
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {
 				if( i >= start && i < stop) {
+
 					// passing category.cat, it will return only the name of sub category
 					var NewCatItem = this.splitCategory(category.cat);
 					// capetalizing first letter of sub categories
@@ -164,7 +189,7 @@ class MenuBrowser extends React.Component {
 
 		return (
 			<AppBar
-				title={!this.state.activeSearch ? <p style={{marginLeft:'20px',fontWeight:'bold',fontSize:'32px',textTransform:"capitalize"}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
+				title={!this.state.activeSearch ? <p style={{fontWeight:'bold',fontSize:'32px'}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
 				className="appbar-color"
 				onLeftIconButtonTouchTap={this.handleToggle}
 				onRightIconButtonTouchTap={this.handleToggleSerch}
@@ -200,22 +225,22 @@ class MenuBrowser extends React.Component {
 							/>,
 						<ListItem
 							key={1}
-							primaryText="For Sale"
+							primaryText="For Sale" onTouchTap={() => {this.renderCatagoryPrimary(0);}}
 							nestedItems={this.renderCategories(0,27)}
 						/>,
 						<ListItem
 							key={2}
-							primaryText="Services"
+							primaryText="Services" onTouchTap={() => {this.renderCatagoryPrimary(27);}}
 							nestedItems={this.renderCategories(27,36)}
 						/>,
 						<ListItem
 							key={3}
-							primaryText="Wanted"
+							primaryText="Wanted" onTouchTap={() => {this.renderCatagoryPrimary(36);}}
 							nestedItems={this.renderCategories(36,37)}
 						/>,
 						<ListItem
 							key={4}
-							primaryText="Certificates"
+							primaryText="Certificates" onTouchTap={() => {this.renderCatagoryPrimary(37);}}
 							nestedItems={this.renderCategories(37,42)}
 						/>]} />
 					<Link to="">

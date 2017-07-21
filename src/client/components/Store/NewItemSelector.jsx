@@ -263,7 +263,7 @@ class NewItemSelector extends React.Component {
     };
     return(
       <div>
-        {this.props.image.loading && 
+        {(this.props.video.loading || this.props.image.loading) && 
           <div style={newItemStyle.overlay} >
               <CircularProgress style={newItemStyle.loading} size={80} thickness={6} />
           </div>

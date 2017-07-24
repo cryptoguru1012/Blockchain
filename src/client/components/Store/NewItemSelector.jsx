@@ -54,6 +54,18 @@ const newItemStyle = {
     width: '95%',
     color: 'white'
   },
+  button_iOS:{
+    borderRadius: '5px',
+    margin: '5px 0 0 5%',
+    width: '95%',
+    color: 'white',
+    background: 'rgb(153,211,243)',
+    background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'
+  },
+  btn_iOS_Label:{
+    fontSize: '150%',
+    fontWeight: 'bold'
+  },
   buttonNoMedia:{
     borderRadius: '5px',
     margin: '30px 0 50px 0',
@@ -101,7 +113,28 @@ class NewItemSelector extends React.Component {
   componentWillMount() {
     this.props.getCategories();
     this.props.getCurrencies();
+    console.log(navigator.platform);
   }
+  
+
+is_iOS() {
+  let iDevices = [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ];
+
+  if (!!navigator.platform) {
+    while (iDevices.length) {
+      if (navigator.platform === iDevices.pop()){ return true; }
+    }
+  }
+
+  return false;
+}
   
   changeStep(step) {
     this.setState({'nextStp': step});
@@ -149,7 +182,7 @@ class NewItemSelector extends React.Component {
  
   render() {
     let output;
-    if (this.state.nextStp === 'selector') {
+    if (!this.is_iOS() && this.state.nextStp === 'selector') {
       output = (
         <Grid>
           <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
@@ -235,6 +268,57 @@ class NewItemSelector extends React.Component {
               </Row>
             </Col>
             <Col md={1}/>
+          </Row>
+          <Row style={{textAlign: 'center'}}>
+            <Col xs={12}>
+            <FlatButton
+              label="Continue with no media"
+              style={newItemStyle.buttonNoMedia}
+              backgroundColor={grey600}
+              hoverColor={grey500}
+              primary={true}
+              icon={<FontIcon className="material-icons">close</FontIcon>}
+              onClick={() => {this.changeStep('finalForm')}}
+            />
+            </Col>
+          </Row>
+        </Grid>
+      );
+    };
+    if (this.is_iOS() && this.state.nextStp === 'selector') {
+      output = (
+        <Grid>
+          <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
+          <Row>
+            <Col xs={12}>
+              <Row style={newItemStyle.vcenter}>
+                <Col xs={1}></Col>
+                <Col xs={2}>
+                  <VIcon />
+                </Col>
+                <Col xs={6}>
+                  {console.log('loading: ', this.props.image.loading)}
+                  <FlatButton
+                    label="Attach Media"
+                    labelPosition="before"
+                    labelStyle={newItemStyle.btn_iOS_Label}
+                    style={newItemStyle.button_iOS}
+                    hoverColor={grey600}
+                    primary={true}
+                    icon={<FontIcon className="material-icons">attachment</FontIcon>}
+                    containerElement="label"
+                    onClick={ (e) => this.openFileDialog}>
+                    <Dropzone 
+                      style={{"display" : "none"}}
+                      onDrop={ (file) => this.onDrop(file)} />
+                  </FlatButton>
+                </Col>
+                <Col xs={2}>
+                  <PIcon />
+                </Col>
+                <Col xs={1}></Col>
+              </Row>
+            </Col>
           </Row>
           <Row style={{textAlign: 'center'}}>
             <Col xs={12}>

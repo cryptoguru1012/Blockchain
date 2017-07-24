@@ -94873,6 +94873,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	// redux
 
 
@@ -94908,6 +94910,17 @@
 	    margin: '5px 0 0 5%',
 	    width: '95%',
 	    color: 'white'
+	  },
+	  button_iOS: _defineProperty({
+	    borderRadius: '5px',
+	    margin: '5px 0 0 5%',
+	    width: '95%',
+	    color: 'white',
+	    background: 'rgb(153,211,243)'
+	  }, 'background', 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'),
+	  btn_iOS_Label: {
+	    fontSize: '150%',
+	    fontWeight: 'bold'
 	  },
 	  buttonNoMedia: {
 	    borderRadius: '5px',
@@ -94964,6 +94977,22 @@
 	    value: function componentWillMount() {
 	      this.props.getCategories();
 	      this.props.getCurrencies();
+	      console.log(navigator.platform);
+	    }
+	  }, {
+	    key: 'is_iOS',
+	    value: function is_iOS() {
+	      var iDevices = ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'];
+
+	      if (!!navigator.platform) {
+	        while (iDevices.length) {
+	          if (navigator.platform === iDevices.pop()) {
+	            return true;
+	          }
+	        }
+	      }
+
+	      return false;
 	    }
 	  }, {
 	    key: 'changeStep',
@@ -95016,7 +95045,7 @@
 	      var _this2 = this;
 
 	      var output = void 0;
-	      if (this.state.nextStp === 'selector') {
+	      if (!this.is_iOS() && this.state.nextStp === 'selector') {
 	        output = _react2.default.createElement(
 	          _reactBootstrap.Grid,
 	          null,
@@ -95169,6 +95198,97 @@
 	              )
 	            ),
 	            _react2.default.createElement(_reactBootstrap.Col, { md: 1 })
+	          ),
+	          _react2.default.createElement(
+	            _reactBootstrap.Row,
+	            { style: { textAlign: 'center' } },
+	            _react2.default.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12 },
+	              _react2.default.createElement(_FlatButton2.default, {
+	                label: 'Continue with no media',
+	                style: newItemStyle.buttonNoMedia,
+	                backgroundColor: _colors.grey600,
+	                hoverColor: _colors.grey500,
+	                primary: true,
+	                icon: _react2.default.createElement(
+	                  _FontIcon2.default,
+	                  { className: 'material-icons' },
+	                  'close'
+	                ),
+	                onClick: function onClick() {
+	                  _this2.changeStep('finalForm');
+	                }
+	              })
+	            )
+	          )
+	        );
+	      };
+	      if (this.is_iOS() && this.state.nextStp === 'selector') {
+	        output = _react2.default.createElement(
+	          _reactBootstrap.Grid,
+	          null,
+	          _react2.default.createElement(
+	            _reactBootstrap.Row,
+	            { style: newItemStyle.caption },
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Create an Offer'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _reactBootstrap.Row,
+	            null,
+	            _react2.default.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12 },
+	              _react2.default.createElement(
+	                _reactBootstrap.Row,
+	                { style: newItemStyle.vcenter },
+	                _react2.default.createElement(_reactBootstrap.Col, { xs: 1 }),
+	                _react2.default.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 2 },
+	                  _react2.default.createElement(_VIcon2.default, null)
+	                ),
+	                _react2.default.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 6 },
+	                  console.log('loading: ', this.props.image.loading),
+	                  _react2.default.createElement(
+	                    _FlatButton2.default,
+	                    {
+	                      label: 'Attach Media',
+	                      labelPosition: 'before',
+	                      labelStyle: newItemStyle.btn_iOS_Label,
+	                      style: newItemStyle.button_iOS,
+	                      hoverColor: _colors.grey600,
+	                      primary: true,
+	                      icon: _react2.default.createElement(
+	                        _FontIcon2.default,
+	                        { className: 'material-icons' },
+	                        'attachment'
+	                      ),
+	                      containerElement: 'label',
+	                      onClick: function onClick(e) {
+	                        return _this2.openFileDialog;
+	                      } },
+	                    _react2.default.createElement(_reactDropzone2.default, {
+	                      style: { "display": "none" },
+	                      onDrop: function onDrop(file) {
+	                        return _this2.onDrop(file);
+	                      } })
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 2 },
+	                  _react2.default.createElement(_PIcon2.default, null)
+	                ),
+	                _react2.default.createElement(_reactBootstrap.Col, { xs: 1 })
+	              )
+	            )
 	          ),
 	          _react2.default.createElement(
 	            _reactBootstrap.Row,

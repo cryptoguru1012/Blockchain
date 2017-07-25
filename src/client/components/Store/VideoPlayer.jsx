@@ -231,7 +231,7 @@ class VideoPlayer extends React.Component {
 				<RaisedButton
 					icon={this.playIcon()}
 					backgroundColor="#000"
-					labelColor="#fff"metadata
+					labelColor="#fff"
 					onClick={this.handleVideoPlay}
 					fullWidth
 				/>

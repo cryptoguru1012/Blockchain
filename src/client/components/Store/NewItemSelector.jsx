@@ -106,6 +106,7 @@ class NewItemSelector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
       nextStp: 'selector'
     };
   }
@@ -140,7 +141,7 @@ is_iOS() {
     this.setState({'nextStp': step});
   }
 
-  showOfferForm(){
+  showOfferForm() {
     return (
       <Grid>
         <OfferForm
@@ -157,6 +158,42 @@ is_iOS() {
     )
   }
 
+  showEditImage() {
+    return (
+      <Grid>
+        <center>
+          <ImageEdit
+            image_url={this.props.image.data.location}
+            onDelete={this.props.onDeleteImage}
+            onProceed={this.props.onProceed}
+          />
+        </center>
+      </Grid>
+    )
+  }
+
+  showEditVideo() {
+    return (
+      <Grid>
+        <VideoPlayer
+          url={this.props.video.localUrl}
+          image={this.props.image.data}
+          onDelete={this.props.onDelete}
+          subtitles={this.props.video.subtitles}
+          setDuration={this.props.setDuration}
+        />
+        <SubtitlesEditer
+          subtitles={this.props.video.subtitles}
+          onSave={this.props.onSave}
+          onCancel={this.props.onDelete}
+          updateSubtitles={this.props.updateSubtitles}
+          videoDuration={this.props.video.videoDuration}
+        />
+      </Grid>
+    )
+  }
+
+
   openFileDialog() {
     var fileUploadDom = React.findDOMNode(this.refs.fileUpload);
     fileUploadDom.click();
@@ -171,18 +208,21 @@ is_iOS() {
       formData.append('photos', media );
       this.props.imageUploaded( formData );
     }
-    else if(media.type.includes("video/")){
+    else if (media.type.includes("video/")) {
       const url = media.preview
       formData.append('video', media, 'videoRecorded.webm');
       this.props.onRecorded(formData, url);
-      }
-      else
-         this.setState({open: true});
+    }
+    else 
+      this.setState({open: true});
+      console.log('Media: ', formData.video);
   }
- 
+
   render() {
     let output;
-    if (!this.is_iOS() && this.state.nextStp === 'selector') {
+    if (this.state.nextStp !== 'selector'){
+      output = this.showEditVideo();
+    } else if (!this.is_iOS()) {
       output = (
         <Grid>
           <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
@@ -284,8 +324,7 @@ is_iOS() {
           </Row>
         </Grid>
       );
-    };
-    if (this.is_iOS() && this.state.nextStp === 'selector') {
+    } else if (this.is_iOS()) {
       output = (
         <Grid>
           <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
@@ -337,13 +376,24 @@ is_iOS() {
       );
     };
     if (this.state.nextStp === 'liveVideo') {
-      output = (<VideoRecord  onRecorded={this.props.onRecorded} imageUploaded={this.props.imageUploaded} image={this.props.image}/>);
+      output = (<VideoRecord  onRecorded={this.props.onRecorded}/>);
     };
     if (this.state.nextStp === 'takePhoto') {
       output = (<h1><br/>--> Take A Photo</h1>);
     };
-    if (this.state.nextStp === 'finalForm') {
-      output = this.showOfferForm();
+    if (this.props.image.loaded && !this.props.image.proceed) {
+      output = this.showEditImage();
+    };
+    if (this.props.video.recorded){
+      output = this.showEditVideo()
+    };
+    if (this.props.video.videoUploaded){
+      output = (<h1><br/>--> Video Uploaded</h1>);
+    }
+    if ((this.state.nextStp === 'finalForm') ||
+        (this.props.image.proceed && this.props.image.loaded) ||
+        (this.props.video.videoUploaded)) {
+          output = this.showOfferForm();
     };
     return(
       <div>
@@ -353,6 +403,7 @@ is_iOS() {
           </div>
         }
         {output}
+        {console.log("Video: ", this.props.video)}
       </div>)
   }
 }

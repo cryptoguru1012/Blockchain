@@ -109,7 +109,6 @@ class VideoRecord extends React.Component {
       window.Video.stopRecording((url) => {
           let blob = window.Video.blob;
           data.append('video', blob, 'videoRecorded.webm');
-          console.log('Blob: ', data.video);
           self.props.onRecorded(data, url);
       });
 
@@ -117,6 +116,26 @@ class VideoRecord extends React.Component {
     }
   }
 
+  openFileDialog() {
+    var fileUploadDom = React.findDOMNode(this.refs.fileUpload);
+    fileUploadDom.click();
+  }
+  
+  onDrop(file) {
+   
+    let formData = new FormData();
+  
+    formData.append('photos', file[0] );
+    window.clearInterval(self.intervalTrigger);
+     
+    if( formData.get('photos')['type'].includes("image/") === false
+     ) {
+      this.setState({open: true});
+    } else{
+        this.props.imageUploaded( formData );
+    }
+  }
+    
   stopIcon() {
     return <Glyphicon glyph="stop" style={styles.white} />;
   }
@@ -157,11 +176,22 @@ class VideoRecord extends React.Component {
           </Col>
           <Row>
             <Col xs={3} md={2} lg={2}>
+              {!this.props.image.loading && <RaisedButton 
+                containerElement='label'
+                label="Upload Image"
+                onClick={ (e) => this.openFileDialog}>
+                <Dropzone 
+                  style={{"display" : "none"}}
+                  onDrop={ (file) => this.onDrop(file)} />
+              </RaisedButton>}
+              {this.props.image.loading && <CircularProgress size={100} thickness={6} />}
+            </Col>
+            <Col xs={3} md={2} lg={2}>
               <Button className="mui-btn mui-btn--fab">?</Button>
             </Col>
           </Row>
         </Row>
-      </div> 
+      </div>
     );
   }
 }

@@ -94967,6 +94967,7 @@
 	    var _this = _possibleConstructorReturn(this, (NewItemSelector.__proto__ || Object.getPrototypeOf(NewItemSelector)).call(this, props));
 
 	    _this.state = {
+	      open: false,
 	      nextStp: 'selector'
 	    };
 	    return _this;
@@ -95018,6 +95019,45 @@
 	      );
 	    }
 	  }, {
+	    key: 'showEditImage',
+	    value: function showEditImage() {
+	      return _react2.default.createElement(
+	        _reactBootstrap.Grid,
+	        null,
+	        _react2.default.createElement(
+	          'center',
+	          null,
+	          _react2.default.createElement(_ImageEdit2.default, {
+	            image_url: this.props.image.data.location,
+	            onDelete: this.props.onDeleteImage,
+	            onProceed: this.props.onProceed
+	          })
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'showEditVideo',
+	    value: function showEditVideo() {
+	      return _react2.default.createElement(
+	        _reactBootstrap.Grid,
+	        null,
+	        _react2.default.createElement(_VideoPlayer2.default, {
+	          url: this.props.video.localUrl,
+	          image: this.props.image.data,
+	          onDelete: this.props.onDelete,
+	          subtitles: this.props.video.subtitles,
+	          setDuration: this.props.setDuration
+	        }),
+	        _react2.default.createElement(_SubtitlesEditer2.default, {
+	          subtitles: this.props.video.subtitles,
+	          onSave: this.props.onSave,
+	          onCancel: this.props.onDelete,
+	          updateSubtitles: this.props.updateSubtitles,
+	          videoDuration: this.props.video.videoDuration
+	        })
+	      );
+	    }
+	  }, {
 	    key: 'openFileDialog',
 	    value: function openFileDialog() {
 	      var fileUploadDom = _react2.default.findDOMNode(this.refs.fileUpload);
@@ -95038,6 +95078,7 @@
 	        formData.append('video', media, 'videoRecorded.webm');
 	        this.props.onRecorded(formData, url);
 	      } else this.setState({ open: true });
+	      console.log('Media: ', formData.video);
 	    }
 	  }, {
 	    key: 'render',
@@ -95045,7 +95086,9 @@
 	      var _this2 = this;
 
 	      var output = void 0;
-	      if (!this.is_iOS() && this.state.nextStp === 'selector') {
+	      if (this.state.nextStp !== 'selector') {
+	        output = this.showEditVideo();
+	      } else if (!this.is_iOS()) {
 	        output = _react2.default.createElement(
 	          _reactBootstrap.Grid,
 	          null,
@@ -95223,8 +95266,7 @@
 	            )
 	          )
 	        );
-	      };
-	      if (this.is_iOS() && this.state.nextStp === 'selector') {
+	      } else if (this.is_iOS()) {
 	        output = _react2.default.createElement(
 	          _reactBootstrap.Grid,
 	          null,
@@ -95316,7 +95358,7 @@
 	        );
 	      };
 	      if (this.state.nextStp === 'liveVideo') {
-	        output = _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded, imageUploaded: this.props.imageUploaded, image: this.props.image });
+	        output = _react2.default.createElement(_VideoRecord2.default, { onRecorded: this.props.onRecorded });
 	      };
 	      if (this.state.nextStp === 'takePhoto') {
 	        output = _react2.default.createElement(
@@ -95326,7 +95368,21 @@
 	          '--> Take A Photo'
 	        );
 	      };
-	      if (this.state.nextStp === 'finalForm') {
+	      if (this.props.image.loaded && !this.props.image.proceed) {
+	        output = this.showEditImage();
+	      };
+	      if (this.props.video.recorded) {
+	        output = this.showEditVideo();
+	      };
+	      if (this.props.video.videoUploaded) {
+	        output = _react2.default.createElement(
+	          'h1',
+	          null,
+	          _react2.default.createElement('br', null),
+	          '--> Video Uploaded'
+	        );
+	      }
+	      if (this.state.nextStp === 'finalForm' || this.props.image.proceed && this.props.image.loaded || this.props.video.videoUploaded) {
 	        output = this.showOfferForm();
 	      };
 	      return _react2.default.createElement(
@@ -95337,7 +95393,8 @@
 	          { style: newItemStyle.overlay },
 	          _react2.default.createElement(_CircularProgress2.default, { style: newItemStyle.loading, size: 80, thickness: 6 })
 	        ),
-	        output
+	        output,
+	        console.log("Video: ", this.props.video)
 	      );
 	    }
 	  }]);
@@ -96782,7 +96839,7 @@
 	        window.Video.stopRecording(function (url) {
 	          var blob = window.Video.blob;
 	          data.append('video', blob, 'videoRecorded.webm');
-	          console.log(blob);
+	          console.log('Blob: ', data.video);
 	          self.props.onRecorded(data, url);
 	        });
 

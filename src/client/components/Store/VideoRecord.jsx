@@ -109,7 +109,7 @@ class VideoRecord extends React.Component {
       window.Video.stopRecording((url) => {
           let blob = window.Video.blob;
           data.append('video', blob, 'videoRecorded.webm');
-          console.log(blob)
+          console.log('Blob: ', data.video);
           self.props.onRecorded(data, url);
       });
 

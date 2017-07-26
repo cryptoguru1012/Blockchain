@@ -25,6 +25,7 @@ function categoryReqSuccess(res) {
 
 export function doCategoryReq() {
 	return (dispatch, state) => {
+		
 		dispatch(categoryReqStart());
 
 		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")

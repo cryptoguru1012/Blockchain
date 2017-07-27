@@ -296,10 +296,19 @@ class VideoPlayer extends React.Component {
 		}
 		return (
 			<Row className="video-component" style={styles.videoContainer}>
-				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-					<video preload="metadata" poster={this.state.poster} ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
-					</video>
-				</Col>
+				{this.props.fullView && (
+					<div>
+						<video poster={this.state.poster} ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
+						</video>
+					</div>
+				)}
+				{!this.props.fullView && (
+					<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
+						<video preload="metadata" poster={this.state.poster} ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
+						</video>
+					</Col>
+				)}
+				
 				{this.renderControls()}
 			</Row>
 		);

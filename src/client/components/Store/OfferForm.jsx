@@ -86,7 +86,9 @@ class OfferForm extends React.Component {
 				description: JSON.stringify(description),
 				currency: data.currency,
 				paymentoptions: data.paymentOptions,
-				private: data.certificate
+				private: data.certificate,
+				geolocation: `${data.longitude},${data.latitude}`
+
 			};
 		
 		this.props.onCreate(JSON.stringify(payload));

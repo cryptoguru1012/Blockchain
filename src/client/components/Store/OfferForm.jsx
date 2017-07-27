@@ -5,6 +5,7 @@ import Formsy from 'formsy-react';
 import { RaisedButton, MenuItem, Snackbar } from 'material-ui';
 import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
+import { geolocated } from 'react-geolocated';
 
 const spinnerStyle = {
 	margin: 'auto',
@@ -27,6 +28,7 @@ class OfferForm extends React.Component {
 
 		this.state = {
 			autoDescription: this.getDescription(),
+			myLocation: '',
 			canSubmit: false
 		};
 
@@ -163,6 +165,32 @@ class OfferForm extends React.Component {
 							fullWidth
 							multiLine
 						/>
+						<Col xs={6}>
+							<FormsyText
+								name="latitude"
+								value={this.props.coords ? this.props.coords.latitude : ''}
+								floatingLabelText="Latitude"
+								hintText="Item latitude"
+								validations="isNumeric"
+								validationError="Only Numbers."
+								required
+								requiredError="This field is required"
+								fullWidth
+							/>
+						</Col>
+						<Col xs={6}>
+						<FormsyText
+							name="longitude"
+							value={this.props.coords ? this.props.coords.longitude : ''}
+							floatingLabelText="Longitude"
+							hintText="Item longitude"
+							validations="isNumeric"
+							validationError="Only Numbers."
+							required
+							requiredError="This field is required"
+							fullWidth
+						/>
+						</Col>
 						{
 							// <FormsyToggle name="certificate" label="Certificate" />
 						}
@@ -199,5 +227,10 @@ class OfferForm extends React.Component {
 	}
 }
 
-export default OfferForm;
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(OfferForm);
 

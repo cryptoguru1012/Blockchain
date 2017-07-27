@@ -104775,6 +104775,8 @@
 
 	var _reactBootstrap = __webpack_require__(525);
 
+	var _reactGeolocated = __webpack_require__(1211);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -104808,6 +104810,7 @@
 
 			_this.state = {
 				autoDescription: _this.getDescription(),
+				myLocation: '',
 				canSubmit: false
 			};
 
@@ -104968,6 +104971,36 @@
 								fullWidth: true,
 								multiLine: true
 							}),
+							_react2.default.createElement(
+								_reactBootstrap.Col,
+								{ xs: 6 },
+								_react2.default.createElement(_lib.FormsyText, {
+									name: 'latitude',
+									value: this.props.coords ? this.props.coords.latitude : '',
+									floatingLabelText: 'Latitude',
+									hintText: 'Item latitude',
+									validations: 'isNumeric',
+									validationError: 'Only Numbers.',
+									required: true,
+									requiredError: 'This field is required',
+									fullWidth: true
+								})
+							),
+							_react2.default.createElement(
+								_reactBootstrap.Col,
+								{ xs: 6 },
+								_react2.default.createElement(_lib.FormsyText, {
+									name: 'longitude',
+									value: this.props.coords ? this.props.coords.longitude : '',
+									floatingLabelText: 'Longitude',
+									hintText: 'Item longitude',
+									validations: 'isNumeric',
+									validationError: 'Only Numbers.',
+									required: true,
+									requiredError: 'This field is required',
+									fullWidth: true
+								})
+							),
 							!this.props.newItem.loading && _react2.default.createElement(_materialUi.RaisedButton, {
 								label: 'Send',
 								type: 'submit',
@@ -104997,7 +105030,12 @@
 		return OfferForm;
 	}(_react2.default.Component);
 
-	exports.default = OfferForm;
+	exports.default = (0, _reactGeolocated.geolocated)({
+		positionOptions: {
+			enableHighAccuracy: false
+		},
+		userDecisionTimeout: 5000
+	})(OfferForm);
 
 /***/ }),
 /* 952 */
@@ -122475,6 +122513,171 @@
 	};
 
 	exports.default = imageReducers;
+
+/***/ }),
+/* 1211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _geolocated = __webpack_require__(1212);
+
+	var _geolocated2 = _interopRequireDefault(_geolocated);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = { geolocated: _geolocated2.default, geoPropTypes: _geolocated.geoPropTypes };
+
+/***/ }),
+/* 1212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.geoPropTypes = undefined;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(188);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function getDisplayName(WrappedComponent) {
+	    return 'Geolocated(' + (WrappedComponent.displayName || WrappedComponent.name || 'Component') + ')';
+	}
+
+	var geolocated = function geolocated() {
+	    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+	        _ref$positionOptions = _ref.positionOptions,
+	        positionOptions = _ref$positionOptions === undefined ? {
+	        enableHighAccuracy: true,
+	        maximumAge: 0,
+	        timeout: Infinity
+	    } : _ref$positionOptions,
+	        _ref$userDecisionTime = _ref.userDecisionTimeout,
+	        userDecisionTimeout = _ref$userDecisionTime === undefined ? null : _ref$userDecisionTime,
+	        _ref$geolocationProvi = _ref.geolocationProvider,
+	        geolocationProvider = _ref$geolocationProvi === undefined ? typeof navigator !== 'undefined' && navigator.geolocation : _ref$geolocationProvi;
+
+	    return function (WrappedComponent) {
+	        var result = function (_Component) {
+	            _inherits(Geolocated, _Component);
+
+	            function Geolocated(props) {
+	                _classCallCheck(this, Geolocated);
+
+	                var _this = _possibleConstructorReturn(this, (Geolocated.__proto__ || Object.getPrototypeOf(Geolocated)).call(this, props));
+
+	                _this.state = {
+	                    coords: null,
+	                    isGeolocationAvailable: Boolean(geolocationProvider),
+	                    isGeolocationEnabled: true, // be optimistic
+	                    positionError: null
+	                };
+
+	                if (userDecisionTimeout) {
+	                    _this.userDecisionTimeoutId = setTimeout(function () {
+	                        _this.onPositionError();
+	                    }, userDecisionTimeout);
+	                }
+
+	                _this.onPositionError = _this.onPositionError.bind(_this);
+	                _this.onPositionSuccess = _this.onPositionSuccess.bind(_this);
+	                _this.cancelUserDecisionTimeout = _this.cancelUserDecisionTimeout.bind(_this);
+	                return _this;
+	            }
+
+	            _createClass(Geolocated, [{
+	                key: 'cancelUserDecisionTimeout',
+	                value: function cancelUserDecisionTimeout() {
+	                    if (this.userDecisionTimeoutId) {
+	                        clearTimeout(this.userDecisionTimeoutId);
+	                    }
+	                }
+	            }, {
+	                key: 'onPositionError',
+	                value: function onPositionError(positionError) {
+	                    this.cancelUserDecisionTimeout();
+	                    this.setState({
+	                        coords: null,
+	                        isGeolocationAvailable: this.state.isGeolocationAvailable,
+	                        isGeolocationEnabled: false,
+	                        positionError: positionError
+	                    });
+	                }
+	            }, {
+	                key: 'onPositionSuccess',
+	                value: function onPositionSuccess(position) {
+	                    this.cancelUserDecisionTimeout();
+	                    this.setState({
+	                        coords: position.coords,
+	                        isGeolocationAvailable: this.state.isGeolocationAvailable,
+	                        isGeolocationEnabled: true,
+	                        positionError: null
+	                    });
+	                }
+	            }, {
+	                key: 'componentDidMount',
+	                value: function componentDidMount() {
+	                    if (!geolocationProvider || !geolocationProvider.getCurrentPosition) {
+	                        throw new Error('The provided geolocation provider is invalid');
+	                    }
+	                    geolocationProvider.getCurrentPosition(this.onPositionSuccess, this.onPositionError, positionOptions);
+	                }
+	            }, {
+	                key: 'componentWillUnmount',
+	                value: function componentWillUnmount() {
+	                    this.cancelUserDecisionTimeout();
+	                }
+	            }, {
+	                key: 'render',
+	                value: function render() {
+	                    return _react2.default.createElement(WrappedComponent, _extends({}, this.state, this.props));
+	                }
+	            }]);
+
+	            return Geolocated;
+	        }(_react.Component);
+	        result.displayName = getDisplayName(WrappedComponent);
+	        return result;
+	    };
+	};
+
+	exports.default = geolocated;
+	var geoPropTypes = exports.geoPropTypes = {
+	    coords: _propTypes2.default.shape({
+	        latitude: _propTypes2.default.number,
+	        longitude: _propTypes2.default.number,
+	        altitude: _propTypes2.default.number,
+	        accuracy: _propTypes2.default.number,
+	        altitudeAccuracy: _propTypes2.default.number,
+	        heading: _propTypes2.default.number,
+	        speed: _propTypes2.default.number
+	    }),
+	    isGeolocationAvailable: _propTypes2.default.bool,
+	    isGeolocationEnabled: _propTypes2.default.bool,
+	    positionError: _propTypes2.default.shape({
+	        code: _propTypes2.default.oneOf([1, 2, 3]),
+	        message: _propTypes2.default.string
+	    })
+	};
 
 /***/ })
 /******/ ]);

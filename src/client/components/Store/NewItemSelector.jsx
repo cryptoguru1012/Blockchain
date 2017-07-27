@@ -58,6 +58,7 @@ const newItemStyle = {
     borderRadius: '5px',
     margin: '5px 0 0 5%',
     width: '95%',
+    height: '100%',
     color: 'white',
     background: 'rgb(153,211,243)',
     background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'
@@ -261,6 +262,7 @@ is_iOS() {
                       onClick={ (e) => this.openFileDialog}>
                       <Dropzone 
                         style={{"display" : "none"}}
+                        accept=".mp4, .3gp, .ogv, .webm, .flv, .wmv"
                         onDrop={ (file) => this.onDrop(file)} />
                     </FlatButton>
                   </Row>
@@ -300,6 +302,7 @@ is_iOS() {
                       onClick={ (e) => this.openFileDialog}>
                       <Dropzone 
                         style={{"display" : "none"}}
+                        accept=".jpg, .png, bmp"
                         onDrop={ (file) => this.onDrop(file)} />
                     </FlatButton>
                   </Row>
@@ -338,13 +341,13 @@ is_iOS() {
                 <Col xs={6}>
                   {console.log('loading: ', this.props.image.loading)}
                   <FlatButton
-                    label="Attach Media"
+                    label={<span>Record/Attach Media<br/></span>}
                     labelPosition="before"
                     labelStyle={newItemStyle.btn_iOS_Label}
                     style={newItemStyle.button_iOS}
                     hoverColor={grey600}
                     primary={true}
-                    icon={<FontIcon className="material-icons">attachment</FontIcon>}
+                    icon={<FontIcon className="material-icons">videocam photo_camera attachment</FontIcon>}
                     containerElement="label"
                     onClick={ (e) => this.openFileDialog}>
                     <Dropzone 

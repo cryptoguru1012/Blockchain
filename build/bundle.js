@@ -104810,7 +104810,6 @@
 
 			_this.state = {
 				autoDescription: _this.getDescription(),
-				myLocation: '',
 				canSubmit: false
 			};
 

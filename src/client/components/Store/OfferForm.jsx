@@ -28,7 +28,6 @@ class OfferForm extends React.Component {
 
 		this.state = {
 			autoDescription: this.getDescription(),
-			myLocation: '',
 			canSubmit: false
 		};
 

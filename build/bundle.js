@@ -104785,10 +104785,15 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var spinnerStyle = {
-		margin: 'auto',
-		display: 'block',
-		padding: 5
+	var myStyle = {
+		spinnerStyle: {
+			margin: 'auto',
+			display: 'block',
+			padding: '5'
+		},
+		colMargin: {
+			margin: '0 -5px 0 -5px'
+		}
 	};
 
 	var OfferForm = function (_React$Component) {
@@ -104874,8 +104879,7 @@
 					currency: data.currency,
 					paymentoptions: data.paymentOptions,
 					private: data.certificate,
-					geolocation: data.longitude + ',' + data.latitude
-
+					geolocation: data.latitude + ',' + data.longitude
 				};
 
 				this.props.onCreate(JSON.stringify(payload));
@@ -104973,34 +104977,38 @@
 								multiLine: true
 							}),
 							_react2.default.createElement(
-								_reactBootstrap.Col,
-								{ xs: 6 },
-								_react2.default.createElement(_lib.FormsyText, {
-									name: 'latitude',
-									value: this.props.coords ? this.props.coords.latitude : '',
-									floatingLabelText: 'Latitude',
-									hintText: 'Item latitude',
-									validations: 'isNumeric',
-									validationError: 'Only Numbers.',
-									required: true,
-									requiredError: 'This field is required',
-									fullWidth: true
-								})
-							),
-							_react2.default.createElement(
-								_reactBootstrap.Col,
-								{ xs: 6 },
-								_react2.default.createElement(_lib.FormsyText, {
-									name: 'longitude',
-									value: this.props.coords ? this.props.coords.longitude : '',
-									floatingLabelText: 'Longitude',
-									hintText: 'Item longitude',
-									validations: 'isNumeric',
-									validationError: 'Only Numbers.',
-									required: true,
-									requiredError: 'This field is required',
-									fullWidth: true
-								})
+								_reactBootstrap.Row,
+								null,
+								_react2.default.createElement(
+									_reactBootstrap.Col,
+									{ xs: 6 },
+									_react2.default.createElement(_lib.FormsyText, {
+										name: 'latitude',
+										value: this.props.coords ? this.props.coords.latitude : '',
+										floatingLabelText: 'Latitude',
+										hintText: 'Item latitude',
+										validations: 'isNumeric',
+										validationError: 'Only Numbers.',
+										required: true,
+										requiredError: 'This field is required',
+										fullWidth: true
+									})
+								),
+								_react2.default.createElement(
+									_reactBootstrap.Col,
+									{ xs: 6 },
+									_react2.default.createElement(_lib.FormsyText, {
+										name: 'longitude',
+										value: this.props.coords ? this.props.coords.longitude : '',
+										floatingLabelText: 'Longitude',
+										hintText: 'Item longitude',
+										validations: 'isNumeric',
+										validationError: 'Only Numbers.',
+										required: true,
+										requiredError: 'This field is required',
+										fullWidth: true
+									})
+								)
 							),
 							!this.props.newItem.loading && _react2.default.createElement(_materialUi.RaisedButton, {
 								label: 'Send',
@@ -105010,7 +105018,7 @@
 								disabled: !this.state.canSubmit
 							})
 						),
-						this.props.newItem.loading && !this.props.newItem.success && _react2.default.createElement(_CircularProgress2.default, { size: 50, style: spinnerStyle }),
+						this.props.newItem.loading && !this.props.newItem.success && _react2.default.createElement(_CircularProgress2.default, { size: 50, style: myStyle.spinnerStyle }),
 						_react2.default.createElement(_materialUi.Snackbar, {
 							open: this.props.newItem.success,
 							message: 'Success! Item created.',

@@ -7,11 +7,16 @@ import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import { geolocated } from 'react-geolocated';
 
-const spinnerStyle = {
-	margin: 'auto',
-	display: 'block',
-	padding: 5
-}
+const myStyle = {
+	spinnerStyle: {
+		margin: 'auto',
+		display: 'block',
+		padding: '5'
+	},
+	colMargin: {
+		margin: '0 -5px 0 -5px'
+	}
+};
 
 class OfferForm extends React.Component {
 	constructor(props) {
@@ -86,8 +91,7 @@ class OfferForm extends React.Component {
 				currency: data.currency,
 				paymentoptions: data.paymentOptions,
 				private: data.certificate,
-				geolocation: `${data.longitude},${data.latitude}`
-
+				geolocation: `${data.latitude},${data.longitude}`
 			};
 		
 		this.props.onCreate(JSON.stringify(payload));
@@ -166,32 +170,34 @@ class OfferForm extends React.Component {
 							fullWidth
 							multiLine
 						/>
-						<Col xs={6}>
+						<Row>
+							<Col xs={6}>
+								<FormsyText
+									name="latitude"
+									value={this.props.coords ? this.props.coords.latitude : ''}
+									floatingLabelText="Latitude"
+									hintText="Item latitude"
+									validations="isNumeric"
+									validationError="Only Numbers."
+									required
+									requiredError="This field is required"
+									fullWidth
+								/>
+							</Col>
+							<Col xs={6}>
 							<FormsyText
-								name="latitude"
-								value={this.props.coords ? this.props.coords.latitude : ''}
-								floatingLabelText="Latitude"
-								hintText="Item latitude"
+								name="longitude"
+								value={this.props.coords ? this.props.coords.longitude : ''}
+								floatingLabelText="Longitude"
+								hintText="Item longitude"
 								validations="isNumeric"
 								validationError="Only Numbers."
 								required
 								requiredError="This field is required"
 								fullWidth
 							/>
-						</Col>
-						<Col xs={6}>
-						<FormsyText
-							name="longitude"
-							value={this.props.coords ? this.props.coords.longitude : ''}
-							floatingLabelText="Longitude"
-							hintText="Item longitude"
-							validations="isNumeric"
-							validationError="Only Numbers."
-							required
-							requiredError="This field is required"
-							fullWidth
-						/>
-						</Col>
+							</Col>
+						</Row>
 						{
 							// <FormsyToggle name="certificate" label="Certificate" />
 						}
@@ -208,7 +214,7 @@ class OfferForm extends React.Component {
 					</Formsy.Form>
 					
 					{this.props.newItem.loading && !this.props.newItem.success &&
-						<CircularProgress size={50} style={spinnerStyle} />
+						<CircularProgress size={50} style={myStyle.spinnerStyle} />
 					}
 					<Snackbar
 						open={this.props.newItem.success}

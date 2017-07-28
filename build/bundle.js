@@ -39358,7 +39358,7 @@
 	      , linux = !android && !sailfish && !tizen && !webos && /linux/i.test(ua)
 	      , edgeVersion = getFirstMatch(/edge\/(\d+(\.\d+)?)/i)
 	      , versionIdentifier = getFirstMatch(/version\/(\d+(\.\d+)?)/i)
-	      , tablet = /tablet/i.test(ua) && !/tablet pc/i.test(ua)
+	      , tablet = /tablet/i.test(ua)
 	      , mobile = !tablet && /[^-]mobi/i.test(ua)
 	      , xbox = /xbox/i.test(ua)
 	      , result
@@ -68428,7 +68428,7 @@
 					{
 						title: !this.state.activeSearch ? _react2.default.createElement(
 							'p',
-							{ style: { fontWeight: 'bold', fontSize: '32px' } },
+							{ style: { fontWeight: 'bold', fontSize: '36px', letterSpacing: '-1.7px' } },
 							'moovr'
 						) : _react2.default.createElement(_SearchBrowser2.default, { style: { float: 'right' }, onChangeData: this.handleChangeData, regexp: this.state.regexp }),
 						className: 'appbar-color',
@@ -69243,6 +69243,7 @@
 
 	function doCategoryReq() {
 		return function (dispatch, state) {
+
 			dispatch(categoryReqStart());
 
 			fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62").then(function (res) {
@@ -102158,21 +102159,22 @@
 			value: function componentWillUnmount() {
 				this.player = false;
 			}
-		}, {
-			key: 'generateThumbnail',
-			value: function generateThumbnail() {
-				var self = this;
-				var c = document.createElement("canvas");
-				var ctx = c.getContext("2d");
-				c.width = 160;
-				c.height = 90;
-				ctx.drawImage(this.player, 0, 0, 160, 90);
-				self.player.poster = c.toDataURL("image/png");
 
-				//let dataurl = c.toDataURL();
-				//document.getElementById('poster').appendChild(c)
-				//console.log("image :",dataurl);
-			}
+			/*	generateThumbnail() {
+	  		let self = this;
+	  		const c = document.createElement("canvas");
+	  		const ctx = c.getContext("2d");
+	  		c.width = 160;
+	  		c.height = 90;
+	  		ctx.drawImage(this.player, 0, 0, 160, 90);
+	  		self.player.poster =  c.toDataURL("image/png");
+	  
+	  		let dataurl = c.toDataURL();
+	  		document.getElementById('poster').appendChild(c)
+	  		console.log("image :",dataurl);
+	  	}
+	  */
+
 		}, {
 			key: 'componentDidMount',
 			value: function componentDidMount() {
@@ -102181,7 +102183,7 @@
 				var self = this,
 				    duration = 0;
 				this.player = this.refs.player;
-				this.player.src = this.props.url; //"http://192.168.0.32:8082/hootr/Hootr/59142cff30366323e4aa03b7_20170511150907_133/test.mp4";//
+				this.player.src = this.props.url + "#t=0.8"; //"http://192.168.0.32:8082/hootr/Hootr/59142cff30366323e4aa03b7_20170511150907_133/test.mp4";//
 				this.player.type = "video/mp4";
 				this.player.muted = this.props.muted ? true : false;
 				this.player.preload = "auto";
@@ -102190,7 +102192,7 @@
 					self.player && self.setState({ play: false });
 				});
 				this.player.addEventListener('seeked', function () {
-					self.generateThumbnail();
+					// self.generateThumbnail();
 				}, false);
 
 				this.player.addEventListener('loadeddata', function () {
@@ -102441,7 +102443,7 @@
 					!this.props.fullView && _react2.default.createElement(
 						_reactBootstrap.Col,
 						{ xs: 12, md: 6, mdOffset: 3, lg: 6, lgOffset: 3 },
-						_react2.default.createElement('video', { poster: this.state.poster, ref: 'player', style: styles.video, onMouseLeave: function onMouseLeave(e) {
+						_react2.default.createElement('video', { preload: 'metadata', poster: this.state.poster, ref: 'player', style: styles.video, onMouseLeave: function onMouseLeave(e) {
 								return handleMouseLeave(e);
 							}, onMouseOver: function onMouseOver(e) {
 								return handleMouseOver(e);
@@ -104815,7 +104817,9 @@
 
 			_this.state = {
 				autoDescription: _this.getDescription(),
-				canSubmit: false
+				canSubmit: false,
+				latitude: '',
+				longitude: ''
 			};
 
 			return _this;
@@ -104914,9 +104918,22 @@
 				});
 			}
 		}, {
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(props) {
+				var _this2 = this;
+
+				if (props.coords && !props.coords.positionError) this.setState({ latitude: props.coords.latitude, longitude: props.coords.longitude });else fetch('http://ip-api.com/json').then(function (res) {
+					return res.json();
+				}).then(function (data) {
+					_this2.setState({ latitude: data.lat, longitude: data.lon });
+				}).catch(function (error) {
+					console.error(error);
+				});
+			}
+		}, {
 			key: 'render',
 			value: function render() {
-				var _this2 = this;
+				var _this3 = this;
 
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
@@ -104927,7 +104944,7 @@
 						_react2.default.createElement(
 							_formsyReact2.default.Form,
 							{ onValid: this.enableButton, onInvalid: this.disableButton, onValidSubmit: function onValidSubmit(e) {
-									return _this2.handleSubmit(e);
+									return _this3.handleSubmit(e);
 								} },
 							_react2.default.createElement(_lib.FormsyText, {
 								name: 'name',
@@ -104984,7 +105001,7 @@
 									{ xs: 6 },
 									_react2.default.createElement(_lib.FormsyText, {
 										name: 'latitude',
-										value: this.props.coords ? this.props.coords.latitude : '',
+										value: this.state.latitude,
 										floatingLabelText: 'Latitude',
 										hintText: 'Item latitude',
 										validations: 'isNumeric',
@@ -104999,7 +105016,7 @@
 									{ xs: 6 },
 									_react2.default.createElement(_lib.FormsyText, {
 										name: 'longitude',
-										value: this.props.coords ? this.props.coords.longitude : '',
+										value: this.state.longitude,
 										floatingLabelText: 'Longitude',
 										hintText: 'Item longitude',
 										validations: 'isNumeric',

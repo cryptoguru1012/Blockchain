@@ -33,7 +33,9 @@ class OfferForm extends React.Component {
 
 		this.state = {
 			autoDescription: this.getDescription(),
-			canSubmit: false
+			canSubmit: false,
+			latitude: '',
+			longitude: ''
 		};
 
 	}
@@ -73,7 +75,7 @@ class OfferForm extends React.Component {
 	handleSnackbarErrorRequestClose() {
 		this.props.showSnackbar();
 	}
-
+	
 	handleSubmit(data) {
 		let description = {
 			text: data.description,
@@ -124,6 +126,20 @@ class OfferForm extends React.Component {
 		})
 	}
 
+	componentWillReceiveProps(props){
+		if(props.coords && !props.coords.positionError)
+			this.setState({latitude: props.coords.latitude, longitude: props.coords.longitude})
+		
+		else
+			fetch('http://ip-api.com/json')
+				.then(res => res.json())
+				.then((data) => {
+					this.setState({latitude: data.lat, longitude: data.lon})
+				})
+				.catch((error) => {
+					console.error(error);
+				});		
+	}
 	render() {
 		return ( 
 			<Row>
@@ -174,7 +190,7 @@ class OfferForm extends React.Component {
 							<Col xs={6}>
 								<FormsyText
 									name="latitude"
-									value={this.props.coords ? this.props.coords.latitude : ''}
+									value={this.state.latitude}
 									floatingLabelText="Latitude"
 									hintText="Item latitude"
 									validations="isNumeric"
@@ -187,7 +203,7 @@ class OfferForm extends React.Component {
 							<Col xs={6}>
 							<FormsyText
 								name="longitude"
-								value={this.props.coords ? this.props.coords.longitude : ''}
+								value={this.state.longitude}
 								floatingLabelText="Longitude"
 								hintText="Item longitude"
 								validations="isNumeric"

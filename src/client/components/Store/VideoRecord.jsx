@@ -78,7 +78,7 @@ class VideoRecord extends React.Component {
   }
 
   errorCallback(e) {
-    console.log(`Error : ${e.message}`);
+    console.error(`Error : ${e.message}`);
   }
 
   startRecord() {
@@ -109,7 +109,6 @@ class VideoRecord extends React.Component {
       window.Video.stopRecording((url) => {
           let blob = window.Video.blob;
           data.append('video', blob, 'videoRecorded.webm');
-          console.log('Blob: ', data.video);
           self.props.onRecorded(data, url);
       });
 

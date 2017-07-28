@@ -647,45 +647,43 @@
 	var warning = emptyFunction;
 
 	if (true) {
-	  (function () {
-	    var printWarning = function printWarning(format) {
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
+	  var printWarning = function printWarning(format) {
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+
+	    var argIndex = 0;
+	    var message = 'Warning: ' + format.replace(/%s/g, function () {
+	      return args[argIndex++];
+	    });
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
+
+	  warning = function warning(condition, format) {
+	    if (format === undefined) {
+	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	    }
+
+	    if (format.indexOf('Failed Composite propType: ') === 0) {
+	      return; // Ignore CompositeComponent proptype check.
+	    }
+
+	    if (!condition) {
+	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	        args[_key2 - 2] = arguments[_key2];
 	      }
 
-	      var argIndex = 0;
-	      var message = 'Warning: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      });
-	      if (typeof console !== 'undefined') {
-	        console.error(message);
-	      }
-	      try {
-	        // --- Welcome to debugging React ---
-	        // This error was thrown as a convenience so that you can use this stack
-	        // to find the callsite that caused this warning to fire.
-	        throw new Error(message);
-	      } catch (x) {}
-	    };
-
-	    warning = function warning(condition, format) {
-	      if (format === undefined) {
-	        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	      }
-
-	      if (format.indexOf('Failed Composite propType: ') === 0) {
-	        return; // Ignore CompositeComponent proptype check.
-	      }
-
-	      if (!condition) {
-	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	          args[_key2 - 2] = arguments[_key2];
-	        }
-
-	        printWarning.apply(undefined, [format].concat(args));
-	      }
-	    };
-	  })();
+	      printWarning.apply(undefined, [format].concat(args));
+	    }
+	  };
 	}
 
 	module.exports = warning;
@@ -18840,18 +18838,11 @@
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
 	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @typechecks
 	 */
@@ -39358,7 +39349,7 @@
 	      , linux = !android && !sailfish && !tizen && !webos && /linux/i.test(ua)
 	      , edgeVersion = getFirstMatch(/edge\/(\d+(\.\d+)?)/i)
 	      , versionIdentifier = getFirstMatch(/version\/(\d+(\.\d+)?)/i)
-	      , tablet = /tablet/i.test(ua)
+	      , tablet = /tablet/i.test(ua) && !/tablet pc/i.test(ua)
 	      , mobile = !tablet && /[^-]mobi/i.test(ua)
 	      , xbox = /xbox/i.test(ua)
 	      , result
@@ -68272,8 +68263,6 @@
 						_this2.handleToggle();
 					}
 				});
-
-				//console.log(this.props);
 			}
 		}, {
 			key: 'componentDidMount',
@@ -68318,14 +68307,12 @@
 					}
 				} else {
 					/*acz --> this ELSE is for do something when search input will appear */
-					console.log("Search input will appear");
 				}
 				this.setState({ activeSearch: !this.state.activeSearch });
 			}
 		}, {
 			key: 'handleCategory',
 			value: function handleCategory(value) {
-				console.log(value);
 				if (this.props.stateUrl !== "/") {
 					if (typeof Storage !== "undefined") {
 						// Code for localStorage/sessionStorage.
@@ -68336,15 +68323,11 @@
 					}
 					_reactRouter.browserHistory.push('/');
 				}
-
 				var data = {
 					category: value.trim()
 				};
-
 				this.setState({ category: value.trim() });
-
 				this.props.onSearch(data);
-				//console.log('data submited: ', data);
 				this.handleToggle();
 			}
 		}, {
@@ -68428,7 +68411,7 @@
 					{
 						title: !this.state.activeSearch ? _react2.default.createElement(
 							'p',
-							{ style: { fontWeight: 'bold', fontSize: '32px' } },
+							{ style: { fontWeight: 'bold', fontSize: '36px', letterSpacing: '-1.7px' } },
 							'moovr'
 						) : _react2.default.createElement(_SearchBrowser2.default, { style: { float: 'right' }, onChangeData: this.handleChangeData, regexp: this.state.regexp }),
 						className: 'appbar-color',
@@ -94980,7 +94963,6 @@
 	    value: function componentWillMount() {
 	      this.props.getCategories();
 	      this.props.getCurrencies();
-	      console.log(navigator.platform);
 	    }
 	  }, {
 	    key: 'is_iOS',
@@ -95080,7 +95062,6 @@
 	        formData.append('video', media, 'videoRecorded.webm');
 	        this.props.onRecorded(formData, url);
 	      } else this.setState({ open: true });
-	      console.log('Media: ', formData.video);
 	    }
 	  }, {
 	    key: 'render',
@@ -95145,7 +95126,6 @@
 	                  _react2.default.createElement(
 	                    _reactBootstrap.Row,
 	                    null,
-	                    console.log('loading: ', this.props.image.loading),
 	                    _react2.default.createElement(
 	                      _FlatButton2.default,
 	                      {
@@ -95301,7 +95281,6 @@
 	                _react2.default.createElement(
 	                  _reactBootstrap.Col,
 	                  { xs: 6 },
-	                  console.log('loading: ', this.props.image.loading),
 	                  _react2.default.createElement(
 	                    _FlatButton2.default,
 	                    {
@@ -95402,8 +95381,7 @@
 	          { style: newItemStyle.overlay },
 	          _react2.default.createElement(_CircularProgress2.default, { style: newItemStyle.loading, size: 80, thickness: 6 })
 	        ),
-	        output,
-	        console.log("Video: ", this.props.video)
+	        output
 	      );
 	    }
 	  }]);
@@ -96130,10 +96108,15 @@
 		
 		      if (!disableClick) {
 		        evt.stopPropagation();
-		        this.open();
+		
 		        if (onClick) {
 		          onClick.call(this, evt);
 		        }
+		
+		        // in IE11/Edge the file-browser dialog is blocking, ensure this is behind setTimeout
+		        // this is so react can handle state changes in the onClick prop above above
+		        // see: https://github.com/okonet/react-dropzone/issues/450
+		        setTimeout(this.open.bind(this), 0);
 		      }
 		    }
 		  }, {
@@ -96818,7 +96801,7 @@
 	  }, {
 	    key: 'errorCallback',
 	    value: function errorCallback(e) {
-	      console.log('Error : ' + e.message);
+	      console.error('Error : ' + e.message);
 	    }
 	  }, {
 	    key: 'startRecord',
@@ -96848,7 +96831,6 @@
 	        window.Video.stopRecording(function (url) {
 	          var blob = window.Video.blob;
 	          data.append('video', blob, 'videoRecorded.webm');
-	          console.log('Blob: ', data.video);
 	          self.props.onRecorded(data, url);
 	        });
 
@@ -102179,7 +102161,6 @@
 	  
 	  		let dataurl = c.toDataURL();
 	  		document.getElementById('poster').appendChild(c)
-	  		console.log("image :",dataurl);
 	  	}
 	  */
 
@@ -102237,7 +102218,6 @@
 					self.player.track.mode = "showing";
 
 					// load subtitles
-					console.log(self.props.subtitles);
 					self.props.subtitles.map(function (subtitle) {
 						var start = _this3.setTimetoSeconds(subtitle.startTime),
 						    end = _this3.setTimetoSeconds(subtitle.endTime),
@@ -102291,13 +102271,8 @@
 				var self = this;
 
 				if (!self.player.track) return false;
-
-				console.log('will remove', self.player.track.cues);
 				self.removeSubtitles();
-				console.log('revoved cues');
-
 				self.setSubtitles();
-				console.log('added', self.player.track.cues);
 			}
 		}, {
 			key: 'handleVideoPlay',
@@ -102865,7 +102840,6 @@
 			key: 'render',
 			value: function render() {
 				this.sanitizeSubtitles(this.state.videoDuration);
-				console.log(this.sortSubtiltes());
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
 					{ className: 'content-subtitles', style: styles.subtitlesContent },
@@ -105715,8 +105689,6 @@
 	      if (data.category) data2.category = data.category;
 	      // if (data.regexp)
 	      data2.regexp = data.regexp;
-
-	      console.log('data ->', data2);
 	      this.props.onSearch(data2);
 	    }
 	  }, {
@@ -105897,7 +105869,6 @@
 
 	function mapStateToProps(state) {
 		var categories = state.categories;
-		console.log(categories);
 
 		return { categories: categories };
 	}
@@ -105967,7 +105938,6 @@
 	      this.setState({
 	        selected: value
 	      });
-	      console.log(value);
 	      this.props.onOrder(value);
 	    }
 	  }, {
@@ -106270,12 +106240,10 @@
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            console.log(sessionStorage.getItem("catagory"));
 	            if (sessionStorage.getItem("catagory")) {
 	                var data = {
 	                    category: sessionStorage.getItem("catagory").trim()
 	                };
-	                console.log(this.props);
 	                this.props.onSearch(data);
 	                //this.handleToggle();
 	                sessionStorage.removeItem("catagory");
@@ -106715,14 +106683,12 @@
 	    var _this = _possibleConstructorReturn(this, (GaleryItemBrowser.__proto__ || Object.getPrototypeOf(GaleryItemBrowser)).call(this, props));
 
 	    _this.renderSlide = _this.renderSlide.bind(_this);
-	    console.log('run GaleryItemBrowser');
 	    return _this;
 	  }
 
 	  _createClass(GaleryItemBrowser, [{
 	    key: 'renderSlide',
 	    value: function renderSlide() {
-	      console.log(this.props.images);
 	      return this.props.images.map(function (image, i) {
 	        return _react2.default.createElement('img', { style: { width: '100%' }, key: i, src: image });
 	      });
@@ -109518,14 +109484,12 @@
 	var LOAD_SUCCESS = exports.LOAD_SUCCESS = 'LOAD_SUCCESS';
 
 	function loadStart(payload) {
-		console.log('loadStart');
 		return {
 			type: LOAD_START
 		};
 	}
 
 	function loadError(payload) {
-		console.log('loadError');
 		return {
 			type: LOAD_ERROR,
 			message: payload
@@ -109533,7 +109497,6 @@
 	}
 
 	function loadSuccess(payload) {
-		console.log('loadSuccess');
 		return {
 			type: LOAD_SUCCESS,
 			data: payload
@@ -109556,7 +109519,6 @@
 				}).then(function (res) {
 					return res.json();
 				}).then(function (res) {
-					console.log(res);
 					if (typeof res === 'string') dispatch(loadError(res));else dispatch(loadSuccess(res));
 				}).catch(function (error) {
 					dispatch(loadError(error));
@@ -110104,10 +110066,8 @@
 	'use strict';
 
 	if (false) {
-	  console.log('Using production Store');
 	  module.exports = require('./configureStore.prod');
 	} else {
-	  console.log('Using development Store');
 	  module.exports = __webpack_require__(1003);
 	}
 

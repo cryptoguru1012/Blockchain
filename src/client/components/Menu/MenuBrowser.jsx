@@ -56,7 +56,6 @@ class MenuBrowser extends React.Component {
 
 		})
 
-	//console.log(this.props);
 	
 }
 	componentDidMount() {
@@ -95,13 +94,11 @@ class MenuBrowser extends React.Component {
 			}
 		}else{
 			/*acz --> this ELSE is for do something when search input will appear */
-			console.log("Search input will appear");
 		}
 		this.setState({ activeSearch: !this.state.activeSearch });
 	}
 
 	handleCategory(value) {
-		console.log(value);
 		if (this.props.stateUrl !== "/")
 		{
 		if (typeof(Storage) !== "undefined") {
@@ -116,15 +113,11 @@ class MenuBrowser extends React.Component {
 
 			
 		}
-
 			let data = {
 				category: value.trim()
 			};
-
 			this.setState({category: value.trim() });
-
 			this.props.onSearch(data);
-			//console.log('data submited: ', data);
 			this.handleToggle();
 	}
 

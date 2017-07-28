@@ -37,7 +37,7 @@ const createItem = (params, cb) => {
       if (productVideo) {
         item._.productVideo.uploadFile(productVideo, true, (err, file) => {
           if (err) {
-            return console.log(err);
+            return console.error(err);
           }
 
           item.productVideo = file;

@@ -35,7 +35,6 @@ function createAdmin (admin, done) {
 			console.error('Error adding admin ' + admin.email + ' to the database:');
 			console.error(err);
 		} else {
-			console.log('Added admin ' + admin.email + ' to the database.');
 		}
 		done(err);
 	});

@@ -127,12 +127,10 @@ class TableViewItemsBrowser extends React.Component {
     }
 
     componentDidMount() {
-        console.log(sessionStorage.getItem("catagory"));
         if(sessionStorage.getItem("catagory")){
             let data = {
                 category: sessionStorage.getItem("catagory").trim()
             };
-            console.log(this.props);
             this.props.onSearch(data);
             //this.handleToggle();
             sessionStorage.removeItem("catagory");

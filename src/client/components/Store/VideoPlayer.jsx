@@ -77,7 +77,6 @@ class VideoPlayer extends React.Component {
 
 		let dataurl = c.toDataURL();
 		document.getElementById('poster').appendChild(c)
-		console.log("image :",dataurl);
 	}
 */
 	componentDidMount() {
@@ -126,7 +125,6 @@ class VideoPlayer extends React.Component {
 			self.player.track.mode = "showing";
 
 			// load subtitles
-			console.log(self.props.subtitles);
 			self.props.subtitles.map(subtitle => {
 				let start = this.setTimetoSeconds(subtitle.startTime)
 					, end = this.setTimetoSeconds(subtitle.endTime)
@@ -177,13 +175,8 @@ class VideoPlayer extends React.Component {
 
 		if (!self.player.track)
 			return false;
-
-		console.log('will remove', self.player.track.cues);
 		self.removeSubtitles();
-		console.log('revoved cues');
-
 		self.setSubtitles();
-		console.log('added', self.player.track.cues);
 	}
 
 	handleVideoPlay() {

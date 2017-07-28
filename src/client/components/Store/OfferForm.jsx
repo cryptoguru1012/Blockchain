@@ -127,6 +127,7 @@ class OfferForm extends React.Component {
 	}
 
 	componentWillReceiveProps(props){
+
 		if(props.coords && !props.coords.positionError)
 			this.setState({latitude: props.coords.latitude, longitude: props.coords.longitude})
 		
@@ -136,9 +137,6 @@ class OfferForm extends React.Component {
 				.then((data) => {
 					this.setState({latitude: data.lat, longitude: data.lon})
 				})
-				.catch((error) => {
-					console.error(error);
-				});		
 	}
 	render() {
 		return ( 

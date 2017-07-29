@@ -380,7 +380,7 @@ is_iOS() {
                       hoverColor={grey600}
                       primary={true}
                       icon={<FontIcon className="material-icons">videocam photo_camera attachment</FontIcon>}
-
+                      containerElement="label"
                       onClick={ (e) => this.openFileDialog}>
                       <Dropzone 
                         style={{"display" : "none"}}

@@ -95287,11 +95287,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  _reactBootstrap.Col,
-<<<<<<< 56-Remove-all-console-log,-debug-messages
-	                  { xs: 6 },
-=======
 	                  { md: 6 },
->>>>>>> New item layout for iPhone
 	                  _react2.default.createElement(
 	                    _FlatButton2.default,
 	                    {
@@ -95372,7 +95368,7 @@
 	                        { className: 'material-icons' },
 	                        'videocam photo_camera attachment'
 	                      ),
-
+	                      containerElement: 'label',
 	                      onClick: function onClick(e) {
 	                        return _this2.openFileDialog;
 	                      } },
@@ -110134,10 +110130,6 @@
 	if (false) {
 	  module.exports = require('./configureStore.prod');
 	} else {
-<<<<<<< 56-Remove-all-console-log,-debug-messages
-=======
-	  console.log('Using development Store');
->>>>>>> New item layout for iPhone
 	  module.exports = __webpack_require__(1003);
 	}
 

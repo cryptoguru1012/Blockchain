@@ -94903,6 +94903,13 @@
 	    color: 'white',
 	    background: 'rgb(153,211,243)'
 	  }, 'background', 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'),
+	  button_iOS_xs: _defineProperty({
+	    borderRadius: '5px',
+	    height: '100%',
+	    width: '75%',
+	    color: 'white',
+	    background: 'rgb(153,211,243)'
+	  }, 'background', 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'),
 	  btn_iOS_Label: {
 	    fontSize: '150%',
 	    fontWeight: 'bold'
@@ -95268,19 +95275,23 @@
 	            null,
 	            _react2.default.createElement(
 	              _reactBootstrap.Col,
-	              { xs: 12 },
+	              { md: 12, xsHidden: true, smHidden: true },
 	              _react2.default.createElement(
 	                _reactBootstrap.Row,
 	                { style: newItemStyle.vcenter },
-	                _react2.default.createElement(_reactBootstrap.Col, { xs: 1 }),
+	                _react2.default.createElement(_reactBootstrap.Col, { md: 1 }),
 	                _react2.default.createElement(
 	                  _reactBootstrap.Col,
-	                  { xs: 2 },
+	                  { md: 2 },
 	                  _react2.default.createElement(_VIcon2.default, null)
 	                ),
 	                _react2.default.createElement(
 	                  _reactBootstrap.Col,
+<<<<<<< 56-Remove-all-console-log,-debug-messages
 	                  { xs: 6 },
+=======
+	                  { md: 6 },
+>>>>>>> New item layout for iPhone
 	                  _react2.default.createElement(
 	                    _FlatButton2.default,
 	                    {
@@ -95313,10 +95324,65 @@
 	                ),
 	                _react2.default.createElement(
 	                  _reactBootstrap.Col,
-	                  { xs: 2 },
+	                  { md: 2 },
 	                  _react2.default.createElement(_PIcon2.default, null)
 	                ),
-	                _react2.default.createElement(_reactBootstrap.Col, { xs: 1 })
+	                _react2.default.createElement(_reactBootstrap.Col, { md: 1 })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _reactBootstrap.Col,
+	              { xs: 12, mdHidden: true, lgHidden: true },
+	              _react2.default.createElement(
+	                _reactBootstrap.Row,
+	                null,
+	                _react2.default.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 3, xsPush: 3 },
+	                  _react2.default.createElement(_VIcon2.default, null)
+	                ),
+	                _react2.default.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 3, xsPush: 3 },
+	                  _react2.default.createElement(_PIcon2.default, null)
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _reactBootstrap.Row,
+	                { style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _reactBootstrap.Col,
+	                  { xs: 12 },
+	                  _react2.default.createElement(
+	                    _FlatButton2.default,
+	                    {
+	                      label: _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        'Record/Attach Media',
+	                        _react2.default.createElement('br', null)
+	                      ),
+	                      labelPosition: 'before',
+	                      labelStyle: newItemStyle.btn_iOS_Label,
+	                      style: newItemStyle.button_iOS_xs,
+	                      hoverColor: _colors.grey600,
+	                      primary: true,
+	                      icon: _react2.default.createElement(
+	                        _FontIcon2.default,
+	                        { className: 'material-icons' },
+	                        'videocam photo_camera attachment'
+	                      ),
+
+	                      onClick: function onClick(e) {
+	                        return _this2.openFileDialog;
+	                      } },
+	                    _react2.default.createElement(_reactDropzone2.default, {
+	                      style: { "display": "none" },
+	                      onDrop: function onDrop(file) {
+	                        return _this2.onDrop(file);
+	                      } })
+	                  )
+	                )
 	              )
 	            )
 	          ),
@@ -105309,7 +105375,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "svg",
-	        { xmlns: "http://www.w3.org/2000/svg", xmlSpace: "preserve", viewBox: "555 480 500 540", height: "100%", width: "100%", version: "1.1", xmlnsXlink: "http://www.w3.org/1999/xlink" },
+	        { xmlns: "http://www.w3.org/2000/svg", xmlSpace: "preserve", viewBox: "555 500 500 540", height: "100%", width: "100%", version: "1.1", xmlnsXlink: "http://www.w3.org/1999/xlink" },
 	        _react2.default.createElement(
 	          "g",
 	          { id: "gVideo" },
@@ -110068,6 +110134,10 @@
 	if (false) {
 	  module.exports = require('./configureStore.prod');
 	} else {
+<<<<<<< 56-Remove-all-console-log,-debug-messages
+=======
+	  console.log('Using development Store');
+>>>>>>> New item layout for iPhone
 	  module.exports = __webpack_require__(1003);
 	}
 

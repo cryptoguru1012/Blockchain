@@ -63,6 +63,14 @@ const newItemStyle = {
     background: 'rgb(153,211,243)',
     background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'
   },
+  button_iOS_xs:{
+    borderRadius: '5px',
+    height: '100%',
+    width: '75%',
+    color: 'white',
+    background: 'rgb(153,211,243)',
+    background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'
+  },
   btn_iOS_Label:{
     fontSize: '150%',
     fontWeight: 'bold'
@@ -329,13 +337,13 @@ is_iOS() {
         <Grid>
           <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
           <Row>
-            <Col xs={12}>
+            <Col md={12} xsHidden smHidden>
               <Row style={newItemStyle.vcenter}>
-                <Col xs={1}></Col>
-                <Col xs={2}>
+                <Col md={1}></Col>
+                <Col md={2}>
                   <VIcon />
                 </Col>
-                <Col xs={6}>
+                <Col md={6}>
                   <FlatButton
                     label={<span>Record/Attach Media<br/></span>}
                     labelPosition="before"
@@ -351,11 +359,35 @@ is_iOS() {
                       onDrop={ (file) => this.onDrop(file)} />
                   </FlatButton>
                 </Col>
-                <Col xs={2}>
+                <Col md={2}>
                   <PIcon />
                 </Col>
-                <Col xs={1}></Col>
+                <Col md={1}></Col>
               </Row>
+            </Col>
+            <Col xs={12} mdHidden lgHidden>
+              <Row>
+                <Col xs={3} xsPush={3} ><VIcon /></Col>
+                <Col xs={3} xsPush={3} ><PIcon /></Col>
+              </Row>
+              <Row style={{textAlign: 'center'}}>
+                <Col xs={12}>
+                    <FlatButton
+                      label={<span>Record/Attach Media<br/></span>}
+                      labelPosition="before"
+                      labelStyle={newItemStyle.btn_iOS_Label}
+                      style={newItemStyle.button_iOS_xs}
+                      hoverColor={grey600}
+                      primary={true}
+                      icon={<FontIcon className="material-icons">videocam photo_camera attachment</FontIcon>}
+
+                      onClick={ (e) => this.openFileDialog}>
+                      <Dropzone 
+                        style={{"display" : "none"}}
+                        onDrop={ (file) => this.onDrop(file)} />
+                    </FlatButton>
+                  </Col>
+                </Row>
             </Col>
           </Row>
           <Row style={{textAlign: 'center'}}>

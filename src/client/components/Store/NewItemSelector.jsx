@@ -123,6 +123,7 @@ class NewItemSelector extends React.Component {
   componentWillMount() {
     this.props.getCategories();
     this.props.getCurrencies();
+    this.props.image.loaded = false;
   }
   
 

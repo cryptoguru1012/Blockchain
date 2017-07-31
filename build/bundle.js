@@ -94989,6 +94989,7 @@
 	    value: function componentWillMount() {
 	      this.props.getCategories();
 	      this.props.getCurrencies();
+	      this.props.image.loaded = false;
 	    }
 	  }, {
 	    key: 'is_iOS',
@@ -102266,7 +102267,7 @@
 				}, false);
 
 				this.player.addEventListener('loadeddata', function () {
-					_this2.player.currentTime = 1;
+					_this2.player.currentTime = 0;
 				});
 
 				this.player.addEventListener('loadedmetadata', function (e) {
@@ -106289,7 +106290,10 @@
 	                        value: hasImages[0]
 	                    };
 	                } else {
-	                    return false;
+	                    return {
+	                        type: 'text',
+	                        value: description
+	                    };
 	                }
 	                return false;
 	            }
@@ -106310,12 +106314,14 @@
 	                        fullView: true,
 	                        muted: true })
 	                );
-	            } else if (data.type === 'image') {
-	                var url = 'url(' + data.value.urlImage + ')';
-	                return _react2.default.createElement('div', { style: styles.imageContainer(url) });
 	            } else if (data.type === 'images') {
-	                var _url = 'url(' + data.value + ')';
+	                var url = 'url(' + data.value + ')';
+	                return _react2.default.createElement('div', { style: styles.imageContainer(url) });
+	            } else if (data.type === 'image') {
+	                var _url = 'url(' + data.value.urlImage + ')';
 	                return _react2.default.createElement('div', { style: styles.imageContainer(_url) });
+	            } else {
+	                //if something isn't a VIDEO, IMAGES, IMAGE
 	            }
 	        }
 	    }, {
@@ -106374,7 +106380,7 @@
 	                    'tr',
 	                    { key: item.txid, style: styles.trSeparator(_colors.grey500) },
 	                    _this2.props.media && _react2.default.createElement(
-	                        'th',
+	                        'td',
 	                        null,
 	                        _this2.renderMedia(mediaData)
 	                    ),

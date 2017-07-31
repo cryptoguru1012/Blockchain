@@ -95,7 +95,7 @@ class VideoPlayer extends React.Component {
 		}, false);
 
 		this.player.addEventListener('loadeddata', () =>{
-			this.player.currentTime = 1
+			this.player.currentTime = 0
 		})
 
 		this.player.addEventListener('loadedmetadata', (e) => {

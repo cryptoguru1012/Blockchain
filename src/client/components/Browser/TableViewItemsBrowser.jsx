@@ -89,14 +89,17 @@ class TableViewItemsBrowser extends React.Component {
                     value: hasImages[0]
                 }
             } else {
-                return false;
+              return {
+                type: 'text',
+                value: description
+              }
             }
             return false;
         }
     }
 
     renderMedia(data) {
-       if (data.type === 'video') {
+        if (data.type === 'video') {
             return (
                 <div style={styles.videoContainer}>
                     <VideoPlayer 
@@ -110,13 +113,6 @@ class TableViewItemsBrowser extends React.Component {
                 </div>
             )
         }
-        else if(data.type === 'image') {
-            const url = `url(${data.value.urlImage})`
-            return (
-                <div style={styles.imageContainer(url)}>
-                </div>    
-            )
-        }
         else if(data.type === 'images') {
             const url = `url(${data.value})`
             return (
@@ -124,6 +120,17 @@ class TableViewItemsBrowser extends React.Component {
                 </div>    
             )
         }
+        else if (data.type === 'image') {
+            const url = `url(${data.value.urlImage})`
+            return (
+                <div style={styles.imageContainer(url)}>
+                </div>    
+            )
+
+        }
+        else {
+            //if something isn't a VIDEO, IMAGES, IMAGE
+        }       
     }
 
     componentDidMount() {
@@ -164,7 +171,7 @@ class TableViewItemsBrowser extends React.Component {
             if(mediaData)
                 return (
                     <tr key={item.txid} style={styles.trSeparator(grey500)}>
-                        {this.props.media && <th>{this.renderMedia(mediaData)}</th>}
+                        {this.props.media && <td>{this.renderMedia(mediaData)}</td>}
                         <td><Link to={'/offer/' + item.offer}>{item.title}</Link></td>
                         <td>{item.alias}</td> 
                         <td>{item.price}</td>

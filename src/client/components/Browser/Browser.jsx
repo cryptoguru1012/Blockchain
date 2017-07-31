@@ -28,7 +28,7 @@ const filterItems = [
 	{
 		value: 'SHOW_TEXT',
 		name: 'Text only',
-	}
+	},
 ];
 
 const orderItems = [

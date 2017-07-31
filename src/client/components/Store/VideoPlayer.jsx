@@ -15,7 +15,7 @@ const styles = {
 	video: {
 		width: '100%',
 		display: 'block',
-		//opacity: 0
+		opacity: 1
 	},
 	videoBar: {
 		position: 'relative',
@@ -181,7 +181,7 @@ class VideoPlayer extends React.Component {
 
 	handleVideoPlay() {
 		if (this.player) {
-			styles.video.opacity = 1
+			//styles.video.opacity = 1
 			this.setState({ play: true });
 			this.player.play();
 		}

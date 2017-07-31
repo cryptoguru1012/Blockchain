@@ -102171,8 +102171,8 @@
 		},
 		video: {
 			width: '100%',
-			display: 'block'
-			//opacity: 0
+			display: 'block',
+			opacity: 1
 		},
 		videoBar: {
 			position: 'relative',
@@ -102359,7 +102359,7 @@
 			key: 'handleVideoPlay',
 			value: function handleVideoPlay() {
 				if (this.player) {
-					styles.video.opacity = 1;
+					//styles.video.opacity = 1
 					this.setState({ play: true });
 					this.player.play();
 				}

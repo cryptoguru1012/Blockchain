@@ -27254,6 +27254,24 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var NoMatch = function NoMatch(_ref) {
+	    var location = _ref.location;
+	    return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	            'h3',
+	            null,
+	            'No match for ',
+	            _react2.default.createElement(
+	                'code',
+	                null,
+	                location.pathname
+	            )
+	        )
+	    );
+	};
+
 	var Routes = _react2.default.createElement(
 	    _reactRouter.Router,
 	    { render: function render(props) {
@@ -27270,7 +27288,8 @@
 	            { path: '/offer', component: _Offer2.default },
 	            _react2.default.createElement(_reactRouter.Route, { path: ':id', component: _Offer2.default })
 	        )
-	    )
+	    ),
+	    _react2.default.createElement(_reactRouter.Route, { path: '*', component: NoMatch })
 	);
 
 	exports.default = Routes;

@@ -8,6 +8,12 @@ import Store from './components/Store';
 import Browser from './components/Browser';
 import Offer from './components/Offer';
 
+const NoMatch = ({ location }) => (
+  <div>
+    <h3>No match for <code>{location.pathname}</code></h3>
+  </div>
+)
+
 const Routes = (
     <Router render={(props) => <ReduxAsyncConnect {...props}/>} history={browserHistory}>
         <Route path='/' component={App}>
@@ -18,6 +24,7 @@ const Routes = (
                 <Route path=':id' component={Offer}/>
             </Route>
         </Route>
+        <Route path='*' component={NoMatch}/>
     </Router>
 );
 

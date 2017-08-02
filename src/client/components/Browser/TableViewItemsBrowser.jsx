@@ -113,13 +113,19 @@ class TableViewItemsBrowser extends React.Component {
                 </div>
             )
         }
-        else if(data.type === 'images') {
+        /*
+        ----------------------------------------------------------------
+        cortesa --> Exclude Item which not fit types Video, Image, Text
+        ----------------------------------------------------------------
+         else if(data.type === 'images') {
             const url = `url(${data.value})`
             return (
                 <div style={styles.imageContainer(url)}>
                 </div>    
             )
         }
+        ----------------------------------------------------------------
+        */
         else if (data.type === 'image') {
             const url = `url(${data.value.urlImage})`
             return (

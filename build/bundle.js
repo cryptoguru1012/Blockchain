@@ -102267,7 +102267,9 @@
 				}, false);
 
 				this.player.addEventListener('loadeddata', function () {
-					_this2.player.currentTime = 0;
+					if (_this2.player) {
+						_this2.player.currentTime = 0;
+					}
 				});
 
 				this.player.addEventListener('loadedmetadata', function (e) {
@@ -106314,15 +106316,26 @@
 	                        fullView: true,
 	                        muted: true })
 	                );
-	            } else if (data.type === 'images') {
-	                var url = 'url(' + data.value + ')';
-	                return _react2.default.createElement('div', { style: styles.imageContainer(url) });
-	            } else if (data.type === 'image') {
-	                var _url = 'url(' + data.value.urlImage + ')';
-	                return _react2.default.createElement('div', { style: styles.imageContainer(_url) });
-	            } else {
-	                //if something isn't a VIDEO, IMAGES, IMAGE
 	            }
+	            /*
+	            ----------------------------------------------------------------
+	            cortesa --> Exclude Item which not fit types Video, Image, Text
+	            ----------------------------------------------------------------
+	             else if(data.type === 'images') {
+	                const url = `url(${data.value})`
+	                return (
+	                    <div style={styles.imageContainer(url)}>
+	                    </div>    
+	                )
+	            }
+	            ----------------------------------------------------------------
+	            */
+	            else if (data.type === 'image') {
+	                    var url = 'url(' + data.value.urlImage + ')';
+	                    return _react2.default.createElement('div', { style: styles.imageContainer(url) });
+	                } else {
+	                    //if something isn't a VIDEO, IMAGES, IMAGE
+	                }
 	        }
 	    }, {
 	        key: 'componentDidMount',

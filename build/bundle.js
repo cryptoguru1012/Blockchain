@@ -106283,6 +106283,11 @@
 	                        type: 'image',
 	                        value: description
 	                    };
+	                } else {
+	                    return {
+	                        type: 'text',
+	                        value: description
+	                    };
 	                }
 	            } else {
 	                var hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
@@ -106293,7 +106298,7 @@
 	                    };
 	                } else {
 	                    return {
-	                        type: 'UknownText',
+	                        type: 'texts',
 	                        value: description
 	                    };
 	                }
@@ -106387,10 +106392,11 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            var cc = 0;
+	            var cc = 1;
 	            var itemsOutput = this.sortItems(this.props.items).map(function (item) {
 	                var mediaData = _this2.getMedia(item.description);
-	                console.log(_this2.props.items.length, cc++);
+	                cc++;
+	                if (_this2.props.items.length === cc) console.log('Recived: ', _this2.props.items.length, 'Rendered: ', cc);
 	                if (mediaData) return _react2.default.createElement(
 	                    'tr',
 	                    { key: item.txid, style: styles.trSeparator(_colors.grey500) },

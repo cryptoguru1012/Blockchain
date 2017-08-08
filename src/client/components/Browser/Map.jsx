@@ -1,8 +1,9 @@
+/* global google */
 import { default as React, Component } from 'react';
 import raf from 'raf';
 import canUseDOM from 'can-use-dom';
 
-import { withGoogleMap, GoogleMap, Circle, InfoWindow, FaSpinner } from 'react-google-maps';
+import { withGoogleMap, GoogleMap, Circle, InfoWindow, Marker } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 
 const googleMapURL =
@@ -17,12 +18,10 @@ const geolocation =
     };
 const GeolocationExampleGoogleMap = withScriptjs(
   withGoogleMap(props =>
-    <GoogleMap defaultZoom={12} center={props.center}>
+    <GoogleMap defaultZoom={8} center={props.center}>
       {props.center &&
         <InfoWindow position={props.center}>
-          <div>
-            {props.content}
-          </div>
+          <div>User's Location</div>
         </InfoWindow>}
       {props.center &&
         <Circle
@@ -37,9 +36,51 @@ const GeolocationExampleGoogleMap = withScriptjs(
           }}
         />}
       >
+      {props.markers.map((marker, index) => {
+        const onClick = () => props.onMarkerClick(marker);
+        const onCloseClick = () => props.onCloseClick(marker);
+
+        return (
+          <Marker
+            key={index}
+            position={marker.position}
+            title={(index + 1).toString()}
+            onClick={onClick}
+          >
+            {marker.showInfo &&
+              <InfoWindow onCloseClick={onCloseClick}>
+                <div>
+                  <strong>
+                    <h2>
+                      {marker.content}
+                    </h2>
+                  </strong>
+                  <br />
+                  <h3>Where we can add offer details!</h3>
+                </div>
+              </InfoWindow>}
+          </Marker>
+        );
+      })}
     </GoogleMap>,
   ),
 );
+
+function generateInitialMarkers() {
+  const markers = [];
+  for (let i = 0; i < 5; i++) {
+    const randomLat = Math.floor(Math.random() * 90) + 1;
+    const randomLng = Math.floor(Math.random() * 180) + 1;
+    const position = { lat: randomLat, lng: randomLng };
+    markers.push({
+      position,
+      content: `Offer: ${i}`,
+      showInfo: false,
+    });
+  }
+  console.log('markers: ', markers);
+  return markers;
+}
 
 export default class GeolocationExample extends Component {
   constructor(props) {
@@ -48,10 +89,42 @@ export default class GeolocationExample extends Component {
     this.state = {
       center: null,
       content: null,
-      radius: 6000,
+      radius: 100000,
+      markers: generateInitialMarkers(),
     };
 
     const isUnmounted = false;
+
+    this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleCloseClick = this.handleCloseClick.bind(this);
+  }
+
+  handleMarkerClick(targetMarker) {
+    this.setState({
+      markers: this.state.markers.map((marker) => {
+        if (marker === targetMarker) {
+          return {
+            ...marker,
+            showInfo: true,
+          };
+        }
+        return marker;
+      }),
+    });
+  }
+
+  handleCloseClick(targetMarker) {
+    this.setState({
+      markers: this.state.markers.map((marker) => {
+        if (marker === targetMarker) {
+          return {
+            ...marker,
+            showInfo: false,
+          };
+        }
+        return marker;
+      }),
+    });
   }
 
   componentDidMount() {
@@ -59,9 +132,9 @@ export default class GeolocationExample extends Component {
       if (this.isUnmounted) {
         return;
       }
-      this.setState({ radius: Math.max(this.state.radius - 20, 0) });
+      this.setState({ radius: Math.max(this.state.radius - 200, 0) });
 
-      if (this.state.radius > 200) {
+      if (this.state.radius > 100) {
         raf(tick);
       }
     };
@@ -111,6 +184,9 @@ export default class GeolocationExample extends Component {
         center={this.state.center}
         content={this.state.content}
         radius={this.state.radius}
+        onMarkerClick={this.handleMarkerClick}
+        onCloseClick={this.handleCloseClick}
+        markers={this.state.markers}
       />
     );
   }

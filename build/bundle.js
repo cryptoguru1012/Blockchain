@@ -106392,11 +106392,8 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            var cc = 1;
 	            var itemsOutput = this.sortItems(this.props.items).map(function (item) {
 	                var mediaData = _this2.getMedia(item.description);
-	                cc++;
-	                if (_this2.props.items.length === cc) console.log('Recived: ', _this2.props.items.length, 'Rendered: ', cc);
 	                if (mediaData) return _react2.default.createElement(
 	                    'tr',
 	                    { key: item.txid, style: styles.trSeparator(_colors.grey500) },

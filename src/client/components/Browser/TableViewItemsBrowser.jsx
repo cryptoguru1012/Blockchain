@@ -177,11 +177,8 @@ class TableViewItemsBrowser extends React.Component {
     }
 
     render() {
-        let cc = 1;
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
-            cc++;
-            if (this.props.items.length === cc) console.log('Recived: ', this.props.items.length, 'Rendered: ', cc);
             if(mediaData)
                 return (
                     <tr key={item.txid} style={styles.trSeparator(grey500)}>

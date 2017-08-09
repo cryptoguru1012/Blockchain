@@ -80,7 +80,12 @@ class TableViewItemsBrowser extends React.Component {
                     type: 'image',
                     value: description
                 }
-            }
+            }  else { 
+              return { 
+                type: 'text', 
+                value: description 
+              }
+            } 
         } else {
             let hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
             if (hasImages) {
@@ -90,7 +95,7 @@ class TableViewItemsBrowser extends React.Component {
                 }
             } else {
               return {
-                type: 'UKtext',
+                type: 'texts',
                 value: description
               }
             }
@@ -172,17 +177,13 @@ class TableViewItemsBrowser extends React.Component {
     }
 
     render() {
-        let cc=1;
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
-            //console.log(item);
-            cc++; 
-            //if (this.props.items.length === cc) console.log('Recived: ', this.props.items.length, 'Rendered: ', cc); 
             if(mediaData)
                 return (
                     <tr key={item.txid} style={styles.trSeparator(grey500)}>
                         {this.props.media && <td>{this.renderMedia(mediaData)}</td>}
-                        <td><Link to={'/offer/' + item.offer}>{mediaData.type} - {item.title}</Link></td>
+                        <td><Link to={'/offer/' + item.offer}>{item.title}</Link></td>
                         <td>{item.alias}</td>
                         <td>{item.price}</td>
                         <td>{item.currency}</td>

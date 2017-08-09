@@ -80,12 +80,12 @@ class TableViewItemsBrowser extends React.Component {
                     type: 'image',
                     value: description
                 }
-            } else {
-              return {
-                type: 'text',
-                value: description
+            }  else { 
+              return { 
+                type: 'text', 
+                value: description 
               }
-            }
+            } 
         } else {
             let hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
             if (hasImages) {
@@ -107,7 +107,7 @@ class TableViewItemsBrowser extends React.Component {
         if (data.type === 'video') {
             return (
                 <div style={styles.videoContainer}>
-                    <VideoPlayer
+                    <VideoPlayer 
                     style={styles.video}
                     url={data.value.urlVideo}
                     subtitles={data.value.subtitlesVideo}
@@ -126,7 +126,7 @@ class TableViewItemsBrowser extends React.Component {
             const url = `url(${data.value})`
             return (
                 <div style={styles.imageContainer(url)}>
-                </div>
+                </div>    
             )
         }
         ----------------------------------------------------------------
@@ -135,13 +135,13 @@ class TableViewItemsBrowser extends React.Component {
             const url = `url(${data.value.urlImage})`
             return (
                 <div style={styles.imageContainer(url)}>
-                </div>
+                </div>    
             )
 
         }
         else {
             //if something isn't a VIDEO, IMAGES, IMAGE
-        }
+        }       
     }
 
     componentDidMount() {
@@ -154,7 +154,7 @@ class TableViewItemsBrowser extends React.Component {
             sessionStorage.removeItem("catagory");
         }
     }
-
+    
     sortItems(items) {
         let field = this.state.thSortBy;
         let sortAZ = this.state.thSortAZ;
@@ -162,7 +162,7 @@ class TableViewItemsBrowser extends React.Component {
         if (field === '') {return items};
         if (isNaN(parseFloat(items[0][field]))){
             sortedItems = items.slice(0).sort((a, b) => a[field].localeCompare(b[field], {numeric: true}));
-        } else {
+        }else {
             sortedItems = items.slice(0).sort((a, b) => {return parseFloat(a[field]) - parseFloat(b[field])});
         }
         if (sortAZ) {return sortedItems;} else {return sortedItems.reverse();}
@@ -200,7 +200,7 @@ class TableViewItemsBrowser extends React.Component {
                     className="material-icons"
                     style={styles.sortIconStyles}>
                     {(this.state.thSortBy === field && icon) || ' '}
-
+                    
                 </FontIcon>
             )
         };
@@ -226,8 +226,8 @@ class TableViewItemsBrowser extends React.Component {
                                 Vendor
                                 {thSortIcon('alias')}
                             </a>
-
-                        </th>
+                            
+                        </th> 
                         <th>
                             <a
                                 style={styles.txtHeader}

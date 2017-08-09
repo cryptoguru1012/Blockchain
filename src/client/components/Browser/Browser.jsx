@@ -108,6 +108,7 @@ class Browser extends React.Component {
 	}
 
 	render() {
+		console.log(this.props.browser);
 		return (
 			<div width="100%">
 				{this.props.browser.features.length > 0 && <BrowserCarousel items={this.props.browser.features}/>}

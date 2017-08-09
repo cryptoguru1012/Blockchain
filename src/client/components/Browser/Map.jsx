@@ -2,12 +2,14 @@
 import { default as React, Component } from 'react';
 import raf from 'raf';
 import canUseDOM from 'can-use-dom';
-
+import { connect } from 'react-redux';
 import { withGoogleMap, GoogleMap, Circle, InfoWindow, Marker } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
+import geolib from 'geolib';
 
 const googleMapURL =
   'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
+
 const geolocation =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
@@ -16,9 +18,10 @@ const geolocation =
         failure("Your browser doesn't support geolocation.");
       },
     };
+
 const GeolocationExampleGoogleMap = withScriptjs(
   withGoogleMap(props =>
-    <GoogleMap defaultZoom={8} center={props.center}>
+    <GoogleMap defaultZoom={6} center={props.center}>
       {props.center &&
         <InfoWindow position={props.center}>
           <div>User's Location</div>
@@ -66,31 +69,50 @@ const GeolocationExampleGoogleMap = withScriptjs(
   ),
 );
 
-function generateInitialMarkers() {
+function generateInitialMarkers(items) {
+  console.log('item', items);
   const markers = [];
-  for (let i = 0; i < 5; i++) {
-    const randomLat = Math.floor(Math.random() * 90) + 1;
-    const randomLng = Math.floor(Math.random() * 180) + 1;
-    const position = { lat: randomLat, lng: randomLng };
-    markers.push({
-      position,
-      content: `Offer: ${i}`,
-      showInfo: false,
-    });
-  }
+  items.map((item, i) => {
+    const newGeoArr = item.geolocation.split(',');
+    if (
+      newGeoArr.length > 1 &&
+      newGeoArr !== '' &&
+      newGeoArr[0] !== undefined &&
+      newGeoArr[0] !== null
+    ) {
+      item.position = { lat: Number(newGeoArr[0]), lng: Number(newGeoArr[1]) };
+      item.distance = { latitude: Number(newGeoArr[0]), longitude: Number(newGeoArr[1]) };
+      geolocation.getCurrentPosition((position) => {
+        const currentLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        const distanceArr = geolib.orderByDistance(currentLocation, [item.distance]);
+        const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
+
+        if (miles < 200) {
+          markers.push({
+            position: item.position,
+            content: item.description,
+            showInfo: false,
+          });
+        }
+      });
+    }
+  });
+
   console.log('markers: ', markers);
   return markers;
 }
 
-export default class GeolocationExample extends Component {
+class OfferMap extends Component {
   constructor(props) {
-    super(props);
     super(props);
     this.state = {
       center: null,
       content: null,
       radius: 100000,
-      markers: generateInitialMarkers(),
+      markers: generateInitialMarkers(this.props.items) || [],
     };
 
     const isUnmounted = false;
@@ -132,7 +154,9 @@ export default class GeolocationExample extends Component {
       if (this.isUnmounted) {
         return;
       }
-      this.setState({ radius: Math.max(this.state.radius - 200, 0) });
+      this.setState({
+        radius: Math.max(this.state.radius - 200, 0),
+      });
 
       if (this.state.radius > 100) {
         raf(tick);
@@ -191,3 +215,9 @@ export default class GeolocationExample extends Component {
     );
   }
 }
+
+function mapStateToProps({ browser }) {
+  return { browser };
+}
+
+export default connect(mapStateToProps)(OfferMap);

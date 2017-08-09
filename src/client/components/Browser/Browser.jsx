@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import { RaisedButton } from 'material-ui';
-
 import { search, getFeatures, setOrder } from '../../redux/actions/browser';
-
+import OfferMap from './Map';
 import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
 import BrowserCarousel from './BrowserCarousel';
 import FilterBrowser from './FilterBrowser';
 import OrderByBrowser from './OrderByBrowser';
-
-import GeolocationExample from './Map';
 
 const filterItems = [
   {
@@ -107,29 +104,36 @@ class Browser extends React.Component {
     this.state.current > 0 && this.setState({ current: this.state.current - 1 });
   }
 
+  renderMap(items) {
+    if (items.length < 1) {
+      return <div>Loading...</div>;
+    }
+
+    return (
+      <div style={{ width: '500px', height: '500px' }}>
+        {' '}<OfferMap items={items} />{' '}
+      </div>
+    );
+  }
+
   render() {
+    const { browser, onOrder } = this.props;
     return (
       <div width="100%">
-        <div style={{ width: '500px', height: '500px' }}>
-          <GeolocationExample />
-        </div>
-        {this.props.browser.features.length > 0 &&
-          <BrowserCarousel items={this.props.browser.features} />}
+        {this.renderMap(browser.items)}
+        {browser.features.length > 0 && <BrowserCarousel items={browser.features} />}
         <Grid>
-          {!this.props.browser.error && <FilterBrowser items={filterItems} />}
+          {!browser.error && <FilterBrowser items={filterItems} />}
           <Col xs={12}>
-            {!this.props.browser.error &&
-              <OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />}
-            {this.props.browser.loading &&
-              <CircularProgress size={50} style={styles.spinnerStyle} />}
-            {this.props.browser.error &&
+            {!browser.error && <OrderByBrowser items={orderItems} onOrder={onOrder} />}
+            {browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
+            {browser.error &&
               <Row>
                 <h3>
-                  {this.props.browser.message}
+                  {browser.message}
                 </h3>
               </Row>}
-            {!this.props.browser.error &&
-              <ListBrowser items={this.props.browser.items} filter={this.props.browser.filter} />}
+            {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
           <Col xs={12} style={{ marginBottom: '50px' }}>
             <Col xs={6}>

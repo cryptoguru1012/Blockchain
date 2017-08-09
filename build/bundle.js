@@ -68475,6 +68475,7 @@
 						),
 						_react2.default.createElement(_List.ListItem, {
 							primaryText: 'Categories',
+							primaryTogglesNestedList: true,
 							nestedItems: [_react2.default.createElement(_MenuItem2.default, {
 								key: 0,
 								onTouchTap: this.handleToggle,
@@ -68482,27 +68483,23 @@
 								containerElement: _react2.default.createElement(_reactRouter.Link, { to: '' })
 							}), _react2.default.createElement(_List.ListItem, {
 								key: 1,
-								primaryText: 'For Sale', onTouchTap: function onTouchTap() {
-									_this4.renderCatagoryPrimary(0);
-								},
+								primaryText: 'For Sale',
+								primaryTogglesNestedList: true,
 								nestedItems: this.renderCategories(0, 27)
 							}), _react2.default.createElement(_List.ListItem, {
 								key: 2,
-								primaryText: 'Services', onTouchTap: function onTouchTap() {
-									_this4.renderCatagoryPrimary(27);
-								},
+								primaryText: 'Services',
+								primaryTogglesNestedList: true,
 								nestedItems: this.renderCategories(27, 36)
 							}), _react2.default.createElement(_List.ListItem, {
 								key: 3,
-								primaryText: 'Wanted', onTouchTap: function onTouchTap() {
-									_this4.renderCatagoryPrimary(36);
-								},
+								primaryText: 'Wanted',
+								primaryTogglesNestedList: true,
 								nestedItems: this.renderCategories(36, 37)
 							}), _react2.default.createElement(_List.ListItem, {
 								key: 4,
-								primaryText: 'Certificates', onTouchTap: function onTouchTap() {
-									_this4.renderCatagoryPrimary(37);
-								},
+								primaryText: 'Certificates',
+								primaryTogglesNestedList: true,
 								nestedItems: this.renderCategories(37, 42)
 							})] }),
 						_react2.default.createElement(

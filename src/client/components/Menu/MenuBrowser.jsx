@@ -209,6 +209,7 @@ class MenuBrowser extends React.Component {
 					</Link>
 					<ListItem
 						primaryText="Categories"
+						primaryTogglesNestedList={true}
 						nestedItems={[
 							<MenuItem
 								key={0}
@@ -216,25 +217,29 @@ class MenuBrowser extends React.Component {
 								primaryText="All"
 								containerElement={<Link to=""/>}
 							/>,
-						<ListItem
-							key={1}
-							primaryText="For Sale" onTouchTap={() => {this.renderCatagoryPrimary(0);}}
-							nestedItems={this.renderCategories(0,27)}
-						/>,
-						<ListItem
-							key={2}
-							primaryText="Services" onTouchTap={() => {this.renderCatagoryPrimary(27);}}
-							nestedItems={this.renderCategories(27,36)}
-						/>,
-						<ListItem
-							key={3}
-							primaryText="Wanted" onTouchTap={() => {this.renderCatagoryPrimary(36);}}
-							nestedItems={this.renderCategories(36,37)}
-						/>,
-						<ListItem
-							key={4}
-							primaryText="Certificates" onTouchTap={() => {this.renderCatagoryPrimary(37);}}
-							nestedItems={this.renderCategories(37,42)}
+							<ListItem
+								key={1}
+								primaryText="For Sale"
+								primaryTogglesNestedList={true}
+								nestedItems={this.renderCategories(0,27)}
+							/>,
+							<ListItem
+								key={2}
+								primaryText="Services"
+								primaryTogglesNestedList={true}
+								nestedItems={this.renderCategories(27,36)}
+							/>,
+							<ListItem
+								key={3}
+								primaryText="Wanted"
+								primaryTogglesNestedList={true}
+								nestedItems={this.renderCategories(36,37)}
+							/>,
+							<ListItem
+								key={4}
+								primaryText="Certificates"
+								primaryTogglesNestedList={true}
+								nestedItems={this.renderCategories(37,42)}
 						/>]} />
 					<Link to="">
 						<MenuItem

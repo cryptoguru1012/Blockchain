@@ -34876,6 +34876,8 @@
 
 	var _Menu = __webpack_require__(523);
 
+	var _Menu2 = _interopRequireDefault(_Menu);
+
 	var _Frontpage = __webpack_require__(772);
 
 	var _Frontpage2 = _interopRequireDefault(_Frontpage);
@@ -34950,7 +34952,7 @@
 					_react2.default.createElement(
 						'div',
 						{ style: { position: "relative" } },
-						_react2.default.createElement(_Menu.MenuBrowser, { searchData: this.state.dataToSearch, stateUrl: this.props.location.pathname }),
+						_react2.default.createElement(_Menu2.default, { searchData: this.state.dataToSearch, stateUrl: this.props.location.pathname }),
 						_react2.default.createElement(
 							'div',
 							{ style: { marginTop: muiTheme.appBar.height } },
@@ -41231,11 +41233,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.MenuBrowser = exports.Menu = undefined;
-
-	var _Menu = __webpack_require__(524);
-
-	var _Menu2 = _interopRequireDefault(_Menu);
 
 	var _MenuBrowser = __webpack_require__(751);
 
@@ -41243,153 +41240,10 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = _Menu2.default;
-	exports.Menu = _Menu2.default;
-	exports.MenuBrowser = _MenuBrowser2.default;
+	exports.default = _MenuBrowser2.default;
 
 /***/ }),
-/* 524 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactBootstrap = __webpack_require__(525);
-
-	var _reactRouter = __webpack_require__(185);
-
-	var _AppBar = __webpack_require__(683);
-
-	var _AppBar2 = _interopRequireDefault(_AppBar);
-
-	var _Drawer = __webpack_require__(724);
-
-	var _Drawer2 = _interopRequireDefault(_Drawer);
-
-	var _IconButton = __webpack_require__(686);
-
-	var _IconButton2 = _interopRequireDefault(_IconButton);
-
-	var _MenuItem = __webpack_require__(731);
-
-	var _MenuItem2 = _interopRequireDefault(_MenuItem);
-
-	var _icon = __webpack_require__(749);
-
-	var _icon2 = _interopRequireDefault(_icon);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	__webpack_require__(750);
-
-	var Menu = function (_Component) {
-	  _inherits(Menu, _Component);
-
-	  function Menu(props) {
-	    _classCallCheck(this, Menu);
-
-	    var _this = _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, props));
-
-	    _this.state = { open: false };
-	    return _this;
-	  }
-
-	  _createClass(Menu, [{
-	    key: 'handleToggle',
-	    value: function handleToggle() {
-	      this.setState({ open: !this.state.open });
-	    }
-	  }, {
-	    key: 'cerrar',
-	    value: function cerrar() {
-	      this.setState({ open: false });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          _reactBootstrap.Navbar,
-	          { fixedTop: true, fluid: true, staticTop: true, className: 'navegador' },
-	          _react2.default.createElement(_AppBar2.default, {
-	            title: 'moovr',
-	            titleStyle: { fontWeight: 'bold' },
-	            iconClassNameRight: 'muidocs-icon-navigation-expand-more',
-	            className: 'appbar-color',
-	            onLeftIconButtonTouchTap: this.handleToggle.bind(this),
-	            iconElementLeft: _react2.default.createElement(
-	              _IconButton2.default,
-	              null,
-	              _react2.default.createElement(_icon2.default, null)
-	            ),
-	            onTouchTap: this.handleToggle.bind(this)
-	          })
-	        ),
-	        _react2.default.createElement(
-	          _Drawer2.default,
-	          {
-	            open: this.state.open,
-	            docked: false,
-	            onRequestChange: function onRequestChange(open) {
-	              return _this2.setState({ open: open });
-	            }
-	          },
-	          _react2.default.createElement(_AppBar2.default, { showMenuIconButton: false, title: 'Menu' }),
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: '/' },
-	            _react2.default.createElement(_MenuItem2.default, { onTouchTap: this.cerrar.bind(this), primaryText: 'Home' })
-	          ),
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: '/store/newItem' },
-	            _react2.default.createElement(_MenuItem2.default, { onTouchTap: this.cerrar.bind(this), primaryText: 'Sell' })
-	          ),
-	          _react2.default.createElement(_MenuItem2.default, {
-	            disabled: true,
-	            onTouchTap: this.cerrar.bind(this),
-	            primaryText: 'About'
-	          }),
-	          _react2.default.createElement(_MenuItem2.default, {
-	            disabled: true,
-	            onTouchTap: this.cerrar.bind(this),
-	            primaryText: 'Register'
-	          }),
-	          _react2.default.createElement(_MenuItem2.default, {
-	            disabled: true,
-	            onTouchTap: this.cerrar.bind(this),
-	            primaryText: 'Profile'
-	          })
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Menu;
-	}(_react.Component);
-
-	exports.default = Menu;
-
-/***/ }),
+/* 524 */,
 /* 525 */
 /***/ (function(module, exports, __webpack_require__) {
 

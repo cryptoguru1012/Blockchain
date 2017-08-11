@@ -90,7 +90,7 @@ function generateInitialMarkers(items) {
         const distanceArr = geolib.orderByDistance(currentLocation, [item.distance]);
         const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
 
-        if (miles < 200) {
+        if (miles > 0) {
           markers.push({
             position: item.position,
             content: item.description,

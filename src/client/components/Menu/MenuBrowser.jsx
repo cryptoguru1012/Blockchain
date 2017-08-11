@@ -38,26 +38,27 @@ class MenuBrowser extends React.Component {
 	}
 	renderCatagoryPrimary(min) {
 		var serchParam={},serchString;
+		
+		if (this.props.stateUrl !== "/")
+		{
+			browserHistory.push('/');	
+		}
+
 		this.props.categories.categories.map((cat, i) => {
-		if( i === min) {
+		if (i === min) {
 			serchString=cat.cat;
 			if (serchString.indexOf('>') ==-1){
 				serchString=cat.cat;
-			}
-			else if(serchString.indexOf('>') !=-1){
+			} else if (serchString.indexOf('>') !=-1){
 				serchString=serchString.substring(0,serchString.indexOf('>'))
-
 			}
 			serchParam = {
 				category: serchString.trim()}
 				this.props.onSearch(serchParam);
 				this.handleToggle();
 			}
-
-		})
-
-	
-}
+		})	
+	}
 	componentDidMount() {
 		let data = {
 			regexp: this.props.searchData,
@@ -118,6 +119,7 @@ class MenuBrowser extends React.Component {
 			};
 			this.setState({category: value.trim() });
 			this.props.onSearch(data);
+
 			this.handleToggle();
 	}
 
@@ -217,29 +219,25 @@ class MenuBrowser extends React.Component {
 								primaryText="All"
 								containerElement={<Link to=""/>}
 							/>,
-							<ListItem
-								key={1}
-								primaryText="For Sale"
-								primaryTogglesNestedList={true}
-								nestedItems={this.renderCategories(0,27)}
-							/>,
-							<ListItem
-								key={2}
-								primaryText="Services"
-								primaryTogglesNestedList={true}
-								nestedItems={this.renderCategories(27,36)}
-							/>,
-							<ListItem
-								key={3}
-								primaryText="Wanted"
-								primaryTogglesNestedList={true}
-								nestedItems={this.renderCategories(36,37)}
-							/>,
-							<ListItem
-								key={4}
-								primaryText="Certificates"
-								primaryTogglesNestedList={true}
-								nestedItems={this.renderCategories(37,42)}
+						<ListItem
+							key={1}
+							primaryText="For Sale" onTouchTap={() => {this.renderCatagoryPrimary(0);}}
+							nestedItems={this.renderCategories(0,27)}
+						/>,
+						<ListItem
+							key={2}
+							primaryText="Services" onTouchTap={() => {this.renderCatagoryPrimary(27);}}
+							nestedItems={this.renderCategories(27,36)}
+						/>,
+						<ListItem
+							key={3}
+							primaryText="Wanted" onTouchTap={() => {this.renderCatagoryPrimary(36);}}
+							nestedItems={this.renderCategories(36,37)}
+						/>,
+						<ListItem
+							key={4}
+							primaryText="Certificates" onTouchTap={() => {this.renderCatagoryPrimary(37);}}
+							nestedItems={this.renderCategories(37,42)}
 						/>]} />
 					<Link to="">
 						<MenuItem
@@ -252,7 +250,7 @@ class MenuBrowser extends React.Component {
 						<MenuItem
 							disabled
 							onTouchTap={this.handleToggle}
-								primaryText="Register"
+							primaryText="Register"
 						/>
 					</Link>
 					<Link to="">

@@ -54,7 +54,9 @@ class BrowserCarousel extends React.Component {
 		return this.props.items.map((item, i) => (
 			<a key={i} href={item.linkRef}>
 				<div className="item-slider">
-					<img alt={item.title} src={item.linkMedia.secureUrl} />
+					<div className="img-slider">
+						<img alt={item.title} src={item.linkMedia.secureUrl} />
+					</div>
 					<div className="content-slider">
 						<div className="content-text">
 							<span className="comment">{item.title}</span>

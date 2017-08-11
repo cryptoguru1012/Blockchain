@@ -8,6 +8,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MenuBrowser from '../Menu';
 import Frontpage from '../Frontpage';
 
+require('./styles/app.scss');
+
 const propTypes = {
 	dispatch: PropTypes.func,
 	userAgent: PropTypes.string,

@@ -126,6 +126,20 @@ class NewItemSelector extends React.Component {
     this.props.image.loaded = false;
   }
   
+  componentDidMount() {
+
+    /* --------- This loads Google Map API --------- */
+    let ref = window.document.getElementsByTagName('script')[0];
+    let apiKey = 'AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g';
+    let libraries = 'places';
+		let src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=${libraries}`;
+		let script = window.document.createElement('script');
+		script.src = src;
+		script.async = true;
+    ref.parentNode.insertBefore(script, ref);
+    /* --------------------------------------------- */
+    
+	}
 
 is_iOS() {
   let iDevices = [

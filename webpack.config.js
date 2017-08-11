@@ -33,6 +33,10 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.css'],
   },
+  external: {
+    'Config': JSON.stringify(require('./config_env.json'))
+    //'Config': JSON.stringify(production ? require('./config.prod.json') : require('./config.dev.json'))
+  },
   module: {
     loaders: [
       {

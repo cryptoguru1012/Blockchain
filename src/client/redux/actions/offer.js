@@ -4,14 +4,12 @@ export const LOAD_ERROR = 'LOAD_ERROR';
 export const LOAD_SUCCESS = 'LOAD_SUCCESS';
 
 function loadStart(payload) {
-	console.log('loadStart');
 	return {
 		type: LOAD_START
 	};
 }
 
 function loadError(payload) {
-	console.log('loadError');
 	return {
 		type: LOAD_ERROR,
 		message: payload
@@ -19,7 +17,6 @@ function loadError(payload) {
 }
 
 function loadSuccess(payload) {
-	console.log('loadSuccess');
 	return {
 		type: LOAD_SUCCESS,
 		data: payload
@@ -42,7 +39,6 @@ export function getOfferData(guid) {
 			})
 			.then(res => res.json())
 			.then(res => {
-				console.log(res);
 				if (typeof res === 'string')
 					dispatch(loadError(res))
 				else

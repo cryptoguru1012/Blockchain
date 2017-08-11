@@ -8,16 +8,23 @@ import Store from './components/Store';
 import Browser from './components/Browser';
 import Offer from './components/Offer';
 
+const NoMatch = ({ location }) => (
+  <div>
+    <h3>No match for <code>{location.pathname}</code></h3>
+  </div>
+)
+
 const Routes = (
     <Router render={(props) => <ReduxAsyncConnect {...props}/>} history={browserHistory}>
         <Route path='/' component={App}>
             <IndexRoute component={Browser}/>
             <Route path='/register' component={Register}/>
-            <Route path='/store/newItem' component={Store.NewItem}/>
+            <Route path='/store/newItem' component={Store.NewItemSelector}/>
             <Route path='/offer' component={Offer}>
                 <Route path=':id' component={Offer}/>
             </Route>
         </Route>
+        <Route path='*' component={NoMatch}/>
     </Router>
 );
 

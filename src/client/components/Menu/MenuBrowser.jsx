@@ -38,27 +38,27 @@ class MenuBrowser extends React.Component {
 	}
 	renderCatagoryPrimary(min) {
 		var serchParam={},serchString;
+		
+		if (this.props.stateUrl !== "/")
+		{
+			browserHistory.push('/');	
+		}
+
 		this.props.categories.categories.map((cat, i) => {
-		if( i === min) {
+		if (i === min) {
 			serchString=cat.cat;
 			if (serchString.indexOf('>') ==-1){
 				serchString=cat.cat;
-			}
-			else if(serchString.indexOf('>') !=-1){
+			} else if (serchString.indexOf('>') !=-1){
 				serchString=serchString.substring(0,serchString.indexOf('>'))
-
 			}
 			serchParam = {
 				category: serchString.trim()}
 				this.props.onSearch(serchParam);
 				this.handleToggle();
 			}
-
-		})
-
-	//console.log(this.props);
-	
-}
+		})	
+	}
 	componentDidMount() {
 		let data = {
 			regexp: this.props.searchData,
@@ -95,13 +95,11 @@ class MenuBrowser extends React.Component {
 			}
 		}else{
 			/*acz --> this ELSE is for do something when search input will appear */
-			console.log("Search input will appear");
 		}
 		this.setState({ activeSearch: !this.state.activeSearch });
 	}
 
 	handleCategory(value) {
-		console.log(value);
 		if (this.props.stateUrl !== "/")
 		{
 		if (typeof(Storage) !== "undefined") {
@@ -116,15 +114,12 @@ class MenuBrowser extends React.Component {
 
 			
 		}
-
 			let data = {
 				category: value.trim()
 			};
-
 			this.setState({category: value.trim() });
-
 			this.props.onSearch(data);
-			//console.log('data submited: ', data);
+
 			this.handleToggle();
 	}
 
@@ -216,6 +211,7 @@ class MenuBrowser extends React.Component {
 					</Link>
 					<ListItem
 						primaryText="Categories"
+						primaryTogglesNestedList={true}
 						nestedItems={[
 							<MenuItem
 								key={0}

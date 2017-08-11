@@ -7,11 +7,9 @@ class GaleryItemBrowser extends React.Component {
   constructor(props) {
     super(props);
     this.renderSlide = this.renderSlide.bind(this);
-    console.log('run GaleryItemBrowser');
   }
 
   renderSlide() {
-    console.log(this.props.images);
     return this.props.images.map((image, i) => {
       return (
         <img style={{width: '100%'}} key={i} src={image} />

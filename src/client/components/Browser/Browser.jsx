@@ -28,7 +28,7 @@ const filterItems = [
 	{
 		value: 'SHOW_TEXT',
 		name: 'Text only',
-	}
+	},
 ];
 
 const orderItems = [
@@ -76,15 +76,10 @@ class Browser extends React.Component {
 	}
 
 	componentDidMount() {
-		let data = {
-			from: "",
-			regexp: "",
-			safesearch: 'Yes',
-			category: ""
-		};
-		this.props.onSearch(data);
 		this.props.getFeatures();
+	
 	}
+	
 
 	showNextPage(){
 		// go next

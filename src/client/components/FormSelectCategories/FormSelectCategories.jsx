@@ -41,7 +41,6 @@ class FormSelectCategories extends React.Component {
 
 function mapStateToProps(state) {
   const categories = state.categories;
-  console.log(categories);
 
   return { categories };
 }

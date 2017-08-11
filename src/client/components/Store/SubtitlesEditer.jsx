@@ -229,7 +229,6 @@ class SubtitlesEditer extends React.Component {
 
 	render() {
 		this.sanitizeSubtitles(this.state.videoDuration);
-		console.log(this.sortSubtiltes());
 		return (
 			<Row className="content-subtitles" style={styles.subtitlesContent}>
 				<Col lg={8} lgOffset={2} xs={12} style={styles.centerText}>

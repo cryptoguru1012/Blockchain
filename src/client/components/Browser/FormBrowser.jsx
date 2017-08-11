@@ -75,8 +75,6 @@ class FormBrowser extends React.Component {
     if (data.category) data2.category = data.category;
     // if (data.regexp)
     data2.regexp = data.regexp;
-
-    console.log('data ->', data2);
     this.props.onSearch(data2);
   }
 

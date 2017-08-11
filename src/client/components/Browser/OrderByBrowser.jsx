@@ -20,7 +20,6 @@ class OrderByBrowser extends React.Component {
     this.setState({
       selected: value,
     });
-    console.log(value);
     this.props.onOrder(value);
   }
 

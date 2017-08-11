@@ -15,7 +15,7 @@ const styles = {
 	video: {
 		width: '100%',
 		display: 'block',
-		//opacity: 0
+		opacity: 1
 	},
 	videoBar: {
 		position: 'relative',
@@ -66,7 +66,7 @@ class VideoPlayer extends React.Component {
 		this.player = false;
 	}
 
-	generateThumbnail() {
+/*	generateThumbnail() {
 		let self = this;
 		const c = document.createElement("canvas");
 		const ctx = c.getContext("2d");
@@ -75,15 +75,14 @@ class VideoPlayer extends React.Component {
 		ctx.drawImage(this.player, 0, 0, 160, 90);
 		self.player.poster =  c.toDataURL("image/png");
 
-		//let dataurl = c.toDataURL();
-		//document.getElementById('poster').appendChild(c)
-		//console.log("image :",dataurl);
+		let dataurl = c.toDataURL();
+		document.getElementById('poster').appendChild(c)
 	}
-
+*/
 	componentDidMount() {
 		let self = this, duration = 0;
 		this.player = this.refs.player;
-		this.player.src = this.props.url;//"http://192.168.0.32:8082/hootr/Hootr/59142cff30366323e4aa03b7_20170511150907_133/test.mp4";//
+		this.player.src = this.props.url+"#t=0.8"//"http://192.168.0.32:8082/hootr/Hootr/59142cff30366323e4aa03b7_20170511150907_133/test.mp4";//
 		this.player.type= "video/mp4";
 		this.player.muted = (this.props.muted) ? true: false;
         this.player.preload = "auto";
@@ -92,11 +91,13 @@ class VideoPlayer extends React.Component {
 			self.player && self.setState({ play: false });
 		});
 		this.player.addEventListener('seeked', function() {
-             self.generateThumbnail();
+            // self.generateThumbnail();
 		}, false);
 
-		this.player.addEventListener('loadeddata', () =>{
-			this.player.currentTime = 1
+		this.player.addEventListener('loadeddata', () => {
+			if(this.player) {
+				this.player.currentTime = 0;
+			}
 		})
 
 		this.player.addEventListener('loadedmetadata', (e) => {
@@ -126,7 +127,6 @@ class VideoPlayer extends React.Component {
 			self.player.track.mode = "showing";
 
 			// load subtitles
-			console.log(self.props.subtitles);
 			self.props.subtitles.map(subtitle => {
 				let start = this.setTimetoSeconds(subtitle.startTime)
 					, end = this.setTimetoSeconds(subtitle.endTime)
@@ -177,18 +177,13 @@ class VideoPlayer extends React.Component {
 
 		if (!self.player.track)
 			return false;
-
-		console.log('will remove', self.player.track.cues);
 		self.removeSubtitles();
-		console.log('revoved cues');
-
 		self.setSubtitles();
-		console.log('added', self.player.track.cues);
 	}
 
 	handleVideoPlay() {
 		if (this.player) {
-			styles.video.opacity = 1
+			//styles.video.opacity = 1
 			this.setState({ play: true });
 			this.player.play();
 		}
@@ -296,10 +291,19 @@ class VideoPlayer extends React.Component {
 		}
 		return (
 			<Row className="video-component" style={styles.videoContainer}>
-				<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
-					<video poster={this.state.poster} ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
-					</video>
-				</Col>
+				{this.props.fullView && (
+					<div>
+						<video poster={this.state.poster} ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
+						</video>
+					</div>
+				)}
+				{!this.props.fullView && (
+					<Col xs={12} md={6} mdOffset={3} lg={6} lgOffset={3}>
+						<video preload="metadata" poster={this.state.poster} ref="player" style={styles.video} onMouseLeave={e => handleMouseLeave(e)} onMouseOver={e => handleMouseOver(e)} onClick={this.handleVideoPlay}>
+						</video>
+					</Col>
+				)}
+				
 				{this.renderControls()}
 			</Row>
 		);

@@ -5,12 +5,18 @@ import Formsy from 'formsy-react';
 import { RaisedButton, MenuItem, Snackbar } from 'material-ui';
 import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
+import { geolocated } from 'react-geolocated';
 
-const spinnerStyle = {
-	margin: 'auto',
-	display: 'block',
-	padding: 5
-}
+const myStyle = {
+	spinnerStyle: {
+		margin: 'auto',
+		display: 'block',
+		padding: '5'
+	},
+	colMargin: {
+		margin: '0 -5px 0 -5px'
+	}
+};
 
 class OfferForm extends React.Component {
 	constructor(props) {
@@ -27,7 +33,9 @@ class OfferForm extends React.Component {
 
 		this.state = {
 			autoDescription: this.getDescription(),
-			canSubmit: false
+			canSubmit: false,
+			latitude: '',
+			longitude: ''
 		};
 
 	}
@@ -67,7 +75,7 @@ class OfferForm extends React.Component {
 	handleSnackbarErrorRequestClose() {
 		this.props.showSnackbar();
 	}
-
+	
 	handleSubmit(data) {
 		let description = {
 			text: data.description,
@@ -84,7 +92,8 @@ class OfferForm extends React.Component {
 				description: JSON.stringify(description),
 				currency: data.currency,
 				paymentoptions: data.paymentOptions,
-				private: data.certificate
+				private: data.certificate,
+				geolocation: `${data.latitude},${data.longitude}`
 			};
 		
 		this.props.onCreate(JSON.stringify(payload));
@@ -117,6 +126,18 @@ class OfferForm extends React.Component {
 		})
 	}
 
+	componentWillReceiveProps(props){
+
+		if(props.coords && !props.coords.positionError)
+			this.setState({latitude: props.coords.latitude, longitude: props.coords.longitude})
+		
+		else
+			fetch('http://ip-api.com/json')
+				.then(res => res.json())
+				.then((data) => {
+					this.setState({latitude: data.lat, longitude: data.lon})
+				})
+	}
 	render() {
 		return ( 
 			<Row>
@@ -163,6 +184,34 @@ class OfferForm extends React.Component {
 							fullWidth
 							multiLine
 						/>
+						<Row>
+							<Col xs={6}>
+								<FormsyText
+									name="latitude"
+									value={this.state.latitude}
+									floatingLabelText="Latitude"
+									hintText="Item latitude"
+									validations="isNumeric"
+									validationError="Only Numbers."
+									required
+									requiredError="This field is required"
+									fullWidth
+								/>
+							</Col>
+							<Col xs={6}>
+							<FormsyText
+								name="longitude"
+								value={this.state.longitude}
+								floatingLabelText="Longitude"
+								hintText="Item longitude"
+								validations="isNumeric"
+								validationError="Only Numbers."
+								required
+								requiredError="This field is required"
+								fullWidth
+							/>
+							</Col>
+						</Row>
 						{
 							// <FormsyToggle name="certificate" label="Certificate" />
 						}
@@ -179,7 +228,7 @@ class OfferForm extends React.Component {
 					</Formsy.Form>
 					
 					{this.props.newItem.loading && !this.props.newItem.success &&
-						<CircularProgress size={50} style={spinnerStyle} />
+						<CircularProgress size={50} style={myStyle.spinnerStyle} />
 					}
 					<Snackbar
 						open={this.props.newItem.success}
@@ -199,5 +248,10 @@ class OfferForm extends React.Component {
 	}
 }
 
-export default OfferForm;
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(OfferForm);
 

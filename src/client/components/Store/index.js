@@ -1,7 +1,8 @@
-import NewItem from './NewItem';
+import NewItemSelector from './NewItemSelector';
+
 
 const Store = {
-    NewItem
+    NewItemSelector
 };
 
 export default Store;

@@ -13,7 +13,7 @@ const carouselSettings = {
 	slidesToShow: 4,
 	slidesToScroll: 1,
 	autoplay: true,
-	adaptiveHeight: true,
+	adaptiveHeight: false,
 	autoplaySpeed: 3000,
 	pauseOnHover: true,
 	responsive: [

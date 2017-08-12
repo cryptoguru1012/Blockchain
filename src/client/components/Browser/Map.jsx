@@ -3,9 +3,11 @@ import { default as React, Component } from 'react';
 import raf from 'raf';
 import canUseDOM from 'can-use-dom';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { withGoogleMap, GoogleMap, Circle, InfoWindow, Marker } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import geolib from 'geolib';
+import CreateRadius from './CreateRadius';
 
 const googleMapURL =
   'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
@@ -38,7 +40,6 @@ const GeolocationExampleGoogleMap = withScriptjs(
             strokeWeight: 1,
           }}
         />}
-      >
       {props.markers.map((marker, index) => {
         const onClick = () => props.onMarkerClick(marker);
         const onCloseClick = () => props.onCloseClick(marker);
@@ -60,6 +61,9 @@ const GeolocationExampleGoogleMap = withScriptjs(
                   </strong>
                   <br />
                   <h3>Where we can add offer details!</h3>
+                  <Link to="/items">
+                    Click here for item: {marker.number}
+                  </Link>
                 </div>
               </InfoWindow>}
           </Marker>
@@ -69,8 +73,7 @@ const GeolocationExampleGoogleMap = withScriptjs(
   ),
 );
 
-function generateInitialMarkers(items) {
-  console.log('item', items);
+function generateInitialMarkers(items, userRadius) {
   const markers = [];
   items.map((item, i) => {
     const newGeoArr = item.geolocation.split(',');
@@ -89,10 +92,10 @@ function generateInitialMarkers(items) {
         };
         const distanceArr = geolib.orderByDistance(currentLocation, [item.distance]);
         const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
-
-        if (miles < 200) {
+        if (miles <= userRadius) {
           markers.push({
             position: item.position,
+            number: i,
             content: item.description,
             showInfo: false,
           });
@@ -100,8 +103,6 @@ function generateInitialMarkers(items) {
       });
     }
   });
-
-  console.log('markers: ', markers);
   return markers;
 }
 
@@ -112,7 +113,7 @@ class OfferMap extends Component {
       center: null,
       content: null,
       radius: 100000,
-      markers: generateInitialMarkers(this.props.items) || [],
+      markers: generateInitialMarkers(this.props.items, 25) || [],
     };
 
     const isUnmounted = false;
@@ -198,20 +199,74 @@ class OfferMap extends Component {
     this.isUnmounted = true;
   }
 
+  submitRadius(userRadius) {
+    const { items } = this.props;
+    const markers = [];
+    items.map((item, i) => {
+      const newGeoArr = item.geolocation.split(',');
+      if (
+        newGeoArr.length > 1 &&
+        newGeoArr !== '' &&
+        newGeoArr[0] !== undefined &&
+        newGeoArr[0] !== null
+      ) {
+        item.position = { lat: Number(newGeoArr[0]), lng: Number(newGeoArr[1]) };
+        item.distance = { latitude: Number(newGeoArr[0]), longitude: Number(newGeoArr[1]) };
+        geolocation.getCurrentPosition((position) => {
+          const currentLocation = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          const distanceArr = geolib.orderByDistance(currentLocation, [item.distance]);
+          const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
+          if (miles <= userRadius) {
+            markers.push({
+              position: item.position,
+              number: i,
+              content: item.description,
+              showInfo: false,
+            });
+            this.setState({
+              markers,
+            });
+          }
+        });
+      }
+    });
+    this.setState({
+      markers,
+    });
+  }
+
   render() {
     return (
-      <GeolocationExampleGoogleMap
-        googleMapURL={googleMapURL}
-        loadingElement={<div style={{ height: '100%' }}>loading...</div>}
-        containerElement={<div style={{ height: '100%' }} />}
-        mapElement={<div style={{ height: '100%' }} />}
-        center={this.state.center}
-        content={this.state.content}
-        radius={this.state.radius}
-        onMarkerClick={this.handleMarkerClick}
-        onCloseClick={this.handleCloseClick}
-        markers={this.state.markers}
-      />
+      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+        <div
+          style={{
+            border: '2px solid grey',
+            margin: '70px 0px 20px 0px',
+            width: '500px',
+            height: '500px',
+          }}
+        >
+          <GeolocationExampleGoogleMap
+            googleMapURL={googleMapURL}
+            loadingElement={<div style={{ height: '100%' }} />}
+            containerElement={<div style={{ height: '100%' }} />}
+            mapElement={<div style={{ height: '100%' }} />}
+            center={this.state.center}
+            content={this.state.content}
+            radius={this.state.radius}
+            onMarkerClick={this.handleMarkerClick}
+            onCloseClick={this.handleCloseClick}
+            markers={this.state.markers}
+          />
+        </div>
+        <div style={{ alignSelf: 'center', backgroundColor: 'rgba(255,255,255, 0.1)' }}>
+          <CreateRadius radiusChange={this.submitRadius.bind(this)} />
+          Number of markers shown: {this.state.markers.length}
+        </div>
+      </div>
     );
   }
 }

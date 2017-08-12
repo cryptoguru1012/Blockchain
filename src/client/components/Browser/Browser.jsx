@@ -109,11 +109,7 @@ class Browser extends React.Component {
       return <div>Loading...</div>;
     }
 
-    return (
-      <div style={{ width: '500px', height: '500px' }}>
-        {' '}<OfferMap items={items} />{' '}
-      </div>
-    );
+    return <OfferMap items={items} />;
   }
 
   render() {

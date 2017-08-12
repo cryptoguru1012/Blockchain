@@ -2,12 +2,16 @@ import React from 'react';
 
 import CircularProgress from 'material-ui/CircularProgress';
 import Formsy from 'formsy-react';
-import { RaisedButton, MenuItem, Snackbar } from 'material-ui';
+import { RaisedButton, FlatButton, MenuItem, Snackbar } from 'material-ui';
+import FontIcon from 'material-ui/FontIcon';
 import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
+import {grey300, grey400, grey500, grey700} from 'material-ui/styles/colors';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { geolocated } from 'react-geolocated';
+
+require ('./style/OfferForm.scss');
 
 const myStyle = {
 	spinnerStyle: {
@@ -32,6 +36,7 @@ class OfferForm extends React.Component {
 		this.getDescription = this.getDescription.bind(this);
 		this.addrHandleChange = this.addrHandleChange.bind(this);
 		this.addrHandleSelect = this.addrHandleSelect.bind(this);
+		this.latlngToAddress = this.latlngToAddress.bind(this);
 
 
 		// autofill description with subtitles
@@ -171,8 +176,11 @@ class OfferForm extends React.Component {
 		let latlng = {lat: lat, lng: lng};
 		geocoder.geocode({'location': latlng}, (results, status) => {
 			this.setState({
+				latitude: lat,
+				longitude: lng,
 				address: results[0].formatted_address,
-				place_id: results[0].place_id})
+				place_id: results[0].place_id}
+				)
 		})
 	}
 
@@ -192,12 +200,17 @@ class OfferForm extends React.Component {
 		
 	}
 	render() {
-	 console.log('STATE --> ', this.state)
-		
+	 console.log('State --> ', this.state)
+		const cssClasses = {
+			root: 'form-group',
+			input: 'Demo__search-input',
+			autocompleteContainer: 'Demo__autocomplete-container',
+		}	
+
 		const addrAutocompleteItem = ({ formattedSuggestion }) => (
-      <div className="Demo__suggestion-item">
-        <i className='fa fa-map-marker Demo__suggestion-icon'/>
-        <strong>{formattedSuggestion.mainText}</strong>{' '}
+      <div className="Demo__suggestion-item" style={{zIndex: 3000}}>
+        <FontIcon style={{color: grey700}} className="material-icons  Demo__suggestion-icon">location_on</FontIcon>
+        <strong className="mainText">{formattedSuggestion.mainText},</strong>
         <small className="text-muted">{formattedSuggestion.secondaryText}</small>
       </div>)
 
@@ -258,31 +271,36 @@ class OfferForm extends React.Component {
 							multiLine
 						/>
 						<Row>
-							<Col xs={6}>
-								<FormsyText
-									name="latitude"
-									value={this.state.latitude}
-									floatingLabelText="Latitude"
-									hintText="Item latitude"
-									validations="isNumeric"
-									validationError="Only Numbers."
+							<Col xs={12}>
+								<span style={{color: grey500}} className="floatText">Geolocation</span>
+							</Col>
+							<Col xs={12} md={1}>
+								<FlatButton
+									backgroundColor={grey300}
+									hoverColor={grey400}
+									primary={true}
+									icon={<FontIcon className="material-icons">gps_fixed</FontIcon>}
+									onClick={()=>this.latlngToAddress(this.props.coords.latitude, this.props.coords.longitude)}
+								/>
+							</Col>
+							<Col xs={12} md ={11}>
+								<PlacesAutocomplete
+									onSelect={this.addrHandleSelect}
+									autocompleteItem={addrAutocompleteItem}
+									onEnterKeyDown={this.addrHandleSelect}
+									classNames={cssClasses}
+									inputProps={addrInputProps}
+								/>
+								{/* <FormsyText
+									name="geolocation"
+									value={this.state.address}
+									floatingLabelText="Geolocation"
+									hintText="Your Address"
+									validations="isWords"
 									required
 									requiredError="This field is required"
 									fullWidth
-								/>
-							</Col>
-							<Col xs={6}>
-							<FormsyText
-								name="longitude"
-								value={this.state.longitude}
-								floatingLabelText="Longitude"
-								hintText="Item longitude"
-								validations="isNumeric"
-								validationError="Only Numbers."
-								required
-								requiredError="This field is required"
-								fullWidth
-							/>
+								/> */}
 							</Col>
 							<Col>
 								{!this.props.newItem.loading &&
@@ -295,32 +313,11 @@ class OfferForm extends React.Component {
 									/>
 								}
 							</Col>
-							<Col xs={12}>
-								<FormsyText
-									name="longitude"
-									value={this.state.address}
-									floatingLabelText="Geolocation"
-									hintText="Your Address"
-									validations="isWords"
-									required
-									requiredError="This field is required"
-									fullWidth
-								/>
-								<div>
-									<PlacesAutocomplete
-										onSelect={this.addrHandleSelect}
-										autocompleteItem={addrAutocompleteItem}
-										onEnterKeyDown={this.addrHandleSelect}
-										inputProps={addrInputProps}
-									/>
-								</div>
-							</Col>
-							
 						</Row>
 						{
 							// <FormsyToggle name="certificate" label="Certificate" />
 						}
-
+						{/* aqui va el boton submit */}
 					</Formsy.Form>
 					
 					{this.props.newItem.loading && !this.props.newItem.success &&

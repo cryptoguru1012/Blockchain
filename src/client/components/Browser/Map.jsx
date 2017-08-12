@@ -6,6 +6,15 @@ import { connect } from 'react-redux';
 import { withGoogleMap, GoogleMap, Circle, InfoWindow, Marker } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import geolib from 'geolib';
+import ItemList from './ItemList'
+
+
+
+import Paper from 'material-ui/Paper';
+import Img from 'react-image'
+import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
+import Divider from 'material-ui/Divider';
 
 const googleMapURL =
   'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
@@ -49,17 +58,14 @@ const GeolocationExampleGoogleMap = withScriptjs(
             position={marker.position}
             title={(index + 1).toString()}
             onClick={onClick}
+            options={{icon: 'https://image.ibb.co/evMHxF/shopping_zone_marker_1.png'}}
           >
             {marker.showInfo &&
-              <InfoWindow onCloseClick={onCloseClick}>
+              <InfoWindow onCloseClick={onCloseClick} style={{padding:0}}>
                 <div>
-                  <strong>
-                    <h2>
-                      {marker.content}
-                    </h2>
-                  </strong>
-                  <br />
-                  <h3>Where we can add offer details!</h3>
+                    <ItemList marker={marker}/>
+                    <ItemList marker={marker}/>
+                    <ItemList marker={marker}/>
                 </div>
               </InfoWindow>}
           </Marker>
@@ -94,6 +100,11 @@ function generateInitialMarkers(items) {
           markers.push({
             position: item.position,
             content: item.description,
+            price: item.price,
+            quantity: item.quantity,
+            currency: item.currency,
+            category: item.category,
+            title: item.title,
             showInfo: false,
           });
         }
@@ -196,6 +207,10 @@ class OfferMap extends Component {
 
   componentWillUnmount() {
     this.isUnmounted = true;
+  }
+
+  sayHello() {
+    console.log('hello')
   }
 
   render() {

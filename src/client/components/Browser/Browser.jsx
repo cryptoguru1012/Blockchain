@@ -28,6 +28,10 @@ const filterItems = [
     value: 'SHOW_TEXT',
     name: 'Text only',
   },
+  {
+    value: 'SHOW_MAP',
+    name: 'Map only',
+  }
 ];
 
 const orderItems = [
@@ -129,6 +133,7 @@ class Browser extends React.Component {
                   {browser.message}
                 </h3>
               </Row>}
+              {console.log(browser)}
             {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
           <Col xs={12} style={{ marginBottom: '50px' }}>

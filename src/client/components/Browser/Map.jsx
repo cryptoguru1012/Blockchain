@@ -93,6 +93,7 @@ function generateInitialMarkers(items, userRadius) {
         };
         const distanceArr = geolib.orderByDistance(currentLocation, [item.distance]);
         const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
+
         if (miles <= userRadius) {
           markers.push({
             position: item.position,
@@ -103,6 +104,7 @@ function generateInitialMarkers(items, userRadius) {
             currency: item.currency,
             category: item.category,
             title: item.title,
+            offer: item.offer,
             showInfo: false,
           });
         }
@@ -230,6 +232,12 @@ class OfferMap extends Component {
               position: item.position,
               number: i,
               content: item.description,
+              price: item.price,
+              quantity: item.quantity,
+              currency: item.currency,
+              category: item.category,
+              title: item.title,
+              offer: item.offer,
               showInfo: false,
             });
             this.setState({

@@ -178,7 +178,6 @@ class TableViewItemsBrowser extends React.Component {
 
     render() {
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
-            console.log('item: ',item);
             const mediaData = this.getMedia(item.description);
             if(mediaData)
                 return (

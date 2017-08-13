@@ -44,8 +44,8 @@ class OfferForm extends React.Component {
 		this.state = {
 			autoDescription: this.getDescription(),
 			canSubmit: false,
-			latitude: '',
-			longitude: '',
+			coords: {},
+			originCoords: {},
 			address: '',
 			place_id:'',
 			geocodeResults: null,
@@ -107,7 +107,7 @@ class OfferForm extends React.Component {
 				currency: data.currency,
 				paymentoptions: data.paymentOptions,
 				private: data.certificate,
-				geolocation: `${this.state.latitude},${this.state.longitude}`
+				geolocation: `${this.state.coords.lat},${this.state.coords.lng}`
 			};
 		
 		this.props.onCreate(JSON.stringify(payload));
@@ -148,17 +148,15 @@ class OfferForm extends React.Component {
 	}
 	
 	addrHandleSelect(address) {
-    this.setState({
-      address,
-      loading: true
-    })
-
+		this.setState({
+			address,
+			loading: true
+		})
     geocodeByAddress(address)
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
         this.setState({
-					latitude: lat,
-					longitude: lng,
+					coords: {lat: lat, lng: lng},
           geocodeResults: 'success',
           loading: false
         })
@@ -169,15 +167,14 @@ class OfferForm extends React.Component {
           loading: false
         })
 			})
-  }
+  	}	
 
 	latlngToAddress(lat, lng) {
 		let geocoder = new google.maps.Geocoder;
 		let latlng = {lat: lat, lng: lng};
 		geocoder.geocode({'location': latlng}, (results, status) => {
 			this.setState({
-				latitude: lat,
-				longitude: lng,
+				coords: {lat: lat, lng: lng},
 				address: results[0].formatted_address,
 				place_id: results[0].place_id}
 				)
@@ -187,20 +184,26 @@ class OfferForm extends React.Component {
 	componentWillReceiveProps(props){
 
 		if(props.coords && !props.coords.positionError) {
-			this.setState({latitude: props.coords.latitude, longitude: props.coords.longitude});
+			this.setState({
+				coords: {lat:props.coords.latitude, lng:props.coords.longitude},
+				originCoords: {lat:props.coords.latitude, lng:props.coords.longitude}
+			});
 			this.latlngToAddress(props.coords.latitude, props.coords.longitude);
 		}
 		else
 			fetch('http://ip-api.com/json')
 				.then(res => res.json())
 				.then((data) => {
-					this.setState({latitude: data.lat, longitude: data.lon})
+					this.setState({
+						coords: {lat:data.lat, lng:data.lon},
+						originCoords: {lat:data.lat, lng:data.lon}
+					})
 					this.latlngToAddress(data.lat, data.lon);
 				})
 		
 	}
 	render() {
-	 console.log('State --> ', this.state)
+	 //console.log('State --> ', this.state)
 		const cssClasses = {
 			root: 'form-group',
 			input: 'Demo__search-input',
@@ -218,8 +221,8 @@ class OfferForm extends React.Component {
 			type: "text",
       value: this.state.address,
       onChange: this.addrHandleChange,
-      onBlur: () => { console.log('Blur event!'); },
-      onFocus: () => { console.log('Focused!'); },
+      onBlur: () => {}, //console.log('Blur event!'); },
+      onFocus: () => {}, //console.log('Focused!'); },
       autoFocus: false,
       placeholder: "Search Places",
       name: 'Demo__input',
@@ -227,6 +230,30 @@ class OfferForm extends React.Component {
 		}
 		return ( 
 			<Row>
+				<Row>
+					<Col xs={12} className="floatText">
+						<span style={{color: grey500}} >Geolocation</span>
+					</Col>
+					<Col xs={12} md={1}>
+						<FlatButton
+							backgroundColor={grey300}
+							hoverColor={grey400}
+							primary={true}
+							icon={<FontIcon className="material-icons">gps_fixed</FontIcon>}
+							onClick={()=>this.latlngToAddress(this.state.originCoords.lat, this.state.originCoords.lng)}
+						/>
+					</Col>
+					<Col xs={12} md ={11}>
+						<PlacesAutocomplete
+							onSelect={this.addrHandleSelect}
+							autocompleteItem={addrAutocompleteItem}
+							onEnterKeyDown={this.addrHandleSelect}
+							classNames={cssClasses}
+							inputProps={addrInputProps}
+						/>
+						
+					</Col>
+				</Row>
 				<Col xs={12}>
 					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
 						<FormsyText
@@ -270,54 +297,18 @@ class OfferForm extends React.Component {
 							fullWidth
 							multiLine
 						/>
-						<Row>
-							<Col xs={12}>
-								<span style={{color: grey500}} className="floatText">Geolocation</span>
-							</Col>
-							<Col xs={12} md={1}>
-								<FlatButton
-									backgroundColor={grey300}
-									hoverColor={grey400}
-									primary={true}
-									icon={<FontIcon className="material-icons">gps_fixed</FontIcon>}
-									onClick={()=>this.latlngToAddress(this.props.coords.latitude, this.props.coords.longitude)}
-								/>
-							</Col>
-							<Col xs={12} md ={11}>
-								<PlacesAutocomplete
-									onSelect={this.addrHandleSelect}
-									autocompleteItem={addrAutocompleteItem}
-									onEnterKeyDown={this.addrHandleSelect}
-									classNames={cssClasses}
-									inputProps={addrInputProps}
-								/>
-								{/* <FormsyText
-									name="geolocation"
-									value={this.state.address}
-									floatingLabelText="Geolocation"
-									hintText="Your Address"
-									validations="isWords"
-									required
-									requiredError="This field is required"
-									fullWidth
-								/> */}
-							</Col>
-							<Col>
-								{!this.props.newItem.loading &&
-									<RaisedButton
-										label="Send"
-										type="submit"
-										primary={false}
-										fullWidth
-										disabled={!this.state.canSubmit}
-									/>
-								}
-							</Col>
-						</Row>
 						{
 							// <FormsyToggle name="certificate" label="Certificate" />
 						}
-						{/* aqui va el boton submit */}
+						{!this.props.newItem.loading &&
+							<RaisedButton
+								label="Send"
+								type="submit"
+								primary={false}
+								fullWidth
+								disabled={!this.state.canSubmit}
+							/>
+						}
 					</Formsy.Form>
 					
 					{this.props.newItem.loading && !this.props.newItem.success &&

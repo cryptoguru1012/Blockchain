@@ -104764,8 +104764,8 @@
 			_this.state = {
 				autoDescription: _this.getDescription(),
 				canSubmit: false,
-				latitude: '',
-				longitude: '',
+				coords: {},
+				originCoords: {},
 				address: '',
 				place_id: '',
 				geocodeResults: null,
@@ -104833,7 +104833,7 @@
 					currency: data.currency,
 					paymentoptions: data.paymentOptions,
 					private: data.certificate,
-					geolocation: this.state.latitude + ',' + this.state.longitude
+					geolocation: this.state.coords.lat + ',' + this.state.coords.lng
 				};
 
 				this.props.onCreate(JSON.stringify(payload));
@@ -104884,7 +104884,6 @@
 					address: address,
 					loading: true
 				});
-
 				(0, _reactPlacesAutocomplete.geocodeByAddress)(address).then(function (results) {
 					return (0, _reactPlacesAutocomplete.getLatLng)(results[0]);
 				}).then(function (_ref) {
@@ -104892,8 +104891,7 @@
 					    lng = _ref.lng;
 
 					_this2.setState({
-						latitude: lat,
-						longitude: lng,
+						coords: { lat: lat, lng: lng },
 						geocodeResults: 'success',
 						loading: false
 					});
@@ -104913,8 +104911,7 @@
 				var latlng = { lat: lat, lng: lng };
 				geocoder.geocode({ 'location': latlng }, function (results, status) {
 					_this3.setState({
-						latitude: lat,
-						longitude: lng,
+						coords: { lat: lat, lng: lng },
 						address: results[0].formatted_address,
 						place_id: results[0].place_id });
 				});
@@ -104925,12 +104922,18 @@
 				var _this4 = this;
 
 				if (props.coords && !props.coords.positionError) {
-					this.setState({ latitude: props.coords.latitude, longitude: props.coords.longitude });
+					this.setState({
+						coords: { lat: props.coords.latitude, lng: props.coords.longitude },
+						originCoords: { lat: props.coords.latitude, lng: props.coords.longitude }
+					});
 					this.latlngToAddress(props.coords.latitude, props.coords.longitude);
 				} else fetch('http://ip-api.com/json').then(function (res) {
 					return res.json();
 				}).then(function (data) {
-					_this4.setState({ latitude: data.lat, longitude: data.lon });
+					_this4.setState({
+						coords: { lat: data.lat, lng: data.lon },
+						originCoords: { lat: data.lat, lng: data.lon }
+					});
 					_this4.latlngToAddress(data.lat, data.lon);
 				});
 			}
@@ -104939,7 +104942,7 @@
 			value: function render() {
 				var _this5 = this;
 
-				console.log('State --> ', this.state);
+				//console.log('State --> ', this.state)
 				var cssClasses = {
 					root: 'form-group',
 					input: 'Demo__search-input',
@@ -104974,12 +104977,8 @@
 					type: "text",
 					value: this.state.address,
 					onChange: this.addrHandleChange,
-					onBlur: function onBlur() {
-						console.log('Blur event!');
-					},
-					onFocus: function onFocus() {
-						console.log('Focused!');
-					},
+					onBlur: function onBlur() {}, //console.log('Blur event!'); },
+					onFocus: function onFocus() {}, //console.log('Focused!'); },
 					autoFocus: false,
 					placeholder: "Search Places",
 					name: 'Demo__input',
@@ -104988,6 +104987,47 @@
 				return _react2.default.createElement(
 					_reactBootstrap.Row,
 					null,
+					_react2.default.createElement(
+						_reactBootstrap.Row,
+						null,
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 12, className: 'floatText' },
+							_react2.default.createElement(
+								'span',
+								{ style: { color: _colors.grey500 } },
+								'Geolocation'
+							)
+						),
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 12, md: 1 },
+							_react2.default.createElement(_materialUi.FlatButton, {
+								backgroundColor: _colors.grey300,
+								hoverColor: _colors.grey400,
+								primary: true,
+								icon: _react2.default.createElement(
+									_FontIcon2.default,
+									{ className: 'material-icons' },
+									'gps_fixed'
+								),
+								onClick: function onClick() {
+									return _this5.latlngToAddress(_this5.state.originCoords.lat, _this5.state.originCoords.lng);
+								}
+							})
+						),
+						_react2.default.createElement(
+							_reactBootstrap.Col,
+							{ xs: 12, md: 11 },
+							_react2.default.createElement(_reactPlacesAutocomplete2.default, {
+								onSelect: this.addrHandleSelect,
+								autocompleteItem: addrAutocompleteItem,
+								onEnterKeyDown: this.addrHandleSelect,
+								classNames: cssClasses,
+								inputProps: addrInputProps
+							})
+						)
+					),
 					_react2.default.createElement(
 						_reactBootstrap.Col,
 						{ xs: 12 },
@@ -105043,58 +105083,13 @@
 								fullWidth: true,
 								multiLine: true
 							}),
-							_react2.default.createElement(
-								_reactBootstrap.Row,
-								null,
-								_react2.default.createElement(
-									_reactBootstrap.Col,
-									{ xs: 12 },
-									_react2.default.createElement(
-										'span',
-										{ style: { color: _colors.grey500 }, className: 'floatText' },
-										'Geolocation'
-									)
-								),
-								_react2.default.createElement(
-									_reactBootstrap.Col,
-									{ xs: 12, md: 1 },
-									_react2.default.createElement(_materialUi.FlatButton, {
-										backgroundColor: _colors.grey300,
-										hoverColor: _colors.grey400,
-										primary: true,
-										icon: _react2.default.createElement(
-											_FontIcon2.default,
-											{ className: 'material-icons' },
-											'gps_fixed'
-										),
-										onClick: function onClick() {
-											return _this5.latlngToAddress(_this5.props.coords.latitude, _this5.props.coords.longitude);
-										}
-									})
-								),
-								_react2.default.createElement(
-									_reactBootstrap.Col,
-									{ xs: 12, md: 11 },
-									_react2.default.createElement(_reactPlacesAutocomplete2.default, {
-										onSelect: this.addrHandleSelect,
-										autocompleteItem: addrAutocompleteItem,
-										onEnterKeyDown: this.addrHandleSelect,
-										classNames: cssClasses,
-										inputProps: addrInputProps
-									})
-								),
-								_react2.default.createElement(
-									_reactBootstrap.Col,
-									null,
-									!this.props.newItem.loading && _react2.default.createElement(_materialUi.RaisedButton, {
-										label: 'Send',
-										type: 'submit',
-										primary: false,
-										fullWidth: true,
-										disabled: !this.state.canSubmit
-									})
-								)
-							)
+							!this.props.newItem.loading && _react2.default.createElement(_materialUi.RaisedButton, {
+								label: 'Send',
+								type: 'submit',
+								primary: false,
+								fullWidth: true,
+								disabled: !this.state.canSubmit
+							})
 						),
 						this.props.newItem.loading && !this.props.newItem.success && _react2.default.createElement(_CircularProgress2.default, { size: 50, style: myStyle.spinnerStyle }),
 						_react2.default.createElement(_materialUi.Snackbar, {
@@ -107367,6 +107362,7 @@
 	            var _this2 = this;
 
 	            var itemsOutput = this.sortItems(this.props.items).map(function (item) {
+	                console.log('item: ', item);
 	                var mediaData = _this2.getMedia(item.description);
 	                if (mediaData) return _react2.default.createElement(
 	                    'tr',

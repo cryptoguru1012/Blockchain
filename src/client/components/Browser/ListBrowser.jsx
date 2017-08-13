@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
+import OfferMap from './Map';
 
 import TableViewItemsBrowser from './TableViewItemsBrowser';
 import GridsViewItemsBrowser from './GridsViewItemsBrowser';
@@ -48,7 +49,8 @@ class ListBrowser extends React.Component {
 			<Row>
 				{console.log(this.props.items)}
 				{this.props.items.length < 1 && this.getErrorHeader()}
-				{this.props.filter === 'SHOW_MAP' && <TableViewItemsBrowser items={this.props.items} />}
+				{this.props.filter === 'SHOW_MAP' && <OfferMap items={this.props.items} />}
+				{this.props.filter === 'SHOW_PHOTOS' && <TableViewItemsBrowser items={this.props.items}/>}
 				{this.props.filter === 'SHOW_ALL' && <TableViewItemsBrowser items={this.props.items} media={true} />}
 				{this.props.filter !== 'SHOW_TEXT' && this.props.filter !== 'SHOW_ALL' && <GridsViewItemsBrowser items={this.props.items} />}
 			</Row>

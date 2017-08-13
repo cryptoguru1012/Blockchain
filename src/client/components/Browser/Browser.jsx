@@ -108,19 +108,10 @@ class Browser extends React.Component {
     this.state.current > 0 && this.setState({ current: this.state.current - 1 });
   }
 
-  renderMap(items) {
-    if (items.length < 1) {
-      return <div>Loading...</div>;
-    }
-
-    return <OfferMap items={items} />;
-  }
-
   render() {
     const { browser, onOrder } = this.props;
     return (
       <div width="100%">
-        {this.renderMap(browser.items)}
         {browser.features.length > 0 && <BrowserCarousel items={browser.features} />}
         <Grid>
           {!browser.error && <FilterBrowser items={filterItems} />}

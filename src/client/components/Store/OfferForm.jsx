@@ -203,7 +203,6 @@ class OfferForm extends React.Component {
 		
 	}
 	render() {
-	 //console.log('State --> ', this.state)
 		const cssClasses = {
 			root: 'form-group',
 			input: 'Demo__search-input',
@@ -221,8 +220,8 @@ class OfferForm extends React.Component {
 			type: "text",
       value: this.state.address,
       onChange: this.addrHandleChange,
-      onBlur: () => {}, //console.log('Blur event!'); },
-      onFocus: () => {}, //console.log('Focused!'); },
+      onBlur: () => {},
+      onFocus: () => {},
       autoFocus: false,
       placeholder: "Search Places",
       name: 'Demo__input',

@@ -254,12 +254,17 @@ class OfferMap extends Component {
 
   render() {
     return (
-      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+      <div>
+
+      <div>
+        <CreateRadius radiusChange={this.submitRadius.bind(this)} numOffers={this.state.markers.length}/>
+      </div>
+
+      <br/>
+
         <div
           style={{
-            border: '2px solid grey',
-            margin: '70px 0px 20px 0px',
-            width: '500px',
+            width: '100%',
             height: '500px',
           }}
         >
@@ -275,10 +280,6 @@ class OfferMap extends Component {
             onCloseClick={this.handleCloseClick}
             markers={this.state.markers}
           />
-        </div>
-        <div style={{ alignSelf: 'center', backgroundColor: 'rgba(255,255,255, 0.1)' }}>
-          <CreateRadius radiusChange={this.submitRadius.bind(this)} />
-          Number of markers shown: {this.state.markers.length}
         </div>
       </div>
     );

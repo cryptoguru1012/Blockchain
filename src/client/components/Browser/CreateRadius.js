@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import Slider from 'material-ui/Slider';
+
 
 class CreateRadius extends Component {
   constructor() {
     super();
     this.state = {
-      markerRadius: 0,
+      markerRadius: 15000
     };
   }
+
 
   updateRadius(event) {
     event.preventDefault();
@@ -19,23 +22,33 @@ class CreateRadius extends Component {
     this.setState({
       markerRadius: radius,
     });
+
+    this.props.radiusChange(radius)
   }
 
   submitRadius() {
     this.props.radiusChange(this.state.markerRadius);
   }
 
+  componentDidMount() {
+     this.submitRadius()
+  }
+
+
   render() {
     return (
-      <div style={{ backgroundColor: 'rgba(255,255,255, 0.1)' }}>
-        <h4>Change Radius</h4>
+
+      <div style={{fontFamily:'Roboto', fontStyle:'normal'}}>
+        Showing {this.props.numOffers} offers within &nbsp;
         <input
           type="number"
           onChange={this.updateRadius.bind(this)}
           id="radius"
-          placeholder="radius"
+          placeholder="miles"
+          value={this.state.markerRadius}
+          style = {{width:'10%'}}
         />
-        <button onClick={this.submitRadius.bind(this)}>Change Radius</button>
+        &nbsp; miles 
         <br />
       </div>
     );

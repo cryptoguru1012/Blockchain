@@ -205,13 +205,13 @@ class OfferForm extends React.Component {
 	render() {
 		const cssClasses = {
 			root: 'form-group',
-			input: 'Geo__search-input',
-			autocompleteContainer: 'Geo__autocomplete-container',
+			input: 'GeoLoc__search-input',
+			autocompleteContainer: 'GeoLoc__autocomplete-container',
 		}	
 
 		const addrAutocompleteItem = ({ formattedSuggestion }) => (
-				<div className="Geo__suggestion-item" style={{zIndex: 3000}}>
-					<FontIcon style={{color: grey700}} className="material-icons  Geo__suggestion-icon">location_on</FontIcon>
+				<div className="GeoLoc__suggestion-item" style={{zIndex: 3000}}>
+					<FontIcon style={{color: grey700}} className="material-icons  GeoLoc__suggestion-icon">location_on</FontIcon>
 					<strong className="mainText">{formattedSuggestion.mainText},</strong>
 					<small className="text-muted">{formattedSuggestion.secondaryText}</small>
 				</div>)
@@ -224,7 +224,7 @@ class OfferForm extends React.Component {
       onFocus: () => {},
       autoFocus: false,
       placeholder: "Search Places",
-      name: 'Geo__input',
+      name: 'GeoLoc__input',
       id: "my-input-id",
 		}
 		return ( 

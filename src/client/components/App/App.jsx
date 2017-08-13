@@ -35,7 +35,7 @@ class App extends Component {
 			this.setState({viewBrowser: false});
 		}
 	}
-
+	
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.router.location.pathname === '/') {
 			this.setState({viewBrowser: true});

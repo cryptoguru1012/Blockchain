@@ -2,10 +2,16 @@ import React from 'react';
 
 import CircularProgress from 'material-ui/CircularProgress';
 import Formsy from 'formsy-react';
-import { RaisedButton, MenuItem, Snackbar } from 'material-ui';
+import { RaisedButton, FlatButton, MenuItem, Snackbar } from 'material-ui';
+import FontIcon from 'material-ui/FontIcon';
 import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
+import {grey300, grey400, grey500, grey700} from 'material-ui/styles/colors';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
+
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { geolocated } from 'react-geolocated';
+
+require ('./style/OfferForm.scss');
 
 const myStyle = {
 	spinnerStyle: {
@@ -28,14 +34,22 @@ class OfferForm extends React.Component {
 		this.handleSnackbarErrorRequestClose = this.handleSnackbarErrorRequestClose.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.getDescription = this.getDescription.bind(this);
+		this.addrHandleChange = this.addrHandleChange.bind(this);
+		this.addrHandleSelect = this.addrHandleSelect.bind(this);
+		this.latlngToAddress = this.latlngToAddress.bind(this);
+
 
 		// autofill description with subtitles
 
 		this.state = {
 			autoDescription: this.getDescription(),
 			canSubmit: false,
-			latitude: '',
-			longitude: ''
+			coords: {},
+			originCoords: {},
+			address: '',
+			place_id:'',
+			geocodeResults: null,
+			addrLoading: false
 		};
 
 	}
@@ -93,7 +107,7 @@ class OfferForm extends React.Component {
 				currency: data.currency,
 				paymentoptions: data.paymentOptions,
 				private: data.certificate,
-				geolocation: `${data.latitude},${data.longitude}`
+				geolocation: `${this.state.coords.lat},${this.state.coords.lng}`
 			};
 		
 		this.props.onCreate(JSON.stringify(payload));
@@ -126,21 +140,120 @@ class OfferForm extends React.Component {
 		})
 	}
 
+	addrHandleChange(address) {
+    this.setState({
+      address,
+      geocodeResults: null
+		})
+	}
+	
+	addrHandleSelect(address) {
+		this.setState({
+			address,
+			loading: true
+		})
+    geocodeByAddress(address)
+      .then((results) => getLatLng(results[0]))
+      .then(({ lat, lng }) => {
+        this.setState({
+					coords: {lat: lat, lng: lng},
+          geocodeResults: 'success',
+          loading: false
+        })
+      })
+      .catch((error) => {
+        this.setState({
+          geocodeResults: 'error',
+          loading: false
+        })
+			})
+  	}	
+
+	latlngToAddress(lat, lng) {
+		let geocoder = new google.maps.Geocoder;
+		let latlng = {lat: lat, lng: lng};
+		geocoder.geocode({'location': latlng}, (results, status) => {
+			this.setState({
+				coords: {lat: lat, lng: lng},
+				address: results[0].formatted_address,
+				place_id: results[0].place_id}
+				)
+		})
+	}
+
 	componentWillReceiveProps(props){
 
-		if(props.coords && !props.coords.positionError)
-			this.setState({latitude: props.coords.latitude, longitude: props.coords.longitude})
-		
+		if(props.coords && !props.coords.positionError) {
+			this.setState({
+				coords: {lat:props.coords.latitude, lng:props.coords.longitude},
+				originCoords: {lat:props.coords.latitude, lng:props.coords.longitude}
+			});
+			this.latlngToAddress(props.coords.latitude, props.coords.longitude);
+		}
 		else
 			fetch('http://ip-api.com/json')
 				.then(res => res.json())
 				.then((data) => {
-					this.setState({latitude: data.lat, longitude: data.lon})
+					this.setState({
+						coords: {lat:data.lat, lng:data.lon},
+						originCoords: {lat:data.lat, lng:data.lon}
+					})
+					this.latlngToAddress(data.lat, data.lon);
 				})
+		
 	}
 	render() {
+	 //console.log('State --> ', this.state)
+		const cssClasses = {
+			root: 'form-group',
+			input: 'Demo__search-input',
+			autocompleteContainer: 'Demo__autocomplete-container',
+		}	
+
+		const addrAutocompleteItem = ({ formattedSuggestion }) => (
+      <div className="Demo__suggestion-item" style={{zIndex: 3000}}>
+        <FontIcon style={{color: grey700}} className="material-icons  Demo__suggestion-icon">location_on</FontIcon>
+        <strong className="mainText">{formattedSuggestion.mainText},</strong>
+        <small className="text-muted">{formattedSuggestion.secondaryText}</small>
+      </div>)
+
+		const addrInputProps = {
+			type: "text",
+      value: this.state.address,
+      onChange: this.addrHandleChange,
+      onBlur: () => {}, //console.log('Blur event!'); },
+      onFocus: () => {}, //console.log('Focused!'); },
+      autoFocus: false,
+      placeholder: "Search Places",
+      name: 'Demo__input',
+      id: "my-input-id",
+		}
 		return ( 
 			<Row>
+				<Row>
+					<Col xs={12} className="floatText">
+						<span style={{color: grey500}} >Geolocation</span>
+					</Col>
+					<Col xs={12} md={1}>
+						<FlatButton
+							backgroundColor={grey300}
+							hoverColor={grey400}
+							primary={true}
+							icon={<FontIcon className="material-icons">gps_fixed</FontIcon>}
+							onClick={()=>this.latlngToAddress(this.state.originCoords.lat, this.state.originCoords.lng)}
+						/>
+					</Col>
+					<Col xs={12} md ={11}>
+						<PlacesAutocomplete
+							onSelect={this.addrHandleSelect}
+							autocompleteItem={addrAutocompleteItem}
+							onEnterKeyDown={this.addrHandleSelect}
+							classNames={cssClasses}
+							inputProps={addrInputProps}
+						/>
+						
+					</Col>
+				</Row>
 				<Col xs={12}>
 					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
 						<FormsyText
@@ -184,34 +297,6 @@ class OfferForm extends React.Component {
 							fullWidth
 							multiLine
 						/>
-						<Row>
-							<Col xs={6}>
-								<FormsyText
-									name="latitude"
-									value={this.state.latitude}
-									floatingLabelText="Latitude"
-									hintText="Item latitude"
-									validations="isNumeric"
-									validationError="Only Numbers."
-									required
-									requiredError="This field is required"
-									fullWidth
-								/>
-							</Col>
-							<Col xs={6}>
-							<FormsyText
-								name="longitude"
-								value={this.state.longitude}
-								floatingLabelText="Longitude"
-								hintText="Item longitude"
-								validations="isNumeric"
-								validationError="Only Numbers."
-								required
-								requiredError="This field is required"
-								fullWidth
-							/>
-							</Col>
-						</Row>
 						{
 							// <FormsyToggle name="certificate" label="Certificate" />
 						}
@@ -224,7 +309,6 @@ class OfferForm extends React.Component {
 								disabled={!this.state.canSubmit}
 							/>
 						}
-						
 					</Formsy.Form>
 					
 					{this.props.newItem.loading && !this.props.newItem.success &&
@@ -244,6 +328,7 @@ class OfferForm extends React.Component {
 					/>
 				</Col>
 			</Row>
+			
 		);
 	}
 }

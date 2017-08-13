@@ -23,18 +23,18 @@
 .mainText {
   margin-right: 0.5em; }
 
-.Demo__suggestion-item {
+.GeoLoc__suggestion-item {
   display: flex;
   align-Items: center;
   padding: 4px;
   text-align: left;
   animation: fadein 0.75s; }
 
-.Demo__suggestion-icon {
+.GeoLoc__suggestion-icon {
   margin-right: 8px;
   transform: scale(0.8); }
 
-.Demo__search-input {
+.GeoLoc__search-input {
   border-width: 0 0 1px 0;
   border-style: solid;
   border-color: #E0E0E0;
@@ -47,12 +47,12 @@
   font-weight: 900;
   color: #212121; }
 
-.Demo__search-input:focus,
-.Demo__search-input:active {
+.GeoLoc__search-input:focus,
+.GeoLoc__search-input:active {
   border-width: 0 0 2px 0;
   border-color: #212121; }
 
-.Demo__autocomplete-container {
+.GeoLoc__autocomplete-container {
   border-width: 0 1px 2px 1px;
   border-style: solid;
   border-color: #9E9E9E;

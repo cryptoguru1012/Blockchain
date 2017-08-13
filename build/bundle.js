@@ -104942,21 +104942,20 @@
 			value: function render() {
 				var _this5 = this;
 
-				//console.log('State --> ', this.state)
 				var cssClasses = {
 					root: 'form-group',
-					input: 'Demo__search-input',
-					autocompleteContainer: 'Demo__autocomplete-container'
+					input: 'Geo__search-input',
+					autocompleteContainer: 'Geo__autocomplete-container'
 				};
 
 				var addrAutocompleteItem = function addrAutocompleteItem(_ref2) {
 					var formattedSuggestion = _ref2.formattedSuggestion;
 					return _react2.default.createElement(
 						'div',
-						{ className: 'Demo__suggestion-item', style: { zIndex: 3000 } },
+						{ className: 'Geo__suggestion-item', style: { zIndex: 3000 } },
 						_react2.default.createElement(
 							_FontIcon2.default,
-							{ style: { color: _colors.grey700 }, className: 'material-icons  Demo__suggestion-icon' },
+							{ style: { color: _colors.grey700 }, className: 'material-icons  Geo__suggestion-icon' },
 							'location_on'
 						),
 						_react2.default.createElement(
@@ -104977,11 +104976,11 @@
 					type: "text",
 					value: this.state.address,
 					onChange: this.addrHandleChange,
-					onBlur: function onBlur() {}, //console.log('Blur event!'); },
-					onFocus: function onFocus() {}, //console.log('Focused!'); },
+					onBlur: function onBlur() {},
+					onFocus: function onFocus() {},
 					autoFocus: false,
 					placeholder: "Search Places",
-					name: 'Demo__input',
+					name: 'Geo__input',
 					id: "my-input-id"
 				};
 				return _react2.default.createElement(
@@ -105013,7 +105012,8 @@
 								),
 								onClick: function onClick() {
 									return _this5.latlngToAddress(_this5.state.originCoords.lat, _this5.state.originCoords.lng);
-								}
+								},
+								title: 'Current Location'
 							})
 						),
 						_react2.default.createElement(
@@ -107362,7 +107362,6 @@
 	            var _this2 = this;
 
 	            var itemsOutput = this.sortItems(this.props.items).map(function (item) {
-	                console.log('item: ', item);
 	                var mediaData = _this2.getMedia(item.description);
 	                if (mediaData) return _react2.default.createElement(
 	                    'tr',

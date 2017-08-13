@@ -205,16 +205,16 @@ class OfferForm extends React.Component {
 	render() {
 		const cssClasses = {
 			root: 'form-group',
-			input: 'Demo__search-input',
-			autocompleteContainer: 'Demo__autocomplete-container',
+			input: 'Geo__search-input',
+			autocompleteContainer: 'Geo__autocomplete-container',
 		}	
 
 		const addrAutocompleteItem = ({ formattedSuggestion }) => (
-      <div className="Demo__suggestion-item" style={{zIndex: 3000}}>
-        <FontIcon style={{color: grey700}} className="material-icons  Demo__suggestion-icon">location_on</FontIcon>
-        <strong className="mainText">{formattedSuggestion.mainText},</strong>
-        <small className="text-muted">{formattedSuggestion.secondaryText}</small>
-      </div>)
+				<div className="Geo__suggestion-item" style={{zIndex: 3000}}>
+					<FontIcon style={{color: grey700}} className="material-icons  Geo__suggestion-icon">location_on</FontIcon>
+					<strong className="mainText">{formattedSuggestion.mainText},</strong>
+					<small className="text-muted">{formattedSuggestion.secondaryText}</small>
+				</div>)
 
 		const addrInputProps = {
 			type: "text",
@@ -224,7 +224,7 @@ class OfferForm extends React.Component {
       onFocus: () => {},
       autoFocus: false,
       placeholder: "Search Places",
-      name: 'Demo__input',
+      name: 'Geo__input',
       id: "my-input-id",
 		}
 		return ( 
@@ -240,6 +240,7 @@ class OfferForm extends React.Component {
 							primary={true}
 							icon={<FontIcon className="material-icons">gps_fixed</FontIcon>}
 							onClick={()=>this.latlngToAddress(this.state.originCoords.lat, this.state.originCoords.lng)}
+							title="Current Location"
 						/>
 					</Col>
 					<Col xs={12} md ={11}>

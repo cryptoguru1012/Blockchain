@@ -16,6 +16,9 @@ import  SSIcon from "./icon";
 
 require('./styles/menu.scss');
 
+/**
+ * class MenuBrowser
+ */
 class MenuBrowser extends React.Component {
 	constructor(props) {
 		super(props);
@@ -24,8 +27,7 @@ class MenuBrowser extends React.Component {
 			activeSearch: false,
 			regexp: '',
 			safesearch: 'No',
-			category: null
-			//from: parseInt("226a4f45f3393f22"),
+			category: null,
 		};
 
 		this.props.getCategories();
@@ -36,6 +38,7 @@ class MenuBrowser extends React.Component {
 		this.handleChangeData = this.handleChangeData.bind(this);
 		this.renderCatagoryPrimary=this.renderCatagoryPrimary.bind(this);
 	}
+
 	renderCatagoryPrimary(min) {
 		var serchParam={},serchString;
 		
@@ -59,6 +62,7 @@ class MenuBrowser extends React.Component {
 			}
 		})	
 	}
+
 	componentDidMount() {
 		let data = {
 			regexp: this.props.searchData,
@@ -68,12 +72,14 @@ class MenuBrowser extends React.Component {
 		};
 		this.props.onSearch(data);
 	}
+
 	handleToggle() {
 		this.setState({regexp: null,
 			category: null,
 			activeSearch: false,
 			open: !this.state.open });
 	}
+	
 	handleHomeTap() {
 		this.setState({regexp: null,
 			category: null,
@@ -86,14 +92,14 @@ class MenuBrowser extends React.Component {
 		if (this.state.activeSearch){
 			let data = {};
 			data.regexp = this.state.regexp;
-			if(this.state.category) {
+			if (this.state.category) {
 				data.category = this.state.category;
 			}
 			this.props.onSearch(data);
 			if (this.props.stateUrl !== "/" && this.state.regexp) {
 				browserHistory.push('/');
 			}
-		}else{
+		} else {
 			/*acz --> this ELSE is for do something when search input will appear */
 		}
 		this.setState({ activeSearch: !this.state.activeSearch });
@@ -110,9 +116,7 @@ class MenuBrowser extends React.Component {
 			    // Sorry! No Web Storage support..
 		    	alert("you are running older version of browser We are going to redirect you on home page please refine catagory there ");
 			}
-			browserHistory.push('/');
-
-			
+			browserHistory.push('/');			
 		}
 			let data = {
 				category: value.trim()
@@ -130,6 +134,7 @@ class MenuBrowser extends React.Component {
 		if (data.type === 'category')
 			this.setState({category: data.value});
 	}
+	
 	// a function for capetalizing first letter of sub categories
 	firstToUpperCase(category) {
 		// adding space before and after /
@@ -142,6 +147,7 @@ class MenuBrowser extends React.Component {
 
 		return Category;
 	}
+
 	/* a function for split category
 	 * for example instead of 'some-word > another-word' it will be 'another-word'
 	 */
@@ -151,6 +157,7 @@ class MenuBrowser extends React.Component {
 		
 		return NewCatItem
 	}
+	
 	renderCategories( start, stop) {
 		if (this.props.categories.categories.length > 0) {
 			return this.props.categories.categories.map((category, i) => {

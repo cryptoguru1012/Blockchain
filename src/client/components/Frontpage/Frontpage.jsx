@@ -19,6 +19,9 @@ const homeStyle = {
   }
 };
 
+/**
+ * class Frontpage
+ */
 class Frontpage extends React.Component {
   constructor(props) {
     super(props);

@@ -7,7 +7,14 @@ const controlsStyle = {
     'marginTop': '5%'
 }
 
-class ImageEdit extends Component{
+/**
+ * class ImageEdit
+ *
+ * Media action buttons
+ *
+ * Choose to upload or delete uploaded media
+ */ 
+ class ImageEdit extends Component{
     constructor(props){
         super(props);
     }

@@ -15,10 +15,7 @@ const styles = {
 	input: {
 		width: '100px',
 		height: '30px',
-//		opacity: '0',
 		overflow: 'hidden',
-//		position: 'absolute',
-//		zIndex: '-1'
 	},
 	label: {
 		width: '100%',
@@ -33,6 +30,11 @@ const styles = {
 	}
 }
 
+/**
+ * class VideoRecord2
+ *
+ * Videorecorder for Safari on iPhone
+ */
 class VideoRecord2 extends React.Component {
 	constructor(props) {
 		super(props);

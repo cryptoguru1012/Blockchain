@@ -60,11 +60,24 @@ const btn_boder_radius = {
   }
 }
 
+/**
+ * class Register
+ *
+ * User registration page
+ */ 
 class Register extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { name: { first: '', last: '' }, email: '', password: '', canSubmit: false };
+    this.state = { 
+      name: { 
+        first: '', 
+        last: '' 
+      }, 
+      email: '', 
+      password: '', 
+      canSubmit: false 
+    };
     this.enableButton = this.enableButton.bind(this);
     this.disableButton = this.disableButton.bind(this);
     this.handleSnackbarSuccessRequestClose = this.handleSnackbarSuccessRequestClose.bind(this);
@@ -85,6 +98,7 @@ class Register extends React.Component {
       window.location.href = '/keystone/signin/'
     }
   }
+
   handleSnackbarErrorRequestClose() {
     this.props.dispatch(showSnackbar());
   }

@@ -10,7 +10,6 @@ const styles = {
 	},
 	videoContainer: {
 		display: 'relative',
-		//marginTop: '5px',
 	},
 	video: {
 		width: '100%',
@@ -42,6 +41,11 @@ const styles = {
 	},
 };
 
+/**
+ * class VideoPlayer
+ *
+ * Video Player controls
+ */
 class VideoPlayer extends React.Component {
 	constructor(props) {
 		super(props);
@@ -66,23 +70,10 @@ class VideoPlayer extends React.Component {
 		this.player = false;
 	}
 
-/*	generateThumbnail() {
-		let self = this;
-		const c = document.createElement("canvas");
-		const ctx = c.getContext("2d");
-		c.width = 160;
-		c.height = 90;
-		ctx.drawImage(this.player, 0, 0, 160, 90);
-		self.player.poster =  c.toDataURL("image/png");
-
-		let dataurl = c.toDataURL();
-		document.getElementById('poster').appendChild(c)
-	}
-*/
 	componentDidMount() {
 		let self = this, duration = 0;
 		this.player = this.refs.player;
-		this.player.src = this.props.url+"#t=0.8"//"http://192.168.0.32:8082/hootr/Hootr/59142cff30366323e4aa03b7_20170511150907_133/test.mp4";//
+		this.player.src = this.props.url+"#t=0.8"
 		this.player.type= "video/mp4";
 		this.player.muted = (this.props.muted) ? true: false;
         this.player.preload = "auto";
@@ -91,7 +82,6 @@ class VideoPlayer extends React.Component {
 			self.player && self.setState({ play: false });
 		});
 		this.player.addEventListener('seeked', function() {
-            // self.generateThumbnail();
 		}, false);
 
 		this.player.addEventListener('loadeddata', () => {
@@ -111,7 +101,6 @@ class VideoPlayer extends React.Component {
 			});
 			if (self.refs.statusBar) {
 				let percent = self.player.currentTime / self.player.duration;
-					// barPercent = self.refs.statusBar.offsetParent.offsetWidth * percent;
 
 				self.refs.statusBar.style.width = `${percent * 100}%`;
 			}
@@ -183,7 +172,6 @@ class VideoPlayer extends React.Component {
 
 	handleVideoPlay() {
 		if (this.player) {
-			//styles.video.opacity = 1
 			this.setState({ play: true });
 			this.player.play();
 		}

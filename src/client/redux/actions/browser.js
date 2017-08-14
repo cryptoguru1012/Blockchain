@@ -59,6 +59,9 @@ function isJson(str) {
     return true;
 }
 
+/**
+ * Filter offers returned fromm offerfilter API based on media
+ */
 function clusterItems(items) {
 	let hasVideo = []
 		, hasPhoto = []
@@ -111,6 +114,9 @@ export function setOrder(order) {
 	}
 }
 
+/**
+ * Get featured items for carousel
+ */
 export function getFeatures() {
 	return (dispatch, getState) => {
 		dispatch(getFeaturesStart());
@@ -122,6 +128,9 @@ export function getFeatures() {
 	}
 }
 
+/**
+ * Get offer items from syscoin offerfilter API
+ */
 export function search(data) {
 	return (dispatch, getState) => {
 		dispatch(searchStart());

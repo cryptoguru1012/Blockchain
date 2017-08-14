@@ -2,6 +2,11 @@ import React from 'react';
 import { Col } from 'react-bootstrap';
 import ItemBrowser from './ItemBrowser';
 
+/**
+ * class GridsViewItemsBrowser
+ *
+ * Offer with details in grid
+ */
 class GridsViewItemsBrowser extends React.Component {
 	constructor(props) {
 		super(props);

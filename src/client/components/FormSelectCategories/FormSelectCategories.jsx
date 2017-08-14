@@ -5,6 +5,11 @@ import { MenuItem } from 'material-ui';
 
 import { doCategoryReq } from '../../redux/actions/store/category';
 
+/**
+ * class FormSelectCategories
+ *
+ * Dropdown select for Categories
+ */
 class FormSelectCategories extends React.Component {
 	constructor(props) {
 		super(props);

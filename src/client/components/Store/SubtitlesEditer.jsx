@@ -60,6 +60,11 @@ const styles = {
 	}
 };
 
+/**
+ * class SubtitlesEditer
+ *
+ * Edit subtitles for Videos
+ */
 class SubtitlesEditer extends React.Component {
 
 	constructor(props) {

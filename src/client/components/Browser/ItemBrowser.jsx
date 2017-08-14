@@ -35,7 +35,15 @@ function isJson(str) {
     return true;
 }
 
+/**
+ * Class ItemBrowser
+ *
+ * Single offer view
+ */
 class ItemBrowser extends React.Component {
+	/**
+	 * Extract decriptions from media
+	 */
 	constructor(props) {
 		super(props);
 
@@ -46,8 +54,9 @@ class ItemBrowser extends React.Component {
 			description = JSON.parse(description);
 		} else {
 			let hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
-			if (hasImages)
+			if (hasImages) {
 				images = hasImages;
+			}
 		}
 		this.state = {
 			description: description,

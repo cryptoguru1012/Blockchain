@@ -45,6 +45,9 @@ export function proceed(payload) {
 	}
 }
 
+/**
+ * Upload images to S3 storage
+ */
 export function setImage(data) {
 	return (dispatch, getState) => {
 		dispatch(loadStart());

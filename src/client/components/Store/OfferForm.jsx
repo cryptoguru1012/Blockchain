@@ -230,33 +230,6 @@ class OfferForm extends React.Component {
 		}
 		return ( 
 			<Row>
-				<Row>
-					<Col xs={12} className="floatText">
-						<span style={{color: grey500}} >Geolocation</span>
-					</Col>
-					<Col xs={12} md={1}>
-						<FlatButton
-							backgroundColor={grey300}
-							hoverColor={grey400}
-							primary={true}
-							icon={<FontIcon className="material-icons">gps_fixed</FontIcon>}
-							onClick={()=>this.latlngToAddress(this.state.originCoords.lat, this.state.originCoords.lng)}
-							title="Current Location"
-						/>
-					</Col>
-					<Col xs={12} md ={11}>
-						<PlacesAutocomplete
-							onSelect={this.addrHandleSelect}
-							autocompleteItem={addrAutocompleteItem}
-							onEnterKeyDown={this.addrHandleSelect}
-							classNames={cssClasses}
-							inputProps={addrInputProps}
-							highlightFirstSuggestion={true}
-							googleLogo={true}
-						/>
-						
-					</Col>
-				</Row>
 				<Col xs={12}>
 					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
 						<FormsyText
@@ -300,6 +273,32 @@ class OfferForm extends React.Component {
 							fullWidth
 							multiLine
 						/>
+						<Row>
+							<Col xs={12} className="floatText">
+								<span style={{color: grey500}} >Geolocation</span>
+							</Col>
+							<Col xs={12} md ={11}>
+								<PlacesAutocomplete
+									onSelect={this.addrHandleSelect}
+									autocompleteItem={addrAutocompleteItem}
+									onEnterKeyDown={this.addrHandleSelect}
+									classNames={cssClasses}
+									inputProps={addrInputProps}
+									highlightFirstSuggestion={true}
+									googleLogo={true}
+								/>
+							</Col>
+							<Col xs={12} md={1}>
+								<FlatButton
+									backgroundColor={grey300}
+									hoverColor={grey400}
+									primary={true}
+									icon={<FontIcon className="material-icons">gps_fixed</FontIcon>}
+									onClick={()=>this.latlngToAddress(this.state.originCoords.lat, this.state.originCoords.lng)}
+									title="Current Location"
+								/>
+							</Col>
+						</Row>
 						{
 							// <FormsyToggle name="certificate" label="Certificate" />
 						}
@@ -331,7 +330,6 @@ class OfferForm extends React.Component {
 					/>
 				</Col>
 			</Row>
-			
 		);
 	}
 }

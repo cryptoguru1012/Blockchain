@@ -15,7 +15,6 @@
   align-Items: center;
   padding: 4px;
   text-align: left;
-  animation: fadein 0.75s;
 }
 .GeoLoc__suggestion-icon {
   margin-right: 8px;
@@ -48,6 +47,13 @@
   border-style: solid;
   border-color:  #9E9E9E;
   border-radius: 0 0 0 0;
+  animation: fadein 0.75s;
+}
+
+.GeoLoc__autocomplete-Item-Active {
+  padding: 10px;
+  text-align: left;
+  background-color: #E0E0E0;
 }
 
 @media (max-width: 480px) {

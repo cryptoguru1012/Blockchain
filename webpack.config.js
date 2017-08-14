@@ -20,6 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
+  context: __dirname,
   entry: {
     app: ['./src/client/client.js'],
   },
@@ -68,6 +69,11 @@ module.exports = {
       {
         test: /\.eot$/,
         loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name].[ext]',
+      },
+      {
+        test: /\.(jpe?g|png|gif)$/i,
+        loader: ['file-loader?hash=sha512&digest=hex&name=public/images/[hash].[ext]',
+
       },
     ],
   },

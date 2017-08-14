@@ -207,6 +207,7 @@ class OfferForm extends React.Component {
 			root: 'form-group',
 			input: 'GeoLoc__search-input',
 			autocompleteContainer: 'GeoLoc__autocomplete-container',
+			autocompleteItemActive: 'GeoLoc__autocomplete-Item-Active'
 		}	
 
 		const addrAutocompleteItem = ({ formattedSuggestion }) => (
@@ -250,6 +251,8 @@ class OfferForm extends React.Component {
 							onEnterKeyDown={this.addrHandleSelect}
 							classNames={cssClasses}
 							inputProps={addrInputProps}
+							highlightFirstSuggestion={true}
+							googleLogo={true}
 						/>
 						
 					</Col>

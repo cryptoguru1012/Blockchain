@@ -23,6 +23,9 @@ function loadSuccess(payload) {
 	};
 }
 
+/**
+ * Get individual offer from offerfilter API
+ */
 export function getOfferData(guid) {
 	return (dispatch, getState) => {
 		dispatch(loadStart());

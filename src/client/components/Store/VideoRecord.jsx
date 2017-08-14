@@ -25,6 +25,11 @@ const styles = {
   },
 };
 
+/**
+ * class VideoRecord
+ *
+ * Video Recorder for all browsers except Safari on Mobile Apple devices
+ */
 class VideoRecord extends React.Component {
   constructor(props) {
     super(props);

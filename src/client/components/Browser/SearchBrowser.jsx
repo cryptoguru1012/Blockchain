@@ -4,6 +4,9 @@ import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import TextField from 'material-ui/TextField';
 
+/**
+ * Class SearchBrowser
+ */
 class SearchBrowser extends React.Component {
 	constructor(props) {
 		super(props);

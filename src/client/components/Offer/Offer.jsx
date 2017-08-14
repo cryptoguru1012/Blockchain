@@ -17,6 +17,11 @@ const newItemStyle = {
 	},
 };
 
+/**
+ * class Offer
+ *
+ * Single offer display
+ */
 class Offer extends React.Component {
 	constructor(props) {
 		super(props);

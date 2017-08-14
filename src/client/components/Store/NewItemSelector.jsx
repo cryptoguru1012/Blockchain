@@ -111,6 +111,9 @@ const newItemStyle = {
   }
 };
 
+/**
+ * class NewItemSelector
+ */
 class NewItemSelector extends React.Component {
   constructor(props) {
     super(props);

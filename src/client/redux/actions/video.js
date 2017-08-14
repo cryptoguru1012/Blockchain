@@ -60,9 +60,10 @@ export function updateSubtitles(subtitles) {
 	}
 }
 
-// https://d3j22jloo6hpq6.cloudfront.net/API/parse
-// https://shopshots-argvil19.c9users.io/API/parse
-
+/**
+ * Upload videos to be formatted
+ * Videos transcribed with time stamp and standardised to mp4 format
+ */
 export function setRecord(data, url) {
 	return (dispatch, getState) => {
 		dispatch(uploadStart(url));

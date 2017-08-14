@@ -1,5 +1,10 @@
 import React from 'react';
 
+/**
+ * class Time
+ *
+ * Time formatting
+ */
 class Time extends React.Component {
 
 	constructor(props) {
@@ -13,13 +18,10 @@ class Time extends React.Component {
 			seconds = sec_num - (hours * 3600) - (minutes * 60);
 
 		hours = (hours < 10 && hours > 0) ? '0' + hours : hours;
-		// minutes = (minutes < 10) ? '0' + minutes : minutes;
+
 		seconds = (seconds < 10) ? '0' + seconds : seconds;
 
-		// if (hours)
-		// 	return hours+':'+minutes+':'+seconds;
-		// else
-			return minutes+':'+seconds;
+		return minutes+':'+seconds;
 	}
 
 	render() {

@@ -1,8 +1,12 @@
 import React from 'react';
 
-// components
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 
+/**
+ * class GaleryItemBrowser
+ *
+ * Display offer image in grid 
+ */ 
 class GaleryItemBrowser extends React.Component {
   constructor(props) {
     super(props);

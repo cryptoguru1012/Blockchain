@@ -18,6 +18,11 @@ const myStyle = {
 	}
 };
 
+/**
+ * class OfferForm
+ *
+ * Form to fill in offer details 
+ */
 class OfferForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -147,8 +152,8 @@ class OfferForm extends React.Component {
 							name="name"
 							floatingLabelText="Title"
 							hintText="Item title"
-							validations="isSpecialWords"
-							validationError="Please only use letters"
+							validations="isExisty"
+							validationError="This field cannot be empty"
 							requiredError="This field is required"
 							required
 							fullWidth

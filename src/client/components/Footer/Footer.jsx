@@ -14,6 +14,9 @@ import fonts from '../fonts/style.css';
 //     height: '100px',
 // };
 
+/**
+ * class Footer
+ */
 const Footer = React.createClass({
     render: function() {
         return (

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import Slider from 'react-slick';
 
@@ -44,6 +43,11 @@ const carouselSettings = {
 	],
 };
 
+/**
+ * Class BrowserCarousel
+ *
+ * Populates images in featured item carousel
+ */
 class BrowserCarousel extends React.Component {
 	constructor(props) {
 		super(props);

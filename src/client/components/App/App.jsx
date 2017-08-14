@@ -24,33 +24,33 @@ class App extends Component {
 		super(props);
 		this.state = {
 			viewBrowser: false,
-			dataToSearch: null
+			dataToSearch: null,
 		}
 	}
 
 	componentWillMount() {
 		if (this.props.router.location.pathname === '/') {
-			this.setState({viewBrowser: true});
+			this.setState({ viewBrowser: true });
 		} else {
-			this.setState({viewBrowser: false});
+			this.setState({ viewBrowser: false });
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.router.location.pathname === '/') {
-			this.setState({viewBrowser: true});
+			this.setState({ viewBrowser: true });
 		} else {
-			this.setState({viewBrowser: false});
+			this.setState({ viewBrowser: false });
 		}
 	}
 
 	render() {
 		const muiTheme = getMuiTheme({
 			palette: {
-					primary1Color: grey900,
-					primary2Color: grey600,
-					primary3Color: grey300,
-					canvasColor: grey300,
+				primary1Color: grey900,
+				primary2Color: grey600,
+				primary3Color: grey300,
+				canvasColor: grey300,
 			},
 			appBar: {
 				height: 70,
@@ -59,7 +59,7 @@ class App extends Component {
 
 		return (
 			<MuiThemeProvider muiTheme={muiTheme}>
-				<div style={{ position:"relative" }}>
+				<div style={{position:"relative"}}>
 					<MenuBrowser searchData={this.state.dataToSearch} stateUrl={this.props.location.pathname}/>
 					<div style={{marginTop:muiTheme.appBar.height}}>
 						{this.props.children}

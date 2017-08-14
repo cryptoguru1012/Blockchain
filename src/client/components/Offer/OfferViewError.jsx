@@ -3,6 +3,9 @@ import React from 'react';
 // components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
 
+/**
+ * class OfferViewError
+ */
 class OfferViewError extends React.Component {
 	constructor(props) {
 		super(props);

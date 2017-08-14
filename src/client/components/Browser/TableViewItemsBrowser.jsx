@@ -56,6 +56,11 @@ const styles = {
 
 }
 
+/**
+ * Class TableViewItemsBrowser
+ *
+ * Table view of offers
+ */
 class TableViewItemsBrowser extends React.Component {
     constructor(props) {
         super(props);
@@ -80,7 +85,7 @@ class TableViewItemsBrowser extends React.Component {
                     type: 'image',
                     value: description
                 }
-            }  else { 
+            } else { 
               return { 
                 type: 'text', 
                 value: description 
@@ -103,6 +108,9 @@ class TableViewItemsBrowser extends React.Component {
         }
     }
 
+    /**
+     * Styling based on offer type
+     */
     renderMedia(data) {
         if (data.type === 'video') {
             return (
@@ -138,40 +146,50 @@ class TableViewItemsBrowser extends React.Component {
                 </div>    
             )
 
-        }
-        else {
+        } else {
             //if something isn't a VIDEO, IMAGES, IMAGE
         }       
     }
 
     componentDidMount() {
-        if(sessionStorage.getItem("catagory")){
+        if (sessionStorage.getItem("catagory")) {
             let data = {
                 category: sessionStorage.getItem("catagory").trim()
             };
+
             this.props.onSearch(data);
-            //this.handleToggle();
             sessionStorage.removeItem("catagory");
         }
     }
     
+    /**
+     * Sort items alphabetically
+     */
     sortItems(items) {
         let field = this.state.thSortBy;
         let sortAZ = this.state.thSortAZ;
         let sortedItems;
-        if (field === '') {return items};
-        if (isNaN(parseFloat(items[0][field]))){
+        if (field === '') {
+            return items
+        };
+        
+        if (isNaN(parseFloat(items[0][field]))) {
             sortedItems = items.slice(0).sort((a, b) => a[field].localeCompare(b[field], {numeric: true}));
-        }else {
+        } else {
             sortedItems = items.slice(0).sort((a, b) => {return parseFloat(a[field]) - parseFloat(b[field])});
         }
-        if (sortAZ) {return sortedItems;} else {return sortedItems.reverse();}
+        
+        if (sortAZ) {
+            return sortedItems;
+        } else {
+            return sortedItems.reverse();
+        }
     }
 
     thClick(field){
         if (field === this.state.thSortBy) {
             this.setState({'thSortAZ': !this.state.thSortAZ,'thSortBy': field})
-        }else{
+        } else {
             this.setState({'thSortAZ': true,'thSortBy': field});
         }
     }
@@ -179,7 +197,7 @@ class TableViewItemsBrowser extends React.Component {
     render() {
         const itemsOutput = this.sortItems(this.props.items).map((item) => {
             const mediaData = this.getMedia(item.description);
-            if(mediaData)
+            if (mediaData) {
                 return (
                     <tr key={item.txid} style={styles.trSeparator(grey500)}>
                         {this.props.media && <td>{this.renderMedia(mediaData)}</td>}
@@ -189,8 +207,9 @@ class TableViewItemsBrowser extends React.Component {
                         <td>{item.currency}</td>
                     </tr>
                 );
-            else
-                return null
+            } else {
+                return null;
+            }
         });
 
         const thSortIcon = (field) => {

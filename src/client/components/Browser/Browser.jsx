@@ -6,7 +6,6 @@ import { RaisedButton } from 'material-ui';
 
 import { search, getFeatures, setOrder } from '../../redux/actions/browser';
 
-import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
 import BrowserCarousel from './BrowserCarousel';
 import FilterBrowser from './FilterBrowser';
@@ -65,6 +64,11 @@ const styles = {
 	}
 }
 
+/**
+ * Class Browser
+ *
+ * Loads content on home page(Offer listings)
+ */
 class Browser extends React.Component {
 	constructor(props) {
 		super(props);
@@ -92,6 +96,10 @@ class Browser extends React.Component {
 		this.setState({ current: this.state.current + 1})
 	}
 
+	/**
+	 * @params regexp category
+	 * @returns array(offers)
+	 */
 	showPreviousPage(){
 		// go to the previous page
 		const item_guid = this.props.browser.dataItems[0];
@@ -103,8 +111,8 @@ class Browser extends React.Component {
 		};
 
 		this.props.getNextOffers(params);
-		this.state.current === 0 && this.setState({ current: 0});
-		this.state.current > 0 && this.setState({ current: this.state.current - 1});
+		this.state.current === 0 && this.setState({current: 0});
+		this.state.current > 0 && this.setState({current: this.state.current - 1});
 	}
 
 	render() {

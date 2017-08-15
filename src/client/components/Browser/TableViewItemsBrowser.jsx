@@ -174,7 +174,14 @@ class TableViewItemsBrowser extends React.Component {
                     </tr>
                 );
             else
-                return null
+                return (
+                    <tr key={item.txid} style={styles.trSeparator(grey500)}>
+                        <td><Link to={'/offer/' + item.offer}>{item.title}</Link></td>
+                        <td>{item.alias}</td> 
+                        <td>{item.price}</td>
+                        <td>{item.currency}</td>
+                    </tr>
+                );
         });
 
         const thSortIcon = (field) => {

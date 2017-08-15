@@ -68,7 +68,7 @@ function clusterItems(items) {
   items.map((item) => {
     const description = item.description;
 
-    if (isJson(description)) hasVideo.push(item);
+    if (isJson(description) && description.match(/https?:\/\/.*\.(?:mp4)/g)) hasVideo.push(item);
     else if (description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g)) hasPhoto.push(item);
     else hasOnlyText.push(item);
   });

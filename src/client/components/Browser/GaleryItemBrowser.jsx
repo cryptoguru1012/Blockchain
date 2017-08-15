@@ -11,12 +11,17 @@ class GaleryItemBrowser extends React.Component {
   }
 
   renderSlide() {
-    console.log(this.props.images);
-    return this.props.images.map((image, i) => {
+    if(typeof(this.props.images) === 'string') {
       return (
-        <img style={{width: '100%'}} key={i} src={image} />
-      )
-    })
+        <img style={{width: '100%'}} src={this.props.images} />
+      );
+    } else{
+      return this.props.images.map((image, i) => {
+        return (
+          <img style={{width: '100%'}} key={i} src={image} />
+        )
+      })
+    }
   }
 
   render() {

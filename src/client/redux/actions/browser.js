@@ -78,6 +78,7 @@ function clusterItems(items) {
     SHOW_VIDEOS: hasVideo,
     SHOW_PHOTOS: hasPhoto,
     SHOW_TEXT: hasOnlyText,
+    SHOW_MAP: items
   };
 }
 

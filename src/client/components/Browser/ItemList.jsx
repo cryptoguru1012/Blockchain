@@ -4,7 +4,7 @@ import Img from 'react-image'
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
-
+import { Link } from 'react-router';
 
 
 class ItemList extends Component{
@@ -34,14 +34,16 @@ class ItemList extends Component{
 
                     <div className="row">
 	                    <div className="col-xs-offset-7"> 
-		                    <RaisedButton
-		                        href=""
-		                        target="_blank"
-		                        label="Add to Cart"
-		                        primary={true}
-		                        icon={<FontIcon className="shopping-cart" />}
-		                        style={{float: 'left'}}
-		                      />
+                            <Link to={'/offer/' + this.props.marker.offer}>
+    		                    <RaisedButton
+    		                        href=""
+    		                        target="_blank"
+    		                        label="Add to Cart"
+    		                        primary={true}
+    		                        icon={<FontIcon className="shopping-cart" />}
+    		                        style={{float: 'left'}}
+    		                      />
+                            </Link>
 	                    </div>
                     </div>
 

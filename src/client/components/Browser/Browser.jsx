@@ -28,6 +28,10 @@ const filterItems = [
     value: 'SHOW_TEXT',
     name: 'Text only',
   },
+  {
+    value: 'SHOW_MAP',
+    name: 'Map only',
+  }
 ];
 
 const orderItems = [
@@ -104,19 +108,10 @@ class Browser extends React.Component {
     this.state.current > 0 && this.setState({ current: this.state.current - 1 });
   }
 
-  renderMap(items) {
-    if (items.length < 1) {
-      return <div>Loading...</div>;
-    }
-
-    return <OfferMap items={items} />;
-  }
-
   render() {
     const { browser, onOrder } = this.props;
     return (
       <div width="100%">
-        {this.renderMap(browser.items)}
         {browser.features.length > 0 && <BrowserCarousel items={browser.features} />}
         <Grid>
           {!browser.error && <FilterBrowser items={filterItems} />}
@@ -129,6 +124,7 @@ class Browser extends React.Component {
                   {browser.message}
                 </h3>
               </Row>}
+              {console.log(browser)}
             {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
           <Col xs={12} style={{ marginBottom: '50px' }}>

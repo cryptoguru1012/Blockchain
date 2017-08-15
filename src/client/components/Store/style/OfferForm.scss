@@ -1,12 +1,16 @@
-.floatText {
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.GeoLoc__floatText {
   margin: 50px 0 5px 0;
   pointer-events: none;
   user-select: none;
-  color: rgba(0, 0, 0, 0.30);
-  font-weight: bolder;
+  color: #BDBDBD;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: bold;
 }
 
-.mainText{
+.GeoLoc__mainText{
   margin-right: 0.5em;
 }
 
@@ -27,12 +31,17 @@
   border-color: #E0E0E0;
   display: inline;
   width: 100%;
-  padding: 16px 16px 0px 16px;
+  padding: 16px 16px 0px 0px;
   font-size: 16px;
   outline: none;
   animation: focusing 0.75s;
-  font-weight: 900;
+  font-weight: normal;
   color: #212121
+}
+
+#my-input-id::placeholder {
+  color: #BDBDBD;
+  opacity: 1;
 }
 
 .GeoLoc__search-input:focus,
@@ -45,7 +54,7 @@
 .GeoLoc__autocomplete-container {
   border-width: 0 1px 2px 1px;
   border-style: solid;
-  border-color:  #9E9E9E;
+  border-color:  #E0E0E0;
   border-radius: 0 0 0 0;
   animation: fadein 0.75s;
 }
@@ -60,6 +69,10 @@
   .autocomplete-container {
     text-align: left;
   }
+}
+
+.form-group {
+  font-family: 'Roboto', sans-serif;
 }
 
 @media (min-width: 768px) {

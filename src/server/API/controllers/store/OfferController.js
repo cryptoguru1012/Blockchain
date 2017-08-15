@@ -11,7 +11,18 @@ module.exports = {
         return;
       }
 
-      callback(null, offeres);
+      callback(null, offers);
+    });
+  },
+
+  findById(id, callback) {
+    Offer.findById(id, (err, offer) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+
+      callback(null, offer);
     });
   },
 
@@ -37,8 +48,8 @@ module.exports = {
     });
   },
 
-  update(id, params, callback) {
-    Offer.findByIdAndUpdate(id, params, { new: true }, (err, offer) => {
+  update(foundOne, params, callback) {
+    Offer.findOneAndUpdate(foundOne, params, { new: true }, (err, offer) => {
       if (err) {
         callback(err, null);
         return;

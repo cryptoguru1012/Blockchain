@@ -3,7 +3,7 @@ import RequestManager from '../utils/RequestManager';
 import axios from 'axios';
 
 const offerRoutes = (app) => {
-  app.get('/API/offers', (req, res, next) => {
+  app.get('/API/offers/new', (req, res, next) => {
     axios
       .get(
         'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62',
@@ -92,23 +92,138 @@ const offerRoutes = (app) => {
           message: err,
         });
       });
-    // RequestManager.get(
-    //   'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62', null,
-    //   (err, response) => {
-    //     if (err) {
-    //       res.json({
-    //         confirmation: 'fail',
-    //         message: err,
-    //       });
-    //     }
-    //
-    //     console.log(response);
-    //     res.json({
-    //       confirmation: 'success',
-    //       message: response,
-    //     });
-    //   },
-    // );
+  });
+
+  app.get('/API/offers', (req, res, next) => {
+    OfferController.find(null, (err, results) => {
+      if (err) {
+        res.json({ confirmation: 'fail', message: err });
+
+        return;
+      }
+
+      res.json({
+        confirmation: 'success',
+        results,
+      });
+    });
+  });
+
+  app.get('/API/offers/:id', (req, res, next) => {
+    OfferController.findOne({ _id: req.params.id }, (err, result) => {
+      if (err) {
+        res.json({ confirmation: 'fail', message: err });
+
+        return;
+      }
+
+      res.json({
+        confirmation: 'success',
+        result,
+      });
+    });
+  });
+
+  app.post('/API/offers/new', (req, res, next) => {
+    OfferController.findOne({ offer: req.body.offer }, (err, result) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (result) {
+        res.json({ confirmation: 'fail', message: 'Offer already exist' });
+
+        return;
+      }
+
+      if (!result) {
+        const guid = '';
+        let token = '';
+        const url =
+          'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62';
+        axios
+          .get(url)
+          .then((response) => {
+            token = response.data.token;
+            axios
+              .post('https://d2fzm6xoa70bg8.cloudfront.net/offernew', req.body, {
+                headers: { Token: token },
+              })
+              .then((response) => {
+                res.json({ response: response.data });
+
+                // axios
+                //   .get('https://d2fzm6xoa70bg8.cloudfront.net/offerinfo?guid=05e851339e6ef25d', {
+                //     headers: { Token: token },
+                //   })
+                //   .then((response) => {
+                //     console.log('guidr', guid);
+                //     console.log('tokenr', token);
+                //     // console.log('response', response);
+                //     res.json(response.data);
+                //   })
+                //   .catch((err) => {
+                //     console.log('guide', guid);
+                //     console.log('tokene', token);
+                //     console.log('err', err);
+                //     res.json('err', err);
+                //   });
+                // if (response.status == 200 && response.data) {
+                //   OfferController.create(req.body, (err, result) => {
+                //     if (err) {
+                //       return next(err);
+                //     }
+                //
+                //     res.json({
+                //       confirmation: 'success',
+                //       result,
+                //     });
+                //   });
+                // }
+              })
+              .catch((err) => {
+                res.json({ err });
+              });
+          })
+          .catch((err) => {
+            res.json({ err });
+          });
+      }
+    });
+  });
+
+  app.put('/API/offers/edit', (req, res, next) => {
+    const url =
+      'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62';
+    axios
+      .get(url)
+      .then((response) => {
+        axios
+          .post('https://d2fzm6xoa70bg8.cloudfront.net/offerupdate', req.body, {
+            headers: { Token: response.data.token },
+          })
+          .then((response) => {
+            OfferController.update({ offer: response.data.offer }, response.data, (err, result) => {
+              if (err) {
+                res.json({ confirmation: 'fail', message: err });
+
+                return;
+              }
+
+              res.json({
+                confirmation: 'success',
+                result,
+              });
+            });
+          })
+          .catch((err) => {
+            console.log('err', err);
+            res.json({ error: err });
+          });
+      })
+      .catch((err) => {
+        res.json({ err });
+      });
   });
 };
 export default offerRoutes;

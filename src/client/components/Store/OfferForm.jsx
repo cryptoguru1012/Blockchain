@@ -278,7 +278,7 @@ class OfferForm extends React.Component {
 							fullWidth
 							multiLine
 						/>
-						<Row>
+						<Row className="GeoLoc__container">
 							<Col xs={12} className="GeoLoc__floatText">
 								<span>Geolocation</span>
 							</Col>

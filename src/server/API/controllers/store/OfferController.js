@@ -1,0 +1,50 @@
+import keystone from 'keystone';
+import axios from 'axios';
+
+const Offer = keystone.list('Offer').model;
+
+module.exports = {
+  find(params, callback) {
+    Offer.find(params, (err, offers) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+
+      callback(null, offeres);
+    });
+  },
+
+  findOne(params, callback) {
+    Offer.findOne(params, (err, offer) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+
+      callback(null, offer);
+    });
+  },
+
+  create(params, callback) {
+    Offer.create(params, (err, offer) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+
+      callback(null, offer);
+    });
+  },
+
+  update(id, params, callback) {
+    Offer.findByIdAndUpdate(id, params, { new: true }, (err, offer) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+
+      callback(null, offer);
+    });
+  },
+};

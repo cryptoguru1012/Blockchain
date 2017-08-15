@@ -63,7 +63,7 @@ class ItemBrowser extends React.Component {
 					<Link to={'/offer/' + this.props.data.offer}>
 						<div className="contentItemBrowser">
 							<div className="bgContainer">
-								{typeof this.state.description === 'object' && <VideoPlayer
+								{this.state.description.urlVideo && <VideoPlayer
 									url={this.state.description.urlVideo}
 									subtitles={this.state.description.subtitlesVideo}
 									playOnHover
@@ -71,6 +71,9 @@ class ItemBrowser extends React.Component {
 									muted
 								/>}
 								{ this.state.textOnly === false && <p> {String(this.state.description)} </p>}
+								{ this.state.description.urlImage && <GaleryItemBrowser
+									images={this.state.description.urlImage}/>
+								}
 								{this.state.images.length > 0 && <GaleryItemBrowser
 									images={this.state.images}/>
 								}

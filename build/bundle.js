@@ -105120,7 +105120,7 @@
 							}),
 							_react2.default.createElement(
 								_reactBootstrap.Row,
-								null,
+								{ className: 'GeoLoc__container' },
 								_react2.default.createElement(
 									_reactBootstrap.Col,
 									{ xs: 12, className: 'GeoLoc__floatText' },

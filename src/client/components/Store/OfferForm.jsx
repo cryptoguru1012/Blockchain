@@ -217,9 +217,9 @@ class OfferForm extends React.Component {
 
 		const addrAutocompleteItem = ({ formattedSuggestion }) => (
 				<div className="GeoLoc__suggestion-item" style={{zIndex: 3000}}>
-					<FontIcon style={{color: grey700}} className="material-icons  GeoLoc__suggestion-icon">location_on</FontIcon>
-					<strong className="mainText">{formattedSuggestion.mainText},</strong>
-					<small className="text-muted">{formattedSuggestion.secondaryText}</small>
+					<FontIcon style={{color: '#ff0000'}} className="material-icons  GeoLoc__suggestion-icon">location_on</FontIcon>
+						<span className="GeoLoc__mainText">{formattedSuggestion.mainText},</span>
+						<small className="text-muted">{formattedSuggestion.secondaryText}</small>
 				</div>)
 
 		const addrInputProps = {
@@ -279,8 +279,8 @@ class OfferForm extends React.Component {
 							multiLine
 						/>
 						<Row>
-							<Col xs={12} className="floatText">
-								<span style={{color: grey500}} >Geolocation</span>
+							<Col xs={12} className="GeoLoc__floatText">
+								<span>Geolocation</span>
 							</Col>
 							<Col xs={12} md ={11}>
 								<PlacesAutocomplete

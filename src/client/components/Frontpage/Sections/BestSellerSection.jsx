@@ -42,35 +42,35 @@ class BestSellerSection extends Component {
         //     })
     // }
 
-    render() {
-        let rows = [];
-        if(this.props.items != null){
-          this.props.items.forEach(item => {
-            rows.push(
-            <Col md={3} xs={6} key={item.id}>
-                <Card >
-                    <CardMedia overlay={<CardTitle title={item.title} />}>
-                      <img src={item.url3} width={320} height={320}/>
-                    </CardMedia>
-                </Card>
-            </Col>);
-          });
-       }
-        return (
-          <Row>
-              <Col>
-                  <Row>
-                      <Col>
-                          <div className={style.center}>
-                              <h2 className={fonts.alfaSlabOne}>{this.props.title}</h2>
-                          </div>
-                          <Row> {rows} </Row>
-                      </Col>
-                  </Row>
-              </Col>
-          </Row>
-        );
+  render() {
+    let rows = [];
+    if(this.props.items != null){
+      this.props.items.forEach(item => {
+        rows.push(
+        <Col md={3} xs={6} key={item.id}>
+            <Card >
+                <CardMedia overlay={<CardTitle title={item.title} />}>
+                  <img src={item.url3} width={320} height={320}/>
+                </CardMedia>
+            </Card>
+        </Col>);
+      });
     }
+    return (
+      <Row>
+        <Col>
+          <Row>
+            <Col>
+              <div className={style.center}>
+                <h2 className={fonts.alfaSlabOne}>{this.props.title}</h2>
+                </div>
+              <Row> {rows} </Row>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    );
+  }
 }
 
 BestSellerSection.propTypes = propTypes;

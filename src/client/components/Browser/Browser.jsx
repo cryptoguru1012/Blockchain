@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Config from 'config_env';
+
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import { RaisedButton } from 'material-ui';
@@ -11,47 +13,9 @@ import BrowserCarousel from './BrowserCarousel';
 import FilterBrowser from './FilterBrowser';
 import OrderByBrowser from './OrderByBrowser';
 
-const filterItems = [
-	{
-		value: 'SHOW_ALL',
-		name: 'All',
-	},
-	{
-		value: 'SHOW_VIDEOS',
-		name: 'Videos only',
-	},
-	{
-		value: 'SHOW_PHOTOS',
-		name: 'Photos only',
-	},
-	{
-		value: 'SHOW_TEXT',
-		name: 'Text only',
-	},
-];
 
-const orderItems = [
-	{
-		value: 'currency',
-		name: 'Currency',
-	},
-	{
-		value: 'title',
-		name: 'Name',
-	},
-	{
-		value: 'geolocation',
-		name: 'Geolocation',
-	},
-	{
-		value: 'paymentoptions_display',
-		name: 'Payment options',
-	},
-	{
-		value: 'category',
-		name: 'Category',
-	}
-];
+const filterItems = Config.Browser.filterItems;
+const orderItems = Config.Browser.orderItems;
 
 const styles = {
 	background: {

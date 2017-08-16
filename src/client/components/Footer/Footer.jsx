@@ -1,7 +1,11 @@
 import React from 'react';
+import Config from 'config_env';
+
 import {Row, Col, Grid, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 import  footerStyle from './css/styles.css';
 import fonts from '../fonts/style.css';
+
+require('./styles/footer.scss');
 
 // var footer = {
 //     position: 'absolute',
@@ -23,7 +27,7 @@ const Footer = React.createClass({
         <div className={fonts.alfaSlabOne} style={{position:"absolute", left:0, right:0, bottom:0 }}>
         {/*  <Row>
             <Col md={12}>*/}
-                <div className={footerStyle.footerContent}> © 2002 - 2017 Moovr. All rights reserved. </div>
+                <div className={footerStyle.footerContent}> {Config.Footer.copyright}. </div>
             {/*</Col>
           </Row>*/}
         </div>

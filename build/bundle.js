@@ -95454,7 +95454,7 @@
 /* 926 */
 /***/ (function(module, exports) {
 
-	module.exports = {"GoogleAPI":{"maps_key":"AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"}};
+	module.exports = {"GoogleAPI":{"maps_key":"AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"},"Browser":{"filterItems":[{"value":"SHOW_ALL","name":"All"},{"value":"SHOW_VIDEOS","name":"Videos only"},{"value":"SHOW_PHOTOS","name":"Photos only"},{"value":"SHOW_TEXT","name":"Text only"}],"orderItems":[{"value":"currency","name":"Currency"},{"value":"title","name":"Name"},{"value":"geolocation","name":"Geolocation"},{"value":"paymentoptions_display","name":"Payment options"},{"value":"category","name":"Category"}],"tblHeader":[{"caption":"Title","value":"title"},{"caption":"Vendor","value":"alias"},{"caption":"Price","value":"price"},{"caption":"Currency","value":"currency"}]},"Footer":{"copyright":"© 2002 - 2017 Moovr. All rights reserved."}};
 
 /***/ }),
 /* 927 */
@@ -106569,6 +106569,10 @@
 
 	var _reactRedux = __webpack_require__(283);
 
+	var _config_env = __webpack_require__(926);
+
+	var _config_env2 = _interopRequireDefault(_config_env);
+
 	var _reactBootstrap = __webpack_require__(598);
 
 	var _CircularProgress = __webpack_require__(804);
@@ -106603,36 +106607,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var filterItems = [{
-		value: 'SHOW_ALL',
-		name: 'All'
-	}, {
-		value: 'SHOW_VIDEOS',
-		name: 'Videos only'
-	}, {
-		value: 'SHOW_PHOTOS',
-		name: 'Photos only'
-	}, {
-		value: 'SHOW_TEXT',
-		name: 'Text only'
-	}];
-
-	var orderItems = [{
-		value: 'currency',
-		name: 'Currency'
-	}, {
-		value: 'title',
-		name: 'Name'
-	}, {
-		value: 'geolocation',
-		name: 'Geolocation'
-	}, {
-		value: 'paymentoptions_display',
-		name: 'Payment options'
-	}, {
-		value: 'category',
-		name: 'Category'
-	}];
+	var filterItems = _config_env2.default.Browser.filterItems;
+	var orderItems = _config_env2.default.Browser.orderItems;
 
 	var styles = {
 		background: {
@@ -106896,6 +106872,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _config_env = __webpack_require__(926);
+
+	var _config_env2 = _interopRequireDefault(_config_env);
+
 	var _reactRouter = __webpack_require__(185);
 
 	var _VideoPlayer = __webpack_require__(936);
@@ -107052,7 +107032,7 @@
 	            ----------------------------------------------------------------
 	            cortesa --> Exclude Item which not fit types Video, Image, Text
 	            ----------------------------------------------------------------
-	             else if(data.type === 'images') {
+	              else if(data.type === 'images') {
 	                const url = `url(${data.value})`
 	                return (
 	                    <div style={styles.imageContainer(url)}>
@@ -107125,6 +107105,34 @@
 	        value: function render() {
 	            var _this2 = this;
 
+	            var thSortIcon = function thSortIcon(field) {
+	                var icon = _this2.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
+	                return _react2.default.createElement(
+	                    _FontIcon2.default,
+	                    {
+	                        className: 'material-icons',
+	                        style: styles.sortIconStyles },
+	                    _this2.state.thSortBy === field && icon || ' '
+	                );
+	            };
+
+	            var tblHeader = _config_env2.default.Browser.tblHeader.map(function (item, index) {
+	                return _react2.default.createElement(
+	                    'th',
+	                    { key: index },
+	                    _react2.default.createElement(
+	                        'a',
+	                        {
+	                            style: styles.txtHeader,
+	                            onClick: function onClick() {
+	                                _this2.thClick(item.value);
+	                            } },
+	                        item.caption,
+	                        thSortIcon(item.value)
+	                    )
+	                );
+	            });
+
 	            var itemsOutput = this.sortItems(this.props.items).map(function (item) {
 	                var mediaData = _this2.getMedia(item.description);
 	                if (mediaData) {
@@ -107166,18 +107174,6 @@
 	                }
 	            });
 
-	            var thSortIcon = function thSortIcon(field) {
-	                var icon = _this2.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
-	                return _react2.default.createElement(
-	                    _FontIcon2.default,
-	                    {
-	                        className: 'material-icons',
-	                        style: styles.sortIconStyles },
-	                    _this2.state.thSortBy === field && icon || ' '
-	                );
-	            };
-
-	            var icon = this.state.thSortAZ ? 'arrow_drop_down' : 'arrow_drop_up';
 	            return _react2.default.createElement(
 	                'table',
 	                { className: 'grids' },
@@ -107192,62 +107188,7 @@
 	                            null,
 	                            'Media'
 	                        ),
-	                        _react2.default.createElement(
-	                            'th',
-	                            null,
-	                            _react2.default.createElement(
-	                                'a',
-	                                {
-	                                    style: styles.txtHeader,
-	                                    onClick: function onClick() {
-	                                        _this2.thClick('title');
-	                                    } },
-	                                'Title',
-	                                thSortIcon('title')
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'th',
-	                            null,
-	                            _react2.default.createElement(
-	                                'a',
-	                                {
-	                                    style: styles.txtHeader,
-	                                    onClick: function onClick() {
-	                                        _this2.thClick('alias');
-	                                    } },
-	                                'Vendor',
-	                                thSortIcon('alias')
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'th',
-	                            null,
-	                            _react2.default.createElement(
-	                                'a',
-	                                {
-	                                    style: styles.txtHeader,
-	                                    onClick: function onClick() {
-	                                        _this2.thClick('price');
-	                                    } },
-	                                'Price',
-	                                thSortIcon('price')
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'th',
-	                            null,
-	                            _react2.default.createElement(
-	                                'a',
-	                                {
-	                                    style: styles.txtHeader,
-	                                    onClick: function onClick() {
-	                                        _this2.thClick('currency');
-	                                    } },
-	                                'Currency',
-	                                thSortIcon('currency')
-	                            )
-	                        )
+	                        tblHeader
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -110049,7 +109990,7 @@
 	 * Class FilterBrowser
 	 *
 	 * Filtering offers  
-	 * All | Video | Images | Text Only
+	 * All | Video | Images | Text Only | Map
 	 */
 	var FilterBrowser = function (_React$Component) {
 		_inherits(FilterBrowser, _React$Component);

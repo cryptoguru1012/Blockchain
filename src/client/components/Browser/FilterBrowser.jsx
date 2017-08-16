@@ -7,7 +7,7 @@ import FilterLink from './FilterLink';
  * Class FilterBrowser
  *
  * Filtering offers  
- * All | Video | Images | Text Only
+ * All | Video | Images | Text Only | Map
  */
 class FilterBrowser extends React.Component {
 	constructor(props) {

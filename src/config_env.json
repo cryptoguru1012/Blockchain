@@ -1,5 +1,64 @@
 {
   "GoogleAPI": {
     "maps_key": "AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"
+  },
+  "Browser":{
+    "filterItems":[
+      {
+        "value": "SHOW_ALL",
+        "name": "All"
+      },
+      {
+        "value": "SHOW_VIDEOS",
+        "name": "Videos only"
+      },
+      {
+        "value": "SHOW_PHOTOS",
+        "name": "Photos only"
+      },
+      {
+        "value": "SHOW_TEXT",
+        "name": "Text only"
+      }
+    ],
+    "orderItems": [
+      {
+        "value": "currency",
+        "name": "Currency"
+      },
+      {
+        "value": "title",
+        "name": "Name"
+      },
+      {
+        "value": "geolocation",
+        "name": "Geolocation"
+      },
+      {
+        "value": "paymentoptions_display",
+        "name": "Payment options"
+      },
+      {
+        "value": "category",
+        "name": "Category"
+      }
+    ],
+    "tblHeader":[
+      { "caption":"Title",
+        "value":"title"
+      },
+      { "caption":"Vendor",
+        "value":"alias"
+      },
+      { "caption":"Price",
+        "value":"price"
+      },
+      { "caption":"Currency",
+        "value":"currency"
+      }
+    ]
+  },
+  "Footer":{
+    "copyright":"© 2002 - 2017 Moovr. All rights reserved."
   }
 }

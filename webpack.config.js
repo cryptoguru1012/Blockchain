@@ -33,9 +33,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.css'],
   },
-  external: {
-    'Config': JSON.stringify(require('./config_env.json'))
-    //'Config': JSON.stringify(production ? require('./config.prod.json') : require('./config.dev.json'))
+  externals: {
+    'config_env': JSON.stringify(require('./src/config_env.json'))
   },
   module: {
     loaders: [
@@ -48,7 +47,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-          loader: 'style-loader!css-loader?modules=true&localIdentName=[name]__[local]___[hash:base64:5]'
+        loader: 'style-loader!css-loader?modules=true&localIdentName=[name]__[local]___[hash:base64:5]'
       },
       {
         test: /\.scss$/,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Config from 'config_env';
 
 // redux
 import { doCategoryReq } from '../../redux/actions/store/category';
@@ -133,7 +134,7 @@ class NewItemSelector extends React.Component {
 
     /* --------- This loads Google Map API --------- */
     let ref = window.document.getElementsByTagName('script')[0];
-    let apiKey = 'AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g';
+    let apiKey = Config.GoogleAPI.maps_key;
     let libraries = 'places';
 		let src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=${libraries}`;
 		let script = window.document.createElement('script');

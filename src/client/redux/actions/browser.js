@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import geolib from 'geolib';
+import axios from 'axios';
 
 export const SEARCH_START = 'SEARCH_START';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
@@ -78,7 +79,7 @@ function clusterItems(items) {
     SHOW_VIDEOS: hasVideo,
     SHOW_PHOTOS: hasPhoto,
     SHOW_TEXT: hasOnlyText,
-    SHOW_MAP: items
+    SHOW_MAP: items,
   };
 }
 
@@ -165,13 +166,15 @@ export function getFeatures() {
   return (dispatch, getState) => {
     dispatch(getFeaturesStart());
 
-    fetch('https://d3ocj7sd2go46j.cloudfront.net/API/featured')
-      .then(res => res.json())
-      .then(res => dispatch(getFeaturesSuccess(res)))
+    axios
+      .get('https://d3ocj7sd2go46j.cloudfront.net/API/featured')
+      .then(response => dispatch(getFeaturesSuccess(response.data)))
       .catch(error => dispatch(getFeaturesError(error)));
   };
 }
 
+// DO WE NEED THIS ANYMORE???? If we are going to implement our own mongodb
+// search query then this wouldnt be needed
 export function search(data) {
   return (dispatch, getState) => {
     dispatch(searchStart());

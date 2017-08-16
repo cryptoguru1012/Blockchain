@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+
 export const DELETE_RECORD = 'DELETE_RECORD';
 export const UPLOAD_START = 'UPLOAD_START';
 export const UPLOAD_ERROR = 'UPLOAD_ERROR';
@@ -8,83 +9,79 @@ export const UPDATE_SUBTITLES = 'UPDATE_SUBTITLES';
 export const SET_VIDEO_DURATION = 'SET_VIDEO_DURATION';
 
 function uploadStart(payload) {
-	return {
-		type: UPLOAD_START,
-		url: payload
-	};
+  return {
+    type: UPLOAD_START,
+    url: payload,
+  };
 }
 
 function uploadError(payload) {
-	return {
-		type: UPLOAD_ERROR
-	};
+  return {
+    type: UPLOAD_ERROR,
+  };
 }
 
 function uploadSuccess(payload) {
-	return {
-		type: UPLOAD_SUCCESS,
-		payload: payload.data
-	};
+  return {
+    type: UPLOAD_SUCCESS,
+    payload: payload.data,
+  };
 }
 
 export function setDuration(payload) {
-	return {
-		type: SET_VIDEO_DURATION,
-		duration: payload
-	}
+  return {
+    type: SET_VIDEO_DURATION,
+    duration: payload,
+  };
 }
 
 export function deleteRecord(payload) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: DELETE_RECORD,
-			deleted: payload
-		});
-	}
+  return (dispatch, getState) => {
+    dispatch({
+      type: DELETE_RECORD,
+      deleted: payload,
+    });
+  };
 }
 
 export function setOfferForm() {
-	return (dispatch, getState) => {
-		dispatch({
-			type: SET_OFFER
-		});
-	}
+  return (dispatch, getState) => {
+    dispatch({
+      type: SET_OFFER,
+    });
+  };
 }
 
 export function updateSubtitles(subtitles) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: UPDATE_SUBTITLES,
-			subtitles: subtitles
-		});
-	}
+  return (dispatch, getState) => {
+    dispatch({
+      type: UPDATE_SUBTITLES,
+      subtitles,
+    });
+  };
 }
 
 // https://d3j22jloo6hpq6.cloudfront.net/API/parse
 // https://shopshots-argvil19.c9users.io/API/parse
 
 export function setRecord(data, url) {
-	return (dispatch, getState) => {
-		dispatch(uploadStart(url));
-		// This is a hack to check if data is the FormData which composed from formdata-polyfill
-		// If yes, convert it to native FormData
-		const nativeData = data._asNative ? data._asNative() : data
+  return (dispatch, getState) => {
+    dispatch(uploadStart(url));
+    // This is a hack to check if data is the FormData which composed from formdata-polyfill
+    // If yes, convert it to native FormData
+    const nativeData = data._asNative ? data._asNative() : data;
 
-		fetch('https://d3j22jloo6hpq6.cloudfront.net/API/parse', {
-			method: "POST",
-			mode: 'cors',
-			body: nativeData
-		})
-		.then(res => res.json())
-		.then(res => {
-			if (!res.success) {
-				dispatch(uploadError(null));
-			} else {
-				dispatch(uploadSuccess(res));
-			}
-		})
-		.catch(error => {
-			dispatch(uploadError(null));
-		});
-	};
+    axios
+      .post('/API/videos/create', nativeData)
+      .then((response) => {
+        if (!response.success) {
+          dispatch(uploadError(null));
+        } else {
+          dispatch(uploadSuccess(response.data));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadError(null));
+      });
+  };
 }

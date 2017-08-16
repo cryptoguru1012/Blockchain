@@ -1,60 +1,22 @@
 import 'whatwg-fetch';
+import axios from 'axios';
 
 export const LOAD_START = 'LOAD_START';
 export const LOAD_ERROR = 'LOAD_ERROR';
 export const LOAD_SUCCESS = 'LOAD_SUCCESS';
 
-function loadStart(payload) {
-  console.log('loadStart');
-  return {
-    type: LOAD_START,
-  };
-}
-
-function loadError(payload) {
-  console.log('loadError');
-  return {
-    type: LOAD_ERROR,
-    message: payload,
-  };
-}
-
-function loadSuccess(payload) {
-  console.log('loadSuccess');
-  return {
-    type: LOAD_SUCCESS,
-    data: payload,
-  };
-}
-
-export function getOfferData(guid) {
+export function getOfferData(id) {
   return (dispatch, getState) => {
-    dispatch(loadStart());
-    fetch(
-      'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62',
-    )
-      .then(res => res.json())
-      .then((res) => {
-        const token = res.token;
-        fetch(`https://d2fzm6xoa70bg8.cloudfront.net/offerinfo?guid=${guid}`, {
-          headers: {
-            Token: token,
-          },
-          mode: 'cors',
-          method: 'GET',
-        })
-          .then(res => res.json())
-          .then((res) => {
-            console.log(res);
-            if (typeof res === 'string') dispatch(loadError(res));
-            else dispatch(loadSuccess(res));
-          })
-          .catch((error) => {
-            dispatch(loadError(error));
-          });
+    dispatch({ type: LOAD_START });
+    axios
+      .get(`/API/offers/${id}`)
+      .then((response) => {
+        if (typeof response.data === 'string') {
+          dispatch({ type: LOAD_ERROR, message: response.data });
+        } else dispatch({ type: LOAD_SUCCESS, data: response.data });
       })
       .catch((error) => {
-        dispatch(loadError(error));
+        dispatch({ type: LOAD_ERROR, message: error });
       });
   };
 }

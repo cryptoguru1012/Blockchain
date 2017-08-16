@@ -58,4 +58,20 @@ module.exports = {
       callback(null, offer);
     });
   },
+
+  sort(params, pageStart, pageSize, callback) {
+    Offer.find(params, (err, offers) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+
+      console.log('controllerpageStart', pageStart, 'controllerpageSize', pageSize);
+
+      const offerArray = offers;
+      const endNumber = Number(pageSize) + Number(pageStart);
+
+      callback(null, offerArray.slice(Number(pageStart), endNumber));
+    });
+  },
 };

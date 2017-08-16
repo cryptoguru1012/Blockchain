@@ -10,6 +10,8 @@ import ListBrowser from './ListBrowser';
 import BrowserCarousel from './BrowserCarousel';
 import FilterBrowser from './FilterBrowser';
 import OrderByBrowser from './OrderByBrowser';
+import Pagination from './Pagination';
+import Sorter from './Sorter';
 
 const filterItems = [
   {
@@ -31,7 +33,7 @@ const filterItems = [
   {
     value: 'SHOW_MAP',
     name: 'Map only',
-  }
+  },
 ];
 
 const orderItems = [
@@ -113,6 +115,7 @@ class Browser extends React.Component {
     return (
       <div width="100%">
         {browser.features.length > 0 && <BrowserCarousel items={browser.features} />}
+        <Sorter />
         <Grid>
           {!browser.error && <FilterBrowser items={filterItems} />}
           <Col xs={12}>
@@ -124,7 +127,7 @@ class Browser extends React.Component {
                   {browser.message}
                 </h3>
               </Row>}
-              {console.log(browser)}
+            {console.log(browser)}
             {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
           <Col xs={12} style={{ marginBottom: '50px' }}>
@@ -144,7 +147,8 @@ class Browser extends React.Component {
 
 function mapStateToProps(state) {
   const browser = state.browser;
-  return { browser };
+  const pages = state.pagination;
+  return { browser, pages };
 }
 
 function mapDispatchToProps(dispatch) {

@@ -3,6 +3,28 @@ import RequestManager from '../utils/RequestManager';
 import axios from 'axios';
 
 const offerRoutes = (app) => {
+  app.get('/API/offers', (req, res, next) => {
+    OfferController.find(null, (err, results) => {
+      if (err) {
+        res.json({ confirmation: 'fail', message: err });
+
+        return;
+      }
+
+      res.json({
+        confirmation: 'success',
+        results,
+      });
+    });
+  });
+
+  app.get('/API/offers/sort', (req, res, next) => {
+    const { title, price, quantity, currency } = req.query;
+    const newItems = Object.assign([], req.query);
+    console.log(title, price, quantity, currency);
+    console.log(newItems);
+  });
+
   app.get('/API/offers/new', (req, res, next) => {
     axios
       .get(
@@ -92,36 +114,6 @@ const offerRoutes = (app) => {
           message: err,
         });
       });
-  });
-
-  app.get('/API/offers', (req, res, next) => {
-    OfferController.find(null, (err, results) => {
-      if (err) {
-        res.json({ confirmation: 'fail', message: err });
-
-        return;
-      }
-
-      res.json({
-        confirmation: 'success',
-        results,
-      });
-    });
-  });
-
-  app.get('/API/offers/:id', (req, res, next) => {
-    OfferController.findOne({ _id: req.params.id }, (err, result) => {
-      if (err) {
-        res.json({ confirmation: 'fail', message: err });
-
-        return;
-      }
-
-      res.json({
-        confirmation: 'success',
-        result,
-      });
-    });
   });
 
   app.post('/API/offers/new', (req, res, next) => {
@@ -224,6 +216,37 @@ const offerRoutes = (app) => {
       .catch((err) => {
         res.json({ err });
       });
+  });
+
+  app.get('/API/offers/pagination', (req, res, next) => {
+    const position = req.query.position;
+    const pageSize = req.query.number;
+
+    console.log('position', position, 'pageSize', pageSize);
+
+    OfferController.sort(null, position, pageSize, (err, results) => {
+      if (err) {
+        res.json(err);
+        return;
+      }
+
+      res.json(results);
+    });
+  });
+
+  app.get('/API/offers/:id', (req, res, next) => {
+    OfferController.findOne({ _id: req.params.id }, (err, result) => {
+      if (err) {
+        res.json({ confirmation: 'fail', message: err });
+
+        return;
+      }
+
+      res.json({
+        confirmation: 'success',
+        result,
+      });
+    });
   });
 };
 export default offerRoutes;

@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import axios from 'axios';
 
 export const ITEM_CREATE_START = 'ITEM_CREATE_START';
 export const ITEM_CREATE_ERR = 'ITEM_CREATE_ERR';
@@ -35,31 +36,12 @@ export function doItemCreate(params) {
   return (dispatch, state) => {
     dispatch(itemCreateStart());
 
-    fetch(
-      'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62',
-    )
-      .then(res => res.json())
-      .then((res) => {
-        const token = res.token;
-        fetch('https://d2fzm6xoa70bg8.cloudfront.net/offernew', {
-          headers: {
-            Token: token,
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: params,
-        })
-          .then(res => res.json())
-          .then((res) => {
-            if (typeof res !== 'string') {
-              console.log('res', res);
-              dispatch(itemCreateSuccess(res));
-              debugger;
-            } else dispatch(itemCreateErr(res));
-          })
-          .catch((error) => {
-            dispatch(itemCreateErr(error));
-          });
+    axios
+      .post('/API/offers/new', params)
+      .then((response) => {
+        if (typeof response.data !== 'string') {
+          dispatch(itemCreateSuccess(response.data));
+        } else dispatch(itemCreateErr(response.data));
       })
       .catch((error) => {
         dispatch(itemCreateErr(error));

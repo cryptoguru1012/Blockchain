@@ -1,4 +1,5 @@
 import React from 'react';
+import Config from 'config_env';
 
 import CircularProgress from 'material-ui/CircularProgress';
 import Formsy from 'formsy-react';
@@ -187,7 +188,6 @@ class OfferForm extends React.Component {
 	}
 
 	componentWillReceiveProps(props){
-
 		if(props.coords && !props.coords.positionError) {
 			this.setState({
 				coords: {lat:props.coords.latitude, lng:props.coords.longitude},
@@ -196,7 +196,7 @@ class OfferForm extends React.Component {
 			this.latlngToAddress(props.coords.latitude, props.coords.longitude);
 		}
 		else
-			fetch('http://ip-api.com/json')
+			fetch(Config.external_IpAPI)
 				.then(res => res.json())
 				.then((data) => {
 					this.setState({
@@ -205,8 +205,8 @@ class OfferForm extends React.Component {
 					})
 					this.latlngToAddress(data.lat, data.lon);
 				})
-		
 	}
+	
 	render() {
 		const cssClasses = {
 			root: 'form-group',

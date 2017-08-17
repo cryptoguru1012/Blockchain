@@ -38,7 +38,6 @@ const styles = {
 class VideoRecord2 extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.handleChange = this.handleChange.bind(this);
 	}
 
@@ -50,7 +49,6 @@ class VideoRecord2 extends React.Component {
 		let blob = event.target.files[0]
 			, url = URL.createObjectURL(blob)
 			, data = new FormData();
-
 		let type = blob.type || "";
 		let isVideo = type.includes('video/');
 		let isImage = type.includes('image/');

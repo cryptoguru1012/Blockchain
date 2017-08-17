@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 export const ITEM_CREATE_START = 'ITEM_CREATE_START';
 export const ITEM_CREATE_ERR = 'ITEM_CREATE_ERR';
@@ -32,13 +34,14 @@ export function showSnackbar() {
 
 export function doItemCreate(params) {
 	return (dispatch, state) => {
+		let login = Config.CloudFront.login;
+		let offernew = Config.CloudFront.offernew;
 		dispatch(itemCreateStart());
-
-		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+		fetch(login)
 		.then(res => res.json())
 		.then(res => {
 			let token = res.token;
-			fetch("https://d2fzm6xoa70bg8.cloudfront.net/offernew", {
+			fetch(offernew, {
 				headers: {
 					'Token': token,
 					'Content-Type': 'application/json'

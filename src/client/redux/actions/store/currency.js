@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 export const CURRENCY_REQ_START = 'CURRENCY_REQ_START';
 export const CURRENCY_REQ_ERR = 'CURRENCY_REQ_ERR';
@@ -24,13 +26,14 @@ function currencyReqSuccess(res) {
 
 export function doCurrencyReq() {
 	return (dispatch, state) => {
+		let login = Config.CloudFront.login;
+		let rates = Config.CloudFront.rates;
 		dispatch(currencyReqStart());
-
-		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+		fetch(login)
 		.then(res => res.json())
 		.then(res => {
 			let token = res.token;
-			fetch('https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=sysrates.peg', {
+			fetch(rates, {
 				headers: {
 					'Token': token
 				},

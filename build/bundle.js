@@ -94905,7 +94905,6 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-
 	      /* --------- This loads Google Map API --------- */
 	      var ref = window.document.getElementsByTagName('script')[0];
 	      var apiKey = _config_env2.default.GoogleAPI.maps_key;
@@ -94920,16 +94919,11 @@
 	  }, {
 	    key: 'is_iOS',
 	    value: function is_iOS() {
-	      var iDevices = ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'];
-
 	      if (!!navigator.platform) {
-	        while (iDevices.length) {
-	          if (navigator.platform === iDevices.pop()) {
-	            return true;
-	          }
-	        }
+	        return _config_env2.default.iDevices.some(function (iDevice) {
+	          return iDevice === navigator.platform;
+	        });
 	      }
-
 	      return false;
 	    }
 	  }, {
@@ -95099,7 +95093,7 @@
 	                        } },
 	                      _react2.default.createElement(_reactDropzone2.default, {
 	                        style: { "display": "none" },
-	                        accept: '.mp4, .3gp, .ogv, .webm, .flv, .wmv',
+	                        accept: _config_env2.default.AcceptedVideoFormats,
 	                        onDrop: function onDrop(file) {
 	                          return _this2.onDrop(file);
 	                        } })
@@ -95167,7 +95161,7 @@
 	                        } },
 	                      _react2.default.createElement(_reactDropzone2.default, {
 	                        style: { "display": "none" },
-	                        accept: '.jpg, .png, bmp',
+	                        accept: _config_env2.default.AcceptedImageFormats,
 	                        onDrop: function onDrop(file) {
 	                          return _this2.onDrop(file);
 	                        } })
@@ -95454,7 +95448,7 @@
 /* 926 */
 /***/ (function(module, exports) {
 
-	module.exports = {"GoogleAPI":{"maps_key":"AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"},"Browser":{"filterItems":[{"value":"SHOW_ALL","name":"All"},{"value":"SHOW_VIDEOS","name":"Videos only"},{"value":"SHOW_PHOTOS","name":"Photos only"},{"value":"SHOW_TEXT","name":"Text only"}],"orderItems":[{"value":"currency","name":"Currency"},{"value":"title","name":"Name"},{"value":"geolocation","name":"Geolocation"},{"value":"paymentoptions_display","name":"Payment options"},{"value":"category","name":"Category"}],"tblHeader":[{"caption":"Title","value":"title"},{"caption":"Vendor","value":"alias"},{"caption":"Price","value":"price"},{"caption":"Currency","value":"currency"}]},"Footer":{"copyright":"© 2002 - 2017 Moovr. All rights reserved."}};
+	module.exports = {"GoogleAPI":{"maps_key":"AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"},"iDevices":["iPad Simulator","iPhone Simulator","iPod Simulator","iPad","iPhone","iPod"],"AcceptedVideoFormats":".mp4, .3gp, .ogv, .webm, .flv, .wmv","AcceptedImageFormats":".jpg, .png, .bmp","Browser":{"filterItems":[{"value":"SHOW_ALL","name":"All"},{"value":"SHOW_VIDEOS","name":"Videos only"},{"value":"SHOW_PHOTOS","name":"Photos only"},{"value":"SHOW_TEXT","name":"Text only"}],"orderItems":[{"value":"currency","name":"Currency"},{"value":"title","name":"Name"},{"value":"geolocation","name":"Geolocation"},{"value":"paymentoptions_display","name":"Payment options"},{"value":"category","name":"Category"}],"tblHeader":[{"caption":"Title","value":"title"},{"caption":"Vendor","value":"alias"},{"caption":"Price","value":"price"},{"caption":"Currency","value":"currency"}]},"Footer":{"copyright":"© 2002 - 2017 Moovr. All rights reserved."}};
 
 /***/ }),
 /* 927 */

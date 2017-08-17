@@ -131,7 +131,6 @@ class NewItemSelector extends React.Component {
   }
   
   componentDidMount() {
-
     /* --------- This loads Google Map API --------- */
     let ref = window.document.getElementsByTagName('script')[0];
     let apiKey = Config.GoogleAPI.maps_key;
@@ -142,25 +141,12 @@ class NewItemSelector extends React.Component {
 		script.async = true;
     ref.parentNode.insertBefore(script, ref);
     /* --------------------------------------------- */
-    
 	}
 
 is_iOS() {
-  let iDevices = [
-    'iPad Simulator',
-    'iPhone Simulator',
-    'iPod Simulator',
-    'iPad',
-    'iPhone',
-    'iPod'
-  ];
-
   if (!!navigator.platform) {
-    while (iDevices.length) {
-      if (navigator.platform === iDevices.pop()){ return true; }
-    }
+    return Config.iDevices.some(iDevice => iDevice === navigator.platform)
   }
-
   return false;
 }
   
@@ -286,7 +272,7 @@ is_iOS() {
                       onClick={ (e) => this.openFileDialog}>
                       <Dropzone 
                         style={{"display" : "none"}}
-                        accept=".mp4, .3gp, .ogv, .webm, .flv, .wmv"
+                        accept={Config.AcceptedVideoFormats}
                         onDrop={ (file) => this.onDrop(file)} />
                     </FlatButton>
                   </Row>
@@ -326,7 +312,7 @@ is_iOS() {
                       onClick={ (e) => this.openFileDialog}>
                       <Dropzone 
                         style={{"display" : "none"}}
-                        accept=".jpg, .png, bmp"
+                        accept={Config.AcceptedImageFormats}
                         onDrop={ (file) => this.onDrop(file)} />
                     </FlatButton>
                   </Row>

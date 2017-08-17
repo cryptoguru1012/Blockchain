@@ -11,7 +11,7 @@
     "parse":        "https://d3j22jloo6hpq6.cloudfront.net/API/parse"
   },
   "GoogleAPI": {
-    "maps_key": "AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"
+    "maps_places":"https://maps.googleapis.com/maps/api/js?key=AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g&libraries=places"
   },
   "iDevices": [
       "iPad Simulator",

@@ -133,9 +133,7 @@ class NewItemSelector extends React.Component {
   componentDidMount() {
     /* --------- This loads Google Map API --------- */
     let ref = window.document.getElementsByTagName('script')[0];
-    let apiKey = Config.GoogleAPI.maps_key;
-    let libraries = 'places';
-		let src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=${libraries}`;
+    let src = Config.GoogleAPI.maps_places;
 		let script = window.document.createElement('script');
 		script.src = src;
 		script.async = true;

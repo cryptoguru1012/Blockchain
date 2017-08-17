@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 export const SEARCH_START = 'SEARCH_START';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
@@ -119,9 +121,9 @@ export function setOrder(order) {
  */
 export function getFeatures() {
 	return (dispatch, getState) => {
+		let featured = Config.CloudFront.featured;
 		dispatch(getFeaturesStart());
-
-		fetch("https://d3ocj7sd2go46j.cloudfront.net/API/featured")
+		fetch(featured)
 			.then(res => res.json())
 			.then(res => dispatch(getFeaturesSuccess(res)))
 			.catch(error => dispatch(getFeaturesError(error)));
@@ -133,8 +135,9 @@ export function getFeatures() {
  */
 export function search(data) {
 	return (dispatch, getState) => {
+		let login = Config.CloudFront.login;
+		let offerFilter = Config.CloudFront.offerFilter;
 		dispatch(searchStart());
-
 		var esc = encodeURIComponent;
 		var query = Object.keys(data)
 			.map(k => {
@@ -144,11 +147,11 @@ export function search(data) {
 			})
 			.join(esc('&'));
 			
-		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+		fetch(login)
 			.then(res => res.json())
 			.then(res => {
 				var token = res.token;
-				return fetch("https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?" + query, {
+				return fetch(`${offerFilter}${query}`, {
 					"headers": {
 						"Token": token,
 					},

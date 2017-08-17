@@ -41264,7 +41264,7 @@
 
 	var _browser = __webpack_require__(525);
 
-	var _category = __webpack_require__(527);
+	var _category = __webpack_require__(528);
 
 	var _reactRouter = __webpack_require__(185);
 
@@ -41667,7 +41667,13 @@
 	exports.getFeatures = getFeatures;
 	exports.search = search;
 
-	__webpack_require__(526);
+	var _config_env = __webpack_require__(526);
+
+	var _config_env2 = _interopRequireDefault(_config_env);
+
+	__webpack_require__(527);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var SEARCH_START = exports.SEARCH_START = 'SEARCH_START';
 	var SEARCH_ERROR = exports.SEARCH_ERROR = 'SEARCH_ERROR';
@@ -41780,9 +41786,9 @@
 	 */
 	function getFeatures() {
 		return function (dispatch, getState) {
+			var featured = _config_env2.default.CloudFront.featured;
 			dispatch(getFeaturesStart());
-
-			fetch("https://d3ocj7sd2go46j.cloudfront.net/API/featured").then(function (res) {
+			fetch(featured).then(function (res) {
 				return res.json();
 			}).then(function (res) {
 				return dispatch(getFeaturesSuccess(res));
@@ -41797,8 +41803,9 @@
 	 */
 	function search(data) {
 		return function (dispatch, getState) {
+			var login = _config_env2.default.CloudFront.login;
+			var offerFilter = _config_env2.default.CloudFront.offerFilter;
 			dispatch(searchStart());
-
 			var esc = encodeURIComponent;
 			var query = Object.keys(data).map(function (k) {
 				var a = esc(k),
@@ -41806,11 +41813,11 @@
 				return a + b;
 			}).join(esc('&'));
 
-			fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62").then(function (res) {
+			fetch(login).then(function (res) {
 				return res.json();
 			}).then(function (res) {
 				var token = res.token;
-				return fetch("https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?" + query, {
+				return fetch('' + offerFilter + query, {
 					"headers": {
 						"Token": token
 					},
@@ -41836,6 +41843,12 @@
 
 /***/ }),
 /* 526 */
+/***/ (function(module, exports) {
+
+	module.exports = {"CloudFront":{"login":"https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62","categories":"https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory","rates":"https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=sysrates.peg","offernew":"https://d2fzm6xoa70bg8.cloudfront.net/offernew","featured":"https://d3ocj7sd2go46j.cloudfront.net/API/featured","offerFilter":"https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?","offerInfo":"https://d2fzm6xoa70bg8.cloudfront.net/offerinfo?guid=","uploadImage":"https://d3j22jloo6hpq6.cloudfront.net/API/upload","parse":"https://d3j22jloo6hpq6.cloudfront.net/API/parse"},"GoogleAPI":{"maps_key":"AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"},"iDevices":["iPad Simulator","iPhone Simulator","iPod Simulator","iPad","iPhone","iPod"],"AcceptedVideoFormats":".mp4, .3gp, .ogv, .webm, .flv, .wmv","AcceptedImageFormats":".jpg, .png, .bmp","external_IpAPI":"http://ip-api.com/json","Browser":{"filterItems":[{"value":"SHOW_ALL","name":"All"},{"value":"SHOW_VIDEOS","name":"Videos only"},{"value":"SHOW_PHOTOS","name":"Photos only"},{"value":"SHOW_TEXT","name":"Text only"}],"orderItems":[{"value":"currency","name":"Currency"},{"value":"title","name":"Name"},{"value":"geolocation","name":"Geolocation"},{"value":"paymentoptions_display","name":"Payment options"},{"value":"category","name":"Category"}],"tblHeader":[{"caption":"Title","value":"title"},{"caption":"Vendor","value":"alias"},{"caption":"Price","value":"price"},{"caption":"Currency","value":"currency"}]},"Footer":{"copyright":"© 2002 - 2017 Moovr. All rights reserved."}};
+
+/***/ }),
+/* 527 */
 /***/ (function(module, exports) {
 
 	(function(self) {
@@ -42302,7 +42315,7 @@
 
 
 /***/ }),
-/* 527 */
+/* 528 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42316,11 +42329,11 @@
 
 	exports.doCategoryReq = doCategoryReq;
 
-	var _config_env = __webpack_require__(528);
+	var _config_env = __webpack_require__(526);
 
 	var _config_env2 = _interopRequireDefault(_config_env);
 
-	__webpack_require__(526);
+	__webpack_require__(527);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42379,12 +42392,6 @@
 			});
 		};
 	};
-
-/***/ }),
-/* 528 */
-/***/ (function(module, exports) {
-
-	module.exports = {"CloudFront":{"login":"https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62","categories":"https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory","rates":"https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=sysrates.peg","offernew":"https://d2fzm6xoa70bg8.cloudfront.net/offernew"},"GoogleAPI":{"maps_key":"AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"},"iDevices":["iPad Simulator","iPhone Simulator","iPod Simulator","iPad","iPhone","iPod"],"AcceptedVideoFormats":".mp4, .3gp, .ogv, .webm, .flv, .wmv","AcceptedImageFormats":".jpg, .png, .bmp","external_IpAPI":"http://ip-api.com/json","Browser":{"filterItems":[{"value":"SHOW_ALL","name":"All"},{"value":"SHOW_VIDEOS","name":"Videos only"},{"value":"SHOW_PHOTOS","name":"Photos only"},{"value":"SHOW_TEXT","name":"Text only"}],"orderItems":[{"value":"currency","name":"Currency"},{"value":"title","name":"Name"},{"value":"geolocation","name":"Geolocation"},{"value":"paymentoptions_display","name":"Payment options"},{"value":"category","name":"Category"}],"tblHeader":[{"caption":"Title","value":"title"},{"caption":"Vendor","value":"alias"},{"caption":"Price","value":"price"},{"caption":"Currency","value":"currency"}]},"Footer":{"copyright":"© 2002 - 2017 Moovr. All rights reserved."}};
 
 /***/ }),
 /* 529 */
@@ -94635,7 +94642,7 @@
 	exports.showSnackbar = showSnackbar;
 	exports.doRegister = doRegister;
 
-	__webpack_require__(526);
+	__webpack_require__(527);
 
 	var REGISTER_START = exports.REGISTER_START = 'REGISTER_START';
 	var REGISTER_ERROR = exports.REGISTER_ERROR = 'REGISTER_ERROR';
@@ -94717,11 +94724,11 @@
 
 	var _reactRedux = __webpack_require__(283);
 
-	var _config_env = __webpack_require__(528);
+	var _config_env = __webpack_require__(526);
 
 	var _config_env2 = _interopRequireDefault(_config_env);
 
-	var _category = __webpack_require__(527);
+	var _category = __webpack_require__(528);
 
 	var _currency = __webpack_require__(927);
 
@@ -95468,11 +95475,11 @@
 	exports.CURRENCY_REQ_SUCCESS = exports.CURRENCY_REQ_ERR = exports.CURRENCY_REQ_START = undefined;
 	exports.doCurrencyReq = doCurrencyReq;
 
-	var _config_env = __webpack_require__(528);
+	var _config_env = __webpack_require__(526);
 
 	var _config_env2 = _interopRequireDefault(_config_env);
 
-	__webpack_require__(526);
+	__webpack_require__(527);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -95544,11 +95551,11 @@
 	exports.showSnackbar = showSnackbar;
 	exports.doItemCreate = doItemCreate;
 
-	var _config_env = __webpack_require__(528);
+	var _config_env = __webpack_require__(526);
 
 	var _config_env2 = _interopRequireDefault(_config_env);
 
-	__webpack_require__(526);
+	__webpack_require__(527);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -95628,7 +95635,13 @@
 	exports.updateSubtitles = updateSubtitles;
 	exports.setRecord = setRecord;
 
-	__webpack_require__(526);
+	var _config_env = __webpack_require__(526);
+
+	var _config_env2 = _interopRequireDefault(_config_env);
+
+	__webpack_require__(527);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var DELETE_RECORD = exports.DELETE_RECORD = 'DELETE_RECORD';
 	var UPLOAD_START = exports.UPLOAD_START = 'UPLOAD_START';
@@ -95697,12 +95710,13 @@
 	 */
 	function setRecord(data, url) {
 		return function (dispatch, getState) {
+			var parse = _config_env2.default.CloudFront.parse;
 			dispatch(uploadStart(url));
 			// This is a hack to check if data is the FormData which composed from formdata-polyfill
 			// If yes, convert it to native FormData
 			var nativeData = data._asNative ? data._asNative() : data;
 
-			fetch('https://d3j22jloo6hpq6.cloudfront.net/API/parse', {
+			fetch(parse, {
 				method: "POST",
 				mode: 'cors',
 				body: nativeData
@@ -95737,7 +95751,13 @@
 	exports.proceed = proceed;
 	exports.setImage = setImage;
 
-	__webpack_require__(526);
+	var _config_env = __webpack_require__(526);
+
+	var _config_env2 = _interopRequireDefault(_config_env);
+
+	__webpack_require__(527);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var LOAD_START = exports.LOAD_START = 'LOAD_START';
 	var LOAD_ERROR = exports.LOAD_ERROR = 'LOAD_ERROR';
@@ -95788,13 +95808,14 @@
 	 */
 	function setImage(data) {
 		return function (dispatch, getState) {
+			var uploadImage = _config_env2.default.CloudFront.uploadImage;
 			dispatch(loadStart());
 
 			// This is a hack to check if data is the FormData which composed from formdata-polyfill
 			// If yes, convert it to native FormData
 			var nativeData = data._asNative ? data._asNative() : data;
 
-			fetch('https://d3j22jloo6hpq6.cloudfront.net/API/upload', {
+			fetch(uploadImage, {
 				method: "POST",
 				mode: 'cors',
 				body: nativeData
@@ -104787,7 +104808,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _config_env = __webpack_require__(528);
+	var _config_env = __webpack_require__(526);
 
 	var _config_env2 = _interopRequireDefault(_config_env);
 
@@ -106586,7 +106607,7 @@
 
 	var _reactRedux = __webpack_require__(283);
 
-	var _config_env = __webpack_require__(528);
+	var _config_env = __webpack_require__(526);
 
 	var _config_env2 = _interopRequireDefault(_config_env);
 
@@ -106889,7 +106910,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _config_env = __webpack_require__(528);
+	var _config_env = __webpack_require__(526);
 
 	var _config_env2 = _interopRequireDefault(_config_env);
 
@@ -110416,7 +110437,13 @@
 	exports.LOAD_SUCCESS = exports.LOAD_ERROR = exports.LOAD_START = undefined;
 	exports.getOfferData = getOfferData;
 
-	__webpack_require__(526);
+	var _config_env = __webpack_require__(526);
+
+	var _config_env2 = _interopRequireDefault(_config_env);
+
+	__webpack_require__(527);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var LOAD_START = exports.LOAD_START = 'LOAD_START';
 	var LOAD_ERROR = exports.LOAD_ERROR = 'LOAD_ERROR';
@@ -110447,12 +110474,14 @@
 	 */
 	function getOfferData(guid) {
 		return function (dispatch, getState) {
+			var login = _config_env2.default.CloudFront.login;
+			var offerInfo = _config_env2.default.CloudFront.offerInfo;
 			dispatch(loadStart());
-			fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62").then(function (res) {
+			fetch(login).then(function (res) {
 				return res.json();
 			}).then(function (res) {
 				var token = res.token;
-				fetch('https://d2fzm6xoa70bg8.cloudfront.net/offerinfo?guid=' + guid, {
+				fetch('' + offerInfo + guid, {
 					headers: {
 						'Token': token
 					},
@@ -123265,7 +123294,7 @@
 
 	exports.default = categoryReducer;
 
-	var _category = __webpack_require__(527);
+	var _category = __webpack_require__(528);
 
 	var initialState = {
 	    loading: false,

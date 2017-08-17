@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 export const DELETE_RECORD = 'DELETE_RECORD';
 export const UPLOAD_START = 'UPLOAD_START';
@@ -66,12 +68,13 @@ export function updateSubtitles(subtitles) {
  */
 export function setRecord(data, url) {
 	return (dispatch, getState) => {
+		let parse = Config.CloudFront.parse;
 		dispatch(uploadStart(url));
 		// This is a hack to check if data is the FormData which composed from formdata-polyfill
 		// If yes, convert it to native FormData
 		const nativeData = data._asNative ? data._asNative() : data
 
-		fetch('https://d3j22jloo6hpq6.cloudfront.net/API/parse', {
+		fetch(parse, {
 			method: "POST",
 			mode: 'cors',
 			body: nativeData

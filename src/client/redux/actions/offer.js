@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 export const LOAD_START = 'LOAD_START';
 export const LOAD_ERROR = 'LOAD_ERROR';
@@ -28,12 +30,14 @@ function loadSuccess(payload) {
  */
 export function getOfferData(guid) {
 	return (dispatch, getState) => {
+		let login = Config.CloudFront.login;
+		let offerInfo = Config.CloudFront.offerInfo;
 		dispatch(loadStart());
-		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+		fetch(login)
 		.then(res => res.json())
 		.then(res => {
 			let token = res.token;
-			fetch('https://d2fzm6xoa70bg8.cloudfront.net/offerinfo?guid=' + guid, {
+			fetch(`${offerInfo}${guid}`, {
 				headers: {
 					'Token': token
 				},

@@ -1,9 +1,14 @@
 {
-  "CloudFront":{
-    "login":"https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62",
-    "categories":"https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory",
-    "rates":"https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=sysrates.peg",
-    "offernew":"https://d2fzm6xoa70bg8.cloudfront.net/offernew"
+  "CloudFront": {
+    "login":        "https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62",
+    "categories":   "https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory",
+    "rates":        "https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=sysrates.peg",
+    "offernew":     "https://d2fzm6xoa70bg8.cloudfront.net/offernew",
+    "featured":     "https://d3ocj7sd2go46j.cloudfront.net/API/featured",
+    "offerFilter":  "https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?" ,
+    "offerInfo":    "https://d2fzm6xoa70bg8.cloudfront.net/offerinfo?guid=",
+    "uploadImage":  "https://d3j22jloo6hpq6.cloudfront.net/API/upload",
+    "parse":        "https://d3j22jloo6hpq6.cloudfront.net/API/parse"
   },
   "GoogleAPI": {
     "maps_key": "AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g"
@@ -16,8 +21,8 @@
       "iPhone",
       "iPod"
   ],
-  "AcceptedVideoFormats":".mp4, .3gp, .ogv, .webm, .flv, .wmv",
-  "AcceptedImageFormats":".jpg, .png, .bmp",
+  "AcceptedVideoFormats": ".mp4, .3gp, .ogv, .webm, .flv, .wmv",
+  "AcceptedImageFormats": ".jpg, .png, .bmp",
   "external_IpAPI":"http://ip-api.com/json",
   "Browser":{
     "filterItems":[

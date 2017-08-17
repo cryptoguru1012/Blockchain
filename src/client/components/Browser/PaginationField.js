@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default ({ input, label, type }) =>
-  <div>
-    <label>
+export default ({ label, type }) =>
+  <div style={{ margin: '8px 10px' }}>
+    <label style={{ margin: '0px 5px' }}>
       {label}
     </label>
-    <input {...input} type={type} style={{ marginBottom: '5px' }} />
+    <input type={type} />
   </div>;

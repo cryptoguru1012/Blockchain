@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FETCH_OFFERS, SORT_OFFERS } from './types';
 
-export function fetchOffers(indexPosition, numberOfItems) {
+export function paginateOffers(indexPosition, numberOfItems) {
   return (dispatch) => {
     axios
       .get('/API/offers/pagination', {
@@ -19,11 +19,24 @@ export function fetchOffers(indexPosition, numberOfItems) {
   };
 }
 
-export function sortOffers({ title, price, quantity, currency }) {
+export function fetchOffers() {
+  return (dispatch) => {
+    axios
+      .get('/API/offers')
+      .then((response) => {
+        dispatch({ type: FETCH_OFFERS, payload: response.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function sortOffers({ currency, name, geolocation, category, btc, sys, zec }) {
   return (dispatch) => {
     axios
       .get('/API/offers/sort', {
-        params: { title, price, quantity, currency },
+        params: { currency, name, geolocation, category, btc, sys, zec },
       })
       .then((response) => {
         dispatch({ type: SORT_OFFERS, payload: response.data });

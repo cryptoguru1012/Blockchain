@@ -6,23 +6,91 @@ const offerRoutes = (app) => {
   app.get('/API/offers', (req, res, next) => {
     OfferController.find(null, (err, results) => {
       if (err) {
-        res.json({ confirmation: 'fail', message: err });
+        res.json(err);
 
         return;
       }
 
-      res.json({
-        confirmation: 'success',
-        results,
-      });
+      res.json(results);
     });
   });
 
   app.get('/API/offers/sort', (req, res, next) => {
-    const { title, price, quantity, currency } = req.query;
-    const newItems = Object.assign([], req.query);
-    console.log(title, price, quantity, currency);
-    console.log(newItems);
+    const { btc, sys, zec, currency, name, geolocation, category } = req.query;
+    const params = {},
+      symbols = [];
+
+    btc == 'true' ? symbols.push('BTC') : { ...params };
+    sys == 'true' ? symbols.push('SYS') : { ...params };
+    zec == 'true' ? symbols.push('ZEC') : { ...params };
+
+    params.paymentoptions_display = new RegExp(symbols.join('|'), 'i');
+
+    OfferController.find(params, (err, results) => {
+      if (err) {
+        res.json(err);
+        return;
+      }
+
+      const newResults = results;
+
+      if (category == 'A-Z') {
+        newResults.sort((a, b) => {
+          const x = a.category.toLowerCase();
+          const y = b.category.toLowerCase();
+          if (x < y) {
+            return -1;
+          }
+          if (x > y) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+      if (category == 'Z-A') {
+        newResults.sort((a, b) => {
+          const x = a.category.toLowerCase();
+          const y = b.category.toLowerCase();
+          if (x < y) {
+            return 1;
+          }
+          if (x > y) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+      if (currency == 'currencyLow') newResults.sort((a, b) => a.price - b.price);
+      if (currency == 'currencyHigh') newResults.sort((a, b) => b.price - a.price);
+      if (name == 'nameHigh') {
+        newResults.sort((a, b) => {
+          const x = a.title.toLowerCase();
+          const y = b.title.toLowerCase();
+          if (x < y) {
+            return -1;
+          }
+          if (x > y) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+      if (name == 'nameLow') {
+        newResults.sort((a, b) => {
+          const x = a.title.toLowerCase();
+          const y = b.title.toLowerCase();
+          if (x < y) {
+            return 1;
+          }
+          if (x > y) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+
+      res.json(newResults);
+    });
   });
 
   app.get('/API/offers/new', (req, res, next) => {
@@ -143,35 +211,6 @@ const offerRoutes = (app) => {
               })
               .then((response) => {
                 res.json({ response: response.data });
-
-                // axios
-                //   .get('https://d2fzm6xoa70bg8.cloudfront.net/offerinfo?guid=05e851339e6ef25d', {
-                //     headers: { Token: token },
-                //   })
-                //   .then((response) => {
-                //     console.log('guidr', guid);
-                //     console.log('tokenr', token);
-                //     // console.log('response', response);
-                //     res.json(response.data);
-                //   })
-                //   .catch((err) => {
-                //     console.log('guide', guid);
-                //     console.log('tokene', token);
-                //     console.log('err', err);
-                //     res.json('err', err);
-                //   });
-                // if (response.status == 200 && response.data) {
-                //   OfferController.create(req.body, (err, result) => {
-                //     if (err) {
-                //       return next(err);
-                //     }
-                //
-                //     res.json({
-                //       confirmation: 'success',
-                //       result,
-                //     });
-                //   });
-                // }
               })
               .catch((err) => {
                 res.json({ err });

@@ -7,11 +7,13 @@ import Frontpage from './components/Frontpage';
 import Store from './components/Store';
 import Browser from './components/Browser';
 import Offer from './components/Offer';
+import Sorter from './components/Browser/Sorter';
 
 const Routes = (
   <Router render={props => <ReduxAsyncConnect {...props} />} history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Browser} />
+      <Route path="/sort" component={Sorter} />
       <Route path="/register" component={Register} />
       <Route path="/store/newItem" component={Store.NewItemSelector} />
       <Route path="/offer" component={Offer}>

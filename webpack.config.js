@@ -1,6 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
+
 const port = process.env.PORT || 3000;
 const publicPath = `http://localhost:${port}/`;
 
@@ -44,7 +45,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-          loader: 'style-loader!css-loader?modules=true&localIdentName=[name]__[local]___[hash:base64:5]'
+        loader: 'style-loader!css-loader?modules=true&localIdentName=[name]__[local]___[hash:base64:5]',
       },
       {
         test: /\.scss$/,

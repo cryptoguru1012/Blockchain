@@ -1,7 +1,7 @@
 import { SHOW_ITEMS } from '../actions';
 
 const initialState = { list: [] };
-
+/* eslint import/prefer-default-export: 0 */  // --> OFF
 export function showItems(state = initialState, action) {
   switch (action.type) {
     case SHOW_ITEMS:

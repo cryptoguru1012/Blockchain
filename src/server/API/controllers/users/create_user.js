@@ -1,11 +1,11 @@
 import keystone from 'keystone';
 
 const User = keystone.list('User');
-
+/* eslint new-cap: 0 */  // --> OFF
 const createUser = (params, cb) => {
   const name = {
     first: params.name.first,
-    last: params.name.last
+    last: params.name.last,
   };
   const email = params.email;
   const password = params.password;
@@ -14,40 +14,38 @@ const createUser = (params, cb) => {
     return cb({
       status: 400,
       message: 'Missing required parameter',
-      success: false
+      success: false,
     });
   }
 
   const newUser = new User.model({
     name,
     email,
-    password
+    password,
   });
 
   User.model.find({
-    email
+    email,
   }, (err, user) => {
     if (err) {
       return cb({
         status: 500,
         message: 'Internal server error',
-        success: false
-      })
+        success: false,
+      });
     } else if (user.length) {
       return cb({
         status: 400,
         message: 'Email already registered',
-        success: false
+        success: false,
       });
     }
 
-    newUser.save((err) => {
-      return cb(err, {
-        status: 201,
-        message: 'User successfuly created',
-        success: true
-      });
-    });
+    newUser.save(error => cb(error, {
+      status: 201,
+      message: 'User successfuly created',
+      success: true,
+    }));
   });
 };
 

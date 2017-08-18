@@ -5,8 +5,8 @@ import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 /**
  * class GaleryItemBrowser
  *
- * Display offer image in grid 
- */ 
+ * Display offer image in grid
+ */
 class GaleryItemBrowser extends React.Component {
   constructor(props) {
     super(props);
@@ -14,11 +14,9 @@ class GaleryItemBrowser extends React.Component {
   }
 
   renderSlide() {
-    return this.props.images.map((image, i) => {
-      return (
-        <img style={{width: '100%'}} key={i} src={image} />
-      )
-    })
+    return this.props.images.map((image, i) => (
+      <img style={{ width: '100%' }} key={i} src={image} />
+      ));
   }
 
   render() {

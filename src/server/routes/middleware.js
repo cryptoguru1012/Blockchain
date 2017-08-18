@@ -7,4 +7,5 @@
  * you have more middleware you may want to group it as separate
  * modules in your project's /lib directory.
  */
-var _ = require('lodash');
+/* eslint no-unused-vars: 0 */
+const _ = require('lodash');

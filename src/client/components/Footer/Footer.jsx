@@ -1,6 +1,6 @@
 import React from 'react';
-import {Row, Col, Grid, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
-import  footerStyle from './css/styles.css';
+import { Row, Col, Grid, Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import footerStyle from './css/styles.css';
 import fonts from '../fonts/style.css';
 
 // var footer = {
@@ -18,17 +18,17 @@ import fonts from '../fonts/style.css';
  * class Footer
  */
 const Footer = React.createClass({
-    render: function() {
-        return (
-        <div className={fonts.alfaSlabOne} style={{position:"absolute", left:0, right:0, bottom:0 }}>
+  render() {
+    return (
+      <div className={fonts.alfaSlabOne} style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
         {/*  <Row>
-            <Col md={12}>*/}
-                <div className={footerStyle.footerContent}> © 2002 - 2017 Moovr. All rights reserved. </div>
-            {/*</Col>
-          </Row>*/}
-        </div>
-        );
-    }
+            <Col md={12}> */}
+        <div className={footerStyle.footerContent}> © 2002 - 2017 Moovr. All rights reserved. </div>
+        {/* </Col>
+          </Row> */}
+      </div>
+    );
+  },
 });
 
 export default Footer;

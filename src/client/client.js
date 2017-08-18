@@ -1,12 +1,12 @@
-import React                         from 'react';
-import ReactDOM                      from 'react-dom';
-import { browserHistory, Router }    from 'react-router';
-import routes                        from './routes';
-import { Provider }                 from 'react-redux';
-import configureStore               from './redux/configureStore';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { browserHistory, Router } from 'react-router';
+import { Provider } from 'react-redux';
+import routes from './routes';
+import configureStore from './redux/configureStore';
 
 const store = configureStore();
-
+/* eslint react/jsx-filename-extension: 0 */  // --> OFF
 const component = (
   <Provider store={store}>
     <Router history={browserHistory}>

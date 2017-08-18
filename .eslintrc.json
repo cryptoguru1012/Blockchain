@@ -1,8 +1,16 @@
 {
-    "extends": "airbnb",
-    "plugins": [
-        "react",
-        "jsx-a11y",
-        "import"
-    ]
+  "extends": "airbnb",
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+  "rules": {
+    "consistent-return": "off"
+  },
+  "globals": {
+    "localStorage": true,
+    "fetch": true,
+    "document": true
+  }
 }

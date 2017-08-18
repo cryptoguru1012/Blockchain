@@ -17,7 +17,8 @@ import Divider from 'material-ui/Divider';
 import CreateRadius from './CreateRadius';
 
 const googleMapURL =
-  'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
+  //'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
+  'https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
 
 const geolocation =
   canUseDOM && navigator.geolocation
@@ -129,7 +130,6 @@ class OfferMap extends Component {
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleCloseClick = this.handleCloseClick.bind(this);
   }
-
   handleMarkerClick(targetMarker) {
     this.setState({
       markers: this.state.markers.map((marker) => {
@@ -253,6 +253,46 @@ class OfferMap extends Component {
   }
 
   render() {
+    console.log('ACZ --> ', this.props.items);
+    const dummyMarkers = [
+      {
+        position: { lat: 36.5994707, lng: -6.2865183 },
+        number: 1,
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
+        price: 123,
+        quantity: 1,
+        currency: "SYS",
+        category: "Anyone",
+        title: "ACZ dummy 1",
+        offer: "12345678910",
+        showInfo: false
+      },
+      { 
+        position: { lat: 36.3154195, lng: -6.1246154 },
+        number: 2,
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
+        price: 123,
+        quantity: 4,
+        currency: "SYS",
+        category: "Anyone",
+        title: "ACZ dummy 2",
+        offer: "12345678910",
+        showInfo: false
+      },
+      { 
+        position: { lat: 36.7602574, lng: -5.8711347 },
+        number: 3,
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
+        price: 123,
+        quantity: 7,
+        currency: "SYS",
+        category: "Anyone",
+        title: "ACZ dummy 3",
+        offer: "12345678910",
+        showInfo: false
+      },  
+    ]
+
     return (
       <div>
 
@@ -278,7 +318,7 @@ class OfferMap extends Component {
             radius={this.state.radius}
             onMarkerClick={this.handleMarkerClick}
             onCloseClick={this.handleCloseClick}
-            markers={this.state.markers}
+            markers={dummyMarkers}
           />
         </div>
       </div>

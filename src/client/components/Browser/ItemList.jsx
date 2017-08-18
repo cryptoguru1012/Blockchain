@@ -11,14 +11,8 @@ class ItemList extends Component{
     render(){
         return (
             <div className="container" style={{width:'100%', height: '100%'}}>
-            	
             	<Paper zDepth={3} style={{padding: 10, width:'100%'}}>
-                
-                <h2>
-                  {this.props.marker.title}
-                </h2>
-
-                
+                <h2>{this.props.marker.title}</h2>
                   <div className="row">
                     <div className="col-xs-4"> 
                       <Img src="https://image.ibb.co/er6NWa/dummyimg.png" style={{height:100, width: 100}}/>
@@ -30,8 +24,6 @@ class ItemList extends Component{
 	                      <b>quantity:</b> {this.props.marker.quantity} <br />
 	                </div>
                     </div>
-
-
                     <div className="row">
 	                    <div className="col-xs-offset-7"> 
                             <Link to={'/offer/' + this.props.marker.offer}>
@@ -46,8 +38,6 @@ class ItemList extends Component{
                             </Link>
 	                    </div>
                     </div>
-
-                  
                 <Divider />
               </Paper>
             </div>

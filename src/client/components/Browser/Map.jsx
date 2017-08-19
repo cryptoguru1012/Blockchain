@@ -16,6 +16,8 @@ import FontIcon from 'material-ui/FontIcon';
 import Divider from 'material-ui/Divider';
 import CreateRadius from './CreateRadius';
 
+require('./styles/map-markerInfo.scss');
+
 const googleMapURL =
   //'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
   'https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
@@ -62,7 +64,8 @@ const GeolocationExampleGoogleMap = withScriptjs(
           >
             {marker.showInfo &&
               <InfoWindow onCloseClick={onCloseClick} style={{ padding: 0 }}>
-                <div>
+
+                <div className = "MarkerInfoWrap">
                   <ItemList marker={marker} />
                   <ItemList marker={marker} />
                   <ItemList marker={marker} />
@@ -253,7 +256,6 @@ class OfferMap extends Component {
   }
 
   render() {
-    console.log('ACZ --> ', this.props.items);
     const dummyMarkers = [
       {
         position: { lat: 36.5994707, lng: -6.2865183 },
@@ -265,7 +267,7 @@ class OfferMap extends Component {
         category: "Anyone",
         title: "ACZ dummy 1",
         offer: "12345678910",
-        showInfo: false
+        showInfo: true
       },
       { 
         position: { lat: 36.3154195, lng: -6.1246154 },
@@ -318,6 +320,7 @@ class OfferMap extends Component {
             radius={this.state.radius}
             onMarkerClick={this.handleMarkerClick}
             onCloseClick={this.handleCloseClick}
+            //markers={this.state.markers}
             markers={dummyMarkers}
           />
         </div>

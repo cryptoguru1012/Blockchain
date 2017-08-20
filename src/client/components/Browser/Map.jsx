@@ -13,7 +13,6 @@ import Paper from 'material-ui/Paper';
 import Img from 'react-image';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
-import Divider from 'material-ui/Divider';
 import CreateRadius from './CreateRadius';
 
 require('./styles/map-markerInfo.scss');
@@ -63,8 +62,7 @@ const GeolocationExampleGoogleMap = withScriptjs(
             options={{ icon: 'https://image.ibb.co/evMHxF/shopping_zone_marker_1.png' }}
           >
             {marker.showInfo &&
-              <InfoWindow onCloseClick={onCloseClick} style={{ padding: 0 }}>
-
+              <InfoWindow onCloseClick={onCloseClick}>
                 <div className = "MarkerInfoWrap">
                   <ItemList marker={marker} />
                   <ItemList marker={marker} />
@@ -313,7 +311,7 @@ class OfferMap extends Component {
           <GeolocationExampleGoogleMap
             googleMapURL={googleMapURL}
             loadingElement={<div style={{ height: '100%' }} />}
-            containerElement={<div style={{ height: '100%' }} />}
+            containerElement={<div style={{ height: '100%'}} />}
             mapElement={<div style={{ height: '100%' }} />}
             center={this.state.center}
             content={this.state.content}

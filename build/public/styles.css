@@ -14,7 +14,11 @@
   width: auto !important;
   height: auto !important; }
 .MarkerInfoWrap {
-  background-color: red; }
+  background-color: transparent; }
+
+.ItemWrap {
+  padding: 5px;
+  border-bottom: 1px solid #E0E0E0; }
 .containerItemBrowser .contentItemBrowser .bgContainer {
   position: absolute;
   top: 0;

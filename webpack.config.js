@@ -54,10 +54,6 @@ module.exports = {
         loader: ExtractTextPlugin.extract('css!sass'),
       },
       {
-        test: /\.svg$/,
-        loader: 'url?limit=65000&mimetype=image/svg+xml&name=public/fonts/[name].[ext]',
-      },
-      {
         test: /\.woff$/,
         loader: 'url?limit=65000&mimetype=application/font-woff&name=public/fonts/[name].[ext]',
       },
@@ -74,7 +70,7 @@ module.exports = {
         loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name].[ext]',
       },
       {
-        test: /\.(jpe?g|png|gif)$/i,
+        test: /\.(jpe?g|png|gif|svg)$/i,
         loader: 'file-loader?hash=sha512&digest=hex&name=public/images/[hash].[ext]',
       },
     ],

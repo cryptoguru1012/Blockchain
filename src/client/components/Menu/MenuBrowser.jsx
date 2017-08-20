@@ -12,7 +12,7 @@ import SearchBrowser from '../Browser/SearchBrowser';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
-import  SSIcon from "./icon";
+import SSIcon from "./icon";
 
 require('./styles/menu.scss');
 

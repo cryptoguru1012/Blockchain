@@ -16,6 +16,9 @@ const initialState = {
   dataItems: [],
   items: [],
   filter: 'SHOW_VIDEOS',
+  /* ----8<-----  borrar cuando termines -------*/
+  filter: 'SHOW_MAP',
+  /*-----8<-----------8<-----------8<--------8<-*/
   features: [],
   loadingFeatures: false,
 };

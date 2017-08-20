@@ -180,8 +180,9 @@ class MenuBrowser extends React.Component {
 	}
 
 	render() {
-		if (this.props.categories.error)
-			alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
+		//if (this.props.categories.error)
+		//	alert('Error:\nCould not fetch categories\n' + this.props.categories.message);
+		alert ('Actions to set App default state:\n\nUncomment (184 - 185): "src/client/components/menu/MenuBrowser.jsx"\n\nDelete (19-21): "src/redux/derucers/browser.js"')
 		const props = Object.assign({}, this.props);
 		delete props.categories;
 		delete props.getCategories;

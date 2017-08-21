@@ -13,12 +13,50 @@
   margin-top: -13px !important;
   width: auto !important;
   height: auto !important; }
-.MarkerInfoWrap {
-  background-color: transparent; }
+/* -- Layout ------------------------------ */
+.Item__Wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: stretch; }
 
-.ItemWrap {
+.item__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; }
+
+.item__body {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; }
+
+.item__body-photo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; }
+
+.item__body-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; }
+
+.item__footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; }
+
+/* ---------------------------------------- */
+/* -- Formats ------------------------------ */
+.Item__Wrap {
   padding: 5px;
   border-bottom: 1px solid #E0E0E0; }
+
+/* ---------------------------------------- */
 .containerItemBrowser .contentItemBrowser .bgContainer {
   position: absolute;
   top: 0;

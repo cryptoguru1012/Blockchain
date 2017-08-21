@@ -1,9 +1,57 @@
-.MarkerInfoWrap {
-  background-color: transparent;
-}
+/* -- Layout ------------------------------ */
 
-.ItemWrap{
+.Item__Wrap{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: stretch;
+}
+.item__header{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.item__body{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.item__body-photo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.item__body-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.item__footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+/* ---------------------------------------- */
+
+/* -- Formats ------------------------------ */
+
+.Item__Wrap{
   padding: 5px;
   border-bottom: 1px solid #E0E0E0;
-
 }
+.item__header{
+}
+.item__body{
+}
+.item__body-photo{
+}
+.item__body-info{
+}
+.item__footer{
+}
+/* ---------------------------------------- */

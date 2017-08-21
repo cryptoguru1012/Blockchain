@@ -15,8 +15,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import CreateRadius from './CreateRadius';
 
-require('./styles/map-markerInfo.scss');
-
 const googleMapURL =
   //'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
   'https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
@@ -63,7 +61,7 @@ const GeolocationExampleGoogleMap = withScriptjs(
           >
             {marker.showInfo &&
               <InfoWindow onCloseClick={onCloseClick}>
-                <div className = "MarkerInfoWrap">
+                <div>
                   <ItemList marker={marker} />
                   <ItemList marker={marker} />
                   <ItemList marker={marker} />

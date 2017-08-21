@@ -11,22 +11,23 @@ require('./styles/map-markerInfo.scss');
 class ItemList extends Component{
 	render(){
 		return (
-			<div className="ItemWrap">
-				<h2>{this.props.marker.title}</h2>
-				<div className="row">
-					<div className="col-xs-4"> 
-						<Img src="https://image.ibb.co/er6NWa/dummyimg.png" style={{height:100, width: 100}}/>
+			<div className="Item__Wrap">
+				<div className="item__header">
+					<h6>{this.props.marker.title}</h6>
+				</div>
+				<div className="item__body">
+					<div className="item__body-photo">
+					<Img src="https://image.ibb.co/er6NWa/dummyimg.png" style={{height:100, width: 100}}/>
 					</div>
-					<div className="col-xs-8"> 
+					<div className="item__body-info">
 						<b>category:</b> {this.props.marker.category} <br />
 						<b>price:</b> {this.props.marker.price} {this.props.marker.currency}<br />
 						<b>description:</b> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo  <br />
 						<b>quantity:</b> {this.props.marker.quantity} <br />
 					</div>
 				</div>
-				<div className="row">
-					<div className="col-xs-offset-7"> 
-						<Link to={'/offer/' + this.props.marker.offer}>
+				<div className="item__footer">
+					<Link to={'/offer/' + this.props.marker.offer}>
 						<RaisedButton
 							href=""
 							target="_blank"
@@ -35,8 +36,7 @@ class ItemList extends Component{
 							icon={<FontIcon className="shopping-cart" />}
 							style={{float: 'left'}}
 						/>
-						</Link>
-					</div>
+					</Link>
 				</div>
 			</div>
 		)

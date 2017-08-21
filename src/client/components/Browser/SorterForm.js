@@ -4,8 +4,34 @@ import { Field } from 'redux-form';
 import selectForm from './selectForm';
 
 export default () =>
-  <div style={{ width: '100%' }}>
+  <div
+    style={{
+      width: '100%',
+      border: '1px solid #333',
+      background: '#f9f9f9',
+      padding: 16,
+      margin: 16,
+    }}
+  >
     <Field name="selectForm" component={selectForm} />
+    <h2 style={{ color: 'red' }}>
+      You must select only one sort option at a time. If you want to choose another hit clear first.
+    </h2>
+    <h3 style={{ color: 'blue' }}>Choose as many filters as you want (checkboxes)</h3>
+    <div style={{ display: 'flex' }}>
+      <h4>Payment Options:</h4>
+      <Field key="sys" component={PaginationField} type="checkbox" label="SYS" name="sys" />
+      <Field
+        key="btc"
+        component={PaginationField}
+        type="checkbox"
+        value="btc"
+        label="BTC"
+        name="btc"
+      />
+      <Field key="zec" component={PaginationField} type="checkbox" label="ZEC" name="zec" />
+    </div>
+    <hr />
     <div style={{ display: 'flex' }}>
       <h4>Currency:</h4>
       <Field
@@ -63,19 +89,7 @@ export default () =>
         value="Furthest"
       />
     </div>
-    <div style={{ display: 'flex' }}>
-      <h4>Payment Options:</h4>
-      <Field key="sys" component={PaginationField} type="checkbox" label="SYS" name="sys" />
-      <Field
-        key="btc"
-        component={PaginationField}
-        type="checkbox"
-        value="btc"
-        label="BTC"
-        name="btc"
-      />
-      <Field key="zec" component={PaginationField} type="checkbox" label="ZEC" name="zec" />
-    </div>
+
     <div style={{ display: 'flex' }}>
       <h4>Category :</h4>
       <Field

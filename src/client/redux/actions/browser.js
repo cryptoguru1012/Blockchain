@@ -188,30 +188,30 @@ export function search(data) {
       })
       .join(esc('&'));
 
-    fetch(
-      'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62',
-    )
-      .then(res => res.json())
-      .then((res) => {
-        const token = res.token;
-        return fetch(`https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?${query}`, {
-          headers: {
-            Token: token,
-          },
-          mode: 'cors',
-          method: 'GET',
-        });
-      })
-      .then(res => res.json())
-      .then((res) => {
-        if (typeof res === 'object') {
-          let filter = getState().browser.filter,
-            filtered = clusterItems(res)[filter];
-
-          return dispatch(searchSuccess(res, filtered));
-        }
-        return dispatch(searchError(res));
-      })
-      .catch(error => dispatch(searchError(error)));
+    // fetch(
+    //   'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62',
+    // )
+    //   .then(res => res.json())
+    //   .then((res) => {
+    //     const token = res.token;
+    //     return fetch(`https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?${query}`, {
+    //       headers: {
+    //         Token: token,
+    //       },
+    //       mode: 'cors',
+    //       method: 'GET',
+    //     });
+    //   })
+    //   .then(res => res.json())
+    //   .then((res) => {
+    //     if (typeof res === 'object') {
+    //       let filter = getState().browser.filter,
+    //         filtered = clusterItems(res)[filter];
+    //
+    //       return dispatch(searchSuccess(res, filtered));
+    //     }
+    //     return dispatch(searchError(res));
+    //   })
+    //   .catch(error => dispatch(searchError(error)));
   };
 }

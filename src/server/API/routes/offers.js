@@ -1,6 +1,7 @@
 import OfferController from '../controllers/store/OfferController';
 import RequestManager from '../utils/RequestManager';
 import axios from 'axios';
+import geolib from 'geolib';
 
 const offerRoutes = (app) => {
   app.get('/API/offers', (req, res, next) => {
@@ -17,6 +18,8 @@ const offerRoutes = (app) => {
 
   app.get('/API/offers/sort', (req, res, next) => {
     const { btc, sys, zec, currency, name, geolocation, category } = req.query;
+    console.log(req.query);
+
     const params = {},
       symbols = [];
 
@@ -31,7 +34,6 @@ const offerRoutes = (app) => {
         res.json(err);
         return;
       }
-
       const newResults = results;
 
       if (category == 'A-Z') {
@@ -46,6 +48,8 @@ const offerRoutes = (app) => {
           }
           return 0;
         });
+        res.json(newResults);
+        return;
       }
       if (category == 'Z-A') {
         newResults.sort((a, b) => {
@@ -59,9 +63,21 @@ const offerRoutes = (app) => {
           }
           return 0;
         });
+        res.json(newResults);
+        return;
       }
-      if (currency == 'currencyLow') newResults.sort((a, b) => a.price - b.price);
-      if (currency == 'currencyHigh') newResults.sort((a, b) => b.price - a.price);
+      if (currency == 'currencyLow') {
+        newResults.sort((a, b) => a.price - b.price);
+        res.json(newResults);
+        return;
+      }
+
+      if (currency == 'currencyHigh') {
+        newResults.sort((a, b) => b.price - a.price);
+        res.json(newResults);
+        return;
+      }
+
       if (name == 'nameHigh') {
         newResults.sort((a, b) => {
           const x = a.title.toLowerCase();
@@ -74,6 +90,8 @@ const offerRoutes = (app) => {
           }
           return 0;
         });
+        res.json(newResults);
+        return;
       }
       if (name == 'nameLow') {
         newResults.sort((a, b) => {
@@ -87,9 +105,75 @@ const offerRoutes = (app) => {
           }
           return 0;
         });
+        res.json(newResults);
+        return;
       }
 
-      res.json(newResults);
+      if (geolocation !== undefined && (geolocation === 'Nearest' || 'Furthest')) {
+        const locations = [];
+        const coords = { latitude: '', longitude: '' };
+
+        newResults.map((value, i) => {
+          const newGeoArr = value.geolocation.split(',');
+          const finalGeoArray = [];
+          newGeoArr.map((item) => {
+            finalGeoArray.push(item.trim());
+          });
+          const coordsObj = Object.assign({}, coords);
+          if (finalGeoArray.length <= 1 || finalGeoArray === '') {
+            coordsObj.latitude = 0;
+            coordsObj.longitude = 0;
+            locations.push(coordsObj);
+            return;
+          }
+          coordsObj.latitude = finalGeoArray[0];
+          coordsObj.longitude = finalGeoArray[1];
+          locations.push(coordsObj);
+        });
+
+        const newLocations = locations.reduce((acc, cur, i) => ({ ...acc, [i]: cur }), {});
+
+        const currentLocation = {};
+
+        axios
+          .get('http://ip-api.com/json')
+          .then((response) => {
+            const { data } = response;
+            currentLocation.latitude = data.lat;
+            currentLocation.longitude = data.lon;
+            const distance = geolib.orderByDistance(currentLocation, newLocations);
+
+            distance.map((distanceValue, i) => {
+              newResults[distanceValue.key].distanceFromUser = distanceValue.distance / 1609.34;
+
+              if (newResults[distanceValue.key].geolocation.length < 1) {
+                newResults[distanceValue.key].distanceFromUser = undefined;
+              }
+            });
+
+            if (geolocation === 'Furthest') {
+              console.log('furthest');
+              newResults.sort(
+                (a, b) =>
+                  (b.distanceFromUser == undefined) - (a.distanceFromUser == undefined) ||
+                  b.distanceFromUser - a.distanceFromUser,
+              );
+              res.json(newResults);
+              return;
+            }
+
+            newResults.sort(
+              (a, b) =>
+                (a.distanceFromUser == undefined) - (b.distanceFromUser == undefined) ||
+                a.distanceFromUser - b.distanceFromUser,
+            );
+
+            res.json(newResults);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     });
   });
 

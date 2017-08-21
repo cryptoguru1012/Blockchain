@@ -7,7 +7,7 @@ import SorterForm from './SorterForm';
 
 class Sorter extends Component {
   componentDidMount() {
-    // this.props.sortOffers();
+    this.props.fetchOffers();
   }
 
   renderItems() {
@@ -25,6 +25,9 @@ class Sorter extends Component {
         <p>
           category: {item.category}
         </p>
+        <p>
+          distanceFromUser: {item.distanceFromUser}
+        </p>
       </div>,
     );
   }
@@ -34,19 +37,28 @@ class Sorter extends Component {
     this.props.sortOffers(values);
   }
 
-  clearSearch() {
-    this.props.fetchOffers();
-  }
-
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, pristine, reset, submitting } = this.props;
     return (
       <div style={{ margin: '100px 20px 0px 20px' }}>
-        <form onSubmit={handleSubmit(this.submitSort.bind(this))}>
+        <form
+          onSubmit={handleSubmit(this.submitSort.bind(this))}
+          style={{
+            width: '100%',
+            border: '1px solid #333',
+            background: '#f9f9f9',
+            padding: 16,
+            margin: 16,
+          }}
+        >
           <SorterForm />
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={pristine || submitting}>
+            Submit
+          </button>
+          <button type="button" disabled={pristine || submitting} onClick={reset}>
+            Clear
+          </button>
         </form>
-        <button onClick={this.clearSearch.bind(this)}>Clear</button>
         {this.renderItems()}
       </div>
     );

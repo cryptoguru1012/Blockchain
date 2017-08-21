@@ -29,7 +29,7 @@ export function doCategoryReq() {
 		dispatch(categoryReqStart());
 
 		fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
-			.then(res => {res.json()})
+			.then(res => res.json())
 			.then(res => {
 				let token = res.token;
 				return fetch('https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory', {

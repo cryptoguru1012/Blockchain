@@ -252,7 +252,7 @@ class OfferMap extends Component {
   }
 
   render() {
-    const dummyMarkers = [
+    const dummyMarkers = [ // ACZ - All dummies marker
       {
         position: { lat: 36.5994707, lng: -6.2865183 },
         number: 1,
@@ -316,8 +316,8 @@ class OfferMap extends Component {
             radius={this.state.radius}
             onMarkerClick={this.handleMarkerClick}
             onCloseClick={this.handleCloseClick}
-            //markers={this.state.markers}
-            markers={dummyMarkers}
+            markers={this.state.markers}
+            //markers={dummyMarkers} //ACZ - Comment previous line and uncomment this one to use dummy markers. 
           />
         </div>
       </div>

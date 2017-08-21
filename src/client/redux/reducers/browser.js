@@ -15,10 +15,8 @@ const initialState = {
   message: '',
   dataItems: [],
   items: [],
-  filter: 'SHOW_VIDEOS',
-  /* ----8<-----  borrar cuando termines -------*/
+  /* filter: 'SHOW_VIDEOS', ACZ - Original Filter*/
   filter: 'SHOW_MAP',
-  /*-----8<-----------8<-----------8<--------8<-*/
   features: [],
   loadingFeatures: false,
 };

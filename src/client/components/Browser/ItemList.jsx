@@ -43,7 +43,7 @@ class ItemList extends Component{
 							</div>
 							<div className="item__bodyInfo-row">
 								<div className="item__bodyInfo-field">Price:</div>
-								<div className="item__bodyInfo-data">{this.props.marker.price}{" "}{this.props.marker.currency}</div>
+								<div className="item__bodyInfo-data">{`${this.props.marker.price} ${this.props.marker.currency}`}</div>
 							</div>
 							<div className="item__bodyInfo-row">
 								<div className="item__bodyInfo-field">Quantity:</div>

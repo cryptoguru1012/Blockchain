@@ -60,7 +60,7 @@ const GeolocationExampleGoogleMap = withScriptjs(
             options={{ icon: 'https://image.ibb.co/evMHxF/shopping_zone_marker_1.png' }}
           >
             {marker.showInfo &&
-              <InfoWindow onCloseClick={onCloseClick}>
+              <InfoWindow onCloseClick={onCloseClick} >
                 <div>
                   <ItemList marker={marker} />
                   <ItemList marker={marker} />

@@ -83,7 +83,7 @@
   font-size: 14px;
   font-weight: 400;
   color: #424242;
-  max-width: 25em;
+  max-width: 21em;
   padding: 15px 0 5px 0;
   /* border: 1px solid fuchsia; */
   border-bottom: 1px solid #E0E0E0; }
@@ -123,7 +123,7 @@
 
 .item__footer {
   padding: 5px 15px 5px 15px;
-  /* border: 1px solid darkorchid; */ }
+  /*  border: 1px solid darkorchid; */ }
 
 /* ---------------------------------------- */
 .containerItemBrowser .contentItemBrowser .bgContainer {

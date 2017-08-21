@@ -9,6 +9,21 @@ import { Link } from 'react-router';
 
 require('./styles/map-markerInfo.scss');
 
+const styles = {
+	viewOfferBtn: {
+		height: '25px'
+	},
+	viewOfferLbl: {
+		fontSize: '0.8em',
+		top: '4px'
+	},
+	viewOfferIcon: {
+		fontSize: '1.2em',
+		top: '4px',
+	}
+
+}
+
 class ItemList extends Component{
 	render(){
 		return (
@@ -46,11 +61,13 @@ class ItemList extends Component{
 				<div className="item__footer">
 						<RaisedButton
 							backgroundColor={grey800}
+							style={styles.viewOfferBtn}
 							labelColor={grey50}
+							labelStyle= {styles.viewOfferLbl}
 							href={'/offer/' + this.props.marker.offer}
 							target="_blank"
-							label="Add to Cart"
-							icon={<FontIcon className="material-icons">shopping_cart</FontIcon>}
+							label="View Offer"
+							icon={<FontIcon className="material-icons" style={styles.viewOfferIcon}>shopping_cart</FontIcon>}
 						/>
 				</div>
 			</div>

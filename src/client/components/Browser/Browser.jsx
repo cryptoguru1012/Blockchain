@@ -115,11 +115,10 @@ class Browser extends React.Component {
     return (
       <div width="100%">
         {browser.features.length > 0 && <BrowserCarousel items={browser.features} />}
-        <Sorter />
         <Grid>
           {!browser.error && <FilterBrowser items={filterItems} />}
           <Col xs={12}>
-            {!browser.error && <OrderByBrowser items={orderItems} onOrder={onOrder} />}
+            <Sorter />
             {browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
             {browser.error &&
               <Row>

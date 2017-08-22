@@ -2,7 +2,7 @@ import React from 'react';
 
 export default ({ input }) =>
   <select {...input}>
-    <option>Select Category</option>
+    <option value="">Select Category</option>
     <option value="currency">Currency</option>
     <option value="name">Name</option>
     <option value="geolocation">Geolocation</option>

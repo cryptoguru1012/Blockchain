@@ -1,6 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
+
 const port = process.env.PORT || 3000;
 const publicPath = `http://localhost:${port}/`;
 
@@ -20,7 +21,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  context: __dirname,
   entry: {
     app: ['./src/client/client.js'],
   },
@@ -34,7 +34,7 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.css'],
   },
   externals: {
-    'config_env': JSON.stringify(require('./src/config_env.json'))
+    config_env: JSON.stringify(require('./src/config_env.json')),
   },
   module: {
     loaders: [
@@ -47,7 +47,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader?modules=true&localIdentName=[name]__[local]___[hash:base64:5]'
+        loader: 'style-loader!css-loader?modules=true&localIdentName=[name]__[local]___[hash:base64:5]',
       },
       {
         test: /\.scss$/,
@@ -71,7 +71,7 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'file-loader?hash=sha512&digest=hex&name=public/images/[hash].[ext]',
+        loader: 'file-loader?hash=sha512&digest=hex&name=public/images/[name]_[hash].[ext]',
       },
     ],
   },

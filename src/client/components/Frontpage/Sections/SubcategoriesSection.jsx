@@ -1,26 +1,25 @@
-import React, {PropTypes, Component} from 'react';
-import {connect} from 'react-redux';
-import {Thumbnail, Button, Row, Col} from 'react-bootstrap';
-import {Link} from 'react-router';
+import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
+import { Thumbnail, Button, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router';
 import Slider from 'react-slick';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import {showItems} from '../../../redux/actions';
+import { showItems } from '../../../redux/actions';
 import style from './Styles/SubcategoriesSection.css';
-import fonts from "../../fonts/style.css";
+import fonts from '../../fonts/style.css';
 
 
 import Video from '../../videoComponent';
 import ReactPlayer from 'react-player';
 
 
-
 const propTypes = {
-    title: PropTypes.string
+  title: PropTypes.string,
 };
 
 const defaultProps = {
-    title: 'SubcategoriesSection'
+  title: 'SubcategoriesSection',
 };
 
 const button = {
@@ -28,51 +27,50 @@ const button = {
 };
 
 class SubcategoriesSection extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    componentWillMount() {
-        this.props.showItems();
-    }
+  componentWillMount() {
+    this.props.showItems();
+  }
 
-    render() {
+  render() {
+    const rows = [];
+    let lastCat = 'null';
 
-        let rows = [];
-        let lastCat = 'null';
-
-        if(this.props.items != null){
-            this.props.items.forEach((item) => {
-                if(item.category != lastCat ){
-                    rows.push(
-                        <Col md={4} xs={6} key={item.id}>
-                        <Video url={item.urlVideo} ancho={320} alto={320} />,
-                        </Col>
-                        )
-                }
-                lastCat = item.category;
-            })
+    if (this.props.items != null) {
+      this.props.items.forEach((item) => {
+        if (item.category != lastCat) {
+          rows.push(
+            <Col md={4} xs={6} key={item.id}>
+              <Video url={item.urlVideo} ancho={320} alto={320} />,
+                        </Col>,
+                        );
         }
+        lastCat = item.category;
+      });
+    }
 
-        return (
+    return (
+      <Row>
+        <Col>
           <Row>
-              <Col>
-                  <Row>
-                      <Col>
-                          <div className={style.center}>
-                            <h2 className={fonts.alfaSlabOne}>{this.props.title}</h2>
-                          </div>
-                          <Row> {rows} </Row>
-                      </Col>
-                  </Row>
-                  <Row>
-                      <Col>
-                          <RaisedButton label="More categories" primary={true} style={button} />
-                      </Col>
-                  </Row>
-              </Col>
+            <Col>
+              <div className={style.center}>
+                <h2 className={fonts.alfaSlabOne}>{this.props.title}</h2>
+              </div>
+              <Row> {rows} </Row>
+            </Col>
           </Row>
-            /*<section className="col-lg-12">
+          <Row>
+            <Col>
+              <RaisedButton label="More categories" primary style={button} />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+            /* <section className="col-lg-12">
                 <div className="row">
                     <h2>{this.props.title}</h2>
                     {rows}
@@ -82,15 +80,15 @@ class SubcategoriesSection extends Component {
                         <RaisedButton label="More categories" primary={true} style={button} />
                     </div>
                 </div>
-            </section>*/
+            </section> */
         );
-    }
+  }
 }
 
 SubcategoriesSection.propTypes = propTypes;
 SubcategoriesSection.defaultProps = defaultProps;
 
 function mapStateToProps(state) {
-    return {items: state.items.list};
+  return { items: state.items.list };
 }
-export default connect(mapStateToProps, {showItems})(SubcategoriesSection);
+export default connect(mapStateToProps, { showItems })(SubcategoriesSection);

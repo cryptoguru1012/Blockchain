@@ -11,10 +11,10 @@ import OfferViewSuccess from './OfferViewSuccess';
 import OfferViewError from './OfferViewError';
 
 const newItemStyle = {
-	loadingDiv: {
-		marginTop: '30vh',
-		textAlign: 'center',
-	},
+  loadingDiv: {
+    marginTop: '30vh',
+    textAlign: 'center',
+  },
 };
 
 /**
@@ -23,57 +23,60 @@ const newItemStyle = {
  * Single offer display
  */
 class Offer extends React.Component {
-	constructor(props) {
-		super(props);
-		let guid = this.props.params.id;
-		this.props.getData(guid);
-	}
+  constructor(props) {
+    super(props);
+    const guid = this.props.params.id;
+    this.props.getData(guid);
+  }
 
-	render() {
-		if (this.props.offer.loading)
-			return (
-				<Grid>
-					<Row>
-						<Col xs={12} style={newItemStyle.loadingDiv}>
-							<center>
-								<CircularProgress size={100} thickness={6} />
-							</center>
-						</Col>
-					</Row>
-				</Grid>
-			)
-		if (this.props.offer.error)
-			return (
-				<Grid>
-					<OfferViewError />
-				</Grid>
-			)
-		if (this.props.offer.success)
-			return (
-				<Grid>
-					<OfferViewSuccess data={this.props.offer.data} />
-				</Grid>
-			)
-		return (
-			<Grid>
-				<h1>loading</h1>
-			</Grid>
-		)
-	}
+  render() {
+    if (this.props.offer.loading) {
+      return (
+        <Grid>
+          <Row>
+            <Col xs={12} style={newItemStyle.loadingDiv}>
+              <center>
+          <CircularProgress size={100} thickness={6} />
+        </center>
+            </Col>
+          </Row>
+        </Grid>
+      );
+    }
+    if (this.props.offer.error) {
+      return (
+        <Grid>
+          <OfferViewError />
+        </Grid>
+      );
+    }
+    if (this.props.offer.success) {
+      return (
+        <Grid>
+          <OfferViewSuccess data={this.props.offer.data} />
+        </Grid>
+      );
+    }
+    return (
+      <Grid>
+        <h1>loading</h1>
+      </Grid>
+    );
+  }
 }
 
 function mapStateToProps(state) {
-	let offer = state.offer;
+  const offer = state.offer;
 
-	return { offer };
+  return { offer };
 }
 
 function mapDispatchToProps(dispatch) {
-	return {
-		getData: (guid) => {
-			dispatch(getOfferData(guid));
-		}
-	}
+  return {
+    getData: (guid) => {
+      dispatch(getOfferData(guid));
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Offer);

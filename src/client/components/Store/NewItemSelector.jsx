@@ -16,7 +16,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import SvgIcon from 'material-ui/SvgIcon';
-import {grey500, grey600} from 'material-ui/styles/colors';
+import { grey500, grey600 } from 'material-ui/styles/colors';
 import VideoRecord from './VideoRecord';
 import VideoRecord2 from './VideoRecord2';
 import VideoPlayer from './VideoPlayer';
@@ -25,61 +25,61 @@ import SubtitlesEditer from './SubtitlesEditer';
 import OfferForm from './OfferForm';
 
 // Icons
-import VIcon from "./VIcon";
-import PIcon from "./PIcon";
+import VIcon from './VIcon';
+import PIcon from './PIcon';
 
 const newItemStyle = {
   caption: {
     marginTop: '15vh',
     textAlign: 'center',
-    marginBottom:'5vh'
+    marginBottom: '5vh',
   },
-  icon:{
+  icon: {
     textAlign: 'center',
-    border: '1px solid green'
+    border: '1px solid green',
   },
-  vcenter:{
+  vcenter: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom:'40px'
+    marginBottom: '40px',
   },
-  buttonUp:{
+  buttonUp: {
     borderRadius: '5px',
     margin: '0 0 5px 5%',
     width: '95%',
-    color: 'white'
+    color: 'white',
   },
-  buttonDown:{
+  buttonDown: {
     borderRadius: '5px',
     margin: '5px 0 0 5%',
     width: '95%',
-    color: 'white'
+    color: 'white',
   },
-  button_iOS:{
+  button_iOS: {
     borderRadius: '5px',
     margin: '5px 0 0 5%',
     width: '95%',
     height: '100%',
     color: 'white',
     background: 'rgb(153,211,243)',
-    background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'
+    background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)',
   },
-  button_iOS_xs:{
+  button_iOS_xs: {
     borderRadius: '5px',
     height: '100%',
     width: '75%',
     color: 'white',
     background: 'rgb(153,211,243)',
-    background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'
+    background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)',
   },
-  btn_iOS_Label:{
+  btn_iOS_Label: {
     fontSize: '150%',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
-  buttonNoMedia:{
+  buttonNoMedia: {
     borderRadius: '5px',
     margin: '30px 0 50px 0',
-    color: 'white'
+    color: 'white',
   },
   uploadInput: {
     cursor: 'pointer',
@@ -89,27 +89,27 @@ const newItemStyle = {
     right: '0',
     left: '0',
     width: '100%',
-    opacity: '0'
+    opacity: '0',
   },
   overlay: {
-      position: 'fixed', 
-      display: 'block',
-      width: '100%', 
-      height: '100%', 
-      top: '0', 
-      left: '0',
-      right:'0',
-      bottom:'0',
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      zIndex: '99',
-      cursor: 'pointer'
+    position: 'fixed',
+    display: 'block',
+    width: '100%',
+    height: '100%',
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: '99',
+    cursor: 'pointer',
   },
   loading: {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%,-50%)'
-  }
+    transform: 'translate(-50%,-50%)',
+  },
 };
 
 /**
@@ -120,7 +120,7 @@ class NewItemSelector extends React.Component {
     super(props);
     this.state = {
       open: false,
-      nextStp: 'selector'
+      nextStp: 'selector',
     };
   }
 
@@ -129,7 +129,7 @@ class NewItemSelector extends React.Component {
     this.props.getCurrencies();
     this.props.image.loaded = false;
   }
-  
+
   componentDidMount() {
     /* --------- This loads Google Map API --------- */
     let ref = window.document.getElementsByTagName('script')[0];
@@ -149,7 +149,7 @@ is_iOS() {
 }
   
   changeStep(step) {
-    this.setState({'nextStp': step});
+    this.setState({ nextStp: step });
   }
 
   showOfferForm() {
@@ -166,7 +166,7 @@ is_iOS() {
           subtitlesVideo={this.props.video.subtitles}
         />
       </Grid>
-    )
+    );
   }
 
   showEditImage() {
@@ -180,7 +180,7 @@ is_iOS() {
           />
         </center>
       </Grid>
-    )
+    );
   }
 
   showEditVideo() {
@@ -201,46 +201,43 @@ is_iOS() {
           videoDuration={this.props.video.videoDuration}
         />
       </Grid>
-    )
+    );
   }
 
 
   openFileDialog() {
-    var fileUploadDom = React.findDOMNode(this.refs.fileUpload);
+    const fileUploadDom = React.findDOMNode(this.refs.fileUpload);
     fileUploadDom.click();
   }
-  
+
   onDrop(file) {
-    const media = file.length > 0 ? file[0] : file
+    const media = file.length > 0 ? file[0] : file;
     const formData = new FormData();
     window.clearInterval(self.intervalTrigger);
 
-    if(media.type.includes("image/")){
-      formData.append('photos', media );
-      this.props.imageUploaded( formData );
-    }
-    else if (media.type.includes("video/")) {
-      const url = media.preview
+    if (media.type.includes('image/')) {
+      formData.append('photos', media);
+      this.props.imageUploaded(formData);
+    } else if (media.type.includes('video/')) {
+      const url = media.preview;
       formData.append('video', media, 'videoRecorded.webm');
       this.props.onRecorded(formData, url);
-    }
-    else 
-      this.setState({open: true});
+    } else { this.setState({ open: true }); }
   }
 
   render() {
     let output;
-    if (this.state.nextStp !== 'selector'){
+    if (this.state.nextStp !== 'selector') {
       output = this.showEditVideo();
     } else if (!this.is_iOS()) {
       output = (
         <Grid>
           <Row style={newItemStyle.caption}><h2>Create an Offer</h2></Row>
           <Row>
-            <Col md={1}/>
+            <Col md={1} />
             <Col md={5}>
               <Row style={newItemStyle.vcenter}>
-                <Col xs={1}></Col>
+                <Col xs={1} />
                 <Col xs={4}>
                   <VIcon />
                 </Col>
@@ -252,9 +249,9 @@ is_iOS() {
                       labelPosition="before"
                       backgroundColor="rgb(78,172,233)"
                       hoverColor={grey600}
-                      primary={true}
+                      primary
                       icon={<FontIcon className="material-icons">videocam</FontIcon>}
-                      onClick={() => {this.changeStep('liveVideo')}}
+                      onClick={() => { this.changeStep('liveVideo'); }}
                     />
                   </Row>
                   <Row>
@@ -264,7 +261,7 @@ is_iOS() {
                       style={newItemStyle.buttonDown}
                       backgroundColor="rgb(153,211,243)"
                       hoverColor={grey600}
-                      primary={true}
+                      primary
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
                       containerElement="label"
                       onClick={ (e) => this.openFileDialog}>
@@ -275,12 +272,12 @@ is_iOS() {
                     </FlatButton>
                   </Row>
                 </Col>
-                <Col xs={1} ></Col>
+                <Col xs={1} />
               </Row>
             </Col>
             <Col md={5}>
               <Row style={newItemStyle.vcenter}>
-                <Col xs={1}></Col>
+                <Col xs={1} />
                 <Col xs={4}>
                   <PIcon />
                 </Col>
@@ -292,9 +289,9 @@ is_iOS() {
                       labelPosition="before"
                       backgroundColor="rgb(75, 165, 97)"
                       hoverColor={grey600}
-                      primary={true}
+                      primary
                       icon={<FontIcon className="material-icons">photo_camera</FontIcon>}
-                      onClick={() => {this.changeStep('takePhoto')}}
+                      onClick={() => { this.changeStep('takePhoto'); }}
                     />
                   </Row>
                   <Row>
@@ -304,7 +301,7 @@ is_iOS() {
                       style={newItemStyle.buttonDown}
                       backgroundColor="rgb(153, 202, 165)"
                       hoverColor={grey600}
-                      primary={true}
+                      primary
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
                       containerElement="label"
                       onClick={ (e) => this.openFileDialog}>
@@ -315,22 +312,22 @@ is_iOS() {
                     </FlatButton>
                   </Row>
                 </Col>
-                <Col xs={1} ></Col>
+                <Col xs={1} />
               </Row>
             </Col>
-            <Col md={1}/>
+            <Col md={1} />
           </Row>
-          <Row style={{textAlign: 'center'}}>
+          <Row style={{ textAlign: 'center' }}>
             <Col xs={12}>
-            <FlatButton
-              label="Continue with no media"
-              style={newItemStyle.buttonNoMedia}
-              backgroundColor={grey600}
-              hoverColor={grey500}
-              primary={true}
-              icon={<FontIcon className="material-icons">close</FontIcon>}
-              onClick={() => {this.changeStep('finalForm')}}
-            />
+              <FlatButton
+                label="Continue with no media"
+                style={newItemStyle.buttonNoMedia}
+                backgroundColor={grey600}
+                hoverColor={grey500}
+                primary
+                icon={<FontIcon className="material-icons">close</FontIcon>}
+                onClick={() => { this.changeStep('finalForm'); }}
+              />
             </Col>
           </Row>
         </Grid>
@@ -342,30 +339,32 @@ is_iOS() {
           <Row>
             <Col md={12} xsHidden smHidden>
               <Row style={newItemStyle.vcenter}>
-                <Col md={1}></Col>
+                <Col md={1} />
                 <Col md={2}>
                   <VIcon />
                 </Col>
                 <Col md={6}>
                   <FlatButton
-                    label={<span>Record/Attach Media<br/></span>}
+                    label={<span>Record/Attach Media<br /></span>}
                     labelPosition="before"
                     labelStyle={newItemStyle.btn_iOS_Label}
                     style={newItemStyle.button_iOS}
                     hoverColor={grey600}
-                    primary={true}
+                    primary
                     icon={<FontIcon className="material-icons">videocam photo_camera attachment</FontIcon>}
                     containerElement="label"
-                    onClick={ (e) => this.openFileDialog}>
-                    <Dropzone 
-                      style={{"display" : "none"}}
-                      onDrop={ (file) => this.onDrop(file)} />
+                    onClick={e => this.openFileDialog}
+                  >
+                    <Dropzone
+                      style={{ display: 'none' }}
+                      onDrop={file => this.onDrop(file)}
+                    />
                   </FlatButton>
                 </Col>
                 <Col md={2}>
                   <PIcon />
                 </Col>
-                <Col md={1}></Col>
+                <Col md={1} />
               </Row>
             </Col>
             <Col xs={12} mdHidden lgHidden>
@@ -373,71 +372,73 @@ is_iOS() {
                 <Col xs={3} xsPush={3} ><VIcon /></Col>
                 <Col xs={3} xsPush={3} ><PIcon /></Col>
               </Row>
-              <Row style={{textAlign: 'center'}}>
+              <Row style={{ textAlign: 'center' }}>
                 <Col xs={12}>
-                    <FlatButton
-                      label={<span>Record/Attach Media<br/></span>}
-                      labelPosition="before"
-                      labelStyle={newItemStyle.btn_iOS_Label}
-                      style={newItemStyle.button_iOS_xs}
-                      hoverColor={grey600}
-                      primary={true}
-                      icon={<FontIcon className="material-icons">videocam photo_camera attachment</FontIcon>}
-                      containerElement="label"
-                      onClick={ (e) => this.openFileDialog}>
-                      <Dropzone 
-                        style={{"display" : "none"}}
-                        onDrop={ (file) => this.onDrop(file)} />
-                    </FlatButton>
-                  </Col>
-                </Row>
+                  <FlatButton
+                    label={<span>Record/Attach Media<br /></span>}
+                    labelPosition="before"
+                    labelStyle={newItemStyle.btn_iOS_Label}
+                    style={newItemStyle.button_iOS_xs}
+                    hoverColor={grey600}
+                    primary
+                    icon={<FontIcon className="material-icons">videocam photo_camera attachment</FontIcon>}
+                    containerElement="label"
+                    onClick={e => this.openFileDialog}
+                  >
+                    <Dropzone
+                      style={{ display: 'none' }}
+                      onDrop={file => this.onDrop(file)}
+                    />
+                  </FlatButton>
+                </Col>
+              </Row>
             </Col>
           </Row>
-          <Row style={{textAlign: 'center'}}>
+          <Row style={{ textAlign: 'center' }}>
             <Col xs={12}>
-            <FlatButton
-              label="Continue with no media"
-              style={newItemStyle.buttonNoMedia}
-              backgroundColor={grey600}
-              hoverColor={grey500}
-              primary={true}
-              icon={<FontIcon className="material-icons">close</FontIcon>}
-              onClick={() => {this.changeStep('finalForm')}}
-            />
+              <FlatButton
+                label="Continue with no media"
+                style={newItemStyle.buttonNoMedia}
+                backgroundColor={grey600}
+                hoverColor={grey500}
+                primary
+                icon={<FontIcon className="material-icons">close</FontIcon>}
+                onClick={() => { this.changeStep('finalForm'); }}
+              />
             </Col>
           </Row>
         </Grid>
       );
-    };
+    }
     if (this.state.nextStp === 'liveVideo') {
-      output = (<VideoRecord  onRecorded={this.props.onRecorded}/>);
-    };
+      output = (<VideoRecord onRecorded={this.props.onRecorded} />);
+    }
     if (this.state.nextStp === 'takePhoto') {
-      output = (<h1><br/>--> Take A Photo</h1>);
-    };
+      output = (<h1><br />--> Take A Photo</h1>);
+    }
     if (this.props.image.loaded && !this.props.image.proceed) {
       output = this.showEditImage();
-    };
-    if (this.props.video.recorded){
-      output = this.showEditVideo()
-    };
-    if (this.props.video.videoUploaded){
-      output = (<h1><br/>--> Video Uploaded</h1>);
+    }
+    if (this.props.video.recorded) {
+      output = this.showEditVideo();
+    }
+    if (this.props.video.videoUploaded) {
+      output = (<h1><br />--> Video Uploaded</h1>);
     }
     if ((this.state.nextStp === 'finalForm') ||
         (this.props.image.proceed && this.props.image.loaded) ||
         (this.props.video.videoUploaded)) {
-          output = this.showOfferForm();
-    };
-    return(
+      output = this.showOfferForm();
+    }
+    return (
       <div>
-        {(this.props.video.loading || this.props.image.loading) && 
+        {(this.props.video.loading || this.props.image.loading) &&
           <div style={newItemStyle.overlay} >
-              <CircularProgress style={newItemStyle.loading} size={80} thickness={6} />
+            <CircularProgress style={newItemStyle.loading} size={80} thickness={6} />
           </div>
         }
         {output}
-      </div>)
+      </div>);
   }
 }
 
@@ -463,7 +464,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(deleteRecord());
     },
     onDeleteImage: () => {
-        dispatch(deleteImage());
+      dispatch(deleteImage());
     },
     onSave: () => {
       dispatch(setOfferForm());
@@ -472,7 +473,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(doItemCreate(data));
     },
     onProceed: () => {
-      dispatch(proceed())
+      dispatch(proceed());
     },
     showSnackbar: () => {
       dispatch(showSnackbar());
@@ -488,7 +489,7 @@ function mapDispatchToProps(dispatch) {
     },
     setDuration: (duration) => {
       dispatch(setDuration(duration));
-    }
+    },
   };
 }
 

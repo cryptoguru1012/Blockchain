@@ -14,9 +14,9 @@ const homeStyle = {
     display: 'flex',
     alignItems: 'center',
   },
-  buttonsStyle:{
+  buttonsStyle: {
     marginTop: '10px',
-  }
+  },
 };
 
 /**
@@ -37,14 +37,14 @@ class Frontpage extends React.Component {
               labelColor="#fff"
               containerElement={<Link to="/browser" />}
               fullWidth
-              primary={true}
+              primary
             />
             <RaisedButton
               label="Sell"
               labelColor="#fff"
               containerElement={<Link to="/store/newItem" />}
               fullWidth
-              primary={true}
+              primary
               style={homeStyle.buttonsStyle}
             />
             <RaisedButton
@@ -52,7 +52,7 @@ class Frontpage extends React.Component {
               labelColor="#fff"
               // containerElement={<Link to="/about" />}
               fullWidth
-              primary={true}
+              primary
               style={homeStyle.buttonsStyle}
               disabled
             />

@@ -4,59 +4,59 @@ import Config from 'config_env';
 import { Link } from 'react-router';
 import VideoPlayer from '../Store/VideoPlayer';
 import FontIcon from 'material-ui/FontIcon';
-import {grey500, grey600} from 'material-ui/styles/colors';
+import { grey500, grey600 } from 'material-ui/styles/colors';
 
 function isJson(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-    return true;
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
 }
 const styles = {
-    imageContainer: function(url) {
-        return {
-            width: '100px',
-            height: '100px',
-            marginRight: '20px',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundColor: '#fff',
-            backgroundImage: url
-        }
-    },
-    videoContainer: {
-        width: '100px',
-        height: '100px',
-        overflow: 'hidden',
-        backgroundColor: '#fff',
-        position: 'relative'
-    },
-    video: {
-        transform: 'translate(-50%, -50%)',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '100%',
-        height: '100%'
-    },
-    txtHeader: {
-        cursor: 'pointer'
-    },
-    sortIconStyles:{
-        marginLeft: '2px',
-        color: grey500,
-        verticalAlign: 'middle',
-        fontSize: 'x-large'
-    },
-    trSeparator: function(color) {
-        return {
-            borderBottom: '1px solid ' + color,
-        }
-    },
+  imageContainer(url) {
+    return {
+      width: '100px',
+      height: '100px',
+      marginRight: '20px',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundColor: '#fff',
+      backgroundImage: url,
+    };
+  },
+  videoContainer: {
+    width: '100px',
+    height: '100px',
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    position: 'relative',
+  },
+  video: {
+    transform: 'translate(-50%, -50%)',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '100%',
+    height: '100%',
+  },
+  txtHeader: {
+    cursor: 'pointer',
+  },
+  sortIconStyles: {
+    marginLeft: '2px',
+    color: grey500,
+    verticalAlign: 'middle',
+    fontSize: 'x-large',
+  },
+  trSeparator(color) {
+    return {
+      borderBottom: `1px solid ${color}`,
+    };
+  },
 
-}
+};
 
 /**
  * Class TableViewItemsBrowser

@@ -26,7 +26,7 @@ const storeRoutes = (app) => {
         return next(err);
       }
 
-      res.status(data.status).send(data);
+      return res.status(data.status).send(data);
     });
   });
 

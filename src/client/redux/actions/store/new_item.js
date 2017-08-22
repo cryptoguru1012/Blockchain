@@ -1,35 +1,36 @@
 import Config from 'config_env';
 
 import 'whatwg-fetch';
+
 export const ITEM_CREATE_START = 'ITEM_CREATE_START';
 export const ITEM_CREATE_ERR = 'ITEM_CREATE_ERR';
 export const ITEM_CREATE_SUCCESS = 'ITEM_CREATE_SUCCESS';
 export const SHOW_SNACKBAR = 'SHOW_SNACKBAR';
 
 function itemCreateStart() {
-	return {
-		type: ITEM_CREATE_START
-	};
+  return {
+    type: ITEM_CREATE_START,
+  };
 }
 
 function itemCreateErr(payload) {
-	return {
-		type: ITEM_CREATE_ERR,
-		message: payload
-	};
+  return {
+    type: ITEM_CREATE_ERR,
+    message: payload,
+  };
 }
 
 function itemCreateSuccess(payload) {
-	return {
-		type: ITEM_CREATE_SUCCESS,
-		guid: payload[1]
-	};
+  return {
+    type: ITEM_CREATE_SUCCESS,
+    guid: payload[1],
+  };
 }
 
 export function showSnackbar() {
-	return {
-		type: SHOW_SNACKBAR
-	};
+  return {
+    type: SHOW_SNACKBAR,
+  };
 }
 
 export function doItemCreate(params) {

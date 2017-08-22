@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+
 export const REGISTER_START = 'REGISTER_START';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
@@ -21,7 +22,7 @@ export function showSnackbar() {
 }
 
 export function doRegister(params) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(registerStart());
     fetch('/API/user', {
       method: 'POST',

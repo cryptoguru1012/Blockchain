@@ -1,11 +1,11 @@
 import keystone from 'keystone';
 
 const StoreItem = keystone.list('StoreItem');
-
+/* eslint no-param-reassign: 0 */  // --> OFF
 const createItem = (params, cb) => {
   const name = params.name;
   const category = params.category;
-  const price = parseInt(params.price);
+  const price = parseInt(params.price, 10);
   const currency = params.currency;
   const paymentOptions = params.paymentOptions;
   const certificate = params.certificate === 'true';
@@ -35,9 +35,9 @@ const createItem = (params, cb) => {
       }
 
       if (productVideo) {
-        item._.productVideo.uploadFile(productVideo, true, (err, file) => {
-          if (err) {
-            return console.error(err);
+        item._.productVideo.uploadFile(productVideo, true, (error, file) => {
+          if (error) {
+            return console.error(error);
           }
 
           item.productVideo = file;
@@ -47,7 +47,7 @@ const createItem = (params, cb) => {
       }
 
       return cb(null, { data: item, status: 201, success: true });
-    }
+    },
   );
 };
 

@@ -1,63 +1,62 @@
-import React, {PropTypes, Component} from 'react';
-import {connect} from 'react-redux';
-import {Thumbnail, Button, Row, Col} from 'react-bootstrap';
-import {Link} from 'react-router';
+import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
+import { Thumbnail, Button, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router';
 import Slider from 'react-slick';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import {showItems} from '../../../redux/actions';
-//import './Styles/CarouselSection.css';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import { showItems } from '../../../redux/actions';
+// import './Styles/CarouselSection.css';
 
 const propTypes = {
-    title: PropTypes.string
+  title: PropTypes.string,
 };
 
 const defaultProps = {
-    title: 'FeaturedSection'
+  title: 'FeaturedSection',
 };
 
-var lastCat = '';
+const lastCat = '';
 
 class FeaturedSection extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    componentWillMount() {
-        this
+  componentWillMount() {
+    this
             .props
-            .showItems()
-    }
+            .showItems();
+  }
 
-    renderItemsFeatured() {
-        return this
+  renderItemsFeatured() {
+    return this
             .props
             .items
             .map((item) => {
-                <div className="col-sm-3" key={item.id}>
-                    <Card>
-                        <CardMedia>
-                            <img src={item.url3} />
-                        </CardMedia>
-                        <CardTitle title={item.title} subtitle="{item.price}" />
-                    </Card>
-                </div>
-            })
-    }
+              <div className="col-sm-3" key={item.id}>
+                <Card>
+                  <CardMedia>
+                    <img src={item.url3} />
+                  </CardMedia>
+                  <CardTitle title={item.title} subtitle="{item.price}" />
+                </Card>
+              </div>;
+            });
+  }
 
-    render() {
-        return (
-            <section >
-                <div className="row">
-                </div>
-            </section>
-        );
-    }
+  render() {
+    return (
+      <section >
+        <div className="row" />
+      </section>
+    );
+  }
 }
 
 FeaturedSection.propTypes = propTypes;
 FeaturedSection.defaultProps = defaultProps;
 
 function mapStateToProps(state) {
-    return {items: state.items.list};
+  return { items: state.items.list };
 }
-export default connect(mapStateToProps, {showItems})(FeaturedSection);
+export default connect(mapStateToProps, { showItems })(FeaturedSection);

@@ -1,6 +1,7 @@
 import Config from 'config_env';
 
 import 'whatwg-fetch';
+
 export const DELETE_RECORD = 'DELETE_RECORD';
 export const UPLOAD_START = 'UPLOAD_START';
 export const UPLOAD_ERROR = 'UPLOAD_ERROR';
@@ -10,62 +11,64 @@ export const UPDATE_SUBTITLES = 'UPDATE_SUBTITLES';
 export const SET_VIDEO_DURATION = 'SET_VIDEO_DURATION';
 
 function uploadStart(payload) {
-	return {
-		type: UPLOAD_START,
-		url: payload
-	};
+  return {
+    type: UPLOAD_START,
+    url: payload,
+  };
 }
 
-function uploadError(payload) {
-	return {
-		type: UPLOAD_ERROR
-	};
+function uploadError() {
+  return {
+    type: UPLOAD_ERROR,
+  };
 }
 
 function uploadSuccess(payload) {
-	return {
-		type: UPLOAD_SUCCESS,
-		payload: payload.data
-	};
+  return {
+    type: UPLOAD_SUCCESS,
+    payload: payload.data,
+  };
 }
 
 export function setDuration(payload) {
-	return {
-		type: SET_VIDEO_DURATION,
-		duration: payload
-	}
+  return {
+    type: SET_VIDEO_DURATION,
+    duration: payload,
+  };
 }
 
 export function deleteRecord(payload) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: DELETE_RECORD,
-			deleted: payload
-		});
-	}
+  return (dispatch) => {
+    dispatch({
+      type: DELETE_RECORD,
+      deleted: payload,
+    });
+  };
 }
 
 export function setOfferForm() {
-	return (dispatch, getState) => {
-		dispatch({
-			type: SET_OFFER
-		});
-	}
+  return (dispatch) => {
+    dispatch({
+      type: SET_OFFER,
+    });
+  };
 }
 
 export function updateSubtitles(subtitles) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: UPDATE_SUBTITLES,
-			subtitles: subtitles
-		});
-	}
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_SUBTITLES,
+      subtitles,
+    });
+  };
 }
 
 /**
  * Upload videos to be formatted
  * Videos transcribed with time stamp and standardised to mp4 format
  */
+/* eslint no-underscore-dangle: 0 */  // --> OFF
+/* eslint no-undef: 0 */  // --> OFF
 export function setRecord(data, url) {
 	return (dispatch, getState) => {
 		let parse = Config.CloudFront.parse;

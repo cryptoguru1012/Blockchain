@@ -1,28 +1,29 @@
 import Config from 'config_env';
 
 import 'whatwg-fetch';
+
 export const CURRENCY_REQ_START = 'CURRENCY_REQ_START';
 export const CURRENCY_REQ_ERR = 'CURRENCY_REQ_ERR';
 export const CURRENCY_REQ_SUCCESS = 'CURRENCY_REQ_SUCCESS';
 
 function currencyReqStart() {
-	return {
-		type: CURRENCY_REQ_START
-	};
-};
+  return {
+    type: CURRENCY_REQ_START,
+  };
+}
 
 function currencyReqErr() {
-	return {
-		type: CURRENCY_REQ_ERR
-	};
-};
+  return {
+    type: CURRENCY_REQ_ERR,
+  };
+}
 
 function currencyReqSuccess(res) {
-	return {
-		type: CURRENCY_REQ_SUCCESS,
-		payload: res.rates
-	};
-};
+  return {
+    type: CURRENCY_REQ_SUCCESS,
+    payload: res.rates,
+  };
+}
 
 export function doCurrencyReq() {
 	return (dispatch, state) => {

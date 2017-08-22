@@ -18,7 +18,6 @@ const offerRoutes = (app) => {
 
   app.get('/API/offers/sort', (req, res, next) => {
     const { btc, sys, zec, currency, name, geolocation, category } = req.query;
-    console.log(req.query);
 
     const params = {},
       symbols = [];
@@ -174,6 +173,7 @@ const offerRoutes = (app) => {
             console.log(err);
           });
       }
+      res.json(newResults);
     });
   });
 

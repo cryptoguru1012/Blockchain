@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { FETCH_OFFERS, SORT_OFFERS } from './types';
+import { reset } from 'redux-form';
 
 export function paginateOffers(indexPosition, numberOfItems) {
   return (dispatch) => {
@@ -40,6 +41,7 @@ export function sortOffers({ currency, name, geolocation, category, btc, sys, ze
       })
       .then((response) => {
         dispatch({ type: SORT_OFFERS, payload: response.data });
+        dispatch(reset('sorter'));
       })
       .catch((err) => {
         console.log(err);

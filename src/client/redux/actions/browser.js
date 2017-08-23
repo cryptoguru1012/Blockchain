@@ -124,56 +124,38 @@ export function setOrder(order) {
  * Get featured items for carousel
  */
 export function getFeatures() {
-	return (dispatch, getState) => {
-		let featured = Config.CloudFront.featured;
-		dispatch(getFeaturesStart());
-		fetch(featured)
-			.then(res => res.json())
-			.then(res => dispatch(getFeaturesSuccess(res)))
-			.catch(error => dispatch(getFeaturesError(error)));
-	}
+  return (dispatch) => {
+    const featured = Config.CloudFront.featured;
+    dispatch(getFeaturesStart());
+    fetch(featured)
+      .then(res => res.json())
+      .then(res => dispatch(getFeaturesSuccess(res)))
+      .catch(error => dispatch(getFeaturesError(error)));
+  };
 }
 
 /**
  * Get offer items from syscoin offerfilter API
  */
 export function search(data) {
-	return (dispatch, getState) => {
-		let login = Config.CloudFront.login;
-		let offerFilter = Config.CloudFront.offerFilter;
-		dispatch(searchStart());
-		var esc = encodeURIComponent;
-		var query = Object.keys(data)
-			.map(k => {
-				let a = esc(k)
-					, b = (data[k]) ? '=' + esc(data[k]) : '';
-				return a + b
-			})
-			.join(esc('&'));
-			
-		fetch(login)
-			.then(res => res.json())
-			.then(res => {
-				var token = res.token;
-				return fetch(`${offerFilter}${query}`, {
-					"headers": {
-						"Token": token,
-					},
-					mode: 'cors',
-					"method": "GET",
-				})
-			})
-			.then(res => res.json())
-			.then(res => {
-				if (typeof res === 'object') {
-					let filter = getState().browser.filter
-						, filtered = clusterItems(res)[filter];
+  return (dispatch, getState) => {
+    const login = Config.CloudFront.login;
+    const offerFilter = Config.CloudFront.offerFilter;
+    dispatch(searchStart());
+    const esc = encodeURIComponent;
+    const query = Object.keys(data)
+      .map((k) => {
+        const a = esc(k);
+        const b = (data[k]) ? `=${esc(data[k])}` : '';
+        return a + b;
+      })
+      .join(esc('&'));
 
-    fetch('https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62')
+    fetch(login)
       .then(res => res.json())
       .then((res) => {
         const token = res.token;
-        return fetch(`https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?${query}`, {
+        return fetch(`${offerFilter}${query}`, {
           headers: {
             Token: token,
           },

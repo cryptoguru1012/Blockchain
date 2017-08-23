@@ -1,8 +1,7 @@
 import React from 'react';
 import Config from 'config_env';
 
-import {Row, Col, Grid, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
-import  footerStyle from './css/styles.css';
+import footerStyle from './css/styles.css';
 import fonts from '../fonts/style.css';
 
 require('./styles/footer.scss');
@@ -21,18 +20,14 @@ require('./styles/footer.scss');
 /**
  * class Footer
  */
-const Footer = React.createClass({
-    render: function() {
-        return (
-        <div className={fonts.alfaSlabOne} style={{position:"absolute", left:0, right:0, bottom:0 }}>
-        {/*  <Row>
-            <Col md={12}>*/}
-                <div className={footerStyle.footerContent}> {Config.Footer.copyright}. </div>
-            {/*</Col>
-          </Row>*/}
-        </div>
-        );
-    }
-});
+const Footer = {
+  render() {
+    return (
+      <div className={fonts.alfaSlabOne} style={{position: 'absolute', left: 0, right: 0, bottom: 0 }}>
+        <div className={footerStyle.footerContent}> {Config.Footer.copyright}. </div>
+      </div>
+    );
+  },
+};
 
 export default Footer;

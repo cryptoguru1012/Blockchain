@@ -30,34 +30,35 @@ function loadSuccess(payload) {
  * Get individual offer from offerfilter API
  */
 export function getOfferData(guid) {
-	return (dispatch, getState) => {
-		let login = Config.CloudFront.login;
-		let offerInfo = Config.CloudFront.offerInfo;
-		dispatch(loadStart());
-		fetch(login)
-		.then(res => res.json())
-		.then(res => {
-			let token = res.token;
-			fetch(`${offerInfo}${guid}`, {
-				headers: {
-					'Token': token
-				},
-				mode: 'cors',
-				method: "GET"
-			})
-			.then(res => res.json())
-			.then(res => {
-				if (typeof res === 'string')
-					dispatch(loadError(res))
-				else
-					dispatch(loadSuccess(res))
-			})
-			.catch(error => {
-				dispatch(loadError(error))
-			});
-		})
-		.catch(error => {
-			dispatch(loadError(error))
-		});
-	};
+  return (dispatch) => {
+    const login = Config.CloudFront.login;
+    const offerInfo = Config.CloudFront.offerInfo;
+    dispatch(loadStart());
+    fetch(login)
+    .then(res => res.json())
+    .then((res) => {
+      const token = res.token;
+      fetch(`${offerInfo}${guid}`, {
+        headers: {
+          Token: token,
+        },
+        mode: 'cors',
+        method: 'GET',
+      })
+      .then(ress => ress.json())
+      .then((ress) => {
+        if (typeof ress === 'string') {
+          dispatch(loadError(ress));
+        } else {
+          dispatch(loadSuccess(ress));
+        }
+      })
+      .catch((error) => {
+        dispatch(loadError(error));
+      });
+    })
+    .catch((error) => {
+      dispatch(loadError(error));
+    });
+  };
 }

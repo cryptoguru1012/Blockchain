@@ -6,7 +6,11 @@
     "import"
   ],
   "rules": {
-    "consistent-return": "off"
+    "global-require": 0,
+    "consistent-return": "off",
+    "import/no-extraneous-dependencies": 0,
+    "import/extensions": 0,
+    "import/no-unresolved": 0
   },
   "globals": {
     "localStorage": true,

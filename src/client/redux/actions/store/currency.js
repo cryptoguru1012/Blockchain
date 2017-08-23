@@ -1,3 +1,4 @@
+import Config from 'config_env';
 import 'whatwg-fetch';
 
 export const CURRENCY_REQ_START = 'CURRENCY_REQ_START';
@@ -25,31 +26,33 @@ function currencyReqSuccess(res) {
 
 export function doCurrencyReq() {
   return (dispatch) => {
+    const login = Config.CloudFront.login;
+    const rates = Config.CloudFront.rates;
     dispatch(currencyReqStart());
-
-    fetch('https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62')
-      .then(res => res.json())
-      .then((res) => {
-        const token = res.token;
-        fetch('https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=sysrates.peg', {
-          headers: {
-            Token: token,
-          },
-          mode: 'cors',
-          method: 'GET',
-        })
-          .then(result => result.json())
-          .then((reslt) => {
-            const data = JSON.parse(reslt.value);
-            data.rates = data.rates.filter(rate => ['SYS', 'BTC', 'ZEC'].indexOf(rate.currency) !== -1);
-            dispatch(currencyReqSuccess(data));
-          })
-          .catch((error) => {
-            dispatch(currencyReqErr(error));
-          });
+    fetch(login)
+    .then(res => res.json())
+    .then((res) => {
+      const token = res.token;
+      fetch(rates, {
+        headers: {
+          Token: token,
+        },
+        mode: 'cors',
+        method: 'GET',
+      })
+      .then(ress => ress.json())
+      .then((ress) => {
+        const data = JSON.parse(ress.value);
+        data.rates = data.rates.filter(rate => ['SYS', 'BTC', 'ZEC'].indexOf(rate.currency) !== -1);
+        dispatch(currencyReqSuccess(data));
       })
       .catch((error) => {
         dispatch(currencyReqErr(error));
       });
+    })
+    .catch((error) => {
+      dispatch(currencyReqErr(error));
+    });
   };
 }
+

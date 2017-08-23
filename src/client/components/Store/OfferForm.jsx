@@ -1,4 +1,5 @@
 import React from 'react';
+import Config from 'config_env';
 
 import CircularProgress from 'material-ui/CircularProgress';
 import Formsy from 'formsy-react';
@@ -177,32 +178,33 @@ class OfferForm extends React.Component {
     });
   }
 
-  componentWillReceiveProps(props) {
-    if (props.coords && !props.coords.positionError) {
-      this.setState({
-        coords: { lat: props.coords.latitude, lng: props.coords.longitude },
-        originCoords: { lat: props.coords.latitude, lng: props.coords.longitude },
-      });
-      this.latlngToAddress(props.coords.latitude, props.coords.longitude);
-    }		else			{
-      fetch('http://ip-api.com/json')
+	componentWillReceiveProps(props){
+		if(props.coords && !props.coords.positionError) {
+			this.setState({
+				coords: {lat:props.coords.latitude, lng:props.coords.longitude},
+				originCoords: {lat:props.coords.latitude, lng:props.coords.longitude}
+			});
+			this.latlngToAddress(props.coords.latitude, props.coords.longitude);
+		}
+		else
+			fetch(Config.external_IpAPI)
 				.then(res => res.json())
 				.then((data) => {
-  this.setState({
-    coords: { lat: data.lat, lng: data.lon },
-    originCoords: { lat: data.lat, lng: data.lon },
-  });
-  this.latlngToAddress(data.lat, data.lon);
-});
-    }
-  }
-  render() {
-    const cssClasses = {
-      root: 'form-group',
-      input: 'GeoLoc__search-input',
-      autocompleteContainer: 'GeoLoc__autocomplete-container',
-      autocompleteItemActive: 'GeoLoc__autocomplete-Item-Active',
-    };
+					this.setState({
+						coords: {lat:data.lat, lng:data.lon},
+						originCoords: {lat:data.lat, lng:data.lon}
+					})
+					this.latlngToAddress(data.lat, data.lon);
+				})
+	}
+	
+	render() {
+		const cssClasses = {
+			root: 'form-group',
+			input: 'GeoLoc__search-input',
+			autocompleteContainer: 'GeoLoc__autocomplete-container',
+			autocompleteItemActive: 'GeoLoc__autocomplete-Item-Active'
+		}	
 
     const addrAutocompleteItem = ({ formattedSuggestion }) => (
       <div className="GeoLoc__suggestion-item" style={{ zIndex: 3000 }}>

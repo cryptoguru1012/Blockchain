@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 
 export const LOAD_START = 'LOAD_START';
@@ -29,32 +31,34 @@ function loadSuccess(payload) {
  */
 export function getOfferData(guid) {
   return (dispatch) => {
+    const login = Config.CloudFront.login;
+    const offerInfo = Config.CloudFront.offerInfo;
     dispatch(loadStart());
-    fetch('https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62')
-      .then(res => res.json())
-      .then((res) => {
-        const token = res.token;
-        fetch(`https://d2fzm6xoa70bg8.cloudfront.net/offerinfo?guid=${guid}`, {
-          headers: {
-            Token: token,
-          },
-          mode: 'cors',
-          method: 'GET',
-        })
-          .then(result => result.json())
-          .then((reslt) => {
-            if (typeof reslt === 'string') {
-              dispatch(loadError(reslt));
-            } else {
-              dispatch(loadSuccess(reslt));
-            }
-          })
-          .catch((error) => {
-            dispatch(loadError(error));
-          });
+    fetch(login)
+    .then(res => res.json())
+    .then((res) => {
+      const token = res.token;
+      fetch(`${offerInfo}${guid}`, {
+        headers: {
+          Token: token,
+        },
+        mode: 'cors',
+        method: 'GET',
+      })
+      .then(ress => ress.json())
+      .then((ress) => {
+        if (typeof ress === 'string') {
+          dispatch(loadError(ress));
+        } else {
+          dispatch(loadSuccess(ress));
+        }
       })
       .catch((error) => {
         dispatch(loadError(error));
       });
+    })
+    .catch((error) => {
+      dispatch(loadError(error));
+    });
   };
 }

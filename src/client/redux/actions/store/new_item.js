@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 
 export const ITEM_CREATE_START = 'ITEM_CREATE_START';
@@ -33,34 +35,34 @@ export function showSnackbar() {
 
 export function doItemCreate(params) {
   return (dispatch) => {
+    const login = Config.CloudFront.login;
+    const offernew = Config.CloudFront.offernew;
     dispatch(itemCreateStart());
-
-    fetch('https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62')
-      .then(res => res.json())
-      .then((res) => {
-        const token = res.token;
-        fetch('https://d2fzm6xoa70bg8.cloudfront.net/offernew', {
-          headers: {
-            Token: token,
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: params,
-        })
-          .then(result => result.json())
-          .then((reslt) => {
-            if (typeof reslt !== 'string') {
-              dispatch(itemCreateSuccess(reslt));
-            } else {
-              dispatch(itemCreateErr(reslt));
-            }
-          })
-          .catch((error) => {
-            dispatch(itemCreateErr(error));
-          });
+    fetch(login)
+    .then(res => res.json())
+    .then((res) => {
+      const token = res.token;
+      fetch(offernew, {
+        headers: {
+          Token: token,
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: params,
+      })
+      .then(ress => ress.json())
+      .then((ress) => {
+        if (typeof ress !== 'string') {
+          dispatch(itemCreateSuccess(ress));
+        }
+        dispatch(itemCreateErr(ress));
       })
       .catch((error) => {
         dispatch(itemCreateErr(error));
       });
+    })
+    .catch((error) => {
+      dispatch(itemCreateErr(error));
+    });
   };
 }

@@ -1,3 +1,4 @@
+import Config from 'config_env';
 import 'whatwg-fetch';
 
 export const CATEGORY_REQ_START = 'CATEGORY_REQ_START';
@@ -26,13 +27,14 @@ function categoryReqSuccess(res) {
 
 export function doCategoryReq() {
   return (dispatch) => {
+    const login = Config.CloudFront.login;
+    const categories = Config.CloudFront.categories;
     dispatch(categoryReqStart());
-
-    fetch('https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62')
+    fetch(login)
       .then(res => res.json())
       .then((res) => {
         const token = res.token;
-        return fetch('https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory', {
+        return fetch(categories, {
           headers: {
             Token: token,
           },
@@ -40,14 +42,14 @@ export function doCategoryReq() {
           method: 'GET',
         });
       })
-      .then(res => res.json())
-      .then((res) => {
+      .then(ress => ress.json())
+      .then((ress) => {
         if (typeof res === 'object') {
-          const data = JSON.parse(res.value);
+          const data = JSON.parse(ress.value);
 
           return dispatch(categoryReqSuccess(data));
         }
-        return dispatch(categoryReqErr(res));
+        return dispatch(categoryReqErr(ress));
       })
       .catch(error => dispatch(categoryReqErr(error)));
   };

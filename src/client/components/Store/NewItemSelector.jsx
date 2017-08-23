@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Config from 'config_env';
 
 // redux
 import { doCategoryReq } from '../../redux/actions/store/category';
@@ -131,36 +132,22 @@ class NewItemSelector extends React.Component {
 
   componentDidMount() {
     /* --------- This loads Google Map API --------- */
-    const ref = window.document.getElementsByTagName('script')[0];
-    const apiKey = 'AIzaSyCoq4_-BeKtYRIs-3FjJL721G1eP5DaU0g';
-    const libraries = 'places';
-    const src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=${libraries}`;
-    const script = window.document.createElement('script');
-    script.src = src;
-    script.async = true;
+    let ref = window.document.getElementsByTagName('script')[0];
+    let src = Config.GoogleAPI.maps_places;
+		let script = window.document.createElement('script');
+		script.src = src;
+		script.async = true;
     ref.parentNode.insertBefore(script, ref);
     /* --------------------------------------------- */
+	}
+
+is_iOS() {
+  if (!!navigator.platform) {
+    return Config.iDevices.some(iDevice => iDevice === navigator.platform)
   }
-
-  is_iOS() {
-    const iDevices = [
-      'iPad Simulator',
-      'iPhone Simulator',
-      'iPod Simulator',
-      'iPad',
-      'iPhone',
-      'iPod',
-    ];
-
-    if (navigator.platform) {
-      while (iDevices.length) {
-        if (navigator.platform === iDevices.pop()) { return true; }
-      }
-    }
-
-    return false;
-  }
-
+  return false;
+}
+  
   changeStep(step) {
     this.setState({ nextStp: step });
   }
@@ -277,13 +264,11 @@ class NewItemSelector extends React.Component {
                       primary
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
                       containerElement="label"
-                      onClick={e => this.openFileDialog}
-                    >
-                      <Dropzone
-                        style={{ display: 'none' }}
-                        accept=".mp4, .3gp, .ogv, .webm, .flv, .wmv"
-                        onDrop={file => this.onDrop(file)}
-                      />
+                      onClick={ (e) => this.openFileDialog}>
+                      <Dropzone 
+                        style={{"display" : "none"}}
+                        accept={Config.AcceptedVideoFormats}
+                        onDrop={ (file) => this.onDrop(file)} />
                     </FlatButton>
                   </Row>
                 </Col>
@@ -319,13 +304,11 @@ class NewItemSelector extends React.Component {
                       primary
                       icon={<FontIcon className="material-icons">file_upload</FontIcon>}
                       containerElement="label"
-                      onClick={e => this.openFileDialog}
-                    >
-                      <Dropzone
-                        style={{ display: 'none' }}
-                        accept=".jpg, .png, bmp"
-                        onDrop={file => this.onDrop(file)}
-                      />
+                      onClick={ (e) => this.openFileDialog}>
+                      <Dropzone 
+                        style={{"display" : "none"}}
+                        accept={Config.AcceptedImageFormats}
+                        onDrop={ (file) => this.onDrop(file)} />
                     </FlatButton>
                   </Row>
                 </Col>

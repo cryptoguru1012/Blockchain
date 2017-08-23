@@ -70,28 +70,28 @@ export function updateSubtitles(subtitles) {
 /* eslint no-underscore-dangle: 0 */  // --> OFF
 /* eslint no-undef: 0 */  // --> OFF
 export function setRecord(data, url) {
-	return (dispatch, getState) => {
-		let parse = Config.CloudFront.parse;
-		dispatch(uploadStart(url));
-		// This is a hack to check if data is the FormData which composed from formdata-polyfill
-		// If yes, convert it to native FormData
-		const nativeData = data._asNative ? data._asNative() : data
+  return (dispatch) => {
+    const parse = Config.CloudFront.parse;
+    dispatch(uploadStart(url));
+    // This is a hack to check if data is the FormData which composed from formdata-polyfill
+    // If yes, convert it to native FormData
+    const nativeData = data._asNative ? data._asNative() : data;
 
-		fetch(parse, {
-			method: "POST",
-			mode: 'cors',
-			body: nativeData
-		})
-		.then(res => res.json())
-		.then(res => {
-			if (!res.success) {
-				dispatch(uploadError(null));
-			} else {
-				dispatch(uploadSuccess(res));
-			}
-		})
-		.catch(error => {
-			dispatch(uploadError(null));
-		});
-	};
+    fetch(parse, {
+      method: 'POST',
+      mode: 'cors',
+      body: nativeData,
+    })
+    .then(res => res.json())
+    .then((res) => {
+      if (!res.success) {
+        dispatch(uploadError(null));
+      } else {
+        dispatch(uploadSuccess(res));
+      }
+    })
+    .catch(() => {
+      dispatch(uploadError(null));
+    });
+  };
 }

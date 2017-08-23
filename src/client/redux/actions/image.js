@@ -52,27 +52,26 @@ export function proceed(payload) {
  * Upload images to S3 storage
  */
 export function setImage(data) {
-	return (dispatch, getState) => {
-		let uploadImage = Config.CloudFront.uploadImage;
-		dispatch(loadStart());
+  return (dispatch) => {
+    const uploadImage = Config.CloudFront.uploadImage;
+    dispatch(loadStart());
 
     // This is a hack to check if data is the FormData which composed from formdata-polyfill
     // If yes, convert it to native FormData
     const nativeData = data._asNative ? data._asNative() : data;
 
-		fetch(uploadImage, {
-			method: "POST",
-			mode: 'cors',
-			body: nativeData
-		})
-		.then(res => res.json())
-		.then(res => {
-			if (typeof res !== 'object') {
-				return dispatch(loadError(res));
-			} else {
-				return dispatch(loadSuccess(res[0]));
-			}
-		})
-		.catch(error => dispatch(loadError(error)));
-	};
+    fetch(uploadImage, {
+      method: 'POST',
+      mode: 'cors',
+      body: nativeData,
+    })
+    .then(res => res.json())
+    .then((res) => {
+      if (typeof res !== 'object') {
+        return dispatch(loadError(res));
+      }
+      return dispatch(loadSuccess(res[0]));
+    })
+    .catch(error => dispatch(loadError(error)));
+  };
 }

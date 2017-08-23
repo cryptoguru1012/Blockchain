@@ -34,35 +34,35 @@ export function showSnackbar() {
 }
 
 export function doItemCreate(params) {
-	return (dispatch, state) => {
-		let login = Config.CloudFront.login;
-		let offernew = Config.CloudFront.offernew;
-		dispatch(itemCreateStart());
-		fetch(login)
-		.then(res => res.json())
-		.then(res => {
-			let token = res.token;
-			fetch(offernew, {
-				headers: {
-					'Token': token,
-					'Content-Type': 'application/json'
-				},
-				method: "POST",
-				body: params,
-			})
-			.then(res => res.json())
-			.then(res => {
-				if (typeof res !== 'string')
-					dispatch(itemCreateSuccess(res))
-				else
-					dispatch(itemCreateErr(res))
-			})
-			.catch(error => {
-				dispatch(itemCreateErr(error))
-			});
-		})
-		.catch(error => {
-			dispatch(itemCreateErr(error))
-		});
-	};
-};
+  return (dispatch) => {
+    const login = Config.CloudFront.login;
+    const offernew = Config.CloudFront.offernew;
+    dispatch(itemCreateStart());
+    fetch(login)
+    .then(res => res.json())
+    .then((res) => {
+      const token = res.token;
+      fetch(offernew, {
+        headers: {
+          Token: token,
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: params,
+      })
+      .then(ress => ress.json())
+      .then((ress) => {
+        if (typeof ress !== 'string') {
+          dispatch(itemCreateSuccess(ress));
+        }
+        dispatch(itemCreateErr(ress));
+      })
+      .catch((error) => {
+        dispatch(itemCreateErr(error));
+      });
+    })
+    .catch((error) => {
+      dispatch(itemCreateErr(error));
+    });
+  };
+}

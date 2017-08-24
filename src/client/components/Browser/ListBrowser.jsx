@@ -47,7 +47,7 @@ class ListBrowser extends React.Component {
 	render() {
 		return (
 			<Row>
-				{console.log(this.props.items)}
+				{console.log('ACZ List Browser Items: ', this.props.items)}
 				{this.props.items.length < 1 && this.getErrorHeader()}
 				{this.props.filter === 'SHOW_TEXT' && <TableViewItemsBrowser items={this.props.items} />}
 				{this.props.filter === 'SHOW_ALL' && <TableViewItemsBrowser items={this.props.items} media={true} />}

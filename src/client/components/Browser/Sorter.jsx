@@ -18,6 +18,13 @@ class Sorter extends Component {
     // this.props.fetchOffers();
   }
 
+  componentWillReceiveProps(nxtProps) {
+    this.props.newItems(nxtProps.itemSorted);
+/*     if (nxtProps.filter !== this.props.filter) {
+      console.log('ACZ Filter: ', nxtProps.filter);
+    } */
+  }
+
   renderItems() {
     return this.props.itemSorted.map((item, i) =>
       <div key={i} style={{ border: '1px solid #ddd' }}>
@@ -34,7 +41,7 @@ class Sorter extends Component {
           category: {item.category}
         </p>
         <p>
-          distanceFromUser: {item.distanceFromUser}
+          geolocation: {item.geolocation}
         </p>
       </div>,
     );
@@ -67,11 +74,9 @@ class Sorter extends Component {
           <Field onChange={this.filterChoice.bind(this)} name="selectForm" component={selectForm} />
           <SorterForm selectedField={this.state.selectedField} />
           <button type="submit">Submit</button>
-          <button type="button" onClick={reset}>
-            Clear
-          </button>
+          <button type="button" onClick={reset}>Clear</button>
         </form>
-        {this.renderItems()}
+        {/* {this.renderItems()} */}
       </div>
     );
   }

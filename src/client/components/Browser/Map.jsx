@@ -63,8 +63,6 @@ const GeolocationExampleGoogleMap = withScriptjs(
               <InfoWindow onCloseClick={onCloseClick} >
                 <div>
                   <ItemList marker={marker} />
-                  <ItemList marker={marker} />
-                  <ItemList marker={marker} />
                 </div>
               </InfoWindow>}
           </Marker>
@@ -193,8 +191,8 @@ class OfferMap extends Component {
 
         this.setState({
           center: {
-            lat: 60,
-            lng: 105,
+            lat: 36.4166811,
+            lng: -6.1505445,
           },
           content: `Error: The Geolocation service failed (${reason}).`,
         });
@@ -252,6 +250,7 @@ class OfferMap extends Component {
   }
 
   render() {
+    console.log('ACZ Map Props: ', this.props);
     const dummyMarkers = [ // ACZ - All dummies marker
       {
         position: { lat: 36.5994707, lng: -6.2865183 },
@@ -316,8 +315,8 @@ class OfferMap extends Component {
             radius={this.state.radius}
             onMarkerClick={this.handleMarkerClick}
             onCloseClick={this.handleCloseClick}
-            markers={this.state.markers}
-            //markers={dummyMarkers} //ACZ - Comment previous line and uncomment this one to use dummy markers. 
+            //markers={this.state.markers}
+            markers={dummyMarkers} //ACZ - Comment previous line and uncomment this one to use dummy markers. 
           />
         </div>
       </div>

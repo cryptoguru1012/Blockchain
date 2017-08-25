@@ -87,7 +87,7 @@ export function setVisibilityFilter(filter) {
   return (dispatch, getState) => {
     dispatch({
       type: SET_VISIBILITY_FILTER,
-      items: clusterItems(getState().browser.dataItems)[filter],
+      items: clusterItems(getState().sorter.list)[filter],
       filter,
     });
   };

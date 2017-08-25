@@ -4,6 +4,7 @@ import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import { RaisedButton } from 'material-ui';
 import { search, getFeatures, setOrder } from '../../redux/actions/browser';
+import { fetchOffers } from '../../redux/actions/sortActions';
 import OfferMap from './Map';
 import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
@@ -82,6 +83,7 @@ class Browser extends React.Component {
 
   componentDidMount() {
     this.props.getFeatures();
+    this.props.fetchOffers();
   }
 
   showNextPage() {
@@ -111,23 +113,21 @@ class Browser extends React.Component {
   }
 
   render() {
-    const { browser, onOrder } = this.props;
+    const { browser, onOrder, offers, offersFiltered } = this.props;
     return (
       <div width="100%">
         {browser.features.length > 0 && <BrowserCarousel items={browser.features} />}
         <Grid>
           {!browser.error && <FilterBrowser items={filterItems} />}
           <Col xs={12}>
-            <Sorter />
-            {browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
+            <Sorter offers={this.props.offers} />
             {browser.error &&
               <Row>
                 <h3>
                   {browser.message}
                 </h3>
               </Row>}
-            {console.log(browser)}
-            {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
+            {!browser.error && <ListBrowser items={offersFiltered} filter={browser.filter} />}
           </Col>
           <Col xs={12} style={{ marginBottom: '50px' }}>
             <Col xs={6}>
@@ -147,7 +147,9 @@ class Browser extends React.Component {
 function mapStateToProps(state) {
   const browser = state.browser;
   const pages = state.pagination;
-  return { browser, pages };
+  const offers = state.sorter.list;
+  const offersFiltered = state.sorter.filter;
+  return { browser, pages, offers, offersFiltered };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -163,6 +165,9 @@ function mapDispatchToProps(dispatch) {
     },
     getNextOffers: (params) => {
       dispatch(search(params));
+    },
+    fetchOffers: () => {
+      dispatch(fetchOffers());
     },
   };
 }

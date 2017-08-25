@@ -115,8 +115,6 @@ class OfferMap extends Component {
     this.setState({
       markers: this.state.markers.map((marker) => {
         if (marker._id === targetMarker._id) {
-          console.log(marker);
-          console.log(targetMarker);
           return {
             ...marker,
             showInfo: true,
@@ -187,11 +185,6 @@ class OfferMap extends Component {
   }
 
   render() {
-    const dummyMarkers = [
-      { position: { lat: 36.5994707, lng: -6.2865183 } },
-      { position: { lat: 36.3154195, lng: -6.1246154 } },
-      { position: { lat: 36.7602574, lng: -5.8711347 } },
-    ]
     const markers = this.filterItemsByRadius(this.state.radius);
     return (
       <div>
@@ -213,7 +206,7 @@ class OfferMap extends Component {
           <GeolocationGoogleMap
             googleMapURL={googleMapURL}
             loadingElement={<div style={{ height: '100%' }} />}
-            containerElement={<div style={{ height: '100%'}} />}
+            containerElement={<div style={{ height: '100%' }} />}
             mapElement={<div style={{ height: '100%' }} />}
             center={this.state.center}
             content={this.state.content}

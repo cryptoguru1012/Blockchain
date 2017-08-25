@@ -20,9 +20,6 @@ class Sorter extends Component {
 
   componentWillReceiveProps(nxtProps) {
     this.props.newItems(nxtProps.itemSorted);
-/*     if (nxtProps.filter !== this.props.filter) {
-      console.log('ACZ Filter: ', nxtProps.filter);
-    } */
   }
 
   renderItems() {
@@ -76,7 +73,6 @@ class Sorter extends Component {
           <button type="submit">Submit</button>
           <button type="button" onClick={reset}>Clear</button>
         </form>
-        {/* {this.renderItems()} */}
       </div>
     );
   }

@@ -6,11 +6,14 @@ class CreateRadius extends Component {
   constructor() {
     super();
     this.state = {
-      markerRadius: 15000
+      markerRadius: 0,
     };
   }
-
-
+  
+  componentWillMount() {
+    this.setState({ markerRadius: this.props.initRadius });
+  }
+ 
   updateRadius(event) {
     event.preventDefault();
     const radius = Number(event.target.value);
@@ -23,22 +26,13 @@ class CreateRadius extends Component {
       markerRadius: radius,
     });
 
-    this.props.radiusChange(radius)
+    this.props.radiusChange(radius);
   }
-
-  submitRadius() {
-    this.props.radiusChange(this.state.markerRadius);
-  }
-
-  componentDidMount() {
-     this.submitRadius()
-  }
-
 
   render() {
     return (
 
-      <div style={{fontFamily:'Roboto', fontStyle:'normal'}}>
+      <div style={{fontFamily: 'Roboto', fontStyle: 'normal'}}>
         Showing {this.props.numOffers} offers within &nbsp;
         <input
           type="number"
@@ -48,7 +42,7 @@ class CreateRadius extends Component {
           value={this.state.markerRadius}
           style = {{width:'10%'}}
         />
-        &nbsp; miles 
+        &nbsp; miles
         <br />
       </div>
     );

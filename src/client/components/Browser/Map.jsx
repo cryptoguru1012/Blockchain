@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 import { withGoogleMap, GoogleMap, Circle, InfoWindow, Marker } from 'react-google-maps';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import geolib from 'geolib';
+import { geolocated } from 'react-geolocated';
 import ItemList from './ItemList';
 
 import Paper from 'material-ui/Paper';
@@ -16,7 +17,7 @@ import FontIcon from 'material-ui/FontIcon';
 import CreateRadius from './CreateRadius';
 
 const googleMapURL =
-  //'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
+  // 'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
   'https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
 
 const geolocation =
@@ -28,7 +29,7 @@ const geolocation =
       },
     };
 
-const GeolocationExampleGoogleMap = withScriptjs(
+const GeolocationGoogleMap = withScriptjs(
   withGoogleMap(props =>
     <GoogleMap defaultZoom={6} center={props.center}>
       {props.center &&
@@ -55,7 +56,7 @@ const GeolocationExampleGoogleMap = withScriptjs(
           <Marker
             key={index}
             position={marker.position}
-            title={(index + 1).toString()}
+            title={(marker.number).toString()}
             onClick={onClick}
             options={{ icon: 'https://image.ibb.co/evMHxF/shopping_zone_marker_1.png' }}
           >
@@ -72,65 +73,50 @@ const GeolocationExampleGoogleMap = withScriptjs(
   ),
 );
 
-function generateInitialMarkers(items, userRadius) {
-  const markers = [];
-  items.map((item, i) => {
-    const newGeoArr = item.geolocation.split(',');
-    if (
-      newGeoArr.length > 1 &&
-      newGeoArr !== '' &&
-      newGeoArr[0] !== undefined &&
-      newGeoArr[0] !== null
-    ) {
-      item.position = { lat: Number(newGeoArr[0]), lng: Number(newGeoArr[1]) };
-      item.distance = { latitude: Number(newGeoArr[0]), longitude: Number(newGeoArr[1]) };
-      geolocation.getCurrentPosition((position) => {
-        const currentLocation = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-        const distanceArr = geolib.orderByDistance(currentLocation, [item.distance]);
-        const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
-
-        if (miles <= userRadius) {
-          markers.push({
-            position: item.position,
-            number: i,
-            content: item.description,
-            price: item.price,
-            quantity: item.quantity,
-            currency: item.currency,
-            category: item.category,
-            title: item.title,
-            offer: item.offer,
-            showInfo: false,
-          });
-        }
-      });
-    }
-  });
-  return markers;
-}
-
 class OfferMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentPosition: null,
       center: null,
       content: null,
-      radius: 100000,
-      markers: generateInitialMarkers(this.props.items, 25) || [],
+      radius: 2500, // ACZ --> put this const in config_env.
+      markers: [],
     };
-
-    const isUnmounted = false;
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleCloseClick = this.handleCloseClick.bind(this);
+    this.filterItemsByRadius = this.filterItemsByRadius.bind(this);
+    this.radiusChange = this.radiusChange.bind(this);
   }
+
+  componentWillMount(){
+    console.log('Will mount: ', this.props.items);
+  }
+
+  componentWillReceiveProps(props){
+
+    if (props.coords && !props.coords.positionError)
+      {this.setState({ center: { lat: props.coords.latitude, lng: props.coords.longitude } });}
+    else {
+      fetch('http://ip-api.com/json')
+        .then(res => res.json())
+        .then((data) => {
+          this.setState({ center: { lat: data.lat, lng: data.lon } });
+        })
+        .catch((error) => {
+          this.setState({ content: `Error: The Geolocation service failed (${error.message}).` });
+        });
+    }
+    this.setState({ markers: props.items });
+  }
+
   handleMarkerClick(targetMarker) {
     this.setState({
       markers: this.state.markers.map((marker) => {
-        if (marker === targetMarker) {
+        if (marker._id === targetMarker._id) {
+          console.log(marker);
+          console.log(targetMarker);
           return {
             ...marker,
             showInfo: true,
@@ -144,7 +130,7 @@ class OfferMap extends Component {
   handleCloseClick(targetMarker) {
     this.setState({
       markers: this.state.markers.map((marker) => {
-        if (marker === targetMarker) {
+        if (marker._id === targetMarker._id) {
           return {
             ...marker,
             showInfo: false,
@@ -155,57 +141,8 @@ class OfferMap extends Component {
     });
   }
 
-  componentDidMount() {
-    const tick = () => {
-      if (this.isUnmounted) {
-        return;
-      }
-      this.setState({
-        radius: Math.max(this.state.radius - 200, 0),
-      });
-
-      if (this.state.radius > 100) {
-        raf(tick);
-      }
-    };
-
-    geolocation.getCurrentPosition(
-      (position) => {
-        if (this.isUnmounted) {
-          return;
-        }
-        this.setState({
-          center: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          },
-          content: 'Location found using HTML5.',
-        });
-
-        raf(tick);
-      },
-      (reason) => {
-        if (this.isUnmounted) {
-          return;
-        }
-
-        this.setState({
-          center: {
-            lat: 36.4166811,
-            lng: -6.1505445,
-          },
-          content: `Error: The Geolocation service failed (${reason}).`,
-        });
-      },
-    );
-  }
-
-  componentWillUnmount() {
-    this.isUnmounted = true;
-  }
-
-  submitRadius(userRadius) {
-    const { items } = this.props;
+  filterItemsByRadius(userRadius) {
+    const items = this.state.markers;
     const markers = [];
     items.map((item, i) => {
       const newGeoArr = item.geolocation.split(',');
@@ -217,15 +154,16 @@ class OfferMap extends Component {
       ) {
         item.position = { lat: Number(newGeoArr[0]), lng: Number(newGeoArr[1]) };
         item.distance = { latitude: Number(newGeoArr[0]), longitude: Number(newGeoArr[1]) };
-        geolocation.getCurrentPosition((position) => {
+        if (this.state.center) {
           const currentLocation = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            latitude: this.state.center.lat,
+            longitude: this.state.center.lng,
           };
           const distanceArr = geolib.orderByDistance(currentLocation, [item.distance]);
           const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
           if (miles <= userRadius) {
             markers.push({
+              _id: item._id,
               position: item.position,
               number: i,
               content: item.description,
@@ -235,69 +173,36 @@ class OfferMap extends Component {
               category: item.category,
               title: item.title,
               offer: item.offer,
-              showInfo: false,
-            });
-            this.setState({
-              markers,
+              showInfo: item.showInfo || false,
             });
           }
-        });
+        }
       }
     });
-    this.setState({
-      markers,
-    });
+    return markers;
+  }
+
+  radiusChange(radius) {
+    this.setState({ radius });
   }
 
   render() {
-    console.log('ACZ Map Props: ', this.props);
-    const dummyMarkers = [ // ACZ - All dummies marker
-      {
-        position: { lat: 36.5994707, lng: -6.2865183 },
-        number: 1,
-        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
-        price: 123,
-        quantity: 1,
-        currency: "SYS",
-        category: "Anyone",
-        title: "ACZ dummy 1",
-        offer: "12345678910",
-        showInfo: true
-      },
-      { 
-        position: { lat: 36.3154195, lng: -6.1246154 },
-        number: 2,
-        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
-        price: 123,
-        quantity: 4,
-        currency: "SYS",
-        category: "Anyone",
-        title: "ACZ dummy 2",
-        offer: "12345678910",
-        showInfo: false
-      },
-      { 
-        position: { lat: 36.7602574, lng: -5.8711347 },
-        number: 3,
-        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
-        price: 123,
-        quantity: 7,
-        currency: "SYS",
-        category: "Anyone",
-        title: "ACZ dummy 3",
-        offer: "12345678910",
-        showInfo: false
-      },  
+    const dummyMarkers = [
+      { position: { lat: 36.5994707, lng: -6.2865183 } },
+      { position: { lat: 36.3154195, lng: -6.1246154 } },
+      { position: { lat: 36.7602574, lng: -5.8711347 } },
     ]
-
+    const markers = this.filterItemsByRadius(this.state.radius);
     return (
       <div>
-
-      <div>
-        <CreateRadius radiusChange={this.submitRadius.bind(this)} numOffers={this.state.markers.length}/>
-      </div>
-
-      <br/>
+        <div>
+          <CreateRadius
+            radiusChange={this.radiusChange}
+            numOffers={markers.length}
+            initRadius={this.state.radius}
+          />
+        </div>
+        <br />
 
         <div
           style={{
@@ -305,7 +210,7 @@ class OfferMap extends Component {
             height: '500px',
           }}
         >
-          <GeolocationExampleGoogleMap
+          <GeolocationGoogleMap
             googleMapURL={googleMapURL}
             loadingElement={<div style={{ height: '100%' }} />}
             containerElement={<div style={{ height: '100%'}} />}
@@ -315,8 +220,7 @@ class OfferMap extends Component {
             radius={this.state.radius}
             onMarkerClick={this.handleMarkerClick}
             onCloseClick={this.handleCloseClick}
-            //markers={this.state.markers}
-            markers={dummyMarkers} //ACZ - Comment previous line and uncomment this one to use dummy markers. 
+            markers={markers}
           />
         </div>
       </div>
@@ -328,4 +232,9 @@ function mapStateToProps({ browser }) {
   return { browser };
 }
 
-export default connect(mapStateToProps)(OfferMap);
+export default connect(mapStateToProps)(geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(OfferMap));

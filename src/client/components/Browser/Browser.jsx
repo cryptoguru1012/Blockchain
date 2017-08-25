@@ -118,7 +118,6 @@ class Browser extends React.Component {
   }
 
   render() {
-    console.log('ACZ Browser Props: ', this.props);
     let { browser, onOrder } = this.props;
     return (
       <div width="100%">

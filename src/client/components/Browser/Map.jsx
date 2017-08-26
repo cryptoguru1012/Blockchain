@@ -29,6 +29,15 @@ const geolocation =
       },
     };
 
+const isJson = (str) => {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
+};
+
 const GeolocationGoogleMap = withScriptjs(
   withGoogleMap(props =>
     <GoogleMap defaultZoom={6} center={props.center}>
@@ -143,21 +152,15 @@ class OfferMap extends Component {
     const items = this.state.markers;
     const markers = [];
     items.map((item, i) => {
-      const newGeoArr = item.geolocation.split(',');
-      if (
-        newGeoArr.length > 1 &&
-        newGeoArr !== '' &&
-        newGeoArr[0] !== undefined &&
-        newGeoArr[0] !== null
-      ) {
-        item.position = { lat: Number(newGeoArr[0]), lng: Number(newGeoArr[1]) };
-        item.distance = { latitude: Number(newGeoArr[0]), longitude: Number(newGeoArr[1]) };
+      if (isJson(item.geolocation)) {
+        const newGeoArr = JSON.parse(item.geolocation).coords;
+        item.position = newGeoArr;
         if (this.state.center) {
           const currentLocation = {
             latitude: this.state.center.lat,
             longitude: this.state.center.lng,
           };
-          const distanceArr = geolib.orderByDistance(currentLocation, [item.distance]);
+          const distanceArr = geolib.orderByDistance(currentLocation, [item.position]);
           const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
           if (miles <= userRadius) {
             markers.push({

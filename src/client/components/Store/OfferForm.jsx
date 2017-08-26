@@ -8,244 +8,244 @@ import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import { geolocated } from 'react-geolocated';
 
 const myStyle = {
-	spinnerStyle: {
-		margin: 'auto',
-		display: 'block',
-		padding: '5'
-	},
-	colMargin: {
-		margin: '0 -5px 0 -5px'
-	}
+  spinnerStyle: {
+    margin: 'auto',
+    display: 'block',
+    padding: '5'
+  },
+  colMargin: {
+    margin: '0 -5px 0 -5px'
+  }
 };
 
 class OfferForm extends React.Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.enableButton = this.enableButton.bind(this);
-		this.disableButton = this.disableButton.bind(this);
-		this.handleSnackbarSuccessRequestClose = this.handleSnackbarSuccessRequestClose.bind(this);
-		this.handleSnackbarErrorRequestClose = this.handleSnackbarErrorRequestClose.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.getDescription = this.getDescription.bind(this);
+    this.enableButton = this.enableButton.bind(this);
+    this.disableButton = this.disableButton.bind(this);
+    this.handleSnackbarSuccessRequestClose = this.handleSnackbarSuccessRequestClose.bind(this);
+    this.handleSnackbarErrorRequestClose = this.handleSnackbarErrorRequestClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.getDescription = this.getDescription.bind(this);
 
-		// autofill description with subtitles
+    // autofill description with subtitles
 
-		this.state = {
-			autoDescription: this.getDescription(),
-			canSubmit: false,
-			latitude: '',
-			longitude: ''
-		};
+    this.state = {
+      autoDescription: this.getDescription(),
+      canSubmit: false,
+      latitude: '',
+      longitude: ''
+    };
 
-	}
+  }
 
-	getDescription() {
-		let arrDescription = []
-			, subtitles = this.props.subtitlesVideo.sort((a,b) => {
-			if ( a.startTime < b.startTime )
-				return -1;
-			if ( a.startTime > b.startTime )
-				return 1;
-			return 0;
-		});
+  getDescription() {
+    let arrDescription = []
+      , subtitles = this.props.subtitlesVideo.sort((a,b) => {
+      if ( a.startTime < b.startTime )
+        return -1;
+      if ( a.startTime > b.startTime )
+        return 1;
+      return 0;
+    });
 
-		subtitles.map(subtitle => {
-			arrDescription.push(subtitle.text);
-		});
+    subtitles.map(subtitle => {
+      arrDescription.push(subtitle.text);
+    });
 
-		return arrDescription.join(' ');
-	}
+    return arrDescription.join(' ');
+  }
 
-	enableButton() {
-		this.setState({ canSubmit: true });
-	}
+  enableButton() {
+    this.setState({ canSubmit: true });
+  }
 
-	disableButton() {
-		this.setState({ canSubmit: false });
-	}
+  disableButton() {
+    this.setState({ canSubmit: false });
+  }
 
-	handleSnackbarSuccessRequestClose(reason) {
-		if (reason !== 'clickaway' && !this.props.newItem.error) {
-			let guid = this.props.newItem.guid;
-			window.location = '/offer/' + guid;
-		}
-	}
+  handleSnackbarSuccessRequestClose(reason) {
+    if (reason !== 'clickaway' && !this.props.newItem.error) {
+      let guid = this.props.newItem.guid;
+      window.location = '/offer/' + guid;
+    }
+  }
 
-	handleSnackbarErrorRequestClose() {
-		this.props.showSnackbar();
-	}
-	
-	handleSubmit(data) {
-		let description = {
-			text: data.description,
-			urlVideo: this.props.urlVideo,
-			urlImage: this.props.urlImage,
-			subtitlesVideo: this.props.subtitlesVideo
-		};
-		let payload = {
-				alias: 'argvil19',
-				category: data.category,
-				title: data.name,
-				quantity: 1,
-				price: parseInt(data.price),
-				description: JSON.stringify(description),
-				currency: data.currency,
-				paymentoptions: data.paymentOptions,
-				private: data.certificate,
-				geolocation: `${data.latitude},${data.longitude}`
-			};
-		
-		this.props.onCreate(JSON.stringify(payload));
-	}
+  handleSnackbarErrorRequestClose() {
+    this.props.showSnackbar();
+  }
+  
+  handleSubmit(data) {
+    let description = {
+      text: data.description,
+      urlVideo: this.props.urlVideo,
+      urlImage: this.props.urlImage,
+      subtitlesVideo: this.props.subtitlesVideo
+    };
+    let payload = {
+        alias: 'argvil19',
+        category: data.category,
+        title: data.name,
+        quantity: 1,
+        price: parseInt(data.price),
+        description: JSON.stringify(description),
+        currency: data.currency,
+        paymentoptions: data.paymentOptions,
+        private: data.certificate,
+        geolocation: `${data.latitude},${data.longitude}`
+      };
+    
+    this.props.onCreate(JSON.stringify(payload));
+  }
 
-	renderCategories() {
-		if (this.props.categories.categories.length > 0) {
-			return this.props.categories.categories.map((category, i) => {
-				return <MenuItem key={i} value={category.cat} primaryText={category.cat} />
-			})
-		}
-	}
+  renderCategories() {
+    if (this.props.categories.categories.length > 0) {
+      return this.props.categories.categories.map((category, i) => {
+        return <MenuItem key={i} value={category.cat} primaryText={category.cat} />
+      })
+    }
+  }
 
-	renderCurrencies() {
-		if (this.props.currencies.currencies.length > 0) {
-			return this.props.currencies.currencies.map((currency, i) => {
-				if (i === 0) {
-					return <MenuItem selected default key={i} value={currency.currency} primaryText={currency.currency} />
-				}else{
-					return <MenuItem key={i} value={currency.currency} primaryText={currency.currency} />
-				}
-				
-			})
-		}
-	}
+  renderCurrencies() {
+    if (this.props.currencies.currencies.length > 0) {
+      return this.props.currencies.currencies.map((currency, i) => {
+        if (i === 0) {
+          return <MenuItem selected default key={i} value={currency.currency} primaryText={currency.currency} />
+        }else{
+          return <MenuItem key={i} value={currency.currency} primaryText={currency.currency} />
+        }
+        
+      })
+    }
+  }
 
-	renderPayments() {
-		return this.props.newItem.payments.map(payment => {
-			return <MenuItem key={payment.id} value={payment.value} primaryText={payment.text} />
-		})
-	}
+  renderPayments() {
+    return this.props.newItem.payments.map(payment => {
+      return <MenuItem key={payment.id} value={payment.value} primaryText={payment.text} />
+    })
+  }
 
-	componentWillReceiveProps(props){
+  componentWillReceiveProps(props){
 
-		if(props.coords && !props.coords.positionError)
-			this.setState({latitude: props.coords.latitude, longitude: props.coords.longitude})
-		
-		else
-			fetch('http://ip-api.com/json')
-				.then(res => res.json())
-				.then((data) => {
-					this.setState({latitude: data.lat, longitude: data.lon})
-				})
-	}
-	render() {
-		return ( 
-			<Row>
-				<Col xs={12}>
-					<Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
-						<FormsyText
-							name="name"
-							floatingLabelText="Title"
-							hintText="Item title"
-							validations="isSpecialWords"
-							validationError="Please only use letters"
-							requiredError="This field is required"
-							required
-							fullWidth
-						/>
-						<FormsySelect name="category" floatingLabelText="Category" required fullWidth>
-							{this.renderCategories()}
-						</FormsySelect>
-						<FormsyText
-							name="price"
-							floatingLabelText="Price"
-							hintText="Item price"
-							validations="isNumeric"
-							validationError="Please provide a number"
-							requiredError="This field is required"
-							required
-							fullWidth
-						/>
-						<FormsySelect
-							name="currency" floatingLabelText="Currency to List in" required fullWidth>
-							{this.renderCurrencies()}
-						</FormsySelect>
-						<FormsySelect name="payment" floatingLabelText="Payment" required fullWidth>
-							{this.renderPayments()}
-						</FormsySelect>
-						<FormsyText
-							name="description"
-							value={this.state.autoDescription}
-							floatingLabelText="Description"
-							hintText="Item description"
-							validations="isExisty"
-							validationError="This field cannot be empty."
-							required
-							fullWidth
-							multiLine
-						/>
-						<Row>
-							<Col xs={6}>
-								<FormsyText
-									name="latitude"
-									value={this.state.latitude}
-									floatingLabelText="Latitude"
-									hintText="Item latitude"
-									validations="isNumeric"
-									validationError="Only Numbers."
-									required
-									requiredError="This field is required"
-									fullWidth
-								/>
-							</Col>
-							<Col xs={6}>
-							<FormsyText
-								name="longitude"
-								value={this.state.longitude}
-								floatingLabelText="Longitude"
-								hintText="Item longitude"
-								validations="isNumeric"
-								validationError="Only Numbers."
-								required
-								requiredError="This field is required"
-								fullWidth
-							/>
-							</Col>
-						</Row>
-						{
-							// <FormsyToggle name="certificate" label="Certificate" />
-						}
-						{!this.props.newItem.loading &&
-							<RaisedButton
-								label="Send"
-								type="submit"
-								primary={false}
-								fullWidth
-								disabled={!this.state.canSubmit}
-							/>
-						}
-						
-					</Formsy.Form>
-					
-					{this.props.newItem.loading && !this.props.newItem.success &&
-						<CircularProgress size={50} style={myStyle.spinnerStyle} />
-					}
-					<Snackbar
-						open={this.props.newItem.success}
-						message="Success! Item created."
-						autoHideDuration={2000}
-						onRequestClose={this.handleSnackbarSuccessRequestClose}
-					/>
-					<Snackbar
-						open={this.props.newItem.showSnackbar}
-						message={this.props.newItem.message}
-						autoHideDuration={2000}
-						onRequestClose={this.handleSnackbarErrorRequestClose}
-					/>
-				</Col>
-			</Row>
-		);
-	}
+    if(props.coords && !props.coords.positionError)
+      this.setState({latitude: props.coords.latitude, longitude: props.coords.longitude})
+    
+    else
+      fetch('http://ip-api.com/json')
+        .then(res => res.json())
+        .then((data) => {
+          this.setState({latitude: data.lat, longitude: data.lon})
+        })
+  }
+  render() {
+    return ( 
+      <Row>
+        <Col xs={12}>
+          <Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
+            <FormsyText
+              name="name"
+              floatingLabelText="Title"
+              hintText="Item title"
+              validations="isSpecialWords"
+              validationError="Please only use letters"
+              requiredError="This field is required"
+              required
+              fullWidth
+            />
+            <FormsySelect name="category" floatingLabelText="Category" fullWidth>
+              {this.renderCategories()}
+            </FormsySelect>
+            <FormsyText
+              name="price"
+              floatingLabelText="Price"
+              hintText="Item price"
+              validations="isNumeric"
+              validationError="Please provide a number"
+              requiredError="This field is required"
+              
+              fullWidth
+            />
+            <FormsySelect
+              name="currency" floatingLabelText="Currency to List in"  fullWidth>
+              {this.renderCurrencies()}
+            </FormsySelect>
+            <FormsySelect name="payment" floatingLabelText="Payment"  fullWidth>
+              {this.renderPayments()}
+            </FormsySelect>
+            <FormsyText
+              name="description"
+              value={this.state.autoDescription}
+              floatingLabelText="Description"
+              hintText="Item description"
+              validations="isExisty"
+              validationError="This field cannot be empty."
+              
+              fullWidth
+              multiLine
+            />
+            <Row>
+              <Col xs={6}>
+                <FormsyText
+                  name="latitude"
+                  value={this.state.latitude}
+                  floatingLabelText="Latitude"
+                  hintText="Item latitude"
+                  validations="isNumeric"
+                  validationError="Only Numbers."
+                  
+                  requiredError="This field is required"
+                  fullWidth
+                />
+              </Col>
+              <Col xs={6}>
+              <FormsyText
+                name="longitude"
+                value={this.state.longitude}
+                floatingLabelText="Longitude"
+                hintText="Item longitude"
+                validations="isNumeric"
+                validationError="Only Numbers."
+                
+                requiredError="This field is required"
+                fullWidth
+              />
+              </Col>
+            </Row>
+            {
+              // <FormsyToggle name="certificate" label="Certificate" />
+            }
+            {!this.props.newItem.loading &&
+              <RaisedButton
+                label="Send"
+                type="submit"
+                primary={false}
+                fullWidth
+                disabled={!this.state.canSubmit}
+              />
+            }
+            
+          </Formsy.Form>
+          
+          {this.props.newItem.loading && !this.props.newItem.success &&
+            <CircularProgress size={50} style={myStyle.spinnerStyle} />
+          }
+          <Snackbar
+            open={this.props.newItem.success}
+            message="Success! Item created."
+            autoHideDuration={2000}
+            onRequestClose={this.handleSnackbarSuccessRequestClose}
+          />
+          <Snackbar
+            open={this.props.newItem.showSnackbar}
+            message={this.props.newItem.message}
+            autoHideDuration={2000}
+            onRequestClose={this.handleSnackbarErrorRequestClose}
+          />
+        </Col>
+      </Row>
+    );
+  }
 }
 
 export default geolocated({

@@ -17,17 +17,7 @@ import FontIcon from 'material-ui/FontIcon';
 import CreateRadius from './CreateRadius';
 
 const googleMapURL =
-  // 'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
   'https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
-
-const geolocation =
-  canUseDOM && navigator.geolocation
-    ? navigator.geolocation
-    : {
-      getCurrentPosition(success, failure) {
-        failure("Your browser doesn't support geolocation.");
-      },
-    };
 
 const isJson = (str) => {
   try {
@@ -99,10 +89,6 @@ class OfferMap extends Component {
     this.radiusChange = this.radiusChange.bind(this);
   }
 
-  componentWillMount(){
-    console.log('Will mount: ', this.props.items);
-  }
-
   componentWillReceiveProps(props){
 
     if (props.coords && !props.coords.positionError)
@@ -152,31 +138,38 @@ class OfferMap extends Component {
     const items = this.state.markers;
     const markers = [];
     items.map((item, i) => {
+      let itemGeolocation;
+      let itemDescription = 'NO DESCRIPTION';
+      let itemMedia;
+      if (isJson(item.description)) {
+        itemDescription = JSON.parse(item.description).description;
+        itemMedia = JSON.parse(item.description).media;
+      }
       if (isJson(item.geolocation)) {
-        const newGeoArr = JSON.parse(item.geolocation).coords;
-        item.position = newGeoArr;
-        if (this.state.center) {
-          const currentLocation = {
-            latitude: this.state.center.lat,
-            longitude: this.state.center.lng,
-          };
-          const distanceArr = geolib.orderByDistance(currentLocation, [item.position]);
-          const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
-          if (miles <= userRadius) {
-            markers.push({
-              _id: item._id,
-              position: item.position,
-              number: i,
-              content: item.description,
-              price: item.price,
-              quantity: item.quantity,
-              currency: item.currency,
-              category: item.category,
-              title: item.title,
-              offer: item.offer,
-              showInfo: item.showInfo || false,
-            });
-          }
+        itemGeolocation = JSON.parse(item.geolocation).coords;
+      }
+      if (this.state.center) {
+        const currentLocation = {
+          latitude: this.state.center.lat,
+          longitude: this.state.center.lng,
+        };
+        const distanceArr = geolib.orderByDistance(currentLocation, [itemGeolocation]);
+        const miles = (distanceArr[0].distance / 1609.34).toFixed(2);
+        if (miles <= userRadius) {
+          markers.push({
+            _id: item._id,
+            position: itemGeolocation,
+            number: i,
+            content: itemDescription,
+            price: item.price,
+            quantity: item.quantity,
+            currency: item.currency,
+            category: item.category,
+            title: item.title,
+            offer: item.offer,
+            media: itemMedia,
+            showInfo: item.showInfo || false,
+          });
         }
       }
     });

@@ -24,8 +24,17 @@ const styles = {
 
 }
 
-class ItemList extends Component{
-  render(){
+
+
+class ItemList extends Component {
+
+  render() {
+    const mediaObject = this.props.marker.media;
+    const renderMedia = <Img src="https://image.ibb.co/er6NWa/dummyimg.png" style={{ height: 100, width: 100 }} />;
+
+    console.log(mediaObject);
+
+
     return (
       <div className="Item__Wrap">
         <div className="item__header">
@@ -34,7 +43,7 @@ class ItemList extends Component{
         <div className="item__body">
           <div className="item__body-row">
             <div className="item__body-photo">
-            <Img src="https://image.ibb.co/er6NWa/dummyimg.png" style={{height:100, width: 100}}/>
+              { renderMedia }
             </div>
             <div className="item__body-info">
               <div className="item__bodyInfo-row">
@@ -71,8 +80,8 @@ class ItemList extends Component{
             />
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default ItemList
+export default ItemList;

@@ -1,4 +1,4 @@
-import React, { Component} from 'react'
+import React, { Component } from 'react'
 import Paper from 'material-ui/Paper';
 import Img from 'react-image'
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,29 +11,39 @@ require('./styles/map-markerInfo.scss');
 
 const styles = {
   viewOfferBtn: {
-    height: '25px'
+    height: '25px',
   },
   viewOfferLbl: {
     fontSize: '0.8em',
-    top: '4px'
+    top: '4px',
   },
   viewOfferIcon: {
     fontSize: '1.2em',
     top: '4px',
-  }
-
-}
-
-
+  },
+};
 
 class ItemList extends Component {
 
+  prepareItems(){
+    const mediaType = this.props.marker.thumbnail.mediaType; 
+  }
+
   render() {
-    const mediaObject = this.props.marker.media;
-    const renderMedia = <Img src="https://image.ibb.co/er6NWa/dummyimg.png" style={{ height: 100, width: 100 }} />;
+    const mediaType = this.props.marker.thumbnail.mediaType;
+    let mediaURL;
+    switch (mediaType) {
+      case 'img':
+        mediaURL = this.props.marker.thumbnail.mediaURL;
+        break;
 
-    console.log(mediaObject);
-
+      case 'vid':
+        mediaURL = this.props.marker.thumbnail.videoPoster;
+        break;
+      default:
+        mediaURL = 'https://image.ibb.co/er6NWa/dummyimg.png';
+        break;
+    }
 
     return (
       <div className="Item__Wrap">
@@ -43,7 +53,7 @@ class ItemList extends Component {
         <div className="item__body">
           <div className="item__body-row">
             <div className="item__body-photo">
-              { renderMedia }
+              <Img alt="" src={mediaURL} style={{ height: 100, width: 100 }} />
             </div>
             <div className="item__body-info">
               <div className="item__bodyInfo-row">
@@ -68,16 +78,18 @@ class ItemList extends Component {
           </div>
         </div>
         <div className="item__footer">
-            <RaisedButton
-              backgroundColor={grey800}
-              style={styles.viewOfferBtn}
-              labelColor={grey50}
-              labelStyle= {styles.viewOfferLbl}
-              href={'/offer/' + this.props.marker.offer}
-              target="_blank"
-              label="View Offer"
-              icon={<FontIcon className="material-icons" style={styles.viewOfferIcon}>shopping_cart</FontIcon>}
-            />
+          <RaisedButton
+            backgroundColor={grey800}
+            style={styles.viewOfferBtn}
+            labelColor={grey50}
+            labelStyle={styles.viewOfferLbl}
+            href={'/offer/' + this.props.marker.offer}
+            target="_blank"
+            label="View Offer"
+            icon={<FontIcon className="material-icons" style={styles.viewOfferIcon}>
+                shopping_cart
+              </FontIcon>}
+          />
         </div>
       </div>
     );

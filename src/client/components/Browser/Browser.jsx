@@ -135,15 +135,17 @@ class Browser extends React.Component {
               </Row>}
             {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
-          <Col xs={12} style={{ marginBottom: '50px' }}>
-            <Col xs={6}>
-              {this.state.current > 0 &&
-                <RaisedButton label="previous" onClick={this.showPreviousPage} />}
+          {browser.filter !== 'SHOW_MAP' &&
+            <Col xs={12} style={{ marginBottom: '50px' }}>
+              <Col xs={6}>
+                {this.state.current > 0 &&
+                  <RaisedButton label="previous" onClick={this.showPreviousPage} />}
+              </Col>
+              <Col xs={6} style={{ float: 'right' }}>
+                <RaisedButton label="next" style={{ float: 'right' }} onClick={this.showNextPage} />
+              </Col>
             </Col>
-            <Col xs={6} style={{ float: 'right' }}>
-              <RaisedButton label="next" style={{ float: 'right' }} onClick={this.showNextPage} />
-            </Col>
-          </Col>
+          }
         </Grid>
       </div>
     );

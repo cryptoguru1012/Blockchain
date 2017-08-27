@@ -140,10 +140,11 @@ class OfferMap extends Component {
     items.map((item, i) => {
       let itemGeolocation;
       let itemDescription = 'NO DESCRIPTION';
-      let itemMedia;
+      let itemThumb;
       if (isJson(item.description)) {
-        itemDescription = JSON.parse(item.description).description;
-        itemMedia = JSON.parse(item.description).media;
+        const itemDescObj = JSON.parse(item.description);
+        itemDescription = itemDescObj.description;
+        itemThumb = itemDescObj.media.mediaVault[itemDescObj.media.defaultIdx] || { mediaType: 'txt' };
       }
       if (isJson(item.geolocation)) {
         itemGeolocation = JSON.parse(item.geolocation).coords;
@@ -167,7 +168,7 @@ class OfferMap extends Component {
             category: item.category,
             title: item.title,
             offer: item.offer,
-            media: itemMedia,
+            thumbnail: itemThumb,
             showInfo: item.showInfo || false,
           });
         }

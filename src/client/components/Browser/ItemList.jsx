@@ -41,7 +41,7 @@ class ItemList extends Component {
         mediaURL = this.props.marker.thumbnail.videoPoster;
         break;
       default:
-        mediaURL = 'https://image.ibb.co/er6NWa/dummyimg.png';
+        mediaURL = require('./assets/no_image.png');
         break;
     }
 

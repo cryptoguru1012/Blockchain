@@ -127,13 +127,14 @@ class Browser extends React.Component {
           <Col xs={12}>
             <Sorter newItems={this.itemsReceived} filter={browser.filter} />
             {browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
-            {browser.error &&
+            {/* {browser.error &&
               <Row>
                 <h3>
                   {browser.message}
                 </h3>
-              </Row>}
+              </Row>} */}
             {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
+            {browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
           {browser.filter !== 'SHOW_MAP' &&
             <Col xs={12} style={{ marginBottom: '50px' }}>

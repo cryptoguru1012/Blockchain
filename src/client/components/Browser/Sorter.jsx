@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as actions from '../../redux/actions/sortActions.js';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
+
 import PaginationField from './PaginationField';
 import SorterForm from './SorterForm';
 import selectForm from './selectForm';
@@ -16,32 +17,14 @@ class Sorter extends Component {
 
   componentDidMount() {
     // this.props.fetchOffers();
+    
   }
 
   componentWillReceiveProps(nxtProps) {
     this.props.newItems(nxtProps.itemSorted);
-  }
-
-  renderItems() {
-    return this.props.itemSorted.map((item, i) =>
-      <div key={i} style={{ border: '1px solid #ddd' }}>
-        <h3>
-          {item.title}
-        </h3>
-        <p>
-          price: {item.price} {item.currency}
-        </p>
-        <p>
-          payment options: {item.paymentoptions_display}
-        </p>
-        <p>
-          category: {item.category}
-        </p>
-        <p>
-          geolocation: {item.geolocation}
-        </p>
-      </div>,
-    );
+    if (nxtProps.filter === 'SHOW_MAP'){
+      nxtProps.fetchOffers();
+    }
   }
 
   submitSort(values) {
@@ -55,6 +38,7 @@ class Sorter extends Component {
   }
 
   render() {
+    if (this.props.filter === 'SHOW_MAP') { return null; }
     const { handleSubmit, pristine, reset, submitting } = this.props;
     return (
       <div style={{ margin: '100px 20px 0px 20px' }}>

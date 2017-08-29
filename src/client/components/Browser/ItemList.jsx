@@ -42,7 +42,6 @@ class ItemList extends Component {
         break;
       default:
         mediaURL = require('./assets/no_image.png');
-        console.log('MediaURL: ', mediaURL);
         break;
     }
 

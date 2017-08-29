@@ -124,14 +124,7 @@ export default ({ selectedField }) =>
     <div style={{ display: 'flex' }}>
       <h4>Payment Options:</h4>
       <Field key="sys" component={PaginationField} type="checkbox" label="SYS" name="sys" />
-      <Field
-        key="btc"
-        component={PaginationField}
-        type="checkbox"
-        value="btc"
-        label="BTC"
-        name="btc"
-      />
+      <Field key="btc" component={PaginationField} type="checkbox" value="btc" label="BTC" name="btc" />
       <Field key="zec" component={PaginationField} type="checkbox" label="ZEC" name="zec" />
     </div>
 

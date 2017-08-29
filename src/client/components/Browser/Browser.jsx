@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import { RaisedButton } from 'material-ui';
+
 import { search, getFeatures, setOrder } from '../../redux/actions/browser';
 import OfferMap from './Map';
 import FormBrowser from './FormBrowser';
@@ -86,6 +87,10 @@ class Browser extends React.Component {
     this.props.getFeatures();
   }
  
+  componentWillReceiveProps(nextProp) {
+   // console.log(this.props);
+  }
+
   itemsReceived(items){
     this.props.browser.items = items;
     this.setState({ items });
@@ -127,14 +132,13 @@ class Browser extends React.Component {
           <Col xs={12}>
             <Sorter newItems={this.itemsReceived} filter={browser.filter} />
             {browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
-            {/* {browser.error &&
+            {browser.error &&
               <Row>
                 <h3>
                   {browser.message}
                 </h3>
-              </Row>} */}
+              </Row>}
             {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
-            {browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
           {browser.filter !== 'SHOW_MAP' &&
             <Col xs={12} style={{ marginBottom: '50px' }}>

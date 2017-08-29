@@ -16,7 +16,7 @@ const initialState = {
   dataItems: [],
   items: [],
   /* filter: 'SHOW_VIDEOS', ACZ - Original Filter*/
-  filter: 'SHOW_TEXT',
+  filter: 'SHOW_MAP',
   features: [],
   loadingFeatures: false,
 };

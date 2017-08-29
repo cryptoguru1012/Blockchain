@@ -17,6 +17,9 @@ class Sorter extends Component {
 
   componentDidMount() {
     // this.props.fetchOffers();
+    if (this.props.filter === 'SHOW_MAP'){
+      this.props.fetchOffers();
+    }
     
   }
 

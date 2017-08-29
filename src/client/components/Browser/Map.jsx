@@ -21,21 +21,33 @@ const googleMapURL =
 
 const isJson = (str) => {
   try {
-      JSON.parse(str);
+    JSON.parse(str);
   } catch (e) {
-      return false;
+    return false;
   }
   return true;
 };
 
 const GeolocationGoogleMap = withScriptjs(
   withGoogleMap(props =>
-    <GoogleMap defaultZoom={6} center={props.center}>
+    <GoogleMap
+      defaultZoom={6}
+      center={props.center}
+      onClick={props.onMapClick}
+    >
       {props.center &&
-        <InfoWindow position={props.center}>
-          <div>User's Location</div>
-        </InfoWindow>}
-      {props.center &&
+        <Marker
+          position={props.center}
+          title={`User's Location`}
+          options={{ icon: require('./assets/blueDot.png') }}
+        >
+          {props.showCenterInfo &&
+            <InfoWindow>
+              <div>User's Location</div>
+            </InfoWindow>
+          }
+        </Marker>}
+      {/* {props.center &&
         <Circle
           center={props.center}
           radius={props.radius}
@@ -46,7 +58,7 @@ const GeolocationGoogleMap = withScriptjs(
             strokeOpacity: 1,
             strokeWeight: 1,
           }}
-        />}
+        />} */}
       {props.markers.map((marker, index) => {
         const onClick = () => props.onMarkerClick(marker);
         const onCloseClick = () => props.onCloseClick(marker);
@@ -80,19 +92,21 @@ class OfferMap extends Component {
       center: null,
       content: null,
       radius: 2500, // ACZ --> put this const in config_env.
+      showCenterInfo: true,
       markers: [],
     };
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleCloseClick = this.handleCloseClick.bind(this);
+    this.handleMapClick = this.handleMapClick.bind(this);
     this.filterItemsByRadius = this.filterItemsByRadius.bind(this);
     this.radiusChange = this.radiusChange.bind(this);
   }
 
-  componentWillReceiveProps(props){
+  componentWillReceiveProps(props) {
 
     if (props.coords && !props.coords.positionError)
-      {this.setState({ center: { lat: props.coords.latitude, lng: props.coords.longitude } });}
+    { this.setState({ center: { lat: props.coords.latitude, lng: props.coords.longitude } }); }
     else {
       fetch('http://ip-api.com/json')
         .then(res => res.json())
@@ -104,6 +118,10 @@ class OfferMap extends Component {
         });
     }
     this.setState({ markers: props.items });
+  }
+
+  handleMapClick() {
+    this.setState({ showCenterInfo: false });
   }
 
   handleMarkerClick(targetMarker) {
@@ -206,8 +224,10 @@ class OfferMap extends Component {
             containerElement={<div style={{ height: '100%' }} />}
             mapElement={<div style={{ height: '100%' }} />}
             center={this.state.center}
+            showCenterInfo={this.state.showCenterInfo}
             content={this.state.content}
             radius={this.state.radius}
+            onMapClick={this.handleMapClick}
             onMarkerClick={this.handleMarkerClick}
             onCloseClick={this.handleCloseClick}
             markers={markers}

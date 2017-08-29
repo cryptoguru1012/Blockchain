@@ -64,14 +64,28 @@ function isJson(str) {
 function clusterItems(items) {
   let hasVideo = [],
     hasPhoto = [],
-    hasOnlyText = [];
+    hasOnlyText = [],
+    hasAudio = [];
 
-  items.map((item) => {
-    const description = item.description;
+  items.map((item, i) => {
+    const media = JSON.parse(item.description).media.mediaVault;
+    if (media.length > 0) {
+      media.map((mediaItem, i) => {
+        switch (mediaItem.mediaType) {
+          case 'img':
+            return hasPhoto.push(item);
+          case 'vid':
+            return hasVideo.push(item);
+          case 'aud':
+            return hasAudio.push(item);
+          default:
+            return hasOnlyText.push(item);
+        }
+      });
 
-    if (isJson(description) && description.match(/https?:\/\/.*\.(?:mp4)/g)) hasVideo.push(item);
-    else if (description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g)) hasPhoto.push(item);
-    else hasOnlyText.push(item);
+      return;
+    }
+    hasOnlyText.push(item);
   });
 
   return {

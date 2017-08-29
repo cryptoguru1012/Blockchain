@@ -38,15 +38,18 @@ class ItemBrowser extends React.Component {
   constructor(props) {
     super(props);
 
-    let description = this.props.data.description;
-    let images = [];
+    const media = JSON.parse(this.props.data.description).media.mediaVault;
+    const description = JSON.parse(this.props.data.description).description;
+    const images = [];
     const textOnly = false;
-    if (isJson(description)) {
-      description = JSON.parse(description);
-    } else {
-      const hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
-      if (hasImages) images = hasImages;
+    if (media.length > 0) {
+      media.map((mediaItem, i) => {
+        if (mediaItem.mediaType == 'img') {
+          images.push(mediaItem.mediaURL);
+        }
+      });
     }
+
     this.state = {
       description,
       images,
@@ -75,9 +78,7 @@ class ItemBrowser extends React.Component {
                   <p>
                     {' '}{String(this.state.description)}{' '}
                   </p>}
-                {this.state.description.urlImage &&
-                  <GaleryItemBrowser images={this.state.description.urlImage} />}
-                {this.state.images.length > 0 && <GaleryItemBrowser images={this.state.images} />}
+                <GaleryItemBrowser images={this.state.images} />
               </div>
             </div>
           </Link>

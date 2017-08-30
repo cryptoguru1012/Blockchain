@@ -130,7 +130,7 @@ class Browser extends React.Component {
         <Grid>
           {!browser.error && <FilterBrowser items={filterItems} />}
           <Col xs={12}>
-            <Sorter newItems={this.itemsReceived} filter={browser.filter} />
+            <Sorter newItems={this.itemsReceived} browserFilter={browser.filter} />
             {browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
             {browser.error &&
               <Row>

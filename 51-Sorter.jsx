@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { sortOffers, fetchOffers } from '../../redux/actions/sortActions.js';
+import { sortOffers } from '../../redux/actions/sortActions.js';
 import { setVisibilityFilter } from '../../redux/actions/browser';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
@@ -18,14 +18,14 @@ class Sorter extends Component {
 
   componentDidMount() {
     // this.props.fetchOffers();
-    if (this.props.browserFilter === 'SHOW_MAP') {
+    if (this.props.filter === 'SHOW_MAP') {
       this.props.fetchOffers();
     }
   }
 
   componentWillReceiveProps(nxtProps) {
     this.props.newItems(nxtProps.itemSorted);
-    if (nxtProps.browserFilter === 'SHOW_MAP'){
+    if (nxtProps.filter === 'SHOW_MAP'){
       nxtProps.fetchOffers();
     }
   }
@@ -43,8 +43,7 @@ class Sorter extends Component {
   }
 
   render() {
-    console.log(this.props);
-    if (this.props.browserFilter === 'SHOW_MAP') { return null; }
+
     const { handleSubmit, pristine, reset, submitting } = this.props;
     return (
       <div style={{ margin: '100px 20px 0px 20px' }}>
@@ -78,7 +77,6 @@ function mapStateToProps(state) {
 
 const dispatchToProps = dispatch => ({
   sortOffers: offers => dispatch(sortOffers(offers)),
-  fetchOffers: () => dispatch(fetchOffers()),
   filter: options => dispatch(setVisibilityFilter(options)),
 });
 

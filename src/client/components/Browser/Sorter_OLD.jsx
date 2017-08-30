@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { sortOffers, fetchOffers } from '../../redux/actions/sortActions.js';
-import { setVisibilityFilter } from '../../redux/actions/browser';
+import * as actions from '../../redux/actions/sortActions.js';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 
@@ -21,19 +20,18 @@ class Sorter extends Component {
     if (this.props.browserFilter === 'SHOW_MAP') {
       this.props.fetchOffers();
     }
+    
   }
 
   componentWillReceiveProps(nxtProps) {
     this.props.newItems(nxtProps.itemSorted);
-    if (nxtProps.browserFilter === 'SHOW_MAP'){
+    if (nxtProps.browserFilter === 'SHOW_MAP') {
       nxtProps.fetchOffers();
     }
   }
 
   submitSort(values) {
-    this.props.sortOffers(values).then(() => {
-      this.props.filter(this.props.filterOption);
-    });
+    this.props.sortOffers(values);
   }
 
   filterChoice(event) {
@@ -43,7 +41,6 @@ class Sorter extends Component {
   }
 
   render() {
-    console.log(this.props);
     if (this.props.browserFilter === 'SHOW_MAP') { return null; }
     const { handleSubmit, pristine, reset, submitting } = this.props;
     return (
@@ -68,21 +65,14 @@ class Sorter extends Component {
   }
 }
 
+
 function mapStateToProps(state) {
   return {
-    itemSorted: state.sorter.list,
-    offersFiltered: state.sorter.filter,
-    filterOption: state.sorter.option,
+    itemSorted: state.sorter,
   };
 }
 
-const dispatchToProps = dispatch => ({
-  sortOffers: offers => dispatch(sortOffers(offers)),
-  fetchOffers: () => dispatch(fetchOffers()),
-  filter: options => dispatch(setVisibilityFilter(options)),
-});
-
-export default connect(mapStateToProps, dispatchToProps)(
+export default connect(mapStateToProps, actions)(
   reduxForm({
     form: 'sorter',
   })(Sorter),

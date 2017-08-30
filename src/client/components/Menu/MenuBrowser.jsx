@@ -83,6 +83,7 @@ class MenuBrowser extends React.Component {
   }
 
   handleToggleSerch() {
+    const browser = this.props.browser;
     if (this.state.activeSearch){
       let data = {};
       data.regexp = this.state.regexp;
@@ -97,7 +98,10 @@ class MenuBrowser extends React.Component {
       /*acz --> this ELSE is for do something when search input will appear */
       console.log("Search input will appear");
     }
-    this.setState({ activeSearch: !this.state.activeSearch });
+    this.setState({ activeSearch: !this.state.activeSearch, });
+    if (browser.filter !== 'SHOW_MAP') {
+      browser.filter = 'SHOW_ALL';
+    }
   }
 
   handleCategory(value) {

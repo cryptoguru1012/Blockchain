@@ -5,7 +5,7 @@ const initialState = {
   list: [],
   filter: [],
   offer: {},
-  option: 'SHOW_VIDEOS',
+  option: 'SHOW_ALL',
 };
 
 export default function (state = initialState, action) {

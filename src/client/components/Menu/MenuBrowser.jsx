@@ -14,7 +14,11 @@ import SearchBrowser from '../Browser/SearchBrowser';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+<<<<<<< HEAD
 import SSIcon from './icon';
+=======
+import SSIcon from "./icon";
+>>>>>>> 8d7ed30a78f237654b81b9af4bb8aff77a1664d7
 
 require('./styles/menu.scss');
 
@@ -26,16 +30,26 @@ class MenuBrowser extends React.Component {
       activeSearch: false,
       regexp: '',
       safesearch: 'No',
+<<<<<<< HEAD
       category: null,
       //from: parseInt("226a4f45f3393f22"),
     };
 
     this.props.getCategories();
     this.handleCategory = this.handleCategory.bind(this);
+=======
+      category: null
+      // from: parseInt("226a4f45f3393f22"),
+    };
+
+    this.props.getCategories();
+    this.handleCategory=this.handleCategory.bind(this);
+>>>>>>> 8d7ed30a78f237654b81b9af4bb8aff77a1664d7
     this.handleToggle = this.handleToggle.bind(this);
     this.handleHomeTap = this.handleHomeTap.bind(this);
     this.handleToggleSerch = this.handleToggleSerch.bind(this);
     this.handleChangeData = this.handleChangeData.bind(this);
+<<<<<<< HEAD
     this.renderCatagoryPrimary = this.renderCatagoryPrimary.bind(this);
   }
   renderCatagoryPrimary(min) {
@@ -190,10 +204,159 @@ class MenuBrowser extends React.Component {
           );
         }
       });
+=======
+    this.renderCatagoryPrimary=this.renderCatagoryPrimary.bind(this);
+  }
+  renderCatagoryPrimary(min) {
+    var serchParam={},serchString;
+    this.props.categories.categories.map((cat, i) => {
+    if( i === min) {
+      serchString=cat.cat;
+      if (serchString.indexOf('>') ==-1){
+        serchString=cat.cat;
+      }
+      else if(serchString.indexOf('>') !=-1){
+        serchString=serchString.substring(0,serchString.indexOf('>'))
+
+      }
+      serchParam = {
+        category: serchString.trim()}
+        this.props.onSearch(serchParam);
+        this.handleToggle();
+      }
+
+    })
+
+  //console.log(this.props);
+  
+}
+  componentDidMount() {
+    let data = {
+      regexp: this.props.searchData,
+      from: '',
+      safesearch: 'No',
+      category: null
+    };
+    this.props.onSearch(data);
+  }
+  handleToggle() {
+    this.setState({regexp: null,
+      category: null,
+      activeSearch: false,
+      open: !this.state.open });
+  }
+  handleHomeTap() {
+    this.setState({regexp: null,
+      category: null,
+      activeSearch: false,
+      open: !this.state.open});
+    this.props.onSearch({regexp: null});
+  }
+
+  handleToggleSerch() {
+    const browser = this.props.browser;
+    if (this.state.activeSearch){
+      let data = {};
+      data.regexp = this.state.regexp;
+      if(this.state.category) {
+        data.category = this.state.category;
+      }
+      this.props.onSearch(data);
+      if (this.props.stateUrl !== "/" && this.state.regexp) {
+        browserHistory.push('/');
+      }
+    }else{
+      /*acz --> this ELSE is for do something when search input will appear */
+      console.log("Search input will appear");
+    }
+    this.setState({ activeSearch: !this.state.activeSearch, });
+    if (browser.filter !== 'SHOW_MAP') {
+      browser.filter = 'SHOW_ALL';
+    }
+  }
+
+  handleCategory(value) {
+    console.log(value);
+    if (this.props.stateUrl !== "/")
+    {
+    if (typeof(Storage) !== "undefined") {
+          // Code for localStorage/sessionStorage.
+          sessionStorage.setItem("catagory",value);
+
+      } else {
+          // Sorry! No Web Storage support..
+          alert("you are running older version of browser We are going to redirect you on home page please refine catagory there ");
+      }
+      browserHistory.push('/');
+
+      
+    }
+
+      let data = {
+        category: value.trim()
+      };
+
+      this.setState({category: value.trim() });
+
+      this.props.onSearch(data);
+      //console.log('data submited: ', data);
+      this.handleToggle();
+  }
+
+  handleChangeData(data) {
+    if (data.type === 'text')
+      this.setState({regexp: data.value});
+
+    if (data.type === 'category')
+      this.setState({category: data.value});
+  }
+  // a function for capetalizing first letter of sub categories
+  firstToUpperCase(category) {
+    // adding space before and after /
+    var Category = category.replace(/\//g," / ");
+    // adding space before and after +
+      Category = Category.replace(/\+/g," + ");
+    // capetalizing first character of every word of the string
+      Category = category.toLowerCase().replace(/(\?:^|\s)\S/g, function(letter) {
+          return letter.toUpperCase()});
+
+    return Category;
+  }
+  /* a function for split category
+   * for example instead of 'some-word > another-word' it will be 'another-word'
+   */
+  splitCategory(category){
+    var OldCatItem = category
+    var NewCatItem = OldCatItem.split(">").pop()
+    
+    return NewCatItem
+  }
+  renderCategories( start, stop) {
+    if (this.props.categories.categories.length > 0) {
+      return this.props.categories.categories.map((category, i) => {
+        if( i >= start && i < stop) {
+
+          // passing category.cat, it will return only the name of sub category
+          var NewCatItem = this.splitCategory(category.cat);
+          // capetalizing first letter of sub categories
+          NewCatItem = this.firstToUpperCase(NewCatItem)
+          if(i == 0){
+            return (<MenuItem required key={i} value={NewCatItem}
+            onTouchTap={() => {this.handleCategory(category.cat);}}
+            primaryText={NewCatItem} />);
+          }else{
+            return (<MenuItem key={i} value={NewCatItem}
+            onTouchTap={() => {this.handleCategory(category.cat);}}
+            primaryText={NewCatItem} />);
+          }
+        }
+      })
+>>>>>>> 8d7ed30a78f237654b81b9af4bb8aff77a1664d7
     }
   }
 
   render() {
+<<<<<<< HEAD
     if (this.props.categories.error) {
       alert(`Error:\nCould not fetch categories\n${this.props.categories.message}`);
     }
@@ -226,6 +389,23 @@ class MenuBrowser extends React.Component {
             <ActionSearch />
           </IconButton>
         }
+=======
+    if (this.props.categories.error)
+      {alert('Error:\nCould not fetch categories\n' + this.props.categories.message);}
+    const props = Object.assign({}, this.props);
+    delete props.categories;
+    delete props.getCategories;
+    let categories = this.renderCategories();
+
+    return (
+      <AppBar
+        title={!this.state.activeSearch ? <p style={{fontWeight: 'bold',fontSize:'36px',letterSpacing:'-1.7px'}}>moovr</p>: <SearchBrowser style={{float:'right'}} onChangeData={this.handleChangeData} regexp={this.state.regexp} />}
+        className="appbar-color"
+        onLeftIconButtonTouchTap={this.handleToggle}
+        onRightIconButtonTouchTap={this.handleToggleSerch}
+        iconElementLeft={<IconButton className="btnStyle"><SSIcon /></IconButton>}
+        iconElementRight={<IconButton><ActionSearch /></IconButton>}
+>>>>>>> 8d7ed30a78f237654b81b9af4bb8aff77a1664d7
       >
         <Drawer
           open={this.state.open}
@@ -234,10 +414,23 @@ class MenuBrowser extends React.Component {
         >
           <AppBar showMenuIconButton={false} title="Menu" />
           <Link to="/">
+<<<<<<< HEAD
             <MenuItem onTouchTap={this.handleHomeTap} primaryText="Home" />
           </Link>
           <Link to="/store/newItem">
             <MenuItem onTouchTap={this.handleToggle} primaryText="Sell" />
+=======
+            <MenuItem
+              onTouchTap={this.handleHomeTap}
+              primaryText="Home"
+            />
+          </Link>
+          <Link to="/store/newItem">
+            <MenuItem
+              onTouchTap={this.handleToggle}
+              primaryText="Sell"
+            />
+>>>>>>> 8d7ed30a78f237654b81b9af4bb8aff77a1664d7
           </Link>
           <ListItem
             primaryText="Categories"
@@ -246,6 +439,7 @@ class MenuBrowser extends React.Component {
                 key={0}
                 onTouchTap={this.handleToggle}
                 primaryText="All"
+<<<<<<< HEAD
                 containerElement={<Link to="" />}
               />,
               <ListItem
@@ -282,6 +476,50 @@ class MenuBrowser extends React.Component {
           </Link>
           <Link to="">
             <MenuItem disabled onTouchTap={this.handleToggle} primaryText="Profile" />
+=======
+                containerElement={<Link to=""/>}
+              />,
+            <ListItem
+              key={1}
+              primaryText="For Sale" onTouchTap={() => {this.renderCatagoryPrimary(0);}}
+              nestedItems={this.renderCategories(0,27)}
+            />,
+            <ListItem
+              key={2}
+              primaryText="Services" onTouchTap={() => {this.renderCatagoryPrimary(27);}}
+              nestedItems={this.renderCategories(27,36)}
+            />,
+            <ListItem
+              key={3}
+              primaryText="Wanted" onTouchTap={() => {this.renderCatagoryPrimary(36);}}
+              nestedItems={this.renderCategories(36,37)}
+            />,
+            <ListItem
+              key={4}
+              primaryText="Certificates" onTouchTap={() => {this.renderCatagoryPrimary(37);}}
+              nestedItems={this.renderCategories(37,42)}
+            />]} />
+          <Link to="">
+            <MenuItem
+              disabled
+              onTouchTap={this.handleToggle}
+              primaryText="About"
+            />
+          </Link>
+          <Link to="">
+            <MenuItem
+              disabled
+              onTouchTap={this.handleToggle}
+                primaryText="Register"
+            />
+          </Link>
+          <Link to="">
+            <MenuItem
+              disabled
+              onTouchTap={this.handleToggle}
+              primaryText="Profile"
+            />
+>>>>>>> 8d7ed30a78f237654b81b9af4bb8aff77a1664d7
           </Link>
         </Drawer>
       </AppBar>
@@ -290,11 +528,17 @@ class MenuBrowser extends React.Component {
 }
 
 function mapStateToProps(state) {
+<<<<<<< HEAD
   const browser = state.browser;
   const categories = state.categories;
   const filterOption = state.sorter.option;
 
   return { categories, browser, filterOption };
+=======
+  let browser = state.browser;
+  const categories = state.categories;
+    return { categories, browser };
+>>>>>>> 8d7ed30a78f237654b81b9af4bb8aff77a1664d7
 }
 
 function mapDispatchToProps(dispatch) {
@@ -302,11 +546,17 @@ function mapDispatchToProps(dispatch) {
     onSearch: (data) => {
       dispatch(search(data));
     },
+<<<<<<< HEAD
     sortOffers: params => dispatch(sortOffers(params)),
     filter: options => dispatch(setVisibilityFilter(options)),
     getCategories: () => {
       dispatch(doCategoryReq());
     },
+=======
+    getCategories: () => {
+      dispatch(doCategoryReq());
+    }
+>>>>>>> 8d7ed30a78f237654b81b9af4bb8aff77a1664d7
   };
 }
 

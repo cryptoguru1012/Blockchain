@@ -13,11 +13,11 @@ import Paper from 'material-ui/Paper';
 import Img from 'react-image';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
-import Divider from 'material-ui/Divider';
 import CreateRadius from './CreateRadius';
 
 const googleMapURL =
-  'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
+  //'https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
+  'https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyA7XEFRxE4Lm28tAh44M_568fCLOP_On3k';
 
 const geolocation =
   canUseDOM && navigator.geolocation
@@ -60,7 +60,7 @@ const GeolocationExampleGoogleMap = withScriptjs(
             options={{ icon: 'https://image.ibb.co/evMHxF/shopping_zone_marker_1.png' }}
           >
             {marker.showInfo &&
-              <InfoWindow onCloseClick={onCloseClick} style={{ padding: 0 }}>
+              <InfoWindow onCloseClick={onCloseClick} >
                 <div>
                   <ItemList marker={marker} />
                   <ItemList marker={marker} />
@@ -129,7 +129,6 @@ class OfferMap extends Component {
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleCloseClick = this.handleCloseClick.bind(this);
   }
-
   handleMarkerClick(targetMarker) {
     this.setState({
       markers: this.state.markers.map((marker) => {
@@ -253,6 +252,45 @@ class OfferMap extends Component {
   }
 
   render() {
+    const dummyMarkers = [ // ACZ - All dummies marker
+      {
+        position: { lat: 36.5994707, lng: -6.2865183 },
+        number: 1,
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
+        price: 123,
+        quantity: 1,
+        currency: "SYS",
+        category: "Anyone",
+        title: "ACZ dummy 1",
+        offer: "12345678910",
+        showInfo: true
+      },
+      { 
+        position: { lat: 36.3154195, lng: -6.1246154 },
+        number: 2,
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
+        price: 123,
+        quantity: 4,
+        currency: "SYS",
+        category: "Anyone",
+        title: "ACZ dummy 2",
+        offer: "12345678910",
+        showInfo: false
+      },
+      { 
+        position: { lat: 36.7602574, lng: -5.8711347 },
+        number: 3,
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
+        price: 123,
+        quantity: 7,
+        currency: "SYS",
+        category: "Anyone",
+        title: "ACZ dummy 3",
+        offer: "12345678910",
+        showInfo: false
+      },  
+    ]
+
     return (
       <div>
 
@@ -271,7 +309,7 @@ class OfferMap extends Component {
           <GeolocationExampleGoogleMap
             googleMapURL={googleMapURL}
             loadingElement={<div style={{ height: '100%' }} />}
-            containerElement={<div style={{ height: '100%' }} />}
+            containerElement={<div style={{ height: '100%'}} />}
             mapElement={<div style={{ height: '100%' }} />}
             center={this.state.center}
             content={this.state.content}
@@ -279,6 +317,7 @@ class OfferMap extends Component {
             onMarkerClick={this.handleMarkerClick}
             onCloseClick={this.handleCloseClick}
             markers={this.state.markers}
+            //markers={dummyMarkers} //ACZ - Comment previous line and uncomment this one to use dummy markers. 
           />
         </div>
       </div>

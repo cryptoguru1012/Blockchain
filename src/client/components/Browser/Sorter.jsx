@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { sortOffers, fetchOffers } from '../../redux/actions/sortActions.js';
+import { sortOffers } from '../../redux/actions/sortActions.js';
 import { setVisibilityFilter } from '../../redux/actions/browser';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
@@ -78,7 +78,6 @@ function mapStateToProps(state) {
 
 const dispatchToProps = dispatch => ({
   sortOffers: offers => dispatch(sortOffers(offers)),
-  fetchOffers: () => dispatch(fetchOffers()),
   filter: options => dispatch(setVisibilityFilter(options)),
 });
 

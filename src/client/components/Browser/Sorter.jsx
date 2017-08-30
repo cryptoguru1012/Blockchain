@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import * as actions from '../../redux/actions/sortActions.js';
+import { sortOffers } from '../../redux/actions/sortActions.js';
+import { setVisibilityFilter } from '../../redux/actions/browser';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import PaginationField from './PaginationField';
+import { Link } from 'react-router';
 import SorterForm from './SorterForm';
 import selectForm from './selectForm';
 
@@ -14,34 +16,10 @@ class Sorter extends Component {
     };
   }
 
-  componentDidMount() {
-    // this.props.fetchOffers();
-  }
-
-  renderItems() {
-    return this.props.itemSorted.map((item, i) =>
-      <div key={i} style={{ border: '1px solid #ddd' }}>
-        <h3>
-          {item.title}
-        </h3>
-        <p>
-          price: {item.price} {item.currency}
-        </p>
-        <p>
-          payment options: {item.paymentoptions_display}
-        </p>
-        <p>
-          category: {item.category}
-        </p>
-        <p>
-          distanceFromUser: {item.distanceFromUser}
-        </p>
-      </div>,
-    );
-  }
-
   submitSort(values) {
-    this.props.sortOffers(values);
+    this.props.sortOffers(values).then(() => {
+      this.props.filter(this.props.filterOption);
+    });
   }
 
   filterChoice(event) {
@@ -71,7 +49,7 @@ class Sorter extends Component {
             Clear
           </button>
         </form>
-        {this.renderItems()}
+        {/* {this.renderItems()} */}
       </div>
     );
   }
@@ -79,11 +57,18 @@ class Sorter extends Component {
 
 function mapStateToProps(state) {
   return {
-    itemSorted: state.sorter,
+    itemSorted: state.sorter.list,
+    offersFiltered: state.sorter.filter,
+    filterOption: state.sorter.option,
   };
 }
 
-export default connect(mapStateToProps, actions)(
+const dispatchToProps = dispatch => ({
+  sortOffers: offers => dispatch(sortOffers(offers)),
+  filter: options => dispatch(setVisibilityFilter(options)),
+});
+
+export default connect(mapStateToProps, dispatchToProps)(
   reduxForm({
     form: 'sorter',
   })(Sorter),

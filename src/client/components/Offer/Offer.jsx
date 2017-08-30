@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 // redux
-import { getOfferData } from '../../redux/actions/offer';
+import { fetchOffer } from '../../redux/actions/sortActions';
 
 // components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
@@ -11,64 +11,61 @@ import OfferViewSuccess from './OfferViewSuccess';
 import OfferViewError from './OfferViewError';
 
 const newItemStyle = {
-	loadingDiv: {
-		marginTop: '30vh',
-		textAlign: 'center',
-	},
+  loadingDiv: {
+    marginTop: '30vh',
+    textAlign: 'center',
+  },
 };
 
 class Offer extends React.Component {
-	constructor(props) {
-		super(props);
-		let guid = this.props.params.id;
-		this.props.getData(guid);
-	}
+  constructor(props) {
+    super(props);
+    const id = this.props.params.id;
+    this.props.fetchOffer(id);
+  }
 
-	render() {
-		if (this.props.offer.loading)
-			return (
-				<Grid>
-					<Row>
-						<Col xs={12} style={newItemStyle.loadingDiv}>
-							<center>
-								<CircularProgress size={100} thickness={6} />
-							</center>
-						</Col>
-					</Row>
-				</Grid>
-			)
-		if (this.props.offer.error)
-			return (
-				<Grid>
-					<OfferViewError />
-				</Grid>
-			)
-		if (this.props.offer.success)
-			return (
-				<Grid>
-					<OfferViewSuccess data={this.props.offer.data} />
-				</Grid>
-			)
-		return (
-			<Grid>
-				<h1>loading</h1>
-			</Grid>
-		)
-	}
+  render() {
+    console.log('offer', this.props.offer);
+    if (!this.props.offer) {
+      return (
+        <Grid>
+          <Row>
+            <Col xs={12} style={newItemStyle.loadingDiv}>
+              <center>
+                <CircularProgress size={100} thickness={6} />
+              </center>
+            </Col>
+          </Row>
+        </Grid>
+      );
+    }
+    if (this.props.offer) {
+      return (
+        <Grid>
+          <OfferViewSuccess data={this.props.offer} />
+        </Grid>
+      );
+    }
+    return (
+      <Grid>
+        <h1>loading</h1>
+      </Grid>
+    );
+  }
 }
 
 function mapStateToProps(state) {
-	let offer = state.offer;
+  const offer = state.sorter.offer;
 
-	return { offer };
+  return { offer };
 }
 
 function mapDispatchToProps(dispatch) {
-	return {
-		getData: (guid) => {
-			dispatch(getOfferData(guid));
-		}
-	}
+  return {
+    fetchOffer: (id) => {
+      dispatch(fetchOffer(id));
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Offer);

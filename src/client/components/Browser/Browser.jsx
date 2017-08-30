@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import { RaisedButton } from 'material-ui';
+
 import { search, getFeatures, setOrder } from '../../redux/actions/browser';
-import { fetchOffers } from '../../redux/actions/sortActions';
 import OfferMap from './Map';
 import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
@@ -75,15 +75,25 @@ class Browser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      items: [],
       current: 0,
     };
     this.showNextPage = this.showNextPage.bind(this);
     this.showPreviousPage = this.showPreviousPage.bind(this);
+    this.itemsReceived = this.itemsReceived.bind(this);
   }
 
   componentDidMount() {
     this.props.getFeatures();
-    this.props.fetchOffers();
+  }
+ 
+  componentWillReceiveProps(nextProp) {
+   // console.log(this.props);
+  }
+
+  itemsReceived(items){
+    this.props.browser.items = items;
+    this.setState({ items });
   }
 
   showNextPage() {
@@ -113,31 +123,34 @@ class Browser extends React.Component {
   }
 
   render() {
-    const { browser, onOrder, offers, offersFiltered } = this.props;
+    let { browser, onOrder } = this.props;
     return (
       <div width="100%">
         {browser.features.length > 0 && <BrowserCarousel items={browser.features} />}
         <Grid>
           {!browser.error && <FilterBrowser items={filterItems} />}
           <Col xs={12}>
-            <Sorter offers={this.props.offers} />
+            <Sorter newItems={this.itemsReceived} filter={browser.filter} />
+            {browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
             {browser.error &&
               <Row>
                 <h3>
                   {browser.message}
                 </h3>
               </Row>}
-            {!browser.error && <ListBrowser items={offersFiltered} filter={browser.filter} />}
+            {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
-          <Col xs={12} style={{ marginBottom: '50px' }}>
-            <Col xs={6}>
-              {this.state.current > 0 &&
-                <RaisedButton label="previous" onClick={this.showPreviousPage} />}
+          {browser.filter !== 'SHOW_MAP' &&
+            <Col xs={12} style={{ marginBottom: '50px' }}>
+              <Col xs={6}>
+                {this.state.current > 0 &&
+                  <RaisedButton label="previous" onClick={this.showPreviousPage} />}
+              </Col>
+              <Col xs={6} style={{ float: 'right' }}>
+                <RaisedButton label="next" style={{ float: 'right' }} onClick={this.showNextPage} />
+              </Col>
             </Col>
-            <Col xs={6} style={{ float: 'right' }}>
-              <RaisedButton label="next" style={{ float: 'right' }} onClick={this.showNextPage} />
-            </Col>
-          </Col>
+          }
         </Grid>
       </div>
     );
@@ -147,9 +160,7 @@ class Browser extends React.Component {
 function mapStateToProps(state) {
   const browser = state.browser;
   const pages = state.pagination;
-  const offers = state.sorter.list;
-  const offersFiltered = state.sorter.filter;
-  return { browser, pages, offers, offersFiltered };
+  return { browser, pages };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -165,9 +176,6 @@ function mapDispatchToProps(dispatch) {
     },
     getNextOffers: (params) => {
       dispatch(search(params));
-    },
-    fetchOffers: () => {
-      dispatch(fetchOffers());
     },
   };
 }

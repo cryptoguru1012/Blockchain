@@ -163,7 +163,7 @@ export function setOrder(order) {
 }
 
 export function getFeatures() {
-  return (dispatch, getState) => {
+  return (dispatch) => { // return (dispatch, getState)
     dispatch(getFeaturesStart());
 
     axios
@@ -173,45 +173,20 @@ export function getFeatures() {
   };
 }
 
-// DO WE NEED THIS ANYMORE???? If we are going to implement our own mongodb
-// search query then this wouldnt be needed
-export function search(data) {
-  return (dispatch, getState) => {
-    dispatch(searchStart());
-
-    const esc = encodeURIComponent;
-    const query = Object.keys(data)
-      .map((k) => {
-        let a = esc(k),
-          b = data[k] ? `=${esc(data[k])}` : '';
-        return a + b;
+export function search(data){
+  const data2search = data.regexp;
+  // const getURL = data2search ? `/API/offers/search/${data2search}` : '/API/offers';
+  const getURL = `/API/offers/search/${data2search}`;
+  return (dispatch) => {
+    axios
+      .get(getURL)
+      .then((response) => {
+        // const items = data2search ? response.data.result : response.data;
+        const items = response.data.result;
+        dispatch({ type: ORDER_SEARCH, items });
       })
-      .join(esc('&'));
-
-    // fetch(
-    //   'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62',
-    // )
-    //   .then(res => res.json())
-    //   .then((res) => {
-    //     const token = res.token;
-    //     return fetch(`https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?${query}`, {
-    //       headers: {
-    //         Token: token,
-    //       },
-    //       mode: 'cors',
-    //       method: 'GET',
-    //     });
-    //   })
-    //   .then(res => res.json())
-    //   .then((res) => {
-    //     if (typeof res === 'object') {
-    //       let filter = getState().browser.filter,
-    //         filtered = clusterItems(res)[filter];
-    //
-    //       return dispatch(searchSuccess(res, filtered));
-    //     }
-    //     return dispatch(searchError(res));
-    //   })
-    //   .catch(error => dispatch(searchError(error)));
+      .catch((error) => {
+        console.error(error);
+      });
   };
 }

@@ -13,15 +13,11 @@ class ListBrowser extends React.Component {
     this.getErrorHeader = this.getErrorHeader.bind(this);
   }
 
-
-
   getErrorHeader() {
     const key = this.props.filter;
     let text;
 
-    
-
-    switch(key) {
+    switch (key) {
       case 'SHOW_TEXT':
         text = 'Text';
         break;
@@ -37,10 +33,11 @@ class ListBrowser extends React.Component {
       default:
         text = 'items';
         break;
-
     }
     return (
-      <h3>{'No ' + text + ' to display, you have to perform a new search or just change the filter'}</h3>
+      <h3>
+        {`No ${text} to display, you have to perform a new search or just change the filter`}
+      </h3>
     );
   }
 
@@ -49,11 +46,13 @@ class ListBrowser extends React.Component {
       <Row>
         {this.props.items.length < 1 && this.getErrorHeader()}
         {this.props.filter === 'SHOW_TEXT' && <TableViewItemsBrowser items={this.props.items} />}
-        {this.props.filter === 'SHOW_ALL' && <TableViewItemsBrowser items={this.props.items} media={true} />}
-        {(this.props.filter === 'SHOW_VIDEOS' || this.props.filter === 'SHOW_PHOTOS') && <GridsViewItemsBrowser items={this.props.items} />}
+        {this.props.filter === 'SHOW_ALL' &&
+          <TableViewItemsBrowser items={this.props.items} media />}
+        {(this.props.filter === 'SHOW_VIDEOS' || this.props.filter === 'SHOW_PHOTOS') &&
+          <GridsViewItemsBrowser items={this.props.items} />}
         {this.props.filter === 'SHOW_MAP' && <OfferMap items={this.props.items} />}
       </Row>
-    )
+    );
   }
 }
 

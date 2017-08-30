@@ -64,14 +64,28 @@ function isJson(str) {
 function clusterItems(items) {
   let hasVideo = [],
     hasPhoto = [],
-    hasOnlyText = [];
+    hasOnlyText = [],
+    hasAudio = [];
 
-  items.map((item) => {
-    const description = item.description;
+  items.map((item, i) => {
+    const media = JSON.parse(item.description).media.mediaVault;
+    if (media.length > 0) {
+      media.map((mediaItem, i) => {
+        switch (mediaItem.mediaType) {
+          case 'img':
+            return hasPhoto.push(item);
+          case 'vid':
+            return hasVideo.push(item);
+          case 'aud':
+            return hasAudio.push(item);
+          default:
+            return hasOnlyText.push(item);
+        }
+      });
 
-    if (isJson(description) && description.match(/https?:\/\/.*\.(?:mp4)/g)) hasVideo.push(item);
-    else if (description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g)) hasPhoto.push(item);
-    else hasOnlyText.push(item);
+      return;
+    }
+    hasOnlyText.push(item);
   });
 
   return {
@@ -87,7 +101,7 @@ export function setVisibilityFilter(filter) {
   return (dispatch, getState) => {
     dispatch({
       type: SET_VISIBILITY_FILTER,
-      items: clusterItems(getState().browser.dataItems)[filter],
+      items: clusterItems(getState().sorter.list)[filter],
       filter,
     });
   };
@@ -163,7 +177,7 @@ export function setOrder(order) {
 }
 
 export function getFeatures() {
-  return (dispatch, getState) => {
+  return (dispatch) => { // return (dispatch, getState)
     dispatch(getFeaturesStart());
 
     axios
@@ -173,45 +187,20 @@ export function getFeatures() {
   };
 }
 
-// DO WE NEED THIS ANYMORE???? If we are going to implement our own mongodb
-// search query then this wouldnt be needed
-export function search(data) {
-  return (dispatch, getState) => {
-    dispatch(searchStart());
-
-    const esc = encodeURIComponent;
-    const query = Object.keys(data)
-      .map((k) => {
-        let a = esc(k),
-          b = data[k] ? `=${esc(data[k])}` : '';
-        return a + b;
+export function search(data){
+  const data2search = data.regexp;
+  // const getURL = data2search ? `/API/offers/search/${data2search}` : '/API/offers';
+  const getURL = `/API/offers/search/${data2search}`;
+  return (dispatch) => {
+    axios
+      .get(getURL)
+      .then((response) => {
+        // const items = data2search ? response.data.result : response.data;
+        const items = response.data.result;
+        dispatch({ type: ORDER_SEARCH, items });
       })
-      .join(esc('&'));
-
-    // fetch(
-    //   'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62',
-    // )
-    //   .then(res => res.json())
-    //   .then((res) => {
-    //     const token = res.token;
-    //     return fetch(`https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?${query}`, {
-    //       headers: {
-    //         Token: token,
-    //       },
-    //       mode: 'cors',
-    //       method: 'GET',
-    //     });
-    //   })
-    //   .then(res => res.json())
-    //   .then((res) => {
-    //     if (typeof res === 'object') {
-    //       let filter = getState().browser.filter,
-    //         filtered = clusterItems(res)[filter];
-    //
-    //       return dispatch(searchSuccess(res, filtered));
-    //     }
-    //     return dispatch(searchError(res));
-    //   })
-    //   .catch(error => dispatch(searchError(error)));
+      .catch((error) => {
+        console.error(error);
+      });
   };
 }

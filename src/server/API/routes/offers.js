@@ -22,9 +22,25 @@ const offerRoutes = (app) => {
     const params = {},
       symbols = [];
 
-    btc == 'true' ? symbols.push('BTC') : { ...params };
-    sys == 'true' ? symbols.push('SYS') : { ...params };
-    zec == 'true' ? symbols.push('ZEC') : { ...params };
+    btc == 'true'
+      ? symbols.push('BTC')
+      : {
+        ...params,
+      };
+    sys == 'true'
+      ? symbols.push('SYS')
+      : {
+        ...params,
+      };
+    zec == 'true'
+      ? symbols.push('ZEC')
+      : {
+        ...params,
+      };
+
+    if ((category != 'Z-A' || 'A-Z') && category) {
+      params.category = category;
+    }
 
     params.paymentoptions_display = new RegExp(symbols.join('|'), 'i');
 
@@ -33,6 +49,7 @@ const offerRoutes = (app) => {
         res.json(err);
         return;
       }
+
       const newResults = results;
 
       if (category == 'A-Z') {
@@ -110,7 +127,10 @@ const offerRoutes = (app) => {
 
       if (geolocation !== undefined && (geolocation === 'Nearest' || 'Furthest')) {
         const locations = [];
-        const coords = { latitude: '', longitude: '' };
+        const coords = {
+          latitude: '',
+          longitude: '',
+        };
 
         newResults.map((value, i) => {
           const newGeoArr = value.geolocation.split(',');
@@ -130,7 +150,13 @@ const offerRoutes = (app) => {
           locations.push(coordsObj);
         });
 
-        const newLocations = locations.reduce((acc, cur, i) => ({ ...acc, [i]: cur }), {});
+        const newLocations = locations.reduce(
+          (acc, cur, i) => ({
+            ...acc,
+            [i]: cur,
+          }),
+          {},
+        );
 
         const currentLocation = {};
 
@@ -185,68 +211,75 @@ const offerRoutes = (app) => {
       .then((response) => {
         axios
           .get('https://d2fzm6xoa70bg8.cloudfront.net/offerfilter?', {
-            headers: { Token: response.data.token },
+            headers: {
+              Token: response.data.token,
+            },
           })
           .then((response) => {
             const { data } = response;
 
             const items = data.map((item, i) => {
-              OfferController.findOne({ offer: item.offer }, (err, result) => {
-                if (err) {
-                  return next(err);
-                }
-                if (result) {
-                  console.log('Offer exist');
+              OfferController.findOne(
+                {
+                  offer: item.offer,
+                },
+                (err, result) => {
+                  if (err) {
+                    return next(err);
+                  }
+                  if (result) {
+                    console.log('Offer exist');
 
-                  return;
-                }
-                if (!result) {
-                  console.log('Offer created');
+                    return;
+                  }
+                  if (!result) {
+                    console.log('Offer created');
 
-                  const params = {
-                    offer: item.offer,
-                    cert: item.cert,
-                    txid: item.txid,
-                    expires_in: item.expires_in,
-                    expires_on: item.expires_on,
-                    expired: item.expired,
-                    height: item.height,
-                    time: item.time,
-                    category: item.category,
-                    title: item.title,
-                    quantity: item.quantity,
-                    currency: item.currency,
-                    sysprice: item.sysprice,
-                    price: item.price,
-                    ismine: item.ismine,
-                    commission: item.commission,
-                    offerlink: item.offerlink,
-                    offerlink_guid: item.offerlink_guid,
-                    offerlink_seller: item.offerlink_seller,
-                    private: item.private,
-                    safesearch: item.safesearch,
-                    safetylevel: item.safetylevel,
-                    paymentoptions: item.paymentoptions,
-                    paymentoptions_display: item.paymentoptions_display,
-                    alias_peg: item.alias_peg,
-                    description: item.description,
-                    alias: item.description,
-                    address: item.address,
-                    alias_rating: item.alias_rating,
-                    alias_rating_count: item.alias_rating_count,
-                    alias_rating_display: item.alias_rating_display,
-                    geolocation: item.geolocation,
-                    offers_sold: item.offers_sold,
-                  };
-                  OfferController.create(params, (err, result) => {
-                    if (err) {
-                      return next(err);
-                    }
+                    const params = {
+                      offer: item.offer,
+                      cert: item.cert,
+                      txid: item.txid,
+                      expires_in: item.expires_in,
+                      expires_on: item.expires_on,
+                      expired: item.expired,
+                      height: item.height,
+                      time: item.time,
+                      category: item.category,
+                      title: item.title,
+                      quantity: item.quantity,
+                      currency: item.currency,
+                      sysprice: item.sysprice,
+                      price: item.price,
+                      ismine: item.ismine,
+                      commission: item.commission,
+                      offerlink: item.offerlink,
+                      offerlink_guid: item.offerlink_guid,
+                      offerlink_seller: item.offerlink_seller,
+                      private: item.private,
+                      safesearch: item.safesearch,
+                      safetylevel: item.safetylevel,
+                      paymentoptions: item.paymentoptions,
+                      paymentoptions_display: item.paymentoptions_display,
+                      alias_peg: item.alias_peg,
+                      description: item.description,
+                      alias: item.description,
+                      address: item.address,
+                      alias_rating: item.alias_rating,
+                      alias_rating_count: item.alias_rating_count,
+                      alias_rating_display: item.alias_rating_display,
+                      geolocation: item.geolocation,
+                      offers_sold: item.offers_sold,
+                    };
+                    OfferController.create(params, (err, result) => {
+                      if (err) {
+                        return next(err);
+                      }
 
-                    return result;
-                  });
-                }
-              });
+                      return result;
+                    });
+                  }
+                },
+              );
             });
 
             res.json(items);
@@ -269,42 +302,58 @@ const offerRoutes = (app) => {
   });
 
   app.post('/API/offers/new', (req, res, next) => {
-    OfferController.findOne({ offer: req.body.offer }, (err, result) => {
-      if (err) {
-        return next(err);
-      }
+    OfferController.findOne(
+      {
+        offer: req.body.offer,
+      },
+      (err, result) => {
+        if (err) {
+          return next(err);
+        }
 
-      if (result) {
-        res.json({ confirmation: 'fail', message: 'Offer already exist' });
-
-        return;
-      }
-
-      if (!result) {
-        const guid = '';
-        let token = '';
-        const url =
-          'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62';
-        axios
-          .get(url)
-          .then((response) => {
-            token = response.data.token;
-            axios
-              .post('https://d2fzm6xoa70bg8.cloudfront.net/offernew', req.body, {
-                headers: { Token: token },
-              })
-              .then((response) => {
-                res.json({ response: response.data });
-              })
-              .catch((err) => {
-                res.json({ err });
-              });
-          })
-          .catch((err) => {
-            res.json({ err });
+        if (result) {
+          res.json({
+            confirmation: 'fail',
+            message: 'Offer already exist',
           });
-      }
-    });
+
+          return;
+        }
+
+        if (!result) {
+          const guid = '';
+          let token = '';
+          const url =
+            'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62';
+          axios
+            .get(url)
+            .then((response) => {
+              token = response.data.token;
+              axios
+                .post('https://d2fzm6xoa70bg8.cloudfront.net/offernew', req.body, {
+                  headers: {
+                    Token: token,
+                  },
+                })
+                .then((response) => {
+                  res.json({
+                    response: response.data,
+                  });
+                })
+                .catch((err) => {
+                  res.json({
+                    err,
+                  });
+                });
+            })
+            .catch((err) => {
+              res.json({
+                err,
+              });
+            });
+        }
+      },
+    );
   });
 
   app.put('/API/offers/edit', (req, res, next) => {
@@ -315,29 +364,44 @@ const offerRoutes = (app) => {
       .then((response) => {
         axios
           .post('https://d2fzm6xoa70bg8.cloudfront.net/offerupdate', req.body, {
-            headers: { Token: response.data.token },
+            headers: {
+              Token: response.data.token,
+            },
           })
           .then((response) => {
-            OfferController.update({ offer: response.data.offer }, response.data, (err, result) => {
-              if (err) {
-                res.json({ confirmation: 'fail', message: err });
+            OfferController.update(
+              {
+                offer: response.data.offer,
+              },
+              response.data,
+              (err, result) => {
+                if (err) {
+                  res.json({
+                    confirmation: 'fail',
+                    message: err,
+                  });
 
-                return;
-              }
+                  return;
+                }
 
-              res.json({
-                confirmation: 'success',
-                result,
-              });
-            });
+                res.json({
+                  confirmation: 'success',
+                  result,
+                });
+              },
+            );
           })
           .catch((err) => {
             console.log('err', err);
-            res.json({ error: err });
+            res.json({
+              error: err,
+            });
           });
       })
       .catch((err) => {
-        res.json({ err });
+        res.json({
+          err,
+        });
       });
   });
 
@@ -358,9 +422,53 @@ const offerRoutes = (app) => {
   });
 
   app.get('/API/offers/:id', (req, res, next) => {
-    OfferController.findOne({ _id: req.params.id }, (err, result) => {
+    OfferController.findOne(
+      {
+        _id: req.params.id,
+      },
+      (err, result) => {
+        if (err) {
+          res.json({
+            confirmation: 'fail',
+            message: err,
+          });
+
+          return;
+        }
+
+        res.json({
+          confirmation: 'success',
+          result,
+        });
+      },
+    );
+  });
+
+  app.get('/API/offers/search/:id', (req, res, next) => {
+    const regx = {
+      $regex: req.params.id,
+    };
+
+    const query = {
+      $or: [
+        {
+          title: regx,
+        },
+        {
+          description: regx,
+        },
+        {
+          alias: regx,
+        },
+      ],
+    };
+
+    OfferController.find(query, (err, result) => {
       if (err) {
-        res.json({ confirmation: 'fail', message: err });
+        res.json({
+          confirmation: 'fail',
+          message: err,
+        });
 
         return;
       }
@@ -372,4 +480,5 @@ const offerRoutes = (app) => {
     });
   });
 };
+
 export default offerRoutes;

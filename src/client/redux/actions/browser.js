@@ -191,16 +191,18 @@ export function search(data){
   const data2search = data.regexp;
   // const getURL = data2search ? `/API/offers/search/${data2search}` : '/API/offers';
   const getURL = `/API/offers/search/${data2search}`;
+  console.log('getURL: ', getURL);
   return (dispatch) => {
     axios
       .get(getURL)
       .then((response) => {
         // const items = data2search ? response.data.result : response.data;
         const items = response.data.result;
+        console.log('Items: ', items);
         dispatch({ type: ORDER_SEARCH, items });
       })
       .catch((error) => {
-        console.error(error);
+        console.error('Error: ', error);
       });
   };
 }

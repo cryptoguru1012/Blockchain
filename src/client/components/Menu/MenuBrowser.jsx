@@ -1,19 +1,18 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { search } from '../../redux/actions/browser';
-import { doCategoryReq } from '../../redux/actions/store/category';
-import { sortOffers } from '../../redux/actions/sortActions.js';
-import { setVisibilityFilter } from '../../redux/actions/browser';
-
 import { Router, Route, Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { List, ListItem } from 'material-ui/List';
-import SearchBrowser from '../Browser/SearchBrowser';
+import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+
+import { search, setVisibilityFilter } from '../../redux/actions/browser';
+import { doCategoryReq } from '../../redux/actions/store/category';
+import { sortOffers } from '../../redux/actions/sortActions';
+import SearchBrowser from '../Browser/SearchBrowser';
 import SSIcon from './icon';
 
 require('./styles/menu.scss');
@@ -99,6 +98,7 @@ class MenuBrowser extends React.Component {
       if (this.state.category) {
         data.category = this.state.category;
       }
+      console.log('ACZ: ', data);
       this.props.onSearch(data);
       if (this.props.stateUrl !== '/' && this.state.regexp) {
         browserHistory.push('/');
@@ -138,8 +138,11 @@ class MenuBrowser extends React.Component {
 
   handleChangeData(data) {
     if (data.type === 'text') this.setState({ regexp: data.value });
-
     if (data.type === 'category') this.setState({ category: data.value });
+    if (data.enter) {
+      console.log ('FROM ENTERE: ', this.state.regexp);
+      this.handleToggleSerch();
+    };
   }
   // a function for capetalizing first letter of sub categories
   firstToUpperCase(category) {

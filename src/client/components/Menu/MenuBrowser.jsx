@@ -11,7 +11,7 @@ import ActionSearch from 'material-ui/svg-icons/action/search';
 
 import { search, setVisibilityFilter } from '../../redux/actions/browser';
 import { doCategoryReq } from '../../redux/actions/store/category';
-import { sortOffers } from '../../redux/actions/sortActions';
+import { sortOffers, getFilterOption } from '../../redux/actions/sortActions';
 import SearchBrowser from '../Browser/SearchBrowser';
 import SSIcon from './icon';
 
@@ -108,7 +108,8 @@ class MenuBrowser extends React.Component {
     }
     this.setState({ activeSearch: !this.state.activeSearch });
     if (browser.filter !== 'SHOW_MAP') {
-      browser.filter = 'SHOW_ALL';
+      // this.props.getFilterOption('SHOW_ALL');
+      this.props.filter('SHOW_ALL'); // browser.filter = 'SHOW_ALL';
     }
   }
 
@@ -310,6 +311,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(search(data));
     },
     sortOffers: params => dispatch(sortOffers(params)),
+    getFilterOption: option => dispatch(getFilterOption(option)),
     filter: options => dispatch(setVisibilityFilter(options)),
     getCategories: () => {
       dispatch(doCategoryReq());

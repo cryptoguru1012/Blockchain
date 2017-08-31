@@ -24,7 +24,6 @@ class FilterLink extends React.Component {
   handleClick(e) {
     e.preventDefault();
     this.props.onClick();
-
     this.props.fetchOffers();
     this.props.getFilterOption(this.props.filter);
   }

@@ -83,8 +83,8 @@ class ItemList extends Component {
             style={styles.viewOfferBtn}
             labelColor={grey50}
             labelStyle={styles.viewOfferLbl}
-            href={'/offer/' + this.props.marker.offer}
-            target="_blank"
+            href={'/offer/' + this.props.marker._id}
+            target="_self"
             label="View Offer"
             icon={<FontIcon className="material-icons" style={styles.viewOfferIcon}>
                 shopping_cart

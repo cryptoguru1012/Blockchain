@@ -24,12 +24,3 @@
       "document": true
     }
   }
-
-/*   "rules": {
-    
-    "consistent-return": "off",
-    "import/no-extraneous-dependencies": 0,
-    "import/extensions": 0,
-    "import/no-unresolved": 0
-  },
- */

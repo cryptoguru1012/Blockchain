@@ -11,19 +11,21 @@ export const FEATURE_SUCCESS = 'FEATURE_SUCCESS';
 export const ORDER_SEARCH = 'ORDER_SEARCH';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 
+/* this functions are unused, uncomment when needs */
+/*
 function searchStart(payload) {
   return {
     type: SEARCH_START,
   };
 }
-
+*//*
 function searchError(payload) {
   return {
     type: SEARCH_ERROR,
     message: payload,
   };
 }
-
+*//*
 function searchSuccess(raw, filtered) {
   return {
     type: SEARCH_SUCCESS,
@@ -31,6 +33,8 @@ function searchSuccess(raw, filtered) {
     items: filtered,
   };
 }
+
+*/
 
 function getFeaturesStart() {
   return {
@@ -52,25 +56,25 @@ function getFeaturesSuccess(payload) {
   };
 }
 
-function isJson(str) {
+/* function isJson(str) {
   try {
     JSON.parse(str);
   } catch (e) {
     return false;
   }
   return true;
-}
+} */
 
 function clusterItems(items) {
-  let hasVideo = [],
-    hasPhoto = [],
-    hasOnlyText = [],
-    hasAudio = [];
+  const hasVideo = [];
+  const hasPhoto = [];
+  const hasOnlyText = [];
+  const hasAudio = [];
 
-  items.map((item, i) => {
+  items.map((item) => {
     const media = JSON.parse(item.description).media.mediaVault;
     if (media.length > 0) {
-      media.map((mediaItem, i) => {
+      media.map((mediaItem) => {
         switch (mediaItem.mediaType) {
           case 'img':
             return hasPhoto.push(item);
@@ -82,10 +86,8 @@ function clusterItems(items) {
             return hasOnlyText.push(item);
         }
       });
-
-      return;
     }
-    hasOnlyText.push(item);
+    return hasOnlyText.push(item);
   });
 
   return {
@@ -110,11 +112,11 @@ export function setVisibilityFilter(filter) {
 export function setOrder(order) {
   return (dispatch, getState) => {
     const items = Object.assign([], getState().browser.items);
-    if (order == 'geolocation') {
+    if (order === 'geolocation') {
       const locations = [];
       const coords = { latitude: '', longitude: '' };
 
-      items.map((value, i) => {
+      items.map((value) => {
         const newGeoArr = value.geolocation.split(',');
         const coordsObj = Object.assign({}, coords);
         if (newGeoArr.length < 2 || newGeoArr === '') {
@@ -123,13 +125,13 @@ export function setOrder(order) {
           );
           coordsObj.latitude = 0;
           coordsObj.longitude = 0;
-          locations.push(coordsObj);
-          return;
+          return locations.push(coordsObj);
         }
         coordsObj.latitude = newGeoArr[0];
         coordsObj.longitude = newGeoArr[1];
-        locations.push(coordsObj);
-      });
+        return locations.push(coordsObj);
+      },
+    );
 
       const newLocations = locations.reduce((acc, cur, i) => ({ ...acc, [i]: cur }), {});
 
@@ -140,18 +142,16 @@ export function setOrder(order) {
         currentLocation.longitude = data.lon;
         const distance = geolib.orderByDistance(currentLocation, newLocations);
 
-        items.map((itemValue, i) => {
-          distance.map((distanceValue, i) => {
-            items[distanceValue.key].distanceFromUser = distanceValue.distance / 1609.34;
-            if (items[distanceValue.key].geolocation.length < 1) {
-              items[distanceValue.key].distanceFromUser = undefined;
-            }
-          });
+        distance.forEach((distanceValue) => {
+          if (items[distanceValue.key].geolocation.length < 1) {
+            items[distanceValue.key].distanceFromUser = undefined;
+          }
+          items[distanceValue.key].distanceFromUser = distanceValue.distance / 1609.34;
         });
 
         items.sort(
           (a, b) =>
-            (a.distanceFromUser == undefined) - (b.distanceFromUser == undefined) ||
+            (a.distanceFromUser === undefined) - (b.distanceFromUser === undefined) ||
             a.distanceFromUser - b.distanceFromUser,
         );
 
@@ -185,7 +185,7 @@ export function getFeatures() {
   };
 }
 
-export function search(data){
+export function search(data) {
   const data2search = data.regexp;
   // const getURL = data2search ? `/API/offers/search/${data2search}` : '/API/offers';
   const getURL = `/API/offers/search/${data2search}`;
@@ -198,6 +198,7 @@ export function search(data){
         dispatch({ type: ORDER_SEARCH, items });
       })
       .catch((error) => {
+        console.error(error);
       });
   };
 }

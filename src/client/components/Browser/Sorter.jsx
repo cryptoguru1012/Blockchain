@@ -6,7 +6,7 @@ import { reduxForm, Field } from 'redux-form';
 
 import PaginationField from './PaginationField';
 import SorterForm from './SorterForm';
-import selectForm from './selectForm';
+import SelectForm from './SelectForm';
 
 class Sorter extends Component {
   constructor() {
@@ -57,7 +57,7 @@ class Sorter extends Component {
             margin: 16,
           }}
         >
-          <Field onChange={this.filterChoice.bind(this)} name="selectForm" component={selectForm} />
+          <Field onChange={this.filterChoice.bind(this)} name="SelectForm" component={SelectForm} />
           <SorterForm selectedField={this.state.selectedField} />
           <button type="submit">Submit</button>
           <button type="button" onClick={reset}>Clear</button>

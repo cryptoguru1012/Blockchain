@@ -1,19 +1,25 @@
 import React, { PropTypes } from 'react';
 
-export default PaginationField = ({ label, type, input }) => {
-  console.log('ACZ -->', this.props);
-  return(
+function PaginationField({ label, type, input }) {
+  return (
     <div style={{ margin: '8px 10px' }}>
       <label htmlFor="paginationField" style={{ margin: '0px 5px' }}>
         {label}
       </label>
       <input id="paginationField" {...input} type={type} />
-    </div>;
-  )
+    </div>)
 }
 
 PaginationField.propTypes = {
-  label:PropTypes.string.isRequired,
-  type:PropTypes..isRequired,
-  input:PropTypes..isRequired,
-}
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  input: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.string,
+      PropTypes.func,
+    ]),
+  ).isRequired,
+};
+
+export default PaginationField;

@@ -25,7 +25,6 @@ class Offer extends React.Component {
   }
 
   render() {
-    console.log('offer', this.props.offer);
     if (!this.props.offer) {
       return (
         <Grid>

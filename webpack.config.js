@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   entry: {
-    app: ['./src/client/client.js'],
+    app: ['./src/client/client.jsx'],
   },
   output: {
     path: path.join(__dirname, 'build'),

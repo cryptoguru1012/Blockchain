@@ -88,12 +88,9 @@ class Browser extends React.Component {
   }
  
   componentWillReceiveProps(nextProp) {
-   console.log('Browser Props--> ', this.props.browser);
-   console.log('Browser nxtProps--> ', nextProp.browser);
   }
 
   itemsReceived(items){
-    console.log('ItemsRecived --> ', items);
     this.props.browser.items = items;
     this.setState({ items });
   }

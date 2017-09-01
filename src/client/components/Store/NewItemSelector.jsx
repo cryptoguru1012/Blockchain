@@ -115,7 +115,6 @@ class NewItemSelector extends React.Component {
   componentWillMount() {
     this.props.getCategories();
     this.props.getCurrencies();
-    console.log(navigator.platform);
   }
   
 
@@ -216,7 +215,6 @@ is_iOS() {
     }
     else 
       this.setState({open: true});
-      console.log('Media: ', formData.video);
   }
 
   render() {
@@ -249,7 +247,6 @@ is_iOS() {
                     />
                   </Row>
                   <Row>
-                    {console.log('loading: ', this.props.image.loading)}
                     <FlatButton
                       label="Upload Video"
                       labelPosition="before"
@@ -339,7 +336,6 @@ is_iOS() {
                   <VIcon />
                 </Col>
                 <Col xs={6}>
-                  {console.log('loading: ', this.props.image.loading)}
                   <FlatButton
                     label={<span>Record/Attach Media<br/></span>}
                     labelPosition="before"
@@ -406,7 +402,6 @@ is_iOS() {
           </div>
         }
         {output}
-        {console.log("Video: ", this.props.video)}
       </div>)
   }
 }

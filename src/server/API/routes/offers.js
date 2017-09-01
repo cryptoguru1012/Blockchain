@@ -177,7 +177,6 @@ const offerRoutes = (app) => {
             });
 
             if (geolocation === 'Furthest') {
-              console.log('furthest');
               newResults.sort(
                 (a, b) =>
                   (b.distanceFromUser == undefined) - (a.distanceFromUser == undefined) ||
@@ -196,7 +195,7 @@ const offerRoutes = (app) => {
             res.json(newResults);
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
           });
       }
       res.json(newResults);
@@ -228,12 +227,10 @@ const offerRoutes = (app) => {
                     return next(err);
                   }
                   if (result) {
-                    console.log('Offer exist');
 
                     return;
                   }
                   if (!result) {
-                    console.log('Offer created');
 
                     const params = {
                       offer: item.offer,
@@ -285,7 +282,7 @@ const offerRoutes = (app) => {
             res.json(items);
           })
           .catch((err) => {
-            console.log('err 2nd request', err);
+            console.error('err 2nd request', err);
             res.json({
               confirmation: 'fail after 2nd request',
               message: err,
@@ -293,7 +290,7 @@ const offerRoutes = (app) => {
           });
       })
       .catch((err) => {
-        console.log('err 1st request');
+        console.error('err 1st request');
         res.json({
           confirmation: 'fail before 2nd request',
           message: err,
@@ -392,7 +389,7 @@ const offerRoutes = (app) => {
             );
           })
           .catch((err) => {
-            console.log('err', err);
+            console.error('err', err);
             res.json({
               error: err,
             });
@@ -408,8 +405,6 @@ const offerRoutes = (app) => {
   app.get('/API/offers/pagination', (req, res, next) => {
     const position = req.query.position;
     const pageSize = req.query.number;
-
-    console.log('position', position, 'pageSize', pageSize);
 
     OfferController.sort(null, position, pageSize, (err, results) => {
       if (err) {

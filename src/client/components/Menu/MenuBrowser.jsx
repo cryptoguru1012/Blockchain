@@ -98,7 +98,6 @@ class MenuBrowser extends React.Component {
       if (this.state.category) {
         data.category = this.state.category;
       }
-      console.log('ACZ: ', data);
       this.props.onSearch(data);
       if (this.props.stateUrl !== '/' && this.state.regexp) {
         browserHistory.push('/');
@@ -140,7 +139,6 @@ class MenuBrowser extends React.Component {
     if (data.type === 'text') this.setState({ regexp: data.value });
     if (data.type === 'category') this.setState({ category: data.value });
     if (data.enter) {
-      console.log ('FROM ENTERE: ', this.state.regexp);
       this.handleToggleSerch();
     };
   }

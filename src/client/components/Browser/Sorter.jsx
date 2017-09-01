@@ -43,7 +43,6 @@ class Sorter extends Component {
   }
 
   render() {
-    console.log(this.props);
     if (this.props.browserFilter === 'SHOW_MAP') { return null; }
     const { handleSubmit, pristine, reset, submitting } = this.props;
     return (

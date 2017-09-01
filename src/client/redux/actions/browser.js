@@ -118,7 +118,7 @@ export function setOrder(order) {
         const newGeoArr = value.geolocation.split(',');
         const coordsObj = Object.assign({}, coords);
         if (newGeoArr.length < 2 || newGeoArr === '') {
-          console.log(
+          console.error(
             'One of these items do not have geolocation and therefore geolocation will not work',
           );
           coordsObj.latitude = 0;
@@ -126,7 +126,6 @@ export function setOrder(order) {
           locations.push(coordsObj);
           return;
         }
-        console.log('Items that had geolocation will be added to the search');
         coordsObj.latitude = newGeoArr[0];
         coordsObj.longitude = newGeoArr[1];
         locations.push(coordsObj);
@@ -140,7 +139,6 @@ export function setOrder(order) {
         currentLocation.latitude = data.lat;
         currentLocation.longitude = data.lon;
         const distance = geolib.orderByDistance(currentLocation, newLocations);
-        console.log('distance', distance);
 
         items.map((itemValue, i) => {
           distance.map((distanceValue, i) => {
@@ -191,18 +189,15 @@ export function search(data){
   const data2search = data.regexp;
   // const getURL = data2search ? `/API/offers/search/${data2search}` : '/API/offers';
   const getURL = `/API/offers/search/${data2search}`;
-  console.log('getURL: ', getURL);
   return (dispatch) => {
     axios
       .get(getURL)
       .then((response) => {
         // const items = data2search ? response.data.result : response.data;
         const items = response.data.result;
-        console.log('Items: ', items);
         dispatch({ type: ORDER_SEARCH, items });
       })
       .catch((error) => {
-        console.error('Error: ', error);
       });
   };
 }

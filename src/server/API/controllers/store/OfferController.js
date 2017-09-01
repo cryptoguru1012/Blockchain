@@ -66,8 +66,6 @@ module.exports = {
         return;
       }
 
-      console.log('controllerpageStart', pageStart, 'controllerpageSize', pageSize);
-
       const offerArray = offers;
       const endNumber = Number(pageSize) + Number(pageStart);
 

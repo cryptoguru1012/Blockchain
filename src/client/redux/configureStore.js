@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV === 'production') {
-  console.log('Using production Store');
+  console.warn('----------------------\nUsing production Store\n----------------------');
   module.exports = require('./configureStore.prod');
 } else {
-  console.log('Using development Store');
+  console.log('-----------------------\nUsing development Store\n-----------------------');
   module.exports = require('./configureStore.dev');
 }

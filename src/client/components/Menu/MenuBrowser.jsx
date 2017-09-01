@@ -108,8 +108,7 @@ class MenuBrowser extends React.Component {
     }
     this.setState({ activeSearch: !this.state.activeSearch });
     if (browser.filter !== 'SHOW_MAP') {
-      // this.props.getFilterOption('SHOW_ALL');
-      this.props.filter('SHOW_ALL'); // browser.filter = 'SHOW_ALL';
+      this.props.filter('SHOW_ALL'); 
     }
   }
 
@@ -311,7 +310,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(search(data));
     },
     sortOffers: params => dispatch(sortOffers(params)),
-    getFilterOption: option => dispatch(getFilterOption(option)),
     filter: options => dispatch(setVisibilityFilter(options)),
     getCategories: () => {
       dispatch(doCategoryReq());

@@ -28,28 +28,28 @@ export function doCategoryReq() {
   return (dispatch, state) => {
     dispatch(categoryReqStart());
 
-    // fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		let token = res.token;
-    // 		return fetch('https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory', {
-    // 			headers: {
-    // 				'Token': token
-    // 			},
-    // 			mode: 'cors',
-    // 			method: "GET"
-    // 		})
-    // 	})
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		if (typeof res === 'object') {
-    // 			let data = JSON.parse(res.value);
-    //
-    // 			return dispatch(categoryReqSuccess(data));
-    // 		} else {
-    // 			return dispatch(categoryReqErr(res));
-    // 		}
-    // 	})
-    // 	.catch(error => dispatch(categoryReqErr(error)));
+/* fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")
+       .then(res => res.json())
+     .then(res => {
+       let token = res.token;
+       return fetch('https://d2fzm6xoa70bg8.cloudfront.net/aliasinfo?aliasname=syscategory', {
+         headers: {
+           'Token': token
+         },
+         mode: 'cors',
+         method: "GET"
+       })
+     })
+     .then(res => res.json())
+     .then(res => {
+       if (typeof res === 'object') {
+         let data = JSON.parse(res.value);
+
+         return dispatch(categoryReqSuccess(data));
+       } else {
+         return dispatch(categoryReqErr(res));
+       }
+     })
+     .catch(error => dispatch(categoryReqErr(error))); */
   };
 }

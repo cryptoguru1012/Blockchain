@@ -3,16 +3,22 @@
   padding-left: 0; }
 
 .appbar-color {
-  position: fixed !important;
-  top: 0; }
+  background-color: #fff !important;
+  border-bottom: 2px solid #E9E9E9;
+  top: 0;
+  box-shadow: none !important;
+  height: 100px; }
 
 .setStyle button {
   padding: 12px 30px 12px 220px !important; }
 
 .btnStyle {
-  margin-top: -13px !important;
-  width: auto !important;
-  height: auto !important; }
+  position: relative !important;
+  left: 100%; }
+
+.tab {
+  background: #fff !important;
+  color: #CDCDCD !important; }
 /* -- Variables --------------------------- */
 /* ---------------------------------------- */
 /* -- Layout ------------------------------ */

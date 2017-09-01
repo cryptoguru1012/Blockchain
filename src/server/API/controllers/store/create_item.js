@@ -35,19 +35,17 @@ const createItem = (params, cb) => {
       }
 
       if (productVideo) {
-        item._.productVideo.uploadFile(productVideo, true, (err, file) => {
-          if (err) {
-            return console.error(err);
+        item._.productVideo.uploadFile(productVideo, true, (error, file) => {
+          if (error) {
+            return console.error(error);
           }
-
           item.productVideo = file;
-
           item.save();
         });
       }
 
       return cb(null, { data: item, status: 201, success: true });
-    }
+    },
   );
 };
 

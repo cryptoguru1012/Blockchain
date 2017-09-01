@@ -1,5 +1,4 @@
 import keystone from 'keystone';
-import axios from 'axios';
 
 const Offer = keystone.list('Offer').model;
 

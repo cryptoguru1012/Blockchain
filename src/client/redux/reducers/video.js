@@ -19,8 +19,8 @@ function setTimetoSeconds(value) {
 
   if (match) {
     const valuee = value.split(':');
-    const h = parseInt(valuee[0]) * 3600
-    const m = parseInt(valuee[1]) * 60
+    const h = parseInt(valuee[0]) * 3600;
+    const m = parseInt(valuee[1]) * 60;
     const s = parseFloat(valuee[2].replace(',', '.'));
 
     output = h + m + s;
@@ -41,7 +41,7 @@ function setFormatTime(arr) {
 const videoReducers = (state = initialState, action) => {
   switch (action.type) {
     case SET_VIDEO_DURATION:
-      return { ...state, videoDuration: action.duration }
+      return { ...state, videoDuration: action.duration };
 
     case DELETE_RECORD:
       return { ...state, localUrl: null, recorded: false };
@@ -53,7 +53,14 @@ const videoReducers = (state = initialState, action) => {
       return { ...state, error: true, loading: false };
 
     case UPLOAD_SUCCESS:
-      return { ...state, url: action.payload.videoLink, recorded: true, error: false, loading: false, subtitles: setFormatTime(action.payload.videoSubs) };
+      return {
+        ...state,
+        url: action.payload.videoLink,
+        recorded: true,
+        error: false,
+        loading: false,
+        subtitles: setFormatTime(action.payload.videoSubs),
+      };
 
     case SET_OFFER:
       return { ...state, videoUploaded: true };
@@ -64,6 +71,6 @@ const videoReducers = (state = initialState, action) => {
     default:
       return state;
   }
-}
+};
 
 export default videoReducers;

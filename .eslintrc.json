@@ -8,10 +8,12 @@
     "rules": {
         "no-console": 0,
         "global-require": 0,
+        "radix": 0,
         "class-methods-use-this": 1,
         "no-dupe-keys": 1,
         "no-underscore-dangle": 1,
-        "no-param-reassign": 1
+        "no-param-reassign": 1,
+        "consistent-return": 1
     },
     "globals": {
       "localStorage": true,

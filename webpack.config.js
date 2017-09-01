@@ -1,6 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
+
 const port = process.env.PORT || 3000;
 const publicPath = `http://localhost:${port}/`;
 

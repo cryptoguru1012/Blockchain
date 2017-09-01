@@ -18,25 +18,24 @@
  * http://expressjs.com/api.html#app.VERB
  */
 
-import keystone from 'keystone';
-import middleware from './middleware';
 import apiRoutes from '../API/routes';
 import renderHTML from './helpers/render_html';
 
 const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : '';
 
 // Setup Route Bindings
-exports = module.exports = function (app) {
-	// You can use "app" here like you would in Express
+exports = module.exports;
+module.exports = (app) => {
+  // You can use "app" here like you would in Express
 
-	apiRoutes(app);
+  apiRoutes(app);
 
-	app.use((req, res, next) => {
-		res.send(renderHTML(assetUrl));
-	});
+  app.use((req, res) => {
+    res.send(renderHTML(assetUrl));
+  });
 
-	// Error middleware
-	app.use((error, req, res, next) => {
-		res.status(error.status).send(error);
-	});
+  // Error middleware
+  app.use((error, req, res) => {
+    res.status(error.status).send(error);
+  });
 };

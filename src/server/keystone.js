@@ -3,7 +3,8 @@
 const config = require('./config/vars');
 
 // Require keystone
-var keystone = require('keystone');
+const keystone = require('keystone');
+
 const port = process.env.PORT || 3000;
 
 // Initialise Keystone with your project's configuration.
@@ -11,27 +12,27 @@ const port = process.env.PORT || 3000;
 // and documentation.
 
 keystone.init({
-  'name': 'shopshot',
-  'brand': 'shopshot',
-  'mongo': config.MONGO_URI,
+  name: 'shopshot',
+  brand: 'shopshot',
+  mongo: config.MONGO_URI,
 
-  'sass': 'public',
-  'static': ['../../build', 'public'],
-  'favicon': 'public/favicon.ico',
-  'views': 'templates/views',
+  sass: 'public',
+  static: ['../../build', 'public'],
+  favicon: 'public/favicon.ico',
+  views: 'templates/views',
   'view engine': 'jade',
   's3 config': {
     bucket: 'shopshots',
     key: 'AKIAJ5CQKS2HHNRM24HQ',
-    secret: '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'
+    secret: 'Ybmvqp2dD+ClV6CalZud72LOL9N2oyLJnfuwKQId',
   },
 
   'auto update': true,
-  'session': true,
-  'auth': true,
+  session: true,
+  auth: true,
   'user model': 'User',
   'cookie secret': config.COOKIE_SECRET,
-  'port': port,
+  port,
 });
 
 // Load your project's Models
@@ -53,9 +54,9 @@ keystone.set('routes', require('./routes'));
 // Configure the navigation bar in Keystone's Admin UI
 keystone.set('nav', {
   users: 'User',
-  storeItem: "StoreItem",
-  category: "Category",
-  sale: "Sale"
+  storeItem: 'StoreItem',
+  category: 'Category',
+  sale: 'Sale',
 });
 
 // Start Keystone to connect to your database and initialise the web server

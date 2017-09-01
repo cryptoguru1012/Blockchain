@@ -1,10 +1,10 @@
-import OfferController from '../controllers/store/OfferController';
-import RequestManager from '../utils/RequestManager';
 import axios from 'axios';
 import geolib from 'geolib';
 
+import OfferController from '../controllers/store/OfferController';
+
 const offerRoutes = (app) => {
-  app.get('/API/offers', (req, res, next) => {
+  app.get('/API/offers', (req, res) => { //  (req, res, next)
     OfferController.find(null, (err, results) => {
       if (err) {
         res.json(err);
@@ -16,29 +16,29 @@ const offerRoutes = (app) => {
     });
   });
 
-  app.get('/API/offers/sort', (req, res, next) => {
+  app.get('/API/offers/sort', (req, res) => { //  (req, res, next)
     const { btc, sys, zec, currency, name, geolocation, category } = req.query;
 
-    const params = {},
-      symbols = [];
+    const params = {};
+    const symbols = [];
 
-    btc == 'true'
+    btc === 'true'
       ? symbols.push('BTC')
       : {
         ...params,
       };
-    sys == 'true'
+    sys === 'true'
       ? symbols.push('SYS')
       : {
         ...params,
       };
-    zec == 'true'
+    zec === 'true'
       ? symbols.push('ZEC')
       : {
         ...params,
       };
 
-    if ((category != 'Z-A' || 'A-Z') && category) {
+    if ((category !== 'Z-A' || 'A-Z') && category) {
       params.category = category;
     }
 
@@ -52,7 +52,7 @@ const offerRoutes = (app) => {
 
       const newResults = results;
 
-      if (category == 'A-Z') {
+      if (category === 'A-Z') {
         newResults.sort((a, b) => {
           const x = a.category.toLowerCase();
           const y = b.category.toLowerCase();
@@ -67,7 +67,7 @@ const offerRoutes = (app) => {
         res.json(newResults);
         return;
       }
-      if (category == 'Z-A') {
+      if (category === 'Z-A') {
         newResults.sort((a, b) => {
           const x = a.category.toLowerCase();
           const y = b.category.toLowerCase();
@@ -82,19 +82,19 @@ const offerRoutes = (app) => {
         res.json(newResults);
         return;
       }
-      if (currency == 'currencyLow') {
+      if (currency === 'currencyLow') {
         newResults.sort((a, b) => a.price - b.price);
         res.json(newResults);
         return;
       }
 
-      if (currency == 'currencyHigh') {
+      if (currency === 'currencyHigh') {
         newResults.sort((a, b) => b.price - a.price);
         res.json(newResults);
         return;
       }
 
-      if (name == 'nameHigh') {
+      if (name === 'nameHigh') {
         newResults.sort((a, b) => {
           const x = a.title.toLowerCase();
           const y = b.title.toLowerCase();
@@ -109,7 +109,7 @@ const offerRoutes = (app) => {
         res.json(newResults);
         return;
       }
-      if (name == 'nameLow') {
+      if (name === 'nameLow') {
         newResults.sort((a, b) => {
           const x = a.title.toLowerCase();
           const y = b.title.toLowerCase();
@@ -132,7 +132,7 @@ const offerRoutes = (app) => {
           longitude: '',
         };
 
-        newResults.map((value, i) => {
+        newResults.map((value) => {
           const newGeoArr = value.geolocation.split(',');
           const finalGeoArray = [];
           newGeoArr.map((item) => {
@@ -143,7 +143,6 @@ const offerRoutes = (app) => {
             coordsObj.latitude = 0;
             coordsObj.longitude = 0;
             locations.push(coordsObj);
-            return;
           }
           coordsObj.latitude = finalGeoArray[0];
           coordsObj.longitude = finalGeoArray[1];
@@ -168,7 +167,7 @@ const offerRoutes = (app) => {
             currentLocation.longitude = data.lon;
             const distance = geolib.orderByDistance(currentLocation, newLocations);
 
-            distance.map((distanceValue, i) => {
+            distance.map((distanceValue) => {
               newResults[distanceValue.key].distanceFromUser = distanceValue.distance / 1609.34;
 
               if (newResults[distanceValue.key].geolocation.length < 1) {
@@ -179,7 +178,7 @@ const offerRoutes = (app) => {
             if (geolocation === 'Furthest') {
               newResults.sort(
                 (a, b) =>
-                  (b.distanceFromUser == undefined) - (a.distanceFromUser == undefined) ||
+                  (b.distanceFromUser === undefined) - (a.distanceFromUser === undefined) ||
                   b.distanceFromUser - a.distanceFromUser,
               );
               res.json(newResults);
@@ -188,14 +187,14 @@ const offerRoutes = (app) => {
 
             newResults.sort(
               (a, b) =>
-                (a.distanceFromUser == undefined) - (b.distanceFromUser == undefined) ||
+                (a.distanceFromUser === undefined) - (b.distanceFromUser === undefined) ||
                 a.distanceFromUser - b.distanceFromUser,
             );
 
             res.json(newResults);
           })
-          .catch((err) => {
-            console.error(err);
+          .catch((error) => {
+            console.error(error);
           });
       }
       res.json(newResults);
@@ -214,10 +213,10 @@ const offerRoutes = (app) => {
               Token: response.data.token,
             },
           })
-          .then((response) => {
-            const { data } = response;
+          .then((responseOne) => {
+            const { data } = responseOne;
 
-            const items = data.map((item, i) => {
+            const items = data.map((item) => {
               OfferController.findOne(
                 {
                   offer: item.offer,
@@ -227,11 +226,9 @@ const offerRoutes = (app) => {
                     return next(err);
                   }
                   if (result) {
-
                     return;
                   }
                   if (!result) {
-
                     const params = {
                       offer: item.offer,
                       cert: item.cert,
@@ -267,12 +264,12 @@ const offerRoutes = (app) => {
                       geolocation: item.geolocation,
                       offers_sold: item.offers_sold,
                     };
-                    OfferController.create(params, (err, result) => {
-                      if (err) {
-                        return next(err);
+                    OfferController.create(params, (error, resultOne) => {
+                      if (error) {
+                        return next(error);
                       }
 
-                      return result;
+                      return resultOne;
                     });
                   }
                 },
@@ -318,7 +315,7 @@ const offerRoutes = (app) => {
         }
 
         if (!result) {
-          const guid = '';
+          /* const guid = ''; */
           let token = '';
           const url =
             'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62';
@@ -332,20 +329,20 @@ const offerRoutes = (app) => {
                     Token: token,
                   },
                 })
-                .then((response) => {
+                .then((responseOne) => {
                   res.json({
-                    response: response.data,
+                    response: responseOne.data,
                   });
                 })
-                .catch((err) => {
+                .catch((errOne) => {
                   res.json({
-                    err,
+                    errOne,
                   });
                 });
             })
-            .catch((err) => {
+            .catch((errTwo) => {
               res.json({
-                err,
+                errTwo,
               });
             });
         }
@@ -353,7 +350,7 @@ const offerRoutes = (app) => {
     );
   });
 
-  app.put('/API/offers/edit', (req, res, next) => {
+  app.put('/API/offers/edit', (req, res) => {
     const url =
       'https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62';
     axios
@@ -365,12 +362,10 @@ const offerRoutes = (app) => {
               Token: response.data.token,
             },
           })
-          .then((response) => {
+          .then((responseOne) => {
             OfferController.update(
-              {
-                offer: response.data.offer,
-              },
-              response.data,
+              { offer: responseOne.data.offer },
+              responseOne.data,
               (err, result) => {
                 if (err) {
                   res.json({
@@ -402,7 +397,7 @@ const offerRoutes = (app) => {
       });
   });
 
-  app.get('/API/offers/pagination', (req, res, next) => {
+  app.get('/API/offers/pagination', (req, res) => {
     const position = req.query.position;
     const pageSize = req.query.number;
 
@@ -416,7 +411,7 @@ const offerRoutes = (app) => {
     });
   });
 
-  app.get('/API/offers/:id', (req, res, next) => {
+  app.get('/API/offers/:id', (req, res) => {
     OfferController.findOne(
       {
         _id: req.params.id,
@@ -439,7 +434,7 @@ const offerRoutes = (app) => {
     );
   });
 
-  app.get('/API/offers/search/:id', (req, res, next) => {
+  app.get('/API/offers/search/:id', (req, res) => {
     const regx = {
       $regex: req.params.id,
     };

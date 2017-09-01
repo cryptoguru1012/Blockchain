@@ -9,11 +9,14 @@
         "no-console": 0,
         "global-require": 0,
         "radix": 0,
+        "new-cap": 1,
         "class-methods-use-this": 1,
         "no-dupe-keys": 1,
         "no-underscore-dangle": 1,
         "no-param-reassign": 1,
-        "consistent-return": 1
+        "consistent-return": 1,
+        "array-callback-return": 1,
+        "no-unused-expressions": 1
     },
     "globals": {
       "localStorage": true,

@@ -1,9 +1,7 @@
 const keystone = require('keystone');
 
-const Types = keystone.Field.Types;
-
 /**
- * Category Model
+ * Offer Model
  * ==========
  */
 

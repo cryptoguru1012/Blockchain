@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const videoRoutes = (app) => {
-  app.post('/API/videos/create', (req, res, next) => {
+  app.post('/API/videos/create', (req, res) => {
     axios
       .post('https://d3j22jloo6hpq6.cloudfront.net/API/parse', req.body)
       .then((response) => {

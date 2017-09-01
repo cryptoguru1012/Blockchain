@@ -9,8 +9,8 @@ export default function (initialState = {}) {
     initialState,
     compose(
       applyMiddleware(thunk),
-      DevTools.instrument()
-    )
+      DevTools.instrument(),
+    ),
   );
 
   store.subscribe(() => {
@@ -21,7 +21,7 @@ export default function (initialState = {}) {
 
   if (module.hot) {
     module.hot.accept('./reducers', () =>
-      store.replaceReducer(require('./reducers').default)
+      store.replaceReducer(require('./reducers').default),
     );
   }
 

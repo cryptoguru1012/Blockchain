@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import axios from 'axios';
 
 export const DELETE_RECORD = 'DELETE_RECORD';
 export const UPLOAD_START = 'UPLOAD_START';
@@ -18,6 +19,7 @@ function uploadStart(payload) {
 function uploadError(payload) {
   return {
     type: UPLOAD_ERROR,
+    payload: payload.data,
   };
 }
 
@@ -36,7 +38,7 @@ export function setDuration(payload) {
 }
 
 export function deleteRecord(payload) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: DELETE_RECORD,
       deleted: payload,
@@ -45,7 +47,7 @@ export function deleteRecord(payload) {
 }
 
 export function setOfferForm() {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: SET_OFFER,
     });
@@ -53,7 +55,7 @@ export function setOfferForm() {
 }
 
 export function updateSubtitles(subtitles) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: UPDATE_SUBTITLES,
       subtitles,
@@ -65,7 +67,7 @@ export function updateSubtitles(subtitles) {
 // https://shopshots-argvil19.c9users.io/API/parse
 
 export function setRecord(data, url) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(uploadStart(url));
     // This is a hack to check if data is the FormData which composed from formdata-polyfill
     // If yes, convert it to native FormData
@@ -80,7 +82,7 @@ export function setRecord(data, url) {
           dispatch(uploadSuccess(response.data));
         }
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(uploadError(null));
       });
   };

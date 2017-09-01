@@ -9,23 +9,24 @@ function categoryReqStart() {
     type: CATEGORY_REQ_START,
   };
 }
-
+/* Commented becouse not in use, uncomment when needs
+/*
 function categoryReqErr(payload) {
   return {
     type: CATEGORY_REQ_ERR,
     message: payload,
   };
 }
-
+*/ /*
 function categoryReqSuccess(res) {
   return {
     type: CATEGORY_REQ_SUCCESS,
     payload: res.categories,
   };
-}
+} */
 
 export function doCategoryReq() {
-  return (dispatch, state) => {
+  return (dispatch) => {
     dispatch(categoryReqStart());
 
 /* fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")

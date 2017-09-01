@@ -21,7 +21,7 @@ const registerReducer = (state = initialState, action) => {
 
     case SHOW_SNACKBAR:
       return { ...state, showSnackbar: false };
-      
+
     default:
       return state;
   }

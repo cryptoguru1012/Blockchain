@@ -7,10 +7,11 @@
     ],
     "rules": {
         "no-console": 0,
+        "global-require": 0,
         "class-methods-use-this": 1,
         "no-dupe-keys": 1,
-        "no-underscore-dangle": 1
-   
+        "no-underscore-dangle": 1,
+        "no-param-reassign": 1
     },
     "globals": {
       "localStorage": true,
@@ -20,7 +21,7 @@
   }
 
 /*   "rules": {
-    "global-require": 0,
+    
     "consistent-return": "off",
     "import/no-extraneous-dependencies": 0,
     "import/extensions": 0,

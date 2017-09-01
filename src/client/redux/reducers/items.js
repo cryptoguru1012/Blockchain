@@ -2,7 +2,7 @@ import { SHOW_ITEMS } from '../actions';
 
 const initialState = { list: [] };
 
-export function showItems(state = initialState, action) {
+function showItems(state = initialState, action) {
   switch (action.type) {
     case SHOW_ITEMS:
       return Object.assign({}, state, { list: action.payload });
@@ -11,3 +11,4 @@ export function showItems(state = initialState, action) {
   }
 }
 
+export default showItems;

@@ -15,7 +15,7 @@ const initialState = {
   message: '',
   dataItems: [],
   items: [],
-  /* filter: 'SHOW_VIDEOS', ACZ - Original Filter*/
+  /* filter: 'SHOW_VIDEOS', ACZ - Original Filter */
   filter: 'SHOW_MAP',
   features: [],
   loadingFeatures: false,

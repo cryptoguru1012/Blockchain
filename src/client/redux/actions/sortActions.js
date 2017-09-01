@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { FETCH_OFFERS, SORT_OFFERS, FETCH_OFFER, GET_FILTER } from './types';
 import { reset } from 'redux-form';
+
+import { FETCH_OFFERS, SORT_OFFERS, FETCH_OFFER, GET_FILTER } from './types';
 
 export function paginateOffers(indexPosition, numberOfItems) {
   return (dispatch) => {
@@ -15,7 +16,7 @@ export function paginateOffers(indexPosition, numberOfItems) {
         dispatch({ type: FETCH_OFFERS, payload: response.data });
       })
       .catch((error) => {
-        alert(error);
+        console.error(error);
       });
   };
 }
@@ -28,7 +29,7 @@ export function fetchOffers() {
         dispatch({ type: FETCH_OFFERS, payload: response.data });
       })
       .catch((err) => {
-        alert(err);
+        console.error(err);
       });
   };
 }
@@ -41,7 +42,7 @@ export function fetchOffer(id) {
         dispatch({ type: FETCH_OFFER, payload: response.data.result });
       })
       .catch((err) => {
-        alert(`ERROR: ${err}`);
+        console.error(`ERROR: ${err}`);
       });
   };
 }
@@ -56,7 +57,7 @@ export function sortOffers({ currency, name, geolocation, category, btc, sys, ze
         dispatch(reset('sorter'));
       })
       .catch((err) => {
-        alert(err);
+        console.error(err);
       });
 }
 

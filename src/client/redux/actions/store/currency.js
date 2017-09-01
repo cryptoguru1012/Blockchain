@@ -9,22 +9,23 @@ function currencyReqStart() {
     type: CURRENCY_REQ_START,
   };
 }
-
+/* Commented becouse not in use, uncomment when needs
+/*
 function currencyReqErr() {
   return {
     type: CURRENCY_REQ_ERR,
   };
 }
-
+*/ /*
 function currencyReqSuccess(res) {
   return {
     type: CURRENCY_REQ_SUCCESS,
     payload: res.rates,
   };
 }
-
+*/
 export function doCurrencyReq() {
-  return (dispatch, state) => {
+  return (dispatch) => {
     dispatch(currencyReqStart());
 
   /* fetch("https://d2fzm6xoa70bg8.cloudfront.net/login?auth=e4031de36f45af2172fa8d0f054efcdd8d4dfd62")

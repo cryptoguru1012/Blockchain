@@ -6,7 +6,7 @@ export const LOAD_ERROR = 'LOAD_ERROR';
 export const LOAD_SUCCESS = 'LOAD_SUCCESS';
 
 export function getOfferData(id) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({ type: LOAD_START });
     axios
       .get(`/API/offers/${id}`)

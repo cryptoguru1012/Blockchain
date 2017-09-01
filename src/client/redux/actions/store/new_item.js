@@ -33,7 +33,7 @@ export function showSnackbar() {
 }
 
 export function doItemCreate(params) {
-  return (dispatch, state) => {
+  return (dispatch) => {
     dispatch(itemCreateStart());
 
     axios

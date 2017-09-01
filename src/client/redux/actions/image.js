@@ -8,7 +8,7 @@ export const DELETE_IMAGE = 'DELETE_IMAGE';
 export const PROCEED = 'PROCEED';
 
 export function deleteImage(payload) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: DELETE_IMAGE,
       deleted: payload,
@@ -17,7 +17,7 @@ export function deleteImage(payload) {
 }
 
 export function proceed(payload) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: PROCEED,
       data: payload,
@@ -26,7 +26,7 @@ export function proceed(payload) {
 }
 
 export function setImage(data) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({ type: LOAD_START });
 
     // This is a hack to check if data is the FormData which composed from formdata-polyfill

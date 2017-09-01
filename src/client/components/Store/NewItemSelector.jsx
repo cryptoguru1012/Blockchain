@@ -1,5 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Row, Col, Grid, Button } from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
+import CircularProgress from 'material-ui/CircularProgress';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
+import { grey500, grey600 } from 'material-ui/styles/colors';
 
 // redux
 import { doCategoryReq } from '../../redux/actions/store/category';
@@ -9,50 +15,42 @@ import { setRecord, deleteRecord, setOfferForm, updateSubtitles, setDuration } f
 import { setImage, deleteImage, proceed } from '../../redux/actions/image';
 
 // components
-import { Row, Col, Grid, Button } from 'react-bootstrap';
-import Dropzone from 'react-dropzone';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
-import SvgIcon from 'material-ui/SvgIcon';
-import {grey500, grey600} from 'material-ui/styles/colors';
 import VideoRecord from './VideoRecord';
-import VideoRecord2 from './VideoRecord2';
 import VideoPlayer from './VideoPlayer';
 import ImageEdit from './ImageEdit';
 import SubtitlesEditer from './SubtitlesEditer';
 import OfferForm from './OfferForm';
 
 // Icons
-import VIcon from "./VIcon";
-import PIcon from "./PIcon";
+import VIcon from './VIcon';
+import PIcon from './PIcon';
 
 const newItemStyle = {
   caption: {
     marginTop: '15vh',
     textAlign: 'center',
-    marginBottom:'5vh'
+    marginBottom: '5vh',
   },
   icon:{
     textAlign: 'center',
-    border: '1px solid green'
+    border: '1px solid green',
   },
   vcenter:{
     display: 'flex',
     alignItems: 'center',
-    marginBottom:'40px'
+    marginBottom: '40px',
   },
   buttonUp:{
     borderRadius: '5px',
     margin: '0 0 5px 5%',
     width: '95%',
-    color: 'white'
+    color: 'white',
   },
   buttonDown:{
     borderRadius: '5px',
     margin: '5px 0 0 5%',
     width: '95%',
-    color: 'white'
+    color: 'white',
   },
   button_iOS:{
     borderRadius: '5px',
@@ -61,7 +59,7 @@ const newItemStyle = {
     height: '100%',
     color: 'white',
     background: 'rgb(153,211,243)',
-    background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)'
+    background: 'linear-gradient(to right, rgb(153,211,243), rgb(75, 165, 97)',
   },
   btn_iOS_Label:{
     fontSize: '150%',

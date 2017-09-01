@@ -35,7 +35,6 @@ class CreateRadius extends Component {
     return (
 
       <div style={{ fontFamily: 'Roboto', fontStyle: 'normal' }}>
-        {console.log('ACZ: ', this.props.numOffers)}
         Showing {this.props.numOffers} offers within &nbsp;
         <input
           type="number"

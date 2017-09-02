@@ -18,7 +18,7 @@ function handleActive(e){
 const OfferTabs = (props) => (
   <Col xs={10} className="product-info-tabs col-xs-offset-1">
     <Tabs inkBarStyle={{'display': 'none'}} className="tab-container">
-      <Tab label="Overview" className="tabs active-tab" style={{'background': '#fff', color: '#CDCDCD'}} onClick={handleActive}>
+      <Tab label="Overview" className="active-tab" style={{'background': '#fff', color: '#5C8788'}} onClick={handleActive}>
         <div className="tab-content">
           <h2 className="tab-content-title">Tab One</h2>
           <p>
@@ -29,7 +29,7 @@ const OfferTabs = (props) => (
           </p>
         </div>
       </Tab>
-      <Tab label="Ratings" className="tab" onClick={handleActive}>
+      <Tab label="Ratings" className="tab-info" onClick={handleActive}>
         <div className="tab-content">
           <h2 className="tab-content-title">Tab Two</h2>
           <p>
@@ -37,7 +37,7 @@ const OfferTabs = (props) => (
           </p>
         </div>
       </Tab>
-      <Tab label="Seller Info" className="tab" onClick={handleActive}>
+      <Tab label="Seller Info" className="tab-info" onClick={handleActive}>
         <div className="tab-content">
           <h3 className="tab-content-title">Seller Name</h3>
           <p>
@@ -47,7 +47,7 @@ const OfferTabs = (props) => (
         </div>
       </Tab>
 
-      <Tab label="FAQ" className="tab" onClick={handleActive}>
+      <Tab label="FAQ" className="tab-info" onClick={handleActive}>
         <div className="tab-content">
           <h2 style={props.styles.headline}>Tab Three</h2>
           <p>

@@ -51,12 +51,16 @@ class OfferViewSuccess extends React.Component {
     );
   }
 
+  handleActive(tab){
+    console.log(tab.props)
+    // tab.styles.color = '#5FA02F';
+  }
   render() {
     return (
       <div>
         <Col xs={6} className="col-lg-offset-3">
           <Tabs inkBarStyle={styles.bar} className="tab-container">
-            <Tab label="Browser" className="tab">
+            <Tab label="Browser" onActive={this.handleActive} className="tab">
               <div className="hidden">
                 <h2 style={styles.headline}>Tab One</h2>
                 <p>
@@ -68,7 +72,7 @@ class OfferViewSuccess extends React.Component {
                 <Slider name="slider0" defaultValue={0.5} />
               </div>
             </Tab>
-            <Tab label="Sell" className="tab">
+            <Tab label="Sell" onActive={this.handleActive} className="tab">
               <div className="hidden">
                 <h2 style={styles.headline}>Tab Two</h2>
                 <p>
@@ -76,7 +80,7 @@ class OfferViewSuccess extends React.Component {
                 </p>
               </div>
             </Tab>
-            <Tab label="Wallet" className="tab">
+            <Tab label="Wallet" onActive={this.handleActive} className="tab">
               <div className="hidden">
                 <h2 style={styles.headline}>Tab Three</h2>
                 <p>
@@ -123,6 +127,8 @@ class OfferViewSuccess extends React.Component {
             /> }
             { !isJson(this.props.data.description) && this.rendeDescription()} */}
           </Col>
+          <OfferTabs
+            styles={styles} />
         </div>
     );
   }

@@ -8,7 +8,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import Slider from 'material-ui/Slider';
 import OfferTabs from "./OfferTabs"
 
-require('./styles/style.css');
+require('./styles/style.scss');
 
 const styles = {
   headline: {

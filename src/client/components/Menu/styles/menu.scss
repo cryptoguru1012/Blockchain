@@ -1,4 +1,3 @@
-@import "./variables";
 // top nav styling
 .navegador > * {
   padding-right: 0;
@@ -6,8 +5,8 @@
 }
 
 .appbar-color {
-  background-color: $white !important;
-  border-bottom: 2px solid $primary-grey;
+  background-color: #fff !important;
+  border-bottom: 2px solid #E9E9E9;
   top: 0;
   box-shadow: none !important;
   height: 100px;
@@ -20,50 +19,4 @@
 .btnStyle {
   position: relative !important;
   left: 100%;
-}
-// nav tabs styling
-.tab-container {
-  .active-link {
-    background-color: $white !important;
-    color: $primay-green !important;
-  }
-  .active-tab {
-    background: $active-tab !important;
-    color: $white !important;
-  }
-
-  &div {
-    background: #fff;
-    color: $light-grey;
-  }
-
-  .tab {
-    background: $white !important;
-    color: $light-grey !important;
-  }
-  .tab-info{
-    background: $white !important;
-    color: $secondary-green !important;
-  }
-}
-
-.product-info-tabs {
-  position: relative;
-  margin-top: 100px;
-  border: 1.4px solid $tabs-border;
-  padding: 0;
-
-  .tab-content {
-    color: $secondary-green;
-    font-weight: 300;
-    padding: 5%;
-  }
-
-  .btn-green {
-    color: $white !important;
-    button {
-      background-color: $primay-green !important;
-      color: $white !important;
-    }
-  }
 }

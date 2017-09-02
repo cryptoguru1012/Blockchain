@@ -15,10 +15,16 @@ function handleActive(e){
   e.target.className = "active-tab";
 
 }
+const tabStyle = {
+  'background': '#fff',
+  'color': '#5C8788',
+  'borderBottom': '1.4px solid #F6F5F9',
+}
 const OfferTabs = (props) => (
   <Col xs={10} className="product-info-tabs col-xs-offset-1">
     <Tabs inkBarStyle={{'display': 'none'}} className="tab-container">
-      <Tab label="Overview" className="active-tab" style={{'background': '#fff', color: '#5C8788'}} onClick={handleActive}>
+      <Tab label="Overview" className="active-tab"
+        style={tabStyle} onClick={handleActive}>
         <div className="tab-content">
           <h2 className="tab-content-title">Tab One</h2>
           <p>

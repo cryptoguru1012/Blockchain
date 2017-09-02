@@ -1,4 +1,6 @@
 import React from 'react';
+import Config from 'config_env';
+
 import { Link } from 'react-router';
 import VideoPlayer from '../Store/VideoPlayer';
 import FontIcon from 'material-ui/FontIcon';

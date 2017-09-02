@@ -7,6 +7,9 @@ import GridsViewItemsBrowser from './GridsViewItemsBrowser';
 
 require('./styles/list-browser.scss');
 
+/**
+ * Class ListBrowser
+ */
 class ListBrowser extends React.Component {
   constructor(props) {
     super(props);

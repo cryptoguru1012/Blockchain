@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 import geolib from 'geolib';
 import axios from 'axios';
@@ -174,6 +176,9 @@ export function setOrder(order) {
   };
 }
 
+/**
+ * Get featured items for carousel
+ */
 export function getFeatures() {
   return (dispatch) => { // return (dispatch, getState)
     dispatch(getFeaturesStart());
@@ -185,6 +190,9 @@ export function getFeatures() {
   };
 }
 
+/**
+ * Get offer items from syscoin offerfilter API
+ */
 export function search(data) {
   const data2search = data.regexp;
   // const getURL = data2search ? `/API/offers/search/${data2search}` : '/API/offers';

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import RecordRTC from 'recordrtc';
 import Time from './Time';
 
@@ -25,6 +26,11 @@ const styles = {
   },
 };
 
+/**
+ * class VideoRecord
+ *
+ * Video Recorder for all browsers except Safari on Mobile Apple devices
+ */
 class VideoRecord extends React.Component {
   constructor(props) {
     super(props);
@@ -46,20 +52,19 @@ class VideoRecord extends React.Component {
         bitsPerSecond: 128000,
       },
     };
-   
+
     this.startRecord = this.startRecord.bind(this);
     this.saveRecord = this.saveRecord.bind(this);
   }
 
   componentDidMount() {
     this.video = this.refs.video;
-    if (navigator.mediaDevices !== undefined)
+    if (navigator.mediaDevices !== undefined) {
       navigator.mediaDevices
         .getUserMedia(this.state.permissions)
         .then(this.successCallback.bind(this))
         .catch(this.errorCallback.bind(this));
-    else
-      alert('MediaRecorder is not supported by this browser.');
+    } else { alert('MediaRecorder is not supported by this browser.'); }
   }
 
   componentWillUnmount() {
@@ -69,7 +74,7 @@ class VideoRecord extends React.Component {
   successCallback(stream) {
     const video = this.video;
     this.localStream = stream;
-    
+
     window.Video = RecordRTC(this.localStream, this.state.videoOptions);
     video.src = window.URL.createObjectURL(this.localStream);
     video.muted = true;
@@ -96,19 +101,19 @@ class VideoRecord extends React.Component {
       );
     }
   }
-    
+
   saveRecord() {
     const self = this;
-    let data= new FormData();
-    
+    const data = new FormData();
+
     if (window.Video !== undefined && self.state.isRecording) {
       self.video.pause();
       window.clearInterval(self.intervalTrigger);
       self.setState({ isRecording: false });
       window.Video.stopRecording((url) => {
-          let blob = window.Video.blob;
-          data.append('video', blob, 'videoRecorded.webm');
-          self.props.onRecorded(data, url);
+        const blob = window.Video.blob;
+        data.append('video', blob, 'videoRecorded.webm');
+        self.props.onRecorded(data, url);
       });
 
       this.localStream.stop();
@@ -159,7 +164,7 @@ class VideoRecord extends React.Component {
             </Col>
           </Row>
         </Row>
-      </div> 
+      </div>
     );
   }
 }

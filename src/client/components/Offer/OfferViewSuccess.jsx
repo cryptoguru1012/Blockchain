@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
 import VideoPlayer from '../Store/VideoPlayer';
 import { Link } from 'react-router';
@@ -16,6 +15,9 @@ function isJson(str) {
   return true;
 }
 
+/**
+ * class OfferViewSuccess
+ */
 class OfferViewSuccess extends React.Component {
   constructor(props) {
     super(props);

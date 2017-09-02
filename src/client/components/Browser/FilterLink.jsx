@@ -14,6 +14,9 @@ const styles = {
   },
 };
 
+/**
+ * Class FilterLink
+ */
 class FilterLink extends React.Component {
   constructor(props) {
     super(props);

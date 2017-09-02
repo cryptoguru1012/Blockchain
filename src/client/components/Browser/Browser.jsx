@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Config from 'config_env';
+
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import { RaisedButton } from 'material-ui';
@@ -14,51 +16,9 @@ import OrderByBrowser from './OrderByBrowser';
 import Pagination from './Pagination';
 import Sorter from './Sorter';
 
-const filterItems = [
-  {
-    value: 'SHOW_ALL',
-    name: 'All',
-  },
-  {
-    value: 'SHOW_VIDEOS',
-    name: 'Videos only',
-  },
-  {
-    value: 'SHOW_PHOTOS',
-    name: 'Photos only',
-  },
-  {
-    value: 'SHOW_TEXT',
-    name: 'Text only',
-  },
-  {
-    value: 'SHOW_MAP',
-    name: 'Map only',
-  },
-];
 
-const orderItems = [
-  {
-    value: 'currency',
-    name: 'Currency',
-  },
-  {
-    value: 'title',
-    name: 'Name',
-  },
-  {
-    value: 'geolocation',
-    name: 'Geolocation',
-  },
-  {
-    value: 'paymentoptions_display',
-    name: 'Payment options',
-  },
-  {
-    value: 'category',
-    name: 'Category',
-  },
-];
+const filterItems = Config.Browser.filterItems;
+const orderItems = Config.Browser.orderItems;
 
 const styles = {
   background: {
@@ -71,6 +31,11 @@ const styles = {
   },
 };
 
+/**
+ * Class Browser
+ *
+ * Loads content on home page(Offer listings)
+ */
 class Browser extends React.Component {
   constructor(props) {
     super(props);
@@ -96,15 +61,29 @@ class Browser extends React.Component {
   }
 
   showNextPage() {
-    // go next
+		// go next
     const item_guid = this.props.browser.dataItems.pop();
-    const params = {
-      from: item_guid.offer,
-    };
+		 const params = {
+   from: item_guid.offer,
+ };
 
     this.props.getNextOffers(params);
     this.setState({ current: this.state.current + 1 });
   }
+
+	/**
+	 * @params regexp category
+	 * @returns array(offers)
+	 */
+  showPreviousPage() {
+		// go to the previous page
+    const item_guid = this.props.browser.dataItems[0];
+		 const params = {
+   regexp: null,
+   from: item_guid.offer,
+   safesearch: 'Yes',
+   category: null,
+ };
 
   showPreviousPage() {
     // go to the previous page

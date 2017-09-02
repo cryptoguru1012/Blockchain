@@ -2,8 +2,8 @@ const renderHTML = assetUrl =>
   `<!DOCTYPE html>
       <html lang="en-US" style="height: 100%;">
       <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta charset="utf-8"/>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
           <title>Moovr</title>
           <link rel="icon" href="${assetUrl}/public/images/favicon.svg">
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

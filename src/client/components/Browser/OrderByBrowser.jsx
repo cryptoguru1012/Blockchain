@@ -6,6 +6,9 @@ import { FormsySelect } from 'formsy-material-ui/lib';
 import { MenuItem } from 'material-ui';
 import { SelectField } from 'material-ui';
 
+/**
+ * Class OrderByBrowser
+ */
 class OrderByBrowser extends React.Component {
   constructor(props) {
     super(props);

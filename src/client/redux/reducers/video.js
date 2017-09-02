@@ -1,5 +1,13 @@
-import { DELETE_RECORD, UPLOAD_START, UPLOAD_ERROR, UPLOAD_SUCCESS, SET_OFFER, UPDATE_SUBTITLES, SET_VIDEO_DURATION } from '../actions/video';
-
+import {
+  DELETE_RECORD,
+  UPLOAD_START,
+  UPLOAD_ERROR,
+  UPLOAD_SUCCESS,
+  SET_OFFER,
+  UPDATE_SUBTITLES,
+  SET_VIDEO_DURATION,
+} from '../actions/video';
+/* eslint no-param-reassign: 0 */  // --> OFF
 const initialState = {
   localUrl: null,
   url: null,

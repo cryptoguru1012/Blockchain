@@ -1,7 +1,7 @@
 import keystone from 'keystone';
 
 const User = keystone.list('User');
-
+/* eslint new-cap: 0 */  // --> OFF
 const createUser = (params, cb) => {
   const name = {
     first: params.name.first,

@@ -42,7 +42,7 @@ const browserReducers = (state = initialState, action) => {
       return { ...state, loadingFeatures: true };
 
     case FEATURE_ERROR:
-      return { ...state, error: true, loadingFeatures: false, message: 'this is from me' };
+      return { ...state, error: true, loadingFeatures: false, message: action.message };
 
     case FEATURE_SUCCESS:
       return { ...state, error: false, loadingFeatures: false, features: action.items };

@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.GeoLoc__container{
+  padding-right: 22px;
+}
+
+.GeoLoc__floatText {
+  margin: 50px 0 5px 0;
+  pointer-events: none;
+  user-select: none;
+  color: #BDBDBD;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.GeoLoc__mainText{
+  margin-right: 0.5em;
+}
+
+.GeoLoc__suggestion-item {
+  display: flex;
+  align-Items: center;
+  padding: 4px;
+  text-align: left;
+}
+.GeoLoc__suggestion-icon {
+  margin-right: 8px;
+  transform: scale(0.8);
+}
+
+.GeoLoc__search-input{
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #E0E0E0;
+  display: inline;
+  width: 100%;
+  padding: 16px 16px 0px 0px;
+  font-size: 16px;
+  outline: none;
+  animation: focusing 0.75s;
+  font-weight: normal;
+  color: #212121
+}
+
+#my-input-id::placeholder {
+  color: #BDBDBD;
+  opacity: 1;
+}
+
+.GeoLoc__search-input:focus,
+.GeoLoc__search-input:active {
+  border-width: 0 0 2px 0;
+  border-color: #212121;
+  
+}
+
+.GeoLoc__autocomplete-container {
+  border-width: 0 1px 2px 1px;
+  border-style: solid;
+  border-color:  #E0E0E0;
+  border-radius: 0 0 0 0;
+  animation: fadein 0.75s;
+}
+
+.GeoLoc__autocomplete-Item-Active {
+  padding: 10px;
+  text-align: left;
+  background-color: #E0E0E0;
+}
+
+@media (max-width: 480px) {
+  .autocomplete-container {
+    text-align: left;
+  }
+}
+
+.form-group {
+  font-family: 'Roboto', sans-serif;
+}
+
+@media (min-width: 768px) {
+  .form-group {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0rem;
+    width: 100%;
+  }
+}
+
+.geocoding-results {
+  text-align: left;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+@keyframes focusing {
+  from  { border-color:  #E0E0E0;
+          border-width: 0 0 1px 0;
+        }
+  to    { border-color:  #212121;
+          border-width: 0 0 2px 0;
+        }
+}

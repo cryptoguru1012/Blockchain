@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 import axios from 'axios';
 
@@ -63,9 +65,12 @@ export function updateSubtitles(subtitles) {
   };
 }
 
-// https://d3j22jloo6hpq6.cloudfront.net/API/parse
-// https://shopshots-argvil19.c9users.io/API/parse
-
+/**
+ * Upload videos to be formatted
+ * Videos transcribed with time stamp and standardised to mp4 format
+ */
+/* eslint no-underscore-dangle: 0 */  // --> OFF
+/* eslint no-undef: 0 */  // --> OFF
 export function setRecord(data, url) {
   return (dispatch) => {
     dispatch(uploadStart(url));

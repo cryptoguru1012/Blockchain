@@ -34,6 +34,11 @@ function isJson(str) {
   return true;
 }
 
+/**
+ * Class ItemBrowser
+ *
+ * Single offer view
+ */
 class ItemBrowser extends React.Component {
   constructor(props) {
     super(props);

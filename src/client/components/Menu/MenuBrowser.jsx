@@ -17,6 +17,9 @@ import SSIcon from './icon';
 
 require('./styles/menu.scss');
 
+/**
+ * class MenuBrowser
+ */
 class MenuBrowser extends React.Component {
   constructor(props) {
     super(props);

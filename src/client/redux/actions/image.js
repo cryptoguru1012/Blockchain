@@ -1,3 +1,5 @@
+import Config from 'config_env';
+
 import 'whatwg-fetch';
 import axios from 'axios';
 
@@ -25,6 +27,9 @@ export function proceed(payload) {
   };
 }
 
+/**
+ * Upload images to S3 storage
+ */
 export function setImage(data) {
   return (dispatch) => {
     dispatch({ type: LOAD_START });

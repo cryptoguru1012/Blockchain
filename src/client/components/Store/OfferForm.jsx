@@ -1,11 +1,18 @@
 import React from 'react';
+import Config from 'config_env';
 
 import CircularProgress from 'material-ui/CircularProgress';
 import Formsy from 'formsy-react';
-import { RaisedButton, MenuItem, Snackbar } from 'material-ui';
+import { RaisedButton, FlatButton, MenuItem, Snackbar } from 'material-ui';
+import FontIcon from 'material-ui/FontIcon';
 import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
+import { grey300, grey400, grey500, grey700 } from 'material-ui/styles/colors';
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
+
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { geolocated } from 'react-geolocated';
+
+require('./style/OfferForm.scss');
 
 const myStyle = {
   spinnerStyle: {
@@ -18,6 +25,11 @@ const myStyle = {
   }
 };
 
+/**
+ * class OfferForm
+ *
+ * Form to fill in offer details
+ */
 class OfferForm extends React.Component {
   constructor(props) {
     super(props);
@@ -28,29 +40,34 @@ class OfferForm extends React.Component {
     this.handleSnackbarErrorRequestClose = this.handleSnackbarErrorRequestClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getDescription = this.getDescription.bind(this);
+    this.addrHandleChange = this.addrHandleChange.bind(this);
+    this.addrHandleSelect = this.addrHandleSelect.bind(this);
+    this.latlngToAddress = this.latlngToAddress.bind(this);
 
-    // autofill description with subtitles
+
+		// autofill description with subtitles
 
     this.state = {
       autoDescription: this.getDescription(),
       canSubmit: false,
-      latitude: '',
-      longitude: ''
+      coords: {},
+      originCoords: {},
+      address: '',
+      place_id: '',
+      geocodeResults: null,
+      addrLoading: false,
     };
-
   }
 
   getDescription() {
-    let arrDescription = []
-      , subtitles = this.props.subtitlesVideo.sort((a,b) => {
-      if ( a.startTime < b.startTime )
-        return -1;
-      if ( a.startTime > b.startTime )
-        return 1;
-      return 0;
-    });
+    let arrDescription = [],
+			 subtitles = this.props.subtitlesVideo.sort((a, b) => {
+   if (a.startTime < b.startTime) { return -1; }
+   if (a.startTime > b.startTime) { return 1; }
+   return 0;
+ });
 
-    subtitles.map(subtitle => {
+    subtitles.map((subtitle) => {
       arrDescription.push(subtitle.text);
     });
 
@@ -67,43 +84,41 @@ class OfferForm extends React.Component {
 
   handleSnackbarSuccessRequestClose(reason) {
     if (reason !== 'clickaway' && !this.props.newItem.error) {
-      let guid = this.props.newItem.guid;
-      window.location = '/offer/' + guid;
+      const guid = this.props.newItem.guid;
+      window.location = `/offer/${guid}`;
     }
   }
 
   handleSnackbarErrorRequestClose() {
     this.props.showSnackbar();
   }
-  
+
   handleSubmit(data) {
-    let description = {
+    const description = {
       text: data.description,
       urlVideo: this.props.urlVideo,
       urlImage: this.props.urlImage,
-      subtitlesVideo: this.props.subtitlesVideo
+      subtitlesVideo: this.props.subtitlesVideo,
     };
-    let payload = {
-        alias: 'argvil19',
-        category: data.category,
-        title: data.name,
-        quantity: 1,
-        price: parseInt(data.price),
-        description: JSON.stringify(description),
-        currency: data.currency,
-        paymentoptions: data.paymentOptions,
-        private: data.certificate,
-        geolocation: `${data.latitude},${data.longitude}`
-      };
-    
+    const payload = {
+      alias: 'argvil19',
+      category: data.category,
+      title: data.name,
+      quantity: 1,
+      price: parseInt(data.price),
+      description: JSON.stringify(description),
+      currency: data.currency,
+      paymentoptions: data.paymentOptions,
+      private: data.certificate,
+      geolocation: `${this.state.coords.lat},${this.state.coords.lng}`,
+    };
+
     this.props.onCreate(JSON.stringify(payload));
   }
 
   renderCategories() {
     if (this.props.categories.categories.length > 0) {
-      return this.props.categories.categories.map((category, i) => {
-        return <MenuItem key={i} value={category.cat} primaryText={category.cat} />
-      })
+      return this.props.categories.categories.map((category, i) => <MenuItem key={i} value={category.cat} primaryText={category.cat} />);
     }
   }
 
@@ -111,35 +126,105 @@ class OfferForm extends React.Component {
     if (this.props.currencies.currencies.length > 0) {
       return this.props.currencies.currencies.map((currency, i) => {
         if (i === 0) {
-          return <MenuItem selected default key={i} value={currency.currency} primaryText={currency.currency} />
-        }else{
-          return <MenuItem key={i} value={currency.currency} primaryText={currency.currency} />
+          return <MenuItem selected default key={i} value={currency.currency} primaryText={currency.currency} />;
         }
-        
-      })
+        return <MenuItem key={i} value={currency.currency} primaryText={currency.currency} />;
+      });
     }
   }
 
   renderPayments() {
-    return this.props.newItem.payments.map(payment => {
-      return <MenuItem key={payment.id} value={payment.value} primaryText={payment.text} />
-    })
+    return this.props.newItem.payments.map(payment => <MenuItem key={payment.id} value={payment.value} primaryText={payment.text} />);
   }
 
-  componentWillReceiveProps(props){
-
-    if(props.coords && !props.coords.positionError)
-      this.setState({latitude: props.coords.latitude, longitude: props.coords.longitude})
-    
-    else
-      fetch('http://ip-api.com/json')
-        .then(res => res.json())
-        .then((data) => {
-          this.setState({latitude: data.lat, longitude: data.lon})
-        })
+  addrHandleChange(address) {
+    this.setState({
+      address,
+      geocodeResults: null,
+    });
   }
-  render() {
-    return ( 
+
+  addrHandleSelect(address) {
+    this.setState({
+      address,
+      loading: true,
+    });
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(({ lat, lng }) => {
+        this.setState({
+          coords: { lat, lng },
+          geocodeResults: 'success',
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          geocodeResults: 'error',
+          loading: false,
+        });
+      });
+  	}
+
+  latlngToAddress(lat, lng) {
+    const geocoder = new google.maps.Geocoder();
+    const latlng = { lat, lng };
+    geocoder.geocode({ location: latlng }, (results, status) => {
+      this.setState({
+        coords: { lat, lng },
+        address: results[0].formatted_address,
+        place_id: results[0].place_id },
+				);
+    });
+  }
+
+	componentWillReceiveProps(props){
+		if(props.coords && !props.coords.positionError) {
+			this.setState({
+				coords: {lat:props.coords.latitude, lng:props.coords.longitude},
+				originCoords: {lat:props.coords.latitude, lng:props.coords.longitude}
+			});
+			this.latlngToAddress(props.coords.latitude, props.coords.longitude);
+		}
+		else
+			fetch(Config.external_IpAPI)
+				.then(res => res.json())
+				.then((data) => {
+					this.setState({
+						coords: {lat:data.lat, lng:data.lon},
+						originCoords: {lat:data.lat, lng:data.lon}
+					})
+					this.latlngToAddress(data.lat, data.lon);
+				})
+	}
+	
+	render() {
+		const cssClasses = {
+			root: 'form-group',
+			input: 'GeoLoc__search-input',
+			autocompleteContainer: 'GeoLoc__autocomplete-container',
+			autocompleteItemActive: 'GeoLoc__autocomplete-Item-Active'
+		}	
+
+    const addrAutocompleteItem = ({ formattedSuggestion }) => (
+      <div className="GeoLoc__suggestion-item" style={{ zIndex: 3000 }}>
+        <FontIcon style={{ color: '#ff0000' }} className="material-icons  GeoLoc__suggestion-icon">location_on</FontIcon>
+        <span className="GeoLoc__mainText">{formattedSuggestion.mainText},</span>
+        <small className="text-muted">{formattedSuggestion.secondaryText}</small>
+      </div>);
+
+    const addrInputProps = {
+      type: 'text',
+      value: this.state.address,
+      onChange: this.addrHandleChange,
+      onBlur: () => {},
+      onFocus: () => {},
+      autoFocus: false,
+      placeholder: 'Search Places',
+      name: 'GeoLoc__input',
+      id: 'my-input-id',
+    };
+    return (
       <Row>
         <Col xs={12}>
           <Formsy.Form onValid={this.enableButton} onInvalid={this.disableButton} onValidSubmit={e => this.handleSubmit(e)} >
@@ -147,13 +232,13 @@ class OfferForm extends React.Component {
               name="name"
               floatingLabelText="Title"
               hintText="Item title"
-              validations="isSpecialWords"
-              validationError="Please only use letters"
+              validations="isExisty"
+              validationError="This field cannot be empty"
               requiredError="This field is required"
               required
               fullWidth
             />
-            <FormsySelect name="category" floatingLabelText="Category" fullWidth>
+            <FormsySelect name="category" floatingLabelText="Category" required fullWidth>
               {this.renderCategories()}
             </FormsySelect>
             <FormsyText
@@ -163,14 +248,15 @@ class OfferForm extends React.Component {
               validations="isNumeric"
               validationError="Please provide a number"
               requiredError="This field is required"
-              
+              required
               fullWidth
             />
             <FormsySelect
-              name="currency" floatingLabelText="Currency to List in"  fullWidth>
+              name="currency" floatingLabelText="Currency to List in" required fullWidth
+            >
               {this.renderCurrencies()}
             </FormsySelect>
-            <FormsySelect name="payment" floatingLabelText="Payment"  fullWidth>
+            <FormsySelect name="payment" floatingLabelText="Payment" required fullWidth>
               {this.renderPayments()}
             </FormsySelect>
             <FormsyText
@@ -180,56 +266,53 @@ class OfferForm extends React.Component {
               hintText="Item description"
               validations="isExisty"
               validationError="This field cannot be empty."
-              
+              required
               fullWidth
               multiLine
             />
-            <Row>
-              <Col xs={6}>
-                <FormsyText
-                  name="latitude"
-                  value={this.state.latitude}
-                  floatingLabelText="Latitude"
-                  hintText="Item latitude"
-                  validations="isNumeric"
-                  validationError="Only Numbers."
-                  
-                  requiredError="This field is required"
-                  fullWidth
+            <Row className="GeoLoc__container">
+              <Col xs={12} className="GeoLoc__floatText">
+                <span>Geolocation</span>
+              </Col>
+              <Col xs={12} md={11}>
+                <PlacesAutocomplete
+                  onSelect={this.addrHandleSelect}
+                  autocompleteItem={addrAutocompleteItem}
+                  onEnterKeyDown={this.addrHandleSelect}
+                  classNames={cssClasses}
+                  inputProps={addrInputProps}
+                  highlightFirstSuggestion
+                  googleLogo
                 />
               </Col>
-              <Col xs={6}>
-              <FormsyText
-                name="longitude"
-                value={this.state.longitude}
-                floatingLabelText="Longitude"
-                hintText="Item longitude"
-                validations="isNumeric"
-                validationError="Only Numbers."
-                
-                requiredError="This field is required"
-                fullWidth
-              />
+              <Col xs={12} md={1}>
+                <FlatButton
+                  backgroundColor={grey300}
+                  hoverColor={grey400}
+                  primary
+                  icon={<FontIcon className="material-icons">gps_fixed</FontIcon>}
+                  onClick={() => this.latlngToAddress(this.state.originCoords.lat, this.state.originCoords.lng)}
+                  title="Current Location"
+                />
               </Col>
             </Row>
             {
-              // <FormsyToggle name="certificate" label="Certificate" />
-            }
+							// <FormsyToggle name="certificate" label="Certificate" />
+						}
             {!this.props.newItem.loading &&
-              <RaisedButton
-                label="Send"
-                type="submit"
-                primary={false}
-                fullWidth
-                disabled={!this.state.canSubmit}
-              />
-            }
-            
+            <RaisedButton
+              label="Send"
+              type="submit"
+              primary={false}
+              fullWidth
+              disabled={!this.state.canSubmit}
+            />
+						}
           </Formsy.Form>
-          
+
           {this.props.newItem.loading && !this.props.newItem.success &&
-            <CircularProgress size={50} style={myStyle.spinnerStyle} />
-          }
+          <CircularProgress size={50} style={myStyle.spinnerStyle} />
+					}
           <Snackbar
             open={this.props.newItem.success}
             message="Success! Item created."

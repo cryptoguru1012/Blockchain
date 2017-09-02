@@ -1,11 +1,11 @@
 import keystone from 'keystone';
 
 const StoreItem = keystone.list('StoreItem');
-
+/* eslint no-param-reassign: 0 */  // --> OFF
 const createItem = (params, cb) => {
   const name = params.name;
   const category = params.category;
-  const price = parseInt(params.price);
+  const price = parseInt(params.price, 10);
   const currency = params.currency;
   const paymentOptions = params.paymentOptions;
   const certificate = params.certificate === 'true';

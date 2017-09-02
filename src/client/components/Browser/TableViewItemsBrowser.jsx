@@ -1,5 +1,5 @@
 import React from 'react';
-import Config from 'config_env';
+/* import Config from 'configEnv'; */
 
 import { Link } from 'react-router';
 import VideoPlayer from '../Store/VideoPlayer';

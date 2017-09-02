@@ -34,7 +34,7 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.css'],
   },
   externals: {
-    config_env: JSON.stringify(require('./src/config_env.json')),
+    configEnv: JSON.stringify(require('./src/config_env.json')),
   },
   module: {
     loaders: [

@@ -91,7 +91,7 @@ class OfferMap extends Component {
       currentPosition: null,
       center: null,
       content: null,
-      radius: 2500, // ACZ --> put this const in config_env.
+      radius: 2500, // ACZ --> put this const in configEnv.
       showCenterInfo: true,
       markers: [],
     };

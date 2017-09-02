@@ -1,5 +1,5 @@
 import React from 'react';
-import Config from 'config_env';
+import Config from 'configEnv';
 
 import footerStyle from './css/styles.css';
 import fonts from '../fonts/style.css';

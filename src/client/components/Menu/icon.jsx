@@ -1,9 +1,9 @@
 
-import React from "react"
-import Config from 'config_env';
+import React from 'react';
+import Config from 'configEnv';
 
-export default class SSIcon extends React.Component {
-    render(){
-      return <img src={require(Config.assets.appLogo)} />
-    }
+function SSIcon() {
+  return <img alt="" src={require(Config.assets.appLogo)} />;
 }
+
+export default SSIcon;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Config from 'config_env';
+import Config from 'configEnv';
 
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -71,20 +71,6 @@ class Browser extends React.Component {
     this.setState({ current: this.state.current + 1 });
   }
 
-	/**
-	 * @params regexp category
-	 * @returns array(offers)
-	 */
-  showPreviousPage() {
-		// go to the previous page
-    const item_guid = this.props.browser.dataItems[0];
-		 const params = {
-   regexp: null,
-   from: item_guid.offer,
-   safesearch: 'Yes',
-   category: null,
- };
-
   showPreviousPage() {
     // go to the previous page
     const item_guid = this.props.browser.dataItems[0];
@@ -98,7 +84,7 @@ class Browser extends React.Component {
     this.props.getNextOffers(params);
     this.state.current === 0 && this.setState({ current: 0 });
     this.state.current > 0 && this.setState({ current: this.state.current - 1 });
-  }
+  };
 
   render() {
     let { browser, onOrder } = this.props;

@@ -1,4 +1,4 @@
-import Config from 'config_env';
+/* import Config from 'configEnv'; */
 
 import 'whatwg-fetch';
 import axios from 'axios';

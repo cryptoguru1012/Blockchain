@@ -1,4 +1,4 @@
-import Config from 'config_env';
+/* import Config from 'configEnv'; */
 import 'whatwg-fetch';
 
 export const CURRENCY_REQ_START = 'CURRENCY_REQ_START';

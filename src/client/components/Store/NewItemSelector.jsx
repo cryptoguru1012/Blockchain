@@ -6,7 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import { grey500, grey600 } from 'material-ui/styles/colors';
-import Config from 'config_env';
+/* import Config from 'configEnv'; */
 
 // redux
 import { doCategoryReq } from '../../redux/actions/store/category';

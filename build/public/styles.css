@@ -16,9 +16,32 @@
   position: relative !important;
   left: 100%; }
 
-.tab {
+.tab-container .active-tab {
+  background: #828282 !important;
+  color: #fff !important; }
+
+.tab-containerdiv {
+  background: #fff;
+  color: #CDCDCD; }
+
+.tab-container .tab {
   background: #fff !important;
   color: #CDCDCD !important; }
+
+.product-info-tabs {
+  position: relative;
+  margin-top: 100px;
+  border: 1.4px solid #F6F5F9;
+  padding: 0; }
+  .product-info-tabs .tab-content {
+    color: #5C8788;
+    font-weight: 300;
+    padding: 5%; }
+  .product-info-tabs .btn-green {
+    color: #fff !important; }
+    .product-info-tabs .btn-green button {
+      background-color: #5FA02F !important;
+      color: #fff !important; }
 /* -- Variables --------------------------- */
 /* ---------------------------------------- */
 /* -- Layout ------------------------------ */

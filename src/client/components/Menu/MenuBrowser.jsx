@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+import { Glyphicon } from "react-bootstrap";
 
 import { search, setVisibilityFilter } from '../../redux/actions/browser';
 import { doCategoryReq } from '../../redux/actions/store/category';
@@ -107,7 +108,7 @@ class MenuBrowser extends React.Component {
     }
     this.setState({ activeSearch: !this.state.activeSearch });
     if (browser.filter !== 'SHOW_MAP') {
-      this.props.filter('SHOW_ALL'); 
+      this.props.filter('SHOW_ALL');
     }
   }
 

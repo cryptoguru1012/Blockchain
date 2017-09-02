@@ -1,5 +1,4 @@
 @import "./variables";
-
 // top nav styling
 .navegador > * {
   padding-right: 0;
@@ -13,17 +12,50 @@
   box-shadow: none !important;
   height: 100px;
 }
-.setStyle button{
+
+.setStyle button {
   padding: 12px 30px 12px 220px !important;
 }
 
-.btnStyle{
+.btnStyle {
   position: relative !important;
   left: 100%;
 }
-
 // nav tabs styling
-.tab{
-  background: $white !important;
-  color: $light-grey !important;
+.tab-container {
+  .active-tab {
+    background: $active-tab !important;
+    color: $white !important;
+  }
+
+  &div {
+    background: #fff;
+    color: $light-grey;
+  }
+
+  .tab {
+    background: $white !important;
+    color: $light-grey !important;
+  }
+}
+
+.product-info-tabs {
+  position: relative;
+  margin-top: 100px;
+  border: 1.4px solid $tabs-border;
+  padding: 0;
+
+  .tab-content {
+    color: $secondary-green;
+    font-weight: 300;
+    padding: 5%;
+  }
+
+  .btn-green {
+    color: $white !important;
+    button {
+      background-color: $primay-green !important;
+      color: $white !important;
+    }
+  }
 }

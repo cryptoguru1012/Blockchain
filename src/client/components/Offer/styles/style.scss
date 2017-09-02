@@ -1,0 +1,51 @@
+@import "./variables";
+
+img[src=" "]{ display:none; }
+// nav tabs styling
+.tab-container {
+  .active-link {
+    background-color: $white !important;
+    color: $primay-green !important;
+  }
+  .active-tab {
+    background: $active-tab !important;
+    color: $white !important;
+  }
+
+  &div {
+    background: #fff;
+    color: $light-grey;
+  }
+
+  .tab {
+    background: $white !important;
+    color: $light-grey !important;
+  }
+
+}
+
+.product-info-tabs {
+  position: relative;
+  margin-top: 100px;
+  border: 1.4px solid $tabs-border;
+  padding: 0;
+
+  .tab-content {
+    color: $secondary-green;
+    font-weight: 300;
+    padding: 5%;
+  }
+  .tab-info{
+    background: $white !important;
+    color: $secondary-green !important;
+    border-bottom: 1.4px solid $tabs-border !important;
+    border-left: 1.4px solid $tabs-border !important;
+  }
+  .btn-green {
+    color: $white !important;
+    button {
+      background-color: $primay-green !important;
+      color: $white !important;
+    }
+  }
+}

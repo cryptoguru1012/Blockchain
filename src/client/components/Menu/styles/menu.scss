@@ -23,6 +23,10 @@
 }
 // nav tabs styling
 .tab-container {
+  .active-link {
+    background-color: $white !important;
+    color: $primay-green !important;
+  }
   .active-tab {
     background: $active-tab !important;
     color: $white !important;
@@ -36,6 +40,10 @@
   .tab {
     background: $white !important;
     color: $light-grey !important;
+  }
+  .tab-info{
+    background: $white !important;
+    color: $secondary-green !important;
   }
 }
 

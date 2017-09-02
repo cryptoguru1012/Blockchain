@@ -21,6 +21,12 @@ const styles = {
   bar:{
     backgroundColor: '#5FA02F',
     borderColor: '#5FA02F'
+  },
+  tab:{
+    'color': '#CDCDCD'
+  },
+  activeTab:{
+    'background': '#FFF'
   }
 };
 

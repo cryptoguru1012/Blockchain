@@ -16,6 +16,10 @@
   position: relative !important;
   left: 100%; }
 
+.tab-container .active-link {
+  background-color: #fff !important;
+  color: #5FA02F !important; }
+
 .tab-container .active-tab {
   background: #828282 !important;
   color: #fff !important; }
@@ -27,6 +31,10 @@
 .tab-container .tab {
   background: #fff !important;
   color: #CDCDCD !important; }
+
+.tab-container .tab-info {
+  background: #fff !important;
+  color: #5C8788 !important; }
 
 .product-info-tabs {
   position: relative;

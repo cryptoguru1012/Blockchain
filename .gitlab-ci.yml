@@ -16,8 +16,9 @@ staging:
   stage: test
   image: ruby:latest
   script:
-   - gem install dpl
-   - dpl --provider=heroku --app=moovr-staging --api-key=$HEROKU_MOOVR_STAGING_API_KEY
+    - npm run lint
+    - gem install dpl
+    - dpl --provider=heroku --app=moovr-staging --api-key=$HEROKU_MOOVR_STAGING_API_KEY
   environment:
     name: development
 
@@ -25,7 +26,7 @@ production:
   stage: deploy
   image: ruby:latest
   script:
-   - gem install dpl
-   - dpl --provider=heroku --app=moovr-staging --api-key=$HEROKU_MOOVR_STAGING_API_KEY
+    - gem install dpl
+    - dpl --provider=heroku --app=moovr-staging --api-key=$HEROKU_MOOVR_STAGING_API_KEY
   only:
-   - master
+    - master

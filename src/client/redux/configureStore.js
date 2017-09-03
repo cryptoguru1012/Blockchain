@@ -1,8 +1,7 @@
-const prodConfigureStore = require('./configureStore.prod');
-const devConfigureStore = require('./configureStore.dev');
-
 if (process.env.NODE_ENV === 'production') {
-  module.exports = prodConfigureStore;
+  console.warn('----------------------\nUsing production Store\n----------------------');
+  module.exports = require('./configureStore.prod');
 } else {
-  module.exports = devConfigureStore;
+  console.log('-----------------------\nUsing development Store\n-----------------------');
+  module.exports = require('./configureStore.dev');
 }

@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { setVisibilityFilter } from '../../redux/actions/browser';
+import { fetchOffers, getFilterOption } from '../../redux/actions/sortActions';
 
 const styles = {
   filter: {
@@ -26,15 +27,21 @@ class FilterLink extends React.Component {
   handleClick(e) {
     e.preventDefault();
     this.props.onClick();
+    this.props.fetchOffers();
+    this.props.getFilterOption(this.props.filter);
   }
 
   render() {
     if (this.props.active) {
-      return <span style={{ ...styles.filter, color: '#263238' }}>{this.props.children}</span>;
+      return (
+        <span style={{ ...styles.filter, color: '#263238' }}>
+          {this.props.children}
+        </span>
+      );
     }
 
     return (
-      <a href="#" onClick={e => this.handleClick(e)} style={styles.filter} >
+      <a href="#" onClick={e => this.handleClick(e)} style={styles.filter}>
         {this.props.children}
       </a>
     );
@@ -49,6 +56,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick: () => {
     dispatch(setVisibilityFilter(ownProps.filter));
   },
+  fetchOffers: () => {
+    dispatch(fetchOffers());
+  },
+  getFilterOption: option => dispatch(getFilterOption(option)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterLink);

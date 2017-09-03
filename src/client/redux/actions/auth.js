@@ -22,7 +22,7 @@ export function showSnackbar() {
 }
 
 export function doRegister(params) {
-  return (dispatch) => {
+  return (dispatch) => { // return (dispatch, getState) => {
     dispatch(registerStart());
     fetch('/API/user', {
       method: 'POST',

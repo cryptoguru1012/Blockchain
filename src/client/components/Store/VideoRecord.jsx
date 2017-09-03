@@ -83,7 +83,6 @@ class VideoRecord extends React.Component {
   }
 
   errorCallback(e) {
-    console.error(`Error : ${e.message}`);
   }
 
   startRecord() {

@@ -1,6 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Config from 'config_env';
+import { Row, Col, Grid, Button } from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
+import CircularProgress from 'material-ui/CircularProgress';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
+import { grey500, grey600 } from 'material-ui/styles/colors';
+/* import Config from 'configEnv'; */
 
 // redux
 import { doCategoryReq } from '../../redux/actions/store/category';
@@ -10,15 +16,7 @@ import { setRecord, deleteRecord, setOfferForm, updateSubtitles, setDuration } f
 import { setImage, deleteImage, proceed } from '../../redux/actions/image';
 
 // components
-import { Row, Col, Grid, Button } from 'react-bootstrap';
-import Dropzone from 'react-dropzone';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
-import SvgIcon from 'material-ui/SvgIcon';
-import { grey500, grey600 } from 'material-ui/styles/colors';
 import VideoRecord from './VideoRecord';
-import VideoRecord2 from './VideoRecord2';
 import VideoPlayer from './VideoPlayer';
 import ImageEdit from './ImageEdit';
 import SubtitlesEditer from './SubtitlesEditer';
@@ -127,7 +125,6 @@ class NewItemSelector extends React.Component {
   componentWillMount() {
     this.props.getCategories();
     this.props.getCurrencies();
-    this.props.image.loaded = false;
   }
 
   componentDidMount() {
@@ -222,7 +219,9 @@ is_iOS() {
       const url = media.preview;
       formData.append('video', media, 'videoRecorded.webm');
       this.props.onRecorded(formData, url);
-    } else { this.setState({ open: true }); }
+    }
+    else 
+      this.setState({open: true});
   }
 
   render() {
@@ -343,7 +342,7 @@ is_iOS() {
                 <Col md={2}>
                   <VIcon />
                 </Col>
-                <Col md={6}>
+                <Col xs={6}>
                   <FlatButton
                     label={<span>Record/Attach Media<br /></span>}
                     labelPosition="before"
@@ -438,7 +437,7 @@ is_iOS() {
           </div>
         }
         {output}
-      </div>);
+      </div>)
   }
 }
 

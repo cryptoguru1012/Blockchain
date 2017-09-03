@@ -1,6 +1,7 @@
-import Config from 'config_env';
+/* import Config from 'configEnv'; */
 
 import 'whatwg-fetch';
+import axios from 'axios';
 
 export const ITEM_CREATE_START = 'ITEM_CREATE_START';
 export const ITEM_CREATE_ERR = 'ITEM_CREATE_ERR';
@@ -35,34 +36,17 @@ export function showSnackbar() {
 
 export function doItemCreate(params) {
   return (dispatch) => {
-    const login = Config.CloudFront.login;
-    const offernew = Config.CloudFront.offernew;
     dispatch(itemCreateStart());
-    fetch(login)
-    .then(res => res.json())
-    .then((res) => {
-      const token = res.token;
-      fetch(offernew, {
-        headers: {
-          Token: token,
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: params,
-      })
-      .then(ress => ress.json())
-      .then((ress) => {
-        if (typeof ress !== 'string') {
-          dispatch(itemCreateSuccess(ress));
-        }
-        dispatch(itemCreateErr(ress));
+
+    axios
+      .post('/API/offers/new', params)
+      .then((response) => {
+        if (typeof response.data !== 'string') {
+          dispatch(itemCreateSuccess(response.data));
+        } else dispatch(itemCreateErr(response.data));
       })
       .catch((error) => {
         dispatch(itemCreateErr(error));
       });
-    })
-    .catch((error) => {
-      dispatch(itemCreateErr(error));
-    });
   };
 }

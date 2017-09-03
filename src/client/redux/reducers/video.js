@@ -20,15 +20,16 @@ const initialState = {
   videoUploaded: false,
 };
 
+
 function setTimetoSeconds(value) {
   let output = 0;
   const match = value.match(/([0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3})/);
 
   if (match) {
-    value = value.split(':');
-    const h = parseInt(value[0], 10) * 3600;
-    const m = parseInt(value[1], 10) * 60;
-    const s = parseFloat(value[2].replace(',', '.'));
+    const valuee = value.split(':');
+    const h = parseInt(valuee[0]) * 3600;
+    const m = parseInt(valuee[1]) * 60;
+    const s = parseFloat(valuee[2].replace(',', '.'));
 
     output = h + m + s;
   }
@@ -36,11 +37,13 @@ function setTimetoSeconds(value) {
 }
 
 function setFormatTime(arr) {
-  arr.map(a => Object.assign({}, a, {
-    startTime: setTimetoSeconds(a.startTime),
-    endTime: setTimetoSeconds(a.endTime),
-  }));
-  return arr;
+  const newArr = arr;
+  newArr.map((a) => {
+    a.startTime = setTimetoSeconds(a.startTime);
+    a.endTime = setTimetoSeconds(a.endTime);
+    return a;
+  });
+  return newArr;
 }
 
 const videoReducers = (state = initialState, action) => {

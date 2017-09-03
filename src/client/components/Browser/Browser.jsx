@@ -1,17 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Config from 'config_env';
+import Config from 'configEnv';
 
 import { Row, Col, Grid, Button, Glyphicon } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import { RaisedButton } from 'material-ui';
 
 import { search, getFeatures, setOrder } from '../../redux/actions/browser';
-
+import OfferMap from './Map';
+import FormBrowser from './FormBrowser';
 import ListBrowser from './ListBrowser';
 import BrowserCarousel from './BrowserCarousel';
 import FilterBrowser from './FilterBrowser';
 import OrderByBrowser from './OrderByBrowser';
+import Pagination from './Pagination';
+import Sorter from './Sorter';
 
 
 const filterItems = Config.Browser.filterItems;
@@ -37,16 +40,25 @@ class Browser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-	        current: 0,
-	    };
+      items: [],
+      current: 0,
+    };
     this.showNextPage = this.showNextPage.bind(this);
     this.showPreviousPage = this.showPreviousPage.bind(this);
+    this.itemsReceived = this.itemsReceived.bind(this);
   }
 
   componentDidMount() {
     this.props.getFeatures();
   }
+ 
+  componentWillReceiveProps(nextProp) {
+  }
 
+  itemsReceived(items){
+    this.props.browser.items = items;
+    this.setState({ items });
+  }
 
   showNextPage() {
 		// go next
@@ -59,53 +71,50 @@ class Browser extends React.Component {
     this.setState({ current: this.state.current + 1 });
   }
 
-	/**
-	 * @params regexp category
-	 * @returns array(offers)
-	 */
   showPreviousPage() {
-		// go to the previous page
+    // go to the previous page
     const item_guid = this.props.browser.dataItems[0];
-		 const params = {
-   regexp: null,
-   from: item_guid.offer,
-   safesearch: 'Yes',
-   category: null,
- };
+    const params = {
+      regexp: null,
+      from: item_guid.offer,
+      safesearch: 'Yes',
+      category: null,
+    };
 
     this.props.getNextOffers(params);
     this.state.current === 0 && this.setState({ current: 0 });
     this.state.current > 0 && this.setState({ current: this.state.current - 1 });
-  }
+  };
 
   render() {
+    let { browser, onOrder } = this.props;
     return (
       <div width="100%">
-        {this.props.browser.features.length > 0 && <BrowserCarousel items={this.props.browser.features} />}
+        {browser.features.length > 0 && <BrowserCarousel items={browser.features} />}
         <Grid>
-          {!this.props.browser.error && <FilterBrowser items={filterItems} />}
+          {!browser.error && <FilterBrowser items={filterItems} />}
           <Col xs={12}>
-            {!this.props.browser.error && <OrderByBrowser items={orderItems} onOrder={this.props.onOrder} />}
-            {this.props.browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
-            {this.props.browser.error && <Row><h3>{this.props.browser.message}</h3></Row>}
-            {!this.props.browser.error && <ListBrowser items={this.props.browser.items} filter={this.props.browser.filter} />}
+            <Sorter newItems={this.itemsReceived} browserFilter={browser.filter} />
+            {browser.loading && <CircularProgress size={50} style={styles.spinnerStyle} />}
+            {browser.error &&
+              <Row>
+                <h3>
+                  {browser.message}
+                </h3>
+              </Row>}
+            {!browser.error && <ListBrowser items={browser.items} filter={browser.filter} />}
           </Col>
-          <Col xs={12} style={{ marginBottom: '50px' }}>
-            <Col xs={6}>
-              { this.state.current > 0 && <RaisedButton
-                label="previous"
-                onClick={this.showPreviousPage}
-              />
-							}
+          {browser.filter !== 'SHOW_MAP' &&
+            <Col xs={12} style={{ marginBottom: '50px' }}>
+              <Col xs={6}>
+                {this.state.current > 0 &&
+                  <RaisedButton label="previous" onClick={this.showPreviousPage} />}
+              </Col>
+              <Col xs={6} style={{ float: 'right' }}>
+                <RaisedButton label="next" style={{ float: 'right' }} onClick={this.showNextPage} />
+              </Col>
             </Col>
-            <Col xs={6} style={{ float: 'right' }}>
-              <RaisedButton
-                label="next"
-                style={{ float: 'right' }}
-                onClick={this.showNextPage}
-              />
-            </Col>
-          </Col>
+          }
         </Grid>
       </div>
     );
@@ -114,7 +123,8 @@ class Browser extends React.Component {
 
 function mapStateToProps(state) {
   const browser = state.browser;
-  return { browser };
+  const pages = state.pagination;
+  return { browser, pages };
 }
 
 function mapDispatchToProps(dispatch) {

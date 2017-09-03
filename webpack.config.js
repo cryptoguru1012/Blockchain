@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   entry: {
-    app: ['./src/client/client.js'],
+    app: ['./src/client/client.jsx'],
   },
   output: {
     path: path.join(__dirname, 'build'),
@@ -34,7 +34,7 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.css'],
   },
   externals: {
-    config_env: JSON.stringify(require('./src/config_env.json')),
+    configEnv: JSON.stringify(require('./src/config_env.json')),
   },
   module: {
     loaders: [
@@ -70,8 +70,11 @@ module.exports = {
         loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name].[ext]',
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'file-loader?hash=sha512&digest=hex&name=public/images/[name]_[hash].[ext]',
+        test: /\.(jpe?g|png|gif|svg)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 25000,
+        },
       },
     ],
   },

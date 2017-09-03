@@ -1,20 +1,36 @@
 {
-  "extends": "airbnb",
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import"
-  ],
-  "rules": {
-    "global-require": 0,
-    "consistent-return": "off",
-    "import/no-extraneous-dependencies": 0,
-    "import/extensions": 0,
-    "import/no-unresolved": 0
-  },
-  "globals": {
-    "localStorage": true,
-    "fetch": true,
-    "document": true
+    "extends": "airbnb",
+    "plugins": [
+      "react",
+      "jsx-a11y",
+      "import"
+    ],
+    "rules": {
+      "no-console": 0,
+      "global-require": 0,
+      "radix": 0,
+      "import/no-extraneous-dependencies": 0,
+      "class-methods-use-this": 1,
+      "new-cap": 1,
+      "no-dupe-keys": 1,
+      "no-underscore-dangle": 1,
+      "no-param-reassign": 1,
+      "no-unused-expressions": 1,
+      "consistent-return": 1,
+      "array-callback-return": 1,
+      "react/no-array-index-key": 1,
+      "import/extensions": 1,
+      "import/no-dynamic-require": 1,
+      "react/prop-types": 2
+    },
+    "globals": {
+      "localStorage": true,
+      "fetch": true,
+      "document": true
+    },
+    "settings":{
+      "import/resolver": "webpack"
+    }
   }
-}
+
+          

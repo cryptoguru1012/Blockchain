@@ -24,7 +24,8 @@ import renderHTML from './helpers/render_html';
 const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : '';
 
 // Setup Route Bindings
-module.exports = function (app) {
+exports = module.exports;
+module.exports = (app) => {
   // You can use "app" here like you would in Express
 
   apiRoutes(app);
@@ -38,4 +39,3 @@ module.exports = function (app) {
     res.status(error.status).send(error);
   });
 };
-exports = module.exports;

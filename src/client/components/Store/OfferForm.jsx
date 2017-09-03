@@ -1,5 +1,5 @@
 import React from 'react';
-import Config from 'config_env';
+/* import Config from 'configEnv'; */
 
 import CircularProgress from 'material-ui/CircularProgress';
 import Formsy from 'formsy-react';
@@ -18,11 +18,11 @@ const myStyle = {
   spinnerStyle: {
     margin: 'auto',
     display: 'block',
-    padding: '5',
+    padding: '5'
   },
   colMargin: {
-    margin: '0 -5px 0 -5px',
-  },
+    margin: '0 -5px 0 -5px'
+  }
 };
 
 /**

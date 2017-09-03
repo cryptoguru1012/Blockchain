@@ -14,9 +14,9 @@ class GaleryItemBrowser extends React.Component {
   }
 
   renderSlide() {
-    return this.props.images.map((image, i) => (
-      <img style={{ width: '100%' }} key={i} src={image} />
-      ));
+    return this.props.images.map((image, i) =>
+      <img style={{ width: '100%' }} key={i} src={`${image}`} />,
+    );
   }
 
   render() {

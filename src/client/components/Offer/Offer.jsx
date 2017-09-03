@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 // redux
-import { getOfferData } from '../../redux/actions/offer';
+import { fetchOffer } from '../../redux/actions/sortActions';
 
 // components
 import { Row, Col, Grid, Button } from 'react-bootstrap';
@@ -25,35 +25,28 @@ const newItemStyle = {
 class Offer extends React.Component {
   constructor(props) {
     super(props);
-    const guid = this.props.params.id;
-    this.props.getData(guid);
+    const id = this.props.params.id;
+    this.props.fetchOffer(id);
   }
 
   render() {
-    if (this.props.offer.loading) {
+    if (!this.props.offer) {
       return (
         <Grid>
           <Row>
             <Col xs={12} style={newItemStyle.loadingDiv}>
               <center>
-          <CircularProgress size={100} thickness={6} />
-        </center>
+                <CircularProgress size={100} thickness={6} />
+              </center>
             </Col>
           </Row>
         </Grid>
       );
     }
-    if (this.props.offer.error) {
+    if (this.props.offer) {
       return (
         <Grid>
-          <OfferViewError />
-        </Grid>
-      );
-    }
-    if (this.props.offer.success) {
-      return (
-        <Grid>
-          <OfferViewSuccess data={this.props.offer.data} />
+          <OfferViewSuccess data={this.props.offer} />
         </Grid>
       );
     }
@@ -66,15 +59,15 @@ class Offer extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const offer = state.offer;
+  const offer = state.sorter.offer;
 
   return { offer };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getData: (guid) => {
-      dispatch(getOfferData(guid));
+    fetchOffer: (id) => {
+      dispatch(fetchOffer(id));
     },
   };
 }

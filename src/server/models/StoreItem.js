@@ -65,7 +65,5 @@ StoreItem.add({
   },
 });
 
-
 StoreItem.defaultColumns = 'name, category, price, itemDescription';
 StoreItem.register();
-

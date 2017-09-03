@@ -39,9 +39,7 @@ const createItem = (params, cb) => {
           if (error) {
             return console.error(error);
           }
-
           item.productVideo = file;
-
           item.save();
         });
       }

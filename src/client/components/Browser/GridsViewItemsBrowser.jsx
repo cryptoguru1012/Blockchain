@@ -19,11 +19,15 @@ class GridsViewItemsBrowser extends React.Component {
           <ItemBrowser data={item} />
         </div>
         <div className="grid-text-content">
-          <span className="title">{item.title}</span>
-          <span className="price">{item.price + item.currency}</span>
+          <span className="title">
+            {item.title}
+          </span>
+          <span className="price">
+            {item.price + item.currency}
+          </span>
         </div>
       </div>
-			));
+      ));
 
     return (
       <Col xs={12} className="grids">

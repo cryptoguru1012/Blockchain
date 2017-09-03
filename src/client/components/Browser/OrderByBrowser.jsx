@@ -28,14 +28,9 @@ class OrderByBrowser extends React.Component {
 
   renderItemsOption() {
     if (this.props.items.length > 0) {
-      return this.props.items.map((item, i) => (
-        <MenuItem
-          key={item.value}
-          value={item.value}
-          label={item.name}
-          primaryText={item.name}
-        />
-      ));
+      return this.props.items.map((item, i) =>
+        <MenuItem key={item.value} value={item.value} label={item.name} primaryText={item.name} />,
+      );
     }
   }
 

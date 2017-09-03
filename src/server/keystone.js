@@ -4,7 +4,6 @@ const config = require('./config/vars');
 
 // Require keystone
 const keystone = require('keystone');
-const _ = require('lodash');
 
 const port = process.env.PORT || 3000;
 
@@ -43,7 +42,7 @@ keystone.import('models');
 // bundled templates and layouts. Any runtime locals (that should be set uniquely
 // for each request) should be added to ./routes/middleware.js
 keystone.set('locals', {
-  _,
+  _: require('lodash'),
   env: keystone.get('env'),
   utils: keystone.utils,
   editable: keystone.content.editable,

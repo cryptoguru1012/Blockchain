@@ -12,29 +12,43 @@ class SearchBrowser extends React.Component {
     super(props);
 
     this.handleChangeText = this.handleChangeText.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleChangeText(e) {
     this.props.onChangeData({
       type: 'text',
-      value: e.target.value,
+      enter: false,
+      value: e.target.value
     });
+  }
+
+  handleKeyPress(e) {
+    if (e.charCode === 13) { // charCode 13 is Enter
+      e.preventDefault();
+      this.props.onChangeData({
+        type: 'text',
+        enter: true,
+        value: e.target.value
+      });
+    }
   }
 
   render() {
     return (
-      <Formsy.Form style={{ marginTop: '10px' }}>
+      <Formsy.Form style={{marginTop: '10px'}}>
         <Row>
           <Col xs={12} sm={12} mdOffset={4} md={8} md={8}>
             <TextField
               name="search"
               onChange={this.handleChangeText}
+              onKeyPress={this.handleKeyPress}
               value={this.props.regexp}
               hintText="Search"
-              inputStyle={{ color: '#fff' }}
-              hintStyle={{ color: '#fff' }}
-              style={{ display: 'block' }}
-              fullWidth
+              inputStyle={{color: '#fff'}}
+              hintStyle={{color: '#fff'}}
+              style={{display:'block'}}
+              fullWidth={true}
             />
           </Col>
         </Row>

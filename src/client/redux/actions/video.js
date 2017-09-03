@@ -1,6 +1,7 @@
-import Config from 'config_env';
+/* import Config from 'configEnv'; */
 
 import 'whatwg-fetch';
+import axios from 'axios';
 
 export const DELETE_RECORD = 'DELETE_RECORD';
 export const UPLOAD_START = 'UPLOAD_START';
@@ -17,9 +18,10 @@ function uploadStart(payload) {
   };
 }
 
-function uploadError() {
+function uploadError(payload) {
   return {
     type: UPLOAD_ERROR,
+    payload: payload.data,
   };
 }
 
@@ -71,27 +73,22 @@ export function updateSubtitles(subtitles) {
 /* eslint no-undef: 0 */  // --> OFF
 export function setRecord(data, url) {
   return (dispatch) => {
-    const parse = Config.CloudFront.parse;
     dispatch(uploadStart(url));
     // This is a hack to check if data is the FormData which composed from formdata-polyfill
     // If yes, convert it to native FormData
     const nativeData = data._asNative ? data._asNative() : data;
 
-    fetch(parse, {
-      method: 'POST',
-      mode: 'cors',
-      body: nativeData,
-    })
-    .then(res => res.json())
-    .then((res) => {
-      if (!res.success) {
+    axios
+      .post('/API/videos/create', nativeData)
+      .then((response) => {
+        if (!response.success) {
+          dispatch(uploadError(null));
+        } else {
+          dispatch(uploadSuccess(response.data));
+        }
+      })
+      .catch(() => {
         dispatch(uploadError(null));
-      } else {
-        dispatch(uploadSuccess(res));
-      }
-    })
-    .catch(() => {
-      dispatch(uploadError(null));
-    });
+      });
   };
 }

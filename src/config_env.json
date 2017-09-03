@@ -44,6 +44,10 @@
       {
         "value": "SHOW_TEXT",
         "name": "Text only"
+      },
+      {
+        "value": "SHOW_MAP",
+        "name": "Map only"
       }
     ],
     "orderItems": [

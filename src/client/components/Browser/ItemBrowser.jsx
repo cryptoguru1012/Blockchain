@@ -9,7 +9,6 @@ import { Link } from 'react-router';
 require('./styles/item-browser.scss');
 
 const styles = {
-
   infoContainer: {
     position: 'absolute',
     zIndex: '1',
@@ -41,27 +40,27 @@ function isJson(str) {
  * Single offer view
  */
 class ItemBrowser extends React.Component {
-	/**
-	 * Extract decriptions from media
-	 */
   constructor(props) {
     super(props);
 
-    let description = this.props.data.description;
-    let images = [];
+    const media = JSON.parse(this.props.data.description).media.mediaVault;
+    const description = JSON.parse(this.props.data.description).description;
+    const images = [];
     const textOnly = false;
-    if (isJson(description)) {
-      description = JSON.parse(description);
-    } else {
-      const hasImages = description.match(/https?:\/\/.*\.(?:png|jpg|gif)/g);
-      if (hasImages) {
-        images = hasImages;
-      }
+    if (media.length > 0) {
+      media.map((mediaItem, i) => {
+        if (mediaItem.mediaType == 'img') {
+          images.push(mediaItem.mediaURL);
+        }
+      });
     }
+
     this.state = {
       description,
       images,
-      textOnly: (String(description).indexOf('http') > -1) || (String(description.urlVideo).indexOf('http') > -1),
+      textOnly:
+        String(description).indexOf('http') > -1 ||
+        String(description.urlVideo).indexOf('http') > -1,
     };
   }
 
@@ -69,21 +68,22 @@ class ItemBrowser extends React.Component {
     return (
       <Row>
         <Col className="containerItemBrowser">
-          <Link to={`/offer/${this.props.data.offer}`}>
+          <Link to={`/offer/${this.props.data._id}`}>
             <div className="contentItemBrowser">
               <div className="bgContainer">
-                {typeof this.state.description === 'object' && <VideoPlayer
-                  url={this.state.description.urlVideo}
-                  subtitles={this.state.description.subtitlesVideo}
-                  playOnHover
-                  hideControls
-                  muted
-                />}
-                { this.state.textOnly === false && <p> {String(this.state.description)} </p>}
-                {this.state.images.length > 0 && <GaleryItemBrowser
-                  images={this.state.images}
-                />
-								}
+                {this.state.description.urlVideo &&
+                  <VideoPlayer
+                    url={this.state.description.urlVideo}
+                    subtitles={this.state.description.subtitlesVideo}
+                    playOnHover
+                    hideControls
+                    muted
+                  />}
+                {this.state.textOnly === false &&
+                  <p>
+                    {' '}{String(this.state.description)}{' '}
+                  </p>}
+                <GaleryItemBrowser images={this.state.images} />
               </div>
             </div>
           </Link>

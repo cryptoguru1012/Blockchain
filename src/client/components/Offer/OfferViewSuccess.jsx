@@ -71,7 +71,7 @@ class OfferViewSuccess extends React.Component {
   render() {
     return (
       <div>
-        <Col xs={6} className="col-lg-offset-3">
+        <Col xs={6} xsOffset={3}>
           <Tabs inkBarStyle={styles.bar} className="tab-container">
             <Tab label="Browser" onClick={(e) => this.handleActive(e)} style={{'background': '#fff', color: '#CDCDCD'}} className="active-link">
               <div className="hidden">

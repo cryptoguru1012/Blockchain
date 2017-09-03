@@ -21,7 +21,7 @@ const tabStyle = {
   'borderBottom': '1.4px solid #F6F5F9',
 }
 const OfferTabs = (props) => (
-  <Col xs={10} className="product-info-tabs col-xs-offset-1">
+  <Col xs={10} className="product-info-tabs" xsOffset={1}>
     <Tabs inkBarStyle={{'display': 'none'}} className="tab-container">
       <Tab label="Overview" className="active-tab"
         style={tabStyle} onClick={handleActive}>

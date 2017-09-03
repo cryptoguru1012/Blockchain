@@ -1,3 +1,4 @@
+@import "./variables";
 // top nav styling
 .navegador > * {
   padding-right: 0;
@@ -6,10 +7,10 @@
 
 .appbar-color {
   background-color: #fff !important;
-  border-bottom: 2px solid #E9E9E9;
+  border-bottom: 2px solid $primary-grey;
   top: 0;
   box-shadow: none !important;
-  height: 100px;
+  // height: 100px;
 }
 
 .setStyle button {
@@ -18,5 +19,35 @@
 
 .btnStyle {
   position: relative !important;
+  top: -10px;
   left: 100%;
+}
+
+.menu-icons-right {
+  position: relative;
+  height: 90%;
+  width: 250px;
+  top: 0;
+  border-left: 1.4px solid $menu-border;
+  padding: 4%;
+
+  .menu-icon-container{
+    float: left;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+  button {
+    background: transparent !important;
+    svg {
+      color: $active-tab !important;
+    }
+  }
+
+  .menu-icon-text {
+    position: relative;
+    top: -6px;
+    right: 5px;
+  }
 }

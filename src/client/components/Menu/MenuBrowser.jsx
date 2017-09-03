@@ -6,9 +6,10 @@ import MenuItem from 'material-ui/MenuItem';
 import { List, ListItem } from 'material-ui/List';
 import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
+import PermIdentity from "material-ui-icons/PermIdentity";
+import ModeEdit from "material-ui-icons/ModeEdit";
 import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
-import { Glyphicon } from "react-bootstrap";
 
 import { search, setVisibilityFilter } from '../../redux/actions/browser';
 import { doCategoryReq } from '../../redux/actions/store/category';
@@ -224,13 +225,24 @@ class MenuBrowser extends React.Component {
         onRightIconButtonTouchTap={this.handleToggleSerch}
         iconElementLeft={
           <IconButton className="btnStyle">
-            <SSIcon />
+            <SSIcon/>
           </IconButton>
         }
         iconElementRight={
-          <IconButton>
-            <ActionSearch />
-          </IconButton>
+          <div className="menu-icons-right">
+            <div className="menu-icon-container">
+              <IconButton>
+                <PermIdentity />
+              </IconButton>
+              <span className="menu-icon-text">Login</span>
+            </div>
+            <div className="menu-icon-container">
+              <IconButton>
+                <ModeEdit />
+              </IconButton>
+              <span className="menu-icon-text">Register</span>
+            </div>
+          </div>
         }
       >
         <Drawer

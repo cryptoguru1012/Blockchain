@@ -16,7 +16,6 @@ staging:
   stage: test
   image: ruby:latest
   script:
-    - npm run lint
     - gem install dpl
     - dpl --provider=heroku --app=moovr-staging --api-key=$HEROKU_MOOVR_STAGING_API_KEY
   environment:

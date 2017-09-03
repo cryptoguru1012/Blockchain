@@ -4,7 +4,8 @@
   "description": "Syscoin marketplace",
   "main": "server.js",
   "scripts": {
-    "heroku-prebuild": "echo ----------- Prebuilt ACTION ------------------",
+    "heroku-prebuild": "echo ----------- HEROKU Prebuilt ACTION ------------------",
+    "preinstall": "echo ------------ NODE Preinstall ACTION ------------------",
     "build": "NODE_ENV='production' webpack -p",
     "start": "NODE_ENV='production' node server",
     "dev": "nodemon ./server.js set NODE_ENV='development'",

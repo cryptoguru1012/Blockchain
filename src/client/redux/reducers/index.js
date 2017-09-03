@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { reducer as reduxAsyncConnect } from 'redux-connect';
 import { reducer as reduxForm } from 'redux-form';
 
-import { showItems } from './items';
+import showItems from './items';
 import registerReducer from './register';
 import storeReducers from './store';
 import videoReducers from './video';

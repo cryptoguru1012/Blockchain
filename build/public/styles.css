@@ -1,1 +1,391 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);.navegador>*{padding-right:0;padding-left:0}.appbar-color{position:fixed!important;top:0}.setStyle button{padding:12px 30px 12px 220px!important}.btnStyle{margin-top:-13px!important;width:auto!important;height:auto!important}navbar>.container-fluid{margin-left:0;margin-right:0}body,html{margin:0;padding:0;min-width:100%;width:100%;max-width:100%;min-height:100%;height:100%;max-height:100%}.GeoLoc__container{padding-right:22px}.GeoLoc__floatText{margin:50px 0 5px;pointer-events:none;user-select:none;color:#bdbdbd;font-family:Roboto,sans-serif;font-size:12px;font-weight:700}.GeoLoc__mainText{margin-right:.5em}.GeoLoc__suggestion-item{display:flex;align-Items:center;padding:4px;text-align:left}.GeoLoc__suggestion-icon{margin-right:8px;transform:scale(.8)}.GeoLoc__search-input{border-width:0 0 1px;border-style:solid;border-color:#e0e0e0;display:inline;width:100%;padding:16px 16px 0 0;font-size:16px;outline:none;animation:focusing .75s;font-weight:400;color:#212121}#my-input-id::placeholder{color:#bdbdbd;opacity:1}.GeoLoc__search-input:active,.GeoLoc__search-input:focus{border-width:0 0 2px;border-color:#212121}.GeoLoc__autocomplete-container{border-width:0 1px 2px;border-style:solid;border-color:#e0e0e0;border-radius:0 0 0 0;animation:fadein .75s}.GeoLoc__autocomplete-Item-Active{padding:10px;text-align:left;background-color:#e0e0e0}@media (max-width:480px){.autocomplete-container{text-align:left}}.form-group{font-family:Roboto,sans-serif}@media (min-width:768px){.form-group{display:inline-block;margin-left:auto;margin-right:auto;margin-top:0;width:100%}}.geocoding-results{text-align:left}@keyframes fadein{0%{opacity:0}to{opacity:1}}@keyframes focusing{0%{border-color:#e0e0e0;border-width:0 0 1px}to{border-color:#212121;border-width:0 0 2px}}
+@import url(https://fonts.googleapis.com/css?family=Roboto);@import url(https://fonts.googleapis.com/css?family=Roboto);.navegador > * {
+  padding-right: 0;
+  padding-left: 0; }
+
+.appbar-color {
+  position: fixed !important;
+  top: 0; }
+
+.setStyle button {
+  padding: 12px 30px 12px 220px !important; }
+
+.btnStyle {
+  margin-top: -13px !important;
+  width: auto !important;
+  height: auto !important; }
+navbar > .container-fluid {
+  margin-left: 0;
+  margin-right: 0; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: 100%;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  height: 100%;
+  max-height: 100%; }
+.GeoLoc__container {
+  padding-right: 22px; }
+
+.GeoLoc__floatText {
+  margin: 50px 0 5px 0;
+  pointer-events: none;
+  user-select: none;
+  color: #BDBDBD;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: bold; }
+
+.GeoLoc__mainText {
+  margin-right: 0.5em; }
+
+.GeoLoc__suggestion-item {
+  display: flex;
+  align-Items: center;
+  padding: 4px;
+  text-align: left; }
+
+.GeoLoc__suggestion-icon {
+  margin-right: 8px;
+  transform: scale(0.8); }
+
+.GeoLoc__search-input {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #E0E0E0;
+  display: inline;
+  width: 100%;
+  padding: 16px 16px 0px 0px;
+  font-size: 16px;
+  outline: none;
+  animation: focusing 0.75s;
+  font-weight: normal;
+  color: #212121; }
+
+#my-input-id::placeholder {
+  color: #BDBDBD;
+  opacity: 1; }
+
+.GeoLoc__search-input:focus,
+.GeoLoc__search-input:active {
+  border-width: 0 0 2px 0;
+  border-color: #212121; }
+
+.GeoLoc__autocomplete-container {
+  border-width: 0 1px 2px 1px;
+  border-style: solid;
+  border-color: #E0E0E0;
+  border-radius: 0 0 0 0;
+  animation: fadein 0.75s; }
+
+.GeoLoc__autocomplete-Item-Active {
+  padding: 10px;
+  text-align: left;
+  background-color: #E0E0E0; }
+
+@media (max-width: 480px) {
+  .autocomplete-container {
+    text-align: left; } }
+
+.form-group {
+  font-family: 'Roboto', sans-serif; }
+
+@media (min-width: 768px) {
+  .form-group {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0rem;
+    width: 100%; } }
+
+.geocoding-results {
+  text-align: left; }
+
+@keyframes fadein {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes focusing {
+  from {
+    border-color: #E0E0E0;
+    border-width: 0 0 1px 0; }
+  to {
+    border-color: #212121;
+    border-width: 0 0 2px 0; } }
+/* -- Variables --------------------------- */
+/* ---------------------------------------- */
+/* -- Layout ------------------------------ */
+.Item__Wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: stretch; }
+
+.item__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; }
+
+.item__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start; }
+
+.item__body-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start; }
+
+.item__body-photo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; }
+
+.item__body-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; }
+
+.item__bodyInfo-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start; }
+
+.item__bodyInfo-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; }
+
+.item__bodyInfo-data {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; }
+
+.item__footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center; }
+
+/* ---------------------------------------- */
+/* -- Formats ------------------------------ */
+.Item__Wrap {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #424242;
+  max-width: 21em;
+  padding: 15px 0 5px 0;
+  /* border: 1px solid fuchsia; */
+  border-bottom: 1px solid #E0E0E0; }
+
+.item__header {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-transform: uppercase; }
+
+.item__body {
+  padding: 5px 0 5px 0;
+  /* border: 1px solid olivedrab; */ }
+
+.item__body-photo {
+  padding: 0 0 5px 0; }
+
+.item__body-info {
+  padding: 0 0 0 5px;
+  min-height: 100%;
+  /* border: 1px solid orange; */ }
+
+.item__bodyInfo-row {
+  padding: 5px 0 0 0;
+  /* border: 1px solid green; */ }
+
+.item__bodyInfo-field {
+  font-weight: 600;
+  min-width: 4.3em;
+  /* min-width: 5em; */
+  /* border: 1px solid red; */ }
+
+.item__bodyInfo-data {
+  padding: 0 15px 0 15px;
+  text-align: justify;
+  text-justify: auto;
+  /* border: 1px solid blue;*/ }
+
+.item__footer {
+  padding: 5px 15px 5px 15px;
+  /*  border: 1px solid darkorchid; */ }
+
+/* ---------------------------------------- */
+.containerItemBrowser .contentItemBrowser .bgContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+  .containerItemBrowser .contentItemBrowser .bgContainer p {
+    padding: 10px 10px 40px 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #212121;
+    text-decoration: none; }
+  .containerItemBrowser .contentItemBrowser .bgContainer div.row {
+    height: 100%; }
+    .containerItemBrowser .contentItemBrowser .bgContainer div.row div img {
+      height: 100%;
+      transition: 1.5s ease;
+      -moz-transition: 1.5s ease;
+      /* Firefox */
+      -webkit-transition: 1.5s ease;
+      /* Chrome - Safari */
+      -o-transition: 1.5s ease;
+      /* Opera */ }
+    .containerItemBrowser .contentItemBrowser .bgContainer div.row div img:hover {
+      transform: scale(2);
+      -moz-transform: scale(2);
+      /* Firefox */
+      -webkit-transform: scale(2);
+      /* Chrome - Safari */
+      -o-transform: scale(2);
+      /* Opera */
+      -ms-transform: scale(2);
+      /* IE9 */ }
+  .containerItemBrowser .contentItemBrowser .bgContainer .video-component {
+    margin: 0;
+    padding: 0; }
+    .containerItemBrowser .contentItemBrowser .bgContainer .video-component div {
+      margin: 0;
+      width: 100%;
+      padding: 0; }
+      .containerItemBrowser .contentItemBrowser .bgContainer .video-component div video {
+        width: 100%; }
+
+.container-item-browser-description {
+  position: relative;
+  margin-top: 20px;
+  padding: 25% 50%; }
+  .container-item-browser-description .description-only-text {
+    padding: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 40px; }
+    .container-item-browser-description .description-only-text p {
+      font-size: 1.2em;
+      margin: 0; }
+table.grids, div.grids {
+  width: 100%;
+  margin-bottom: 15px;
+  margin-top: 15px; }
+  table.grids div.grid-container, div.grids div.grid-container {
+    margin: 0;
+    margin: 5px 0px 0px 0px;
+    padding: 0;
+    position: relative;
+    border: 1px solid #eaeaea;
+    min-height: 208px;
+    min-width: 215px;
+    overflow: hidden; }
+    table.grids div.grid-container div.grid-media-content, div.grids div.grid-container div.grid-media-content {
+      position: relative;
+      bottom: 0px;
+      height: 100%;
+      width: 100%;
+      left: 0px; }
+      table.grids div.grid-container div.grid-media-content span.only-text, div.grids div.grid-container div.grid-media-content span.only-text {
+        padding: 10px 10px 40px 10px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0; }
+    table.grids div.grid-container div.grid-text-content, div.grids div.grid-container div.grid-text-content {
+      position: absolute;
+      bottom: 0px;
+      height: 40px;
+      width: 100%;
+      left: 0px;
+      background-color: rgba(47, 47, 47, 0.84); }
+      table.grids div.grid-container div.grid-text-content span, div.grids div.grid-container div.grid-text-content span {
+        color: white; }
+      table.grids div.grid-container div.grid-text-content span.title, div.grids div.grid-container div.grid-text-content span.title {
+        position: absolute;
+        bottom: 18px;
+        left: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-height: 20px; }
+      table.grids div.grid-container div.grid-text-content span.price, div.grids div.grid-container div.grid-text-content span.price {
+        position: absolute;
+        bottom: 0px;
+        left: 12px; }
+      table.grids div.grid-container div.grid-text-content span.cat, div.grids div.grid-container div.grid-text-content span.cat {
+        position: absolute;
+        bottom: 0px;
+        left: 12px; }
+
+@media screen and (min-width: 767px) and (max-width: 1200px) {
+  div.grid-container {
+    min-height: 210px !important; } }
+button.slick-next {
+  right: 10px; }
+
+button.slick-prev {
+  left: 10px;
+  z-index: 1; }
+
+div.slider-container {
+  background: #bda869;
+  padding: 0;
+  margin: 0; }
+  div.slider-container h3 {
+    text-indent: 50px;
+    text-align: left;
+    color: white;
+    margin-top: 10px; }
+  div.slider-container div.item-slider {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center; }
+    div.slider-container div.item-slider div.img-slider {
+      display: flex;
+      flex-direction: row;
+      align-items: start; }
+      div.slider-container div.item-slider div.img-slider img {
+        margin: auto;
+        max-width: 134px; }
+        @media screen and (min-width: 1100px) {
+          div.slider-container div.item-slider div.img-slider img {
+            max-width: 230px; } }
+    div.slider-container div.item-slider div.content-slider {
+      position: relative;
+      left: 0px;
+      right: 0px;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center; }
+      div.slider-container div.item-slider div.content-slider div.content-text {
+        flex-grow: 1;
+        color: white;
+        overflow: hidden;
+        text-align: center; }
+        div.slider-container div.item-slider div.content-slider div.content-text span.comment {
+          font-size: 16px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap; }

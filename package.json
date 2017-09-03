@@ -30,8 +30,6 @@
     "bson-objectid": "^1.1.5",
     "can-use-dom": "^0.1.0",
     "dotenv": "^2.0.0",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "file-loader": "^0.10.0",
     "formsy-material-ui": "^0.5.5",
     "formsy-react": "^0.18.0",
     "geolib": "^2.0.23",

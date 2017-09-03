@@ -6,20 +6,22 @@
       "import"
     ],
     "rules": {
-        "no-console": 0,
-        "global-require": 0,
-        "radix": 0,
-        "new-cap": 1,
-        "class-methods-use-this": 1,
-        "no-dupe-keys": 1,
-        "no-underscore-dangle": 1,
-        "no-param-reassign": 1,
-        "consistent-return": 1,
-        "array-callback-return": 1,
-        "no-unused-expressions": 1,
-        "import/extensions": 1,
-        "import/no-extraneous-dependencies": 1,
-        "import/no-dynamic-require": 1
+      "no-console": 0,
+      "global-require": 0,
+      "radix": 0,
+      "import/no-extraneous-dependencies": 0,
+      "class-methods-use-this": 1,
+      "new-cap": 1,
+      "no-dupe-keys": 1,
+      "no-underscore-dangle": 1,
+      "no-param-reassign": 1,
+      "no-unused-expressions": 1,
+      "consistent-return": 1,
+      "array-callback-return": 1,
+      "react/no-array-index-key": 1,
+      "import/extensions": 1,
+      "import/no-dynamic-require": 1,
+      "react/prop-types": 2
     },
     "globals": {
       "localStorage": true,
@@ -30,3 +32,5 @@
       "import/resolver": "webpack"
     }
   }
+
+          

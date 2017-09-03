@@ -6,15 +6,35 @@
   background-color: #fff !important;
   border-bottom: 2px solid #E9E9E9;
   top: 0;
-  box-shadow: none !important;
-  height: 100px; }
+  box-shadow: none !important; }
 
 .setStyle button {
   padding: 12px 30px 12px 220px !important; }
 
 .btnStyle {
   position: relative !important;
+  top: -10px;
   left: 100%; }
+
+.menu-icons-right {
+  position: relative;
+  height: 90%;
+  width: 250px;
+  top: 0;
+  border-left: 1.4px solid #E4E4E4;
+  padding: 4%; }
+  .menu-icons-right .menu-icon-container {
+    float: left; }
+    .menu-icons-right .menu-icon-container:hover {
+      cursor: pointer; }
+  .menu-icons-right button {
+    background: transparent !important; }
+    .menu-icons-right button svg {
+      color: #828282 !important; }
+  .menu-icons-right .menu-icon-text {
+    position: relative;
+    top: -6px;
+    right: 5px; }
 /* -- Variables --------------------------- */
 /* ---------------------------------------- */
 /* -- Layout ------------------------------ */

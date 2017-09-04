@@ -6,7 +6,8 @@ import VideoPlayer from '../Store/VideoPlayer';
 import { Link } from 'react-router';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Slider from 'material-ui/Slider';
-import OfferTabs from "./OfferTabs"
+import OfferTabs from "./OfferTabs";
+import OfferSlider from "./OfferSlider";
 
 require('./styles/style.scss');
 
@@ -103,7 +104,10 @@ class OfferViewSuccess extends React.Component {
             </Tab>
           </Tabs>
         </Col>
-        <Col xs={12}>
+        <Col xs={12} className="slider-wrapper">
+          <OfferSlider />
+        </Col>
+        <Col xs={12} className="hidden">
           <h2>
             {`Title: ${this.props.data.title}`}
           </h2>

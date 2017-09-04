@@ -1,17 +1,53 @@
+@import "./variables";
+// top nav styling
 .navegador > * {
   padding-right: 0;
   padding-left: 0;
 }
 
 .appbar-color {
-    //background-color: #212121 !important;
-    position: fixed !important;
-    top: 0;
+  background-color: #fff !important;
+  border-bottom: 2px solid $primary-grey;
+  top: 0;
+  box-shadow: none !important;
+  // height: 100px;
 }
-.setStyle button{
 
-    padding: 12px 30px 12px 220px !important;
+.setStyle button {
+  padding: 12px 30px 12px 220px !important;
 }
-.btnStyle{ margin-top:-13px !important; width: auto !important;
-    height: auto !important;
+
+.btnStyle {
+  position: relative !important;
+  top: -10px;
+  left: 100%;
+}
+
+.menu-icons-right {
+  position: relative;
+  height: 90%;
+  width: 250px;
+  top: 0;
+  border-left: 1.4px solid $menu-border;
+  padding: 4%;
+
+  .menu-icon-container{
+    float: left;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+  button {
+    background: transparent !important;
+    svg {
+      color: $active-tab !important;
+    }
+  }
+
+  .menu-icon-text {
+    position: relative;
+    top: -6px;
+    right: 5px;
+  }
 }

@@ -1,0 +1,1 @@
+export ProfilePageWallets from "./ProfilePageWallets";

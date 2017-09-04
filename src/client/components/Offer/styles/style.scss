@@ -1,0 +1,111 @@
+@import "./variables";
+
+img[src=" "] {
+  display: none;
+}
+
+.container {
+  position: absolute;
+  width: 100%;
+  padding-right: 0;
+}
+// nav tabs styling
+
+.tab-container {
+  .active-link {
+    background-color: $white !important;
+    color: $primay-green !important;
+  }
+
+  .active-tab {
+    background: $active-tab !important;
+    color: $white !important;
+  }
+
+  &div {
+    background: #fff;
+    color: $light-grey;
+  }
+
+  .tab {
+    background: $white !important;
+    color: $light-grey !important;
+  }
+}
+
+.product-info-tabs {
+  position: relative;
+  margin-top: 7%;
+  border: 1.4px solid $tabs-border;
+  padding: 0;
+
+  .tab-content {
+    color: $secondary-green;
+    font-weight: 300;
+    padding: 5%;
+  }
+
+  .tab-info {
+    background: $white !important;
+    color: $secondary-green !important;
+    border-bottom: 1.4px solid $tabs-border !important;
+    border-left: 1.4px solid $tabs-border !important;
+  }
+}
+
+.btn-green {
+  color: $white !important;
+
+  button {
+    background-color: $primay-green !important;
+    color: $white !important;
+    width: 200px !important;
+
+    span {
+      color: rgba(255,255,255, 1) !important;
+      text-transform: capitalize !important;
+    }
+  }
+}
+// slider section
+
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  padding-right: 0 !important;
+  min-height: 350px;
+  height: 100%;
+  margin-top:50px;
+  background-color: $slider-bg;
+
+  .slider-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    .slider-image {
+      position: relative;
+      height: 100%;
+
+      img {
+        height: 100%;
+      }
+    }
+
+    .slider-info {
+      position: relative;
+      height: 100%;
+      padding: 2.3%;
+
+      .slider-description {
+        margin-bottom: 20px;
+        max-width: 80%;
+      }
+
+      .slider-description,
+      .slider-title__small {
+        font-weight: 300;
+      }
+    }
+  }
+}

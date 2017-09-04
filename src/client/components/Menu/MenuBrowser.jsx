@@ -6,6 +6,8 @@ import MenuItem from 'material-ui/MenuItem';
 import { List, ListItem } from 'material-ui/List';
 import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
+import PermIdentity from "material-ui-icons/PermIdentity";
+import ModeEdit from "material-ui-icons/ModeEdit";
 import Subheader from 'material-ui/Subheader';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 
@@ -110,7 +112,7 @@ class MenuBrowser extends React.Component {
     }
     this.setState({ activeSearch: !this.state.activeSearch });
     if (browser.filter !== 'SHOW_MAP') {
-      this.props.filter('SHOW_ALL'); 
+      this.props.filter('SHOW_ALL');
     }
   }
 
@@ -226,13 +228,26 @@ class MenuBrowser extends React.Component {
         onRightIconButtonTouchTap={this.handleToggleSerch}
         iconElementLeft={
           <IconButton className="btnStyle">
-            <SSIcon />
+            <SSIcon/>
           </IconButton>
         }
         iconElementRight={
-          <IconButton>
-            <ActionSearch />
-          </IconButton>
+          <div className="menu-icons-right">
+            <div className="menu-icon-container">
+              <Link to="/profile/wallets">
+                <IconButton>
+                  <PermIdentity />
+                </IconButton>
+                <span className="menu-icon-text">Login</span>
+              </Link>
+            </div>
+            <div className="menu-icon-container">
+              <IconButton>
+                <ModeEdit />
+              </IconButton>
+              <span className="menu-icon-text">Register</span>
+            </div>
+          </div>
         }
       >
         <Drawer

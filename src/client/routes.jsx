@@ -8,6 +8,7 @@ import Store from './components/Store';
 import Browser from './components/Browser';
 import Offer from './components/Offer';
 import Sorter from './components/Browser/Sorter';
+import ProfilePageWallets from './components/Profile/ProfilePageWallets';
 
 const NoMatch = ({ location }) => (
   <div>
@@ -21,6 +22,7 @@ const Routes = (
       <IndexRoute component={Browser} />
       <Route path="/sort" component={Sorter} />
       <Route path="/register" component={Register} />
+      <Route path="/profile/wallets" component={ProfilePageWallets} />
       <Route path="/store/newItem" component={Store.NewItemSelector} />
       <Route path="/offer" component={Offer}>
         <Route path=":id" component={Offer} />

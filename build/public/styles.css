@@ -3,38 +3,16 @@
   padding-left: 0; }
 
 .appbar-color {
-  background-color: #fff !important;
-  border-bottom: 2px solid #E9E9E9;
-  top: 0;
-  box-shadow: none !important; }
+  position: fixed !important;
+  top: 0; }
 
 .setStyle button {
   padding: 12px 30px 12px 220px !important; }
 
 .btnStyle {
-  position: relative !important;
-  top: -10px;
-  left: 100%; }
-
-.menu-icons-right {
-  position: relative;
-  height: 90%;
-  width: 250px;
-  top: 0;
-  border-left: 1.4px solid #E4E4E4;
-  padding: 4%; }
-  .menu-icons-right .menu-icon-container {
-    float: left; }
-    .menu-icons-right .menu-icon-container:hover {
-      cursor: pointer; }
-  .menu-icons-right button {
-    background: transparent !important; }
-    .menu-icons-right button svg {
-      color: #828282 !important; }
-  .menu-icons-right .menu-icon-text {
-    position: relative;
-    top: -6px;
-    right: 5px; }
+  margin-top: -13px !important;
+  width: auto !important;
+  height: auto !important; }
 /* -- Variables --------------------------- */
 /* ---------------------------------------- */
 /* -- Layout ------------------------------ */
@@ -306,79 +284,3 @@ div.slider-container {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap; }
-img[src=" "] {
-  display: none; }
-
-.container {
-  position: absolute;
-  width: 100%;
-  padding-right: 0; }
-
-.tab-container .active-link {
-  background-color: #fff !important;
-  color: #5FA02F !important; }
-
-.tab-container .active-tab {
-  background: #828282 !important;
-  color: #fff !important; }
-
-.tab-containerdiv {
-  background: #fff;
-  color: #CDCDCD; }
-
-.tab-container .tab {
-  background: #fff !important;
-  color: #CDCDCD !important; }
-
-.product-info-tabs {
-  position: relative;
-  margin-top: 7%;
-  border: 1.4px solid #F6F5F9;
-  padding: 0; }
-  .product-info-tabs .tab-content {
-    color: #5C8788;
-    font-weight: 300;
-    padding: 5%; }
-  .product-info-tabs .tab-info {
-    background: #fff !important;
-    color: #5C8788 !important;
-    border-bottom: 1.4px solid #F6F5F9 !important;
-    border-left: 1.4px solid #F6F5F9 !important; }
-
-.btn-green {
-  color: #fff !important; }
-  .btn-green button {
-    background-color: #5FA02F !important;
-    color: #fff !important;
-    width: 200px !important; }
-    .btn-green button span {
-      color: white !important;
-      text-transform: capitalize !important; }
-
-.slider-wrapper {
-  position: relative;
-  width: 100%;
-  padding-right: 0 !important;
-  min-height: 350px;
-  height: 100%;
-  margin-top: 50px;
-  background-color: #F3F2F7; }
-  .slider-wrapper .slider-content {
-    position: absolute;
-    width: 100%;
-    height: 100%; }
-    .slider-wrapper .slider-content .slider-image {
-      position: relative;
-      height: 100%; }
-      .slider-wrapper .slider-content .slider-image img {
-        height: 100%; }
-    .slider-wrapper .slider-content .slider-info {
-      position: relative;
-      height: 100%;
-      padding: 2.3%; }
-      .slider-wrapper .slider-content .slider-info .slider-description {
-        margin-bottom: 20px;
-        max-width: 80%; }
-      .slider-wrapper .slider-content .slider-info .slider-description,
-      .slider-wrapper .slider-content .slider-info .slider-title__small {
-        font-weight: 300; }

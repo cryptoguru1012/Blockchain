@@ -10,6 +10,9 @@ import browserReducers from './browser';
 import offerReducers from './offer';
 import imageReducers from './image';
 import sortReducer from './sortReducer';
+import modal from './modal';
+import base from './base';
+import wallets from './wallets';
 
 export default combineReducers({
   reduxAsyncConnect,
@@ -24,4 +27,7 @@ export default combineReducers({
   image: imageReducers,
   sorter: sortReducer,
   form: reduxForm,
+  modal,
+  base,
+  wallets,
 });

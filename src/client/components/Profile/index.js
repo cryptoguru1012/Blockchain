@@ -1,1 +1,3 @@
-export ProfilePageWallets from "./ProfilePageWallets";
+import ProfilePageWallets from './ProfilePageWallets';
+
+export default ProfilePageWallets;

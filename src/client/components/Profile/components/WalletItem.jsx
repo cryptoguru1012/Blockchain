@@ -56,8 +56,8 @@ const Phone = styled.div`
 `;
 
 const Button = styled.div`
-    height: 2.5rem;
-    width: 11rem;
+    height: 3.5rem;
+    width: 15rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,6 +70,7 @@ const Button = styled.div`
     background: white;
     border: 1px solid #ced4da;
     color: #343a40;
+    cursor:pointer;
 
 
     &:hover{
@@ -81,8 +82,8 @@ const Button = styled.div`
     &.favorite{
         background: ${props => props.color};
         color: white;
-        margin-left: 2rem;
-        margin-right: 4rem;
+        margin-left: 4rem;
+        margin-right: 8rem;
 
     }
 `;

@@ -28,7 +28,7 @@ const StyledItem = styled.div`
     border: 1px solid #ced4da;
 
     color: ${props => props.active ? '#40c057' : '#868e96'};
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     cursor:pointer;
     &: hover{
         background: #f1f3f5;

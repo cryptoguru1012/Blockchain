@@ -22,17 +22,12 @@ const Wrapper = styled.div`
     .favorit{
         background:#d3f9d8;
     }
-    
-
-        
 
     }
 
     &:hover {
         border: 1px solid #ced4da;
-        background: #dee2e6;
-
-        
+        background: #dee2e6;       
     }
     
 `;
@@ -136,6 +131,11 @@ WalletItem.propTypes = {
   }),
   onToggleFavorite: PropTypes.func,
   onOpenModify: PropTypes.func,
+};
+
+WalletItem.defaultProps = {
+  onToggleFavorite: () => console.log('This send function.'),
+  onOpenModify: () => console.log('This is send function'),
 };
 
 export default WalletItem;

@@ -11,6 +11,12 @@ import * as walletsActions from '../../../redux/reducers/wallets';
 
 
 class WalletModalContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.handleHide = this.handleHide.bind(this);
+    this.handleAction = this.handleAction.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
 
   handleHide() {
     const { ModalActions } = this.props;
@@ -56,15 +62,6 @@ class WalletModalContainer extends Component {
   }
 
 
-  handleRemove() {
-    const { WalletActions, modal } = this.props;
-    const id = modal.getIn(['wallet', 'id']);
-
-    WalletActions.remove(id);
-    this.handleHide();
-  }
-
-
   render() {
     const { modal } = this.props;
     const { visible, mode, wallet } = modal.toJS();
@@ -73,7 +70,6 @@ class WalletModalContainer extends Component {
             handleHide,
             handleAction,
             handleChange,
-            handleRemove,
         } = this;
 
     return (
@@ -87,7 +83,6 @@ class WalletModalContainer extends Component {
           url={wallet.url}
           onHide={handleHide}
           onAction={handleAction[mode]}
-          onRemove={handleRemove}
           onChange={handleChange}
         />
         <Dimmed visible={visible} />

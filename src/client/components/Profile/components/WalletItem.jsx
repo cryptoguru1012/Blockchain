@@ -94,8 +94,8 @@ class WalletItem extends React.Component {
   render() {
     const {
             wallet,
-            onOpenModify,
-            onToggleFavorite,
+            onSend,
+            onReceive,
         } = this.props;
 
     const { name, account, favorite, id, color, btncolor, url } = wallet.toJS();
@@ -109,10 +109,10 @@ class WalletItem extends React.Component {
         </Info>
 
 
-        <Button onClick={() => onOpenModify(id)}>
+        <Button onClick={() => onSend(id)}>
           <img src={SendIcon} style={SendIcon.logo} alt="fireSpot" />&nbsp; Send
         </Button>
-        <Button className="favorite" active={favorite} onClick={() => onToggleFavorite(id)} color={btncolor}>
+        <Button className="favorite" active={favorite} onClick={() => onReceive(id)} color={btncolor}>
           <img src={ReceiveIcon} style={ReceiveIcon.logo} alt="fireSpot" />&nbsp; Receive
         </Button>
 
@@ -129,13 +129,13 @@ WalletItem.propTypes = {
     color: PropTypes.string,
     url: PropTypes.string,
   }),
-  onToggleFavorite: PropTypes.func,
-  onOpenModify: PropTypes.func,
+  onReceive: PropTypes.func,
+  onSend: PropTypes.func,
 };
 
 WalletItem.defaultProps = {
-  onToggleFavorite: () => console.log('This send function.'),
-  onOpenModify: () => console.log('This is send function'),
+  onReceive: () => console.log('This receive function.'),
+  onSend: () => console.log('This is send function'),
 };
 
 export default WalletItem;

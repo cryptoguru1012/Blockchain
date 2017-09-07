@@ -15,7 +15,8 @@ const Wrapper = styled.div`
 
     z-index:10;
 
-    width: ${props => props.width};
+    width: 600px;
+    height: 300px;
 
     .modal-enter{
         animation: ${transitions.slideDown} .5s ease-in-out;

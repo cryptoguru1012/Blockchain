@@ -26,7 +26,7 @@ class WalletList extends React.Component {
 
 
   render() {
-    const { wallets, onOpenModify, onToggleFavorite } = this.props;
+    const { wallets, onSend, onReceive } = this.props;
     const walletList = wallets
                             .sort(
                                 (a, b) => {
@@ -38,8 +38,8 @@ class WalletList extends React.Component {
                                 wallet => (
                                   <WalletItem
                                     wallet={wallet}
-                                    onOpenModify={onOpenModify}
-                                    onToggleFavorite={onToggleFavorite}
+                                    onSend={onSend}
+                                    onReceive={onReceive}
                                   />
                                 ),
                             );
@@ -66,8 +66,8 @@ WalletList.propTypes = {
               url: PropTypes.string,
             }),
         ),
-  onToggleFavorite: PropTypes.func,
-  onOpenModify: PropTypes.func,
+  onReceive: PropTypes.func,
+  onSend: PropTypes.func,
 };
 
 export default WalletList;

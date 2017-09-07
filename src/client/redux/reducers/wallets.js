@@ -2,13 +2,11 @@ import { Map, List } from 'immutable';
 import { createAction, handleActions } from 'redux-actions';
 
 
-const MODIFY = 'wallets/MODIFY';
-const REMOVE = 'wallets/REMOVE';
-const TOGGLE_FAVORITE = 'wallet/TOGGLE_FAVORITE';
+const SEND = 'wallets/SEND';
+const RECEIVE = 'wallet/RECEIVE';
 
-export const modify = createAction(MODIFY); // {id, wallet:{name, account}}
-export const remove = createAction(REMOVE); // id
-export const toggleFavorite = createAction(TOGGLE_FAVORITE);
+export const send = createAction(SEND); // {id, wallet:{name, account}}
+export const receive = createAction(RECEIVE);
 
 const initialState = List([
   Map({
@@ -38,17 +36,13 @@ const initialState = List([
 ]);
 
 export default handleActions({
-  [REMOVE]: (state, action) => {
-    const index = state.findIndex(wallet => wallet.get('id') === action.payload);
-    return state.delete(index);
-  },
-  [MODIFY]: (state, action) => {
+  [SEND]: (state, action) => {
     const index = state.findIndex(wallet => wallet.get('id') === action.payload.id);
     return state.mergeIn([index], action.payload.wallet);
   },
-  [TOGGLE_FAVORITE]: (state, action) => {
+  [RECEIVE]: (state, action) => {
     const index = state.findIndex(wallet => wallet.get('id') === action.payload);
-    return state.update(index, wallet => wallet.set('favorite', !wallet.get('favorite')));
+    return state.update(index, wallet => wallet.set('send', !wallet.get('send')));
   },
 
 }, initialState);

@@ -6,7 +6,7 @@ const Input = styled.input`
     padding: 0.5rem;
 
     border: 1px solid #e9ecef;
-
+    border:
     font-size: 1.5rem;
     line-height: 2rem;
     transition: all .25s;
@@ -22,9 +22,8 @@ const Input = styled.input`
     }
 `;
 
+
 Input.propTypes = {
-  name: PropTypes.string,
-  value: PropTypes.string,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
 };

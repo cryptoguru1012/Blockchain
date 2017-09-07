@@ -22,4 +22,8 @@ Container.propTypes = {
   visible: PropTypes.bool,
 };
 
+Container.defaultProps = {
+  visible: true,
+};
+
 export default Container;

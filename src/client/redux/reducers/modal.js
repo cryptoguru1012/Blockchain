@@ -12,7 +12,7 @@ export const change = createAction(CHANGE); // {name, value}
 
 const initialState = Map({
   visible: false,
-  mode: null, // create, modify
+  mode: null, // send, receive
   wallet: Map({
     id: null,
     name: '',

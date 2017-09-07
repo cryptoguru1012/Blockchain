@@ -1,17 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Modal from './Modal';
+import SendButton from 'material-ui/RaisedButton';
 import Thumbnail from './Thumbnail';
-import Input from './Input';
-
-const ThumbnailWrapper = styled.div`
-    padding-top: 3rem;
-    padding-buttom: 3rem;
-    display: flex;
-    justify-content: center;
-    background:white;
-`;
+import Modal from './Modal';
+import InputAddress from './InputAddress';
+import InputAmount from './InputAmount';
+import CopyAddress from './CopyAddress';
+import SendIcon from '../asset/whiteSendIcon.png';
+import CancelIcon from '../asset/cancelIcon.png';
 
 const RemoveButton = styled.div`
     position: absolute;
@@ -27,54 +24,31 @@ const RemoveButton = styled.div`
     }
 
     &:active{
-        color: #f03e3e;
+        color: #0ca678;
     }
-
-    ${props => !props.visible && 'display:none;'}
-
 `;
-
-
-RemoveButton.propTypes = {
-  visible: PropTypes.bool,
-};
 
 const Form = styled.div`
+    margin-top: 4rem;
     padding: 1rem;
-    background: #f8f9fa;
-`;
+    padding-left: 10rem;
+    padding-right: 10rem;
+    background: #fff;
 
-const ButtonsWrapper = styled.div`
-    display: flex;
-`;
-
-const Button = styled.div`
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    flex:1;
-    display: inline-block;
-
-    cursor: pointer;
-    text-align: center;
-    font-weight: 500;
-    font-size: 1.2rem;
-    transition: all .3s;
-
-    color: white;
-    background: #12b886;
-    
-    &:hover{
-        background: #20c997;
+    .sendButton{
+      width: 17rem;
+      margin-top 2rem;
+      
     }
 
-    &:active{
-        background: #0ca678;
-    }
 `;
 
-Button.propTypes = {
-  color: PropTypes.string,
-};
+const AddressLabel = styled.p`
+    padding-top:2rem;
+    padding-left:2rem;
+    color:#0094da;
+    font-size: 1.7rem;
+`;
 
 
 class WalletModal extends React.Component {
@@ -92,47 +66,42 @@ class WalletModal extends React.Component {
     const {
             visible,
             mode,
-            name,
-            account,
-            color,
-            url,
             onHide,
             onAction,
         } = this.props;
 
     return (
       <Modal visible={visible} onHide={onHide}>
-        <ThumbnailWrapper>
-          <Thumbnail size="8rem" color={color} url={url} />
-        </ThumbnailWrapper>
-        <Form>
-          <Input
-            name="name"
-            placeholder="Name"
-            value={name}
-            onChange={handleChange}
-          />
-          <Input
-            name="account"
-            placeholder="account"
-            value={account}
-            onChange={handleChange}
-          />
-        </Form>
-        <ButtonsWrapper>
-          <Button
-            color="teal"
-            onClick={onAction}
-          >
-            { mode === 'create' ? 'Modify' : 'Send'}
-          </Button>
-          <Button
-            onClick={onHide}
-            color="gray"
-          >
-                        Cancel
-                    </Button>
-        </ButtonsWrapper>
+
+        
+        {mode === 'send' && <div>
+          <RemoveButton onClick={onHide}> <img src={CancelIcon} style={CancelIcon.logo} alt="Cancel" /> </RemoveButton>
+          <Form>
+            {/* <InputAd
+              placeholder="To SYScoin Address"
+              onChange={handleChange}
+            /> */}
+            <InputAddress />
+            <InputAmount />
+            <SendButton
+              className="sendButton"
+              onClick={onHide}
+              label="Send"
+              labelColor="#fff"
+              backgroundColor="#0094da"
+            >
+              <img src={SendIcon} style={SendIcon.logo} alt="fireSpot" />&nbsp;&nbsp;
+            </SendButton>
+          </Form>
+          </div>}
+        {mode === 'receive' && <div>
+          <AddressLabel>SYS Wallet address</AddressLabel>
+          <RemoveButton onClick={onHide}> <img src={CancelIcon} style={CancelIcon.logo} alt="Cancel" /> </RemoveButton>
+          <Form>
+            <Thumbnail url="BarCode" size="10rem" />
+            <CopyAddress />
+          </Form>
+          </div>}
 
       </Modal>
 

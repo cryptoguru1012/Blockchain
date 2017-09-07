@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ViewSelectorContainer from './containers/ViewSelectorContainer';
 import Container from './containers/Container';
 import WalletModalContainer from './containers/WalletModalContainer';
@@ -23,6 +24,11 @@ class ProfilePageWallets extends Component {
     );
   }
 }
+
+ProfilePageWallets.propsTypes = {
+  view: PropTypes.string,
+};
+
 
 export default connect(
     state => ({

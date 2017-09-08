@@ -23,6 +23,7 @@ const Img = styled.div`
 `;
 
 const Label = styled.div`
+    color: #868e96;
     padding-left: 3rem;
     width: 40rem;
     font-size: 2rem;
@@ -30,6 +31,7 @@ const Label = styled.div`
 `;
 
 const Content = styled.div`
+    color: #868e96;
     padding-top:2rem;
     display:flex;
     flex-direction: column;

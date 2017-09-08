@@ -69,8 +69,9 @@ const Button = styled.div`
 
 
     &:hover{
-        border: 1px solid #495057;
+        border: 1px solid #7f7b7b;
         color: #212529;
+        opacity: 0.7;
         
     }
 

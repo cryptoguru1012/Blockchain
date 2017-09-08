@@ -29,6 +29,7 @@ Img.propTypes = {
 };
 
 const Label = styled.div`
+    color: #868e96;
     padding-left: 3rem;
     width: 40rem;
     font-size: 2rem;
@@ -36,6 +37,7 @@ const Label = styled.div`
 `;
 
 const Content = styled.div`
+    color: #868e96;
     font-size: 2rem;
     justify-content: center;
 `;

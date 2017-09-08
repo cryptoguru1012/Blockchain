@@ -30,6 +30,7 @@ const RemoveButton = styled.div`
 
 const Form = styled.div`
     margin-top: 4rem;
+    margin-bottom: 4rem;
     padding: 1rem;
     padding-left: 10rem;
     padding-right: 10rem;
@@ -65,6 +66,7 @@ class WalletModal extends React.Component {
     const { handleChange } = this;
     const {
             visible,
+            name,
             mode,
             onHide,
             onAction,
@@ -73,7 +75,7 @@ class WalletModal extends React.Component {
     return (
       <Modal visible={visible} onHide={onHide}>
 
-        
+
         {mode === 'send' && <div>
           <RemoveButton onClick={onHide}> <img src={CancelIcon} style={CancelIcon.logo} alt="Cancel" /> </RemoveButton>
           <Form>
@@ -81,8 +83,8 @@ class WalletModal extends React.Component {
               placeholder="To SYScoin Address"
               onChange={handleChange}
             /> */}
-            <InputAddress />
-            <InputAmount />
+            <InputAddress name={name} />
+            <InputAmount name={name} />
             <SendButton
               className="sendButton"
               onClick={onHide}
@@ -95,8 +97,10 @@ class WalletModal extends React.Component {
           </Form>
           </div>}
         {mode === 'receive' && <div>
-          <AddressLabel>SYS Wallet address</AddressLabel>
-          <RemoveButton onClick={onHide}> <img src={CancelIcon} style={CancelIcon.logo} alt="Cancel" /> </RemoveButton>
+          {name === 'BTC Wallet' && <AddressLabel>BTC Wallet address</AddressLabel> }
+          {name === 'SYS Wallet' && <AddressLabel>SYS Wallet address</AddressLabel> }
+          {name === 'ZEC Wallet' && <AddressLabel>ZEC Wallet address</AddressLabel> }
+          <RemoveButton onClick={onHide}> <img src={CancelIcon} style={CancelIcon.logo} alt="Cancel" /></RemoveButton>
           <Form>
             <Thumbnail url="BarCode" size="10rem" />
             <CopyAddress />

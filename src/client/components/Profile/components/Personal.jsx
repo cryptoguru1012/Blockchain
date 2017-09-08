@@ -34,7 +34,6 @@ const Wrapper = styled.div`
       bottom: 5rem !important;
       right: 15rem !important;
       width: 17rem;
-      height: 4rem;
       margin-top 2rem;
       
     }

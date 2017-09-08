@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import sysMark from '../asset/sysMark.png';
 
@@ -32,17 +33,25 @@ const Input = styled.input`
 `;
 
 
-const InputAddress = () => (
+const InputAddress = ({ name }) => (
   <Wrapper>
     <Img>
       <img src={sysMark} style={sysMark.logo} alt="Mark" />
     </Img>
-    <Input
-      placeholder="To SYScoin Address"
-    />
+    { name === 'SYS Wallet' && <Input placeholder="To SYScoin Address" />}
+    { name === 'BTC Wallet' && <Input placeholder="To BTCcoin Address" />}
+    { name === 'ZEC Wallet' && <Input placeholder="To ZECcoin Address" />}
 
   </Wrapper>
 
 );
+
+InputAddress.propTypes = {
+  name: PropTypes.string,
+};
+
+InputAddress.defaultProps = {
+  name: '',
+};
 
 export default InputAddress;

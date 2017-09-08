@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-
-import sysA from '../asset/sysA.png';
+import PropTypes from 'prop-types';
+// import sysA from '../asset/sysA.png';
 
 const Wrapper = styled.div`
     padding:0.5rem;
@@ -15,7 +15,10 @@ const Wrapper = styled.div`
 const Img = styled.div`
     width:42px;
     height: 39px;
-    
+    padding-top:8px;
+    font-size:1.8rem;
+    color: #0088df;
+    align-items: center;
     border:none;
     border-right: 1px solid #e9ecef;
 `;
@@ -32,10 +35,12 @@ const Input = styled.input`
 `;
 
 
-const InputAddress = () => (
+const InputAmount = ({ name }) => (
   <Wrapper>
     <Img>
-      <img src={sysA} style={sysA.logo} alt="Mark" />
+      { name === 'SYS Wallet' && <p>SYS</p> }
+      { name === 'BTC Wallet' && <p>BTC</p> }
+      { name === 'ZEC Wallet' && <p>ZEC</p> }
     </Img>
     <Input
       placeholder="Enter Amount"
@@ -45,4 +50,13 @@ const InputAddress = () => (
 
 );
 
-export default InputAddress;
+InputAmount.propTypes = {
+  name: PropTypes.string,
+};
+
+InputAmount.defaultProps = {
+  name: '',
+};
+
+
+export default InputAmount;

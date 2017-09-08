@@ -13,6 +13,7 @@ import sortReducer from './sortReducer';
 import modal from './modal';
 import base from './base';
 import wallets from './wallets';
+import personal from './personal';
 
 export default combineReducers({
   reduxAsyncConnect,
@@ -30,4 +31,5 @@ export default combineReducers({
   modal,
   base,
   wallets,
+  personal,
 });

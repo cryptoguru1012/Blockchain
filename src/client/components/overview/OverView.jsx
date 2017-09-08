@@ -1,14 +1,11 @@
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ViewSelectorContainer from './containers/ViewSelectorContainer';
+import ViewSelectorContainer from './containers/FooterSelectorContainer';
 import Container from './containers/Container';
-import WalletModalContainer from './containers/WalletModalContainer';
 import WalletListContainer from './containers/WalletListContainer';
-import PersonalInfoContainer from './containers/PersonalInfoContainer';
 
-class ProfilePageWallets extends Component {
+class OverView extends Component {
   render() {
     const { view } = this.props;
     return (
@@ -16,14 +13,15 @@ class ProfilePageWallets extends Component {
         <ViewSelectorContainer />
         {/* display container depend on view */}
 
-        <Container visible={view === 'personal'}>
-          <PersonalInfoContainer />
-        </Container>
-
         <Container visible={view === 'wallet'}>
           <WalletListContainer />
         </Container>
-        <WalletModalContainer />
+
+        <FooterSelectorContainer />
+        <FooterContainter visible={view === 'overview'} />
+        <FooterContainter visible={view === 'rating'} />
+        <FooterContainter visible={view === 'sellerinfo'} />
+        <FooterContainter visible={view === 'fag'} />
 
       </div>
     );
@@ -39,4 +37,4 @@ export default connect(
     state => ({
       view: state.base.get('view'),
     }),
-)(ProfilePageWallets);
+)(OverView);

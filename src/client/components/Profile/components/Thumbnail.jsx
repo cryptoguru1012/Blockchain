@@ -40,7 +40,7 @@ Thumbnail.propTypes = {
 
 Thumbnail.defaultProps = {
   url: '',
-  size: '5rem',
+  size: '8rem',
 };
 
 export default Thumbnail;

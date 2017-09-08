@@ -6,8 +6,10 @@ const Wrapper = styled.div`
     width: 1400px;
     margin: 0 auto; 
     margin-top: 0.8rem;
+    margin-bottom: 10rem;
     padding: 0rem;
     border: 1px solid #ced4da;
+    
 `;
 
 // visible  false null

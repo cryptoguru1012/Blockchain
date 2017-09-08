@@ -93,6 +93,9 @@ class Personal extends React.Component {
           <SelectField
             floatingLabelText="Show Price in"
             value={1}
+            menuItemStyle={{ color: '#019921' }}
+            selectedMenuItemStyle={{ color: '#019921' }}
+            menuStyle={{ color: '#019921' }}
             onChange={this.handleChange}
           >
             <MenuItem value={1} primaryText="USD" />

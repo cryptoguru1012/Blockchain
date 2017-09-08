@@ -2,10 +2,12 @@ import { Map } from 'immutable';
 import { createAction, handleActions } from 'redux-actions';
 
 
-const MODIFY = 'contacts/MODIFY';
+const MODIFY = 'personal/MODIFY';
+const SET_VALUE = 'personal/SET_VALUE';
 
 
-export const modify = createAction(MODIFY); // {id, contact:{name, phone}}
+export const modify = createAction(MODIFY);
+export const setValue = createAction(SET_VALUE); // {value}
 
 
 const initialState = Map({
@@ -13,6 +15,7 @@ const initialState = Map({
   name: 'Abderlahman mohamed',
   email: 'Abderlahman.man@hotmail.com',
   alias: 'Abdelrahman.m',
+  value: 1,
   password: '*************',
   publicaddress: '120 moutclam road, surrey bc, v2g 5f6',
   shippingaddress: '120 moutclam road, surrey bc, v2g 5f6',
@@ -24,9 +27,8 @@ const initialState = Map({
 
 
 export default handleActions({
-
-
   [MODIFY]: (state, action) => state.mergeIn(action.payload.contact),
+  [SET_VALUE]: (state, action) => state.set('value', action.payload),
 
 }, initialState);
 

@@ -12,6 +12,7 @@ class PersonalInfoContainer extends Component {
   constructor(props) {
     super(props);
     this.handleOpenModify = this.handleOpenModify.bind(this);
+    this.handleChangeValue = this.handleChangeValue.bind(this);
   }
   handleOpenModify() {
     const { personal, ModalActions } = this.props;
@@ -21,16 +22,26 @@ class PersonalInfoContainer extends Component {
     });
   }
 
+  handleChangeValue(event, index, value) {
+    console.log('value');
+    console.log(value);
+
+    const { PersonalsActions } = this.props;
+    PersonalsActions.setValue(value);
+  }
+
   render() {
     const { personal } = this.props;
     const {
             handleOpenModify,
+            handleChangeValue,
         } = this;
 
     return (
       <Personal
         personal={personal}
         onOpenModify={handleOpenModify}
+        handleChangeValue={handleChangeValue}
       />
     );
   }

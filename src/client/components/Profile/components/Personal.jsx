@@ -70,14 +70,14 @@ const PublicLabel = styled.div`
 
 class Personal extends React.Component {
 
-
   render() {
     const {
             personal,
             onOpenModify,
+            handleChangeValue,
         } = this.props;
 
-    const { id, name, email, alias, password, publicaddress, shippingaddress, phonenumber, yutube, twitter, facebok } = personal.toJS();
+    const { id, name, email, value, alias, password, publicaddress, shippingaddress, phonenumber, yutube, twitter, facebok } = personal.toJS();
 
     return (
       <Wrapper>
@@ -92,12 +92,12 @@ class Personal extends React.Component {
         <PriceSelector>
           <SelectField
             floatingLabelText="Show Price in"
-            value={1}
+            value={value}
             menuItemStyle={{ color: '#019921' }}
             selectedMenuItemStyle={{ color: '#019921' }}
-            hintStyle={{ color: '#019921' }}
-            menuStyle={{ color: '#019921' }}
-            onChange={this.handleChange}
+          
+            labelStyle={{ color: '#019921' }}
+            onChange={handleChangeValue}
           >
             <MenuItem value={1} primaryText="USD" />
             <MenuItem value={2} primaryText="EURO" />

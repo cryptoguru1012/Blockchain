@@ -95,6 +95,7 @@ class Personal extends React.Component {
             value={1}
             menuItemStyle={{ color: '#019921' }}
             selectedMenuItemStyle={{ color: '#019921' }}
+            hintStyle={{ color: '#019921' }}
             menuStyle={{ color: '#019921' }}
             onChange={this.handleChange}
           >

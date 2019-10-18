@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import VerifyButton from 'material-ui/RaisedButton';
-import YutubeIcon from '../../asset/youtube.png';
+import YoutubeIcon from '../../asset/youtube.png';
 
 const Wrapper = styled.div`
     display:flex;
@@ -50,12 +50,12 @@ const LabelContent = styled.div`
     align-content: center;
 `;
 
-const Yutube = ({ info }) => (
+const Youtube = ({ info }) => (
   <Wrapper>
     <Img>
-      <img className="imgIcon" src={YutubeIcon} style={YutubeIcon.logo} alt="name" />
+      <img className="imgIcon" src={YoutubeIcon} style={YoutubeIcon.logo} alt="name" />
     </Img>
-    <Label>Yutube address:</Label>
+    <Label>Youtube address:</Label>
     <Content>
       { info ? (
         <Content>disconnect youtube<LabelContent> Verified </LabelContent></Content>
@@ -71,12 +71,12 @@ const Yutube = ({ info }) => (
   </Wrapper>
 );
 
-Yutube.propTypes = {
+Youtube.propTypes = {
   info: PropTypes.string,
 };
 
-Yutube.defaultProps = {
+Youtube.defaultProps = {
   info: '',
 };
 
-export default Yutube;
+export default Youtube;

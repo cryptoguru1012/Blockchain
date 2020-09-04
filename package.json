@@ -42,7 +42,7 @@
     "material-ui-pagination": "^1.0.3",
     "mongodb": "^2.2.29",
     "mongoose": "~4.10",
-    "node-sass": "^3.3.2",
+    "node-sass": "^4.13.1",
     "node-sass-middleware": "^0.9.7",
     "open-color": "^1.5.1",
     "orderby-time": "^0.1.0",
